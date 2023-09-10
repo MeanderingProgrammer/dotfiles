@@ -5,3 +5,4 @@ gradle 8.2.1
 rust 1.71.0
 golang 1.20.6
 dotnet-core 7.0.306
+terraform 1.5.7
