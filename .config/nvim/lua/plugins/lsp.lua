@@ -1,6 +1,6 @@
 return {
     'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
+    branch = 'v3.x',
     dependencies = {
         -- LSP Support
         'neovim/nvim-lspconfig',
@@ -12,18 +12,33 @@ return {
         'L3MON4D3/LuaSnip',
     },
     config = function()
-        local lsp = require('lsp-zero').preset({})
-        lsp.on_attach(function(client, bufnr)
-            lsp.default_keymaps({buffer = bufnr})
+        local lsp_zero = require('lsp-zero')
+        lsp_zero.on_attach(function(client, bufnr)
+            lsp_zero.default_keymaps({buffer = bufnr})
         end)
-        lsp.ensure_installed({
-            'tsserver', -- TypeScript
-            'pyright', -- Python
-            'rust_analyzer', -- Rust
-            'jdtls', -- Java
-            'svelte', -- Svelte
+
+        require('mason').setup({})
+        require('mason-lspconfig').setup({
+            -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+            ensure_installed = {
+                'bashls', -- Bash
+                'eslint', -- ESLint
+                'gopls', -- Go
+                'jdtls', -- Java
+                'jsonls', -- JSON
+                'lua_ls', -- Lua
+                'marksman', -- Markdown
+                'pyright', -- Python
+                'rust_analyzer', -- Rust
+                'svelte', -- Svelte
+                'tailwindcss', --Tailwind
+                'terraformls', --Terraform
+                'tsserver', -- TypeScript
+            },
+            handlers = {
+                lsp_zero.default_setup,
+            },
         })
-        lsp.setup()
 
         local cmp = require('cmp')
         cmp.setup({
