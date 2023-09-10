@@ -17,7 +17,6 @@ cask "font-hack-nerd-font"
 brew "asdf"
 brew "awscli"
 brew "git"
-brew "terraform"
 brew "tmux"
 
 # Code / Text Editors
