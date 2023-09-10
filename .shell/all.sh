@@ -1,6 +1,11 @@
+source ~/.shell/system.sh
+
+# Enable Autocomplete
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+autoload -Uz compinit && compinit
+
 source ~/.shell/git.sh
 source ~/.shell/software.sh
-source ~/.shell/ssh.sh
 
 # Make scripts runnable without full path
 PATH=~/.shell/bin:$PATH
