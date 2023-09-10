@@ -1,6 +1,8 @@
 # Setup Homebrew
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Workspace Alias
+alias workspace="cd /mnt/c/Users/vsusl/Documents/scripts"
 
 # Setup SSH
 eval "$(ssh-agent -s)"
