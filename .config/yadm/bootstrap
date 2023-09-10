@@ -11,4 +11,14 @@ install_homebrew() {
     brew bundle --global
 }
 
+install_asdf_tools() {
+    while read line
+    do
+        plugin=$(echo "${line}" | cut -d' ' -f1)
+        asdf plugin add "${plugin}"
+    done < ~/.tool-versions
+    asdf install
+}
+
 install_homebrew
+install_asdf_tools
