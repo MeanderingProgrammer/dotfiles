@@ -1,3 +1,19 @@
 [user]
     name = MeanderingProgrammer
     email = meanderingprogrammer@gmail.com
+[alias]
+    aa = add --all
+    b = branch
+    bm = branch -u main
+    ch = checkout
+    chm = checkout main
+    coa = commit --amend
+    com = commit -m
+    l = log
+    r = rebase -i
+    ra = rebase --abort
+    rc = rebase --continue
+    s = status -uall
+    un = reset HEAD --
+    unh = reset --hard HEAD^
+    unr = checkout HEAD^
