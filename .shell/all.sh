@@ -1,9 +1,3 @@
-source ~/.shell/system.sh
-
-# Enable Autocomplete
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-autoload -Uz compinit && compinit
-
 source ~/.shell/git.sh
 source ~/.shell/software.sh
 
