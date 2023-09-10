@@ -37,7 +37,7 @@ return {
             },
             handlers = {
                 lsp_zero.default_setup,
-                bashls = function ()
+                bashls = function()
                     require('lspconfig').bashls.setup({
                         filetypes = { 'sh', 'zsh' },
                     })
