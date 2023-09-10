@@ -7,7 +7,3 @@ fi
 # Airflow setup
 export AIRFLOW_DIR="$HOME/airflow"
 [[ -d $AIRFLOW_DIR ]] && export AIRFLOW_HOME=$AIRFLOW_DIR
-
-# SSH setup
-eval "$(ssh-agent -s)"
-ssh-add --apple-use-keychain ~/.ssh/id_ed25519

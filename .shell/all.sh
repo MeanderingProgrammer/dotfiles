@@ -1,5 +1,6 @@
 source ~/.shell/git.sh
 source ~/.shell/software.sh
+source ~/.shell/ssh.sh
 
 # Make scripts runnable without full path
 PATH=~/.shell/bin:$PATH
