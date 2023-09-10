@@ -1,8 +1,6 @@
 # ASDF setup
-if [[ $(brew --prefix asdf 2> /dev/null) ]]
-then
-    source "$(brew --prefix asdf)/libexec/asdf.sh"
-fi
+export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
+[[ -f $ASDF_SRC ]] && source "${ASDF_SRC}"
 
 # Airflow setup
 export AIRFLOW_DIR="$HOME/airflow"
