@@ -42,6 +42,17 @@ return {
                         filetypes = { 'sh', 'zsh' },
                     })
                 end,
+                lua_ls = function()
+                    local lua_settings = {
+                        diagnostics = {
+                            enable = true,
+                            globals = { 'vim' },
+                        },
+                    }
+                    require('lspconfig').lua_ls.setup({
+                        settings = { Lua = lua_settings },
+                    })
+                end,
             },
         })
 
