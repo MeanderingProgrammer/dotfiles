@@ -5,6 +5,10 @@ return {
         'nvim-tree/nvim-web-devicons',
     },
     config = function()
-        require('dashboard').setup()
+        require('dashboard').setup({
+            config = {
+                week_header = { enable = true },
+            },
+        })
     end,
 }
