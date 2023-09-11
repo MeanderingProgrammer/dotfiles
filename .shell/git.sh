@@ -1,6 +1,9 @@
 # Aliases
 
 alias gs="git s"
+alias gb="git b"
+alias gl="git l"
+
 alias gac="git aa && git coa"
 
 # Commands
