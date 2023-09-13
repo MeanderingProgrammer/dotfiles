@@ -2,6 +2,8 @@ return {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
     dependencies = {
+        -- Lua LSP Improvement
+        'folke/neodev.nvim',
         -- LSP Support
         'neovim/nvim-lspconfig',
         'williamboman/mason.nvim',
@@ -12,6 +14,8 @@ return {
         'L3MON4D3/LuaSnip',
     },
     config = function()
+        require('neodev').setup()
+
         local lsp_zero = require('lsp-zero')
         lsp_zero.on_attach(function(client, bufnr)
             lsp_zero.default_keymaps({buffer = bufnr})
@@ -44,10 +48,8 @@ return {
                 end,
                 lua_ls = function()
                     local lua_settings = {
-                        diagnostics = {
-                            enable = true,
-                            globals = { 'vim' },
-                        },
+                        workspace = { checkThirdParty = false },
+                        telemetry = { enable = false },
                     }
                     require('lspconfig').lua_ls.setup({
                         settings = { Lua = lua_settings },
