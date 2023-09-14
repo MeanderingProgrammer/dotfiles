@@ -5,9 +5,9 @@ return {
         'debugloop/telescope-undo.nvim',
     },
     keys = {
-        { "<C-f>", "<cmd>lua require('telescope.builtin').find_files()<cr>" },
+        { '<C-f>', '<cmd>lua require("telescope.builtin").find_files()<cr>' },
     },
     config = function()
-        require('telescope').setup()
+        require('telescope').setup({})
     end,
 }
