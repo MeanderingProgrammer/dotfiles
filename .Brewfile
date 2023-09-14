@@ -1,16 +1,15 @@
 # Taps
 tap "homebrew/cask-fonts"
 
-# Bash Commands
+# Shell
+brew "cairo"
+brew "coreutils"
 brew "curl"
 brew "fd"
 brew "jq"
 brew "ripgrep"
 brew "xz"
-
-# Bash Utilities
-brew "cairo"
-brew "coreutils"
+cask "alacritty"
 cask "font-hack-nerd-font"
 
 # Programming Related
