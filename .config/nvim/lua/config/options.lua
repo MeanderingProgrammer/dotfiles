@@ -22,9 +22,3 @@ vim.opt.expandtab = true
 
 -- Use system clipboard
 vim.opt.clipboard = 'unnamedplus'
-
--- General key remaps
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
-
--- Custom Commands
-vim.api.nvim_create_user_command('Test', 'echo "Hello World"', { nargs = 0 })
