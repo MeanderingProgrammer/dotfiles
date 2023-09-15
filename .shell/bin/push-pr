@@ -1,0 +1,5 @@
+#!/bin/bash
+
+current_branch=$(git branch --show-current)
+echo "Pushing ${current_branch} to origin"
+git push -f origin ${current_branch}
