@@ -6,6 +6,7 @@ return {
     },
     keys = {
         { '<leader>f', '<cmd>Telescope find_files<cr>' },
+        { '<leader>g', '<cmd>Telescope live_grep<cr>' },
     },
     config = function()
         require('telescope').setup({})
