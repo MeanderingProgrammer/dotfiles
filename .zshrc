@@ -2,4 +2,4 @@
 PS1='%n@%m %~$ '
 
 # Run all general shell setup
-source ~/.shell/all.sh
+source ~/.config/shell/all.sh
