@@ -5,6 +5,13 @@ return {
         'nvim-tree/nvim-web-devicons',
     },
     config = function()
-        require('dashboard').setup()
+        require('dashboard').setup({
+            repos = {
+                '~/dev/repos/advent-of-code',
+                '~/dev/repos/chess',
+                '~/dev/repos/dashboard.nvim',
+                '~/dev/repos/learning',
+            },
+        })
     end,
 }
