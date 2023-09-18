@@ -6,7 +6,7 @@ return {
     },
     config = function()
         require('dashboard').setup({
-            repos = {
+            directories = {
                 '~/dev/repos/advent-of-code',
                 '~/dev/repos/chess',
                 '~/dev/repos/dashboard.nvim',
