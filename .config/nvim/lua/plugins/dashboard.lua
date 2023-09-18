@@ -7,9 +7,10 @@ return {
     config = function()
         require('dashboard').setup({
             directories = {
-                '~/dev/repos/advent-of-code',
-                '~/dev/repos/chess',
+                '~/.config/nvim',
                 '~/dev/repos/dashboard.nvim',
+                '~/dev/repos/chess',
+                '~/dev/repos/advent-of-code',
                 '~/dev/repos/learning',
             },
         })
