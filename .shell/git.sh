@@ -2,6 +2,7 @@
 
 alias gs="git s"
 alias gb="git b"
+alias gm="git chm"
 alias gl="git l"
 
 alias gac="git aa && git coa"
