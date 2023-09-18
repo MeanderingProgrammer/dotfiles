@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import command
+import os
+
+
+def main() -> None:
+    branches = command.run('git branch').split('\n')
+    if len(branches) != 2:
+        print(f'Can only switch between 2 branches but found {len(branches)}')
+        return
+    branch = branches[1] if branches[0].startswith('*') else branches[0]
+    os.system(f'git checkout {branch}')
+
+
+if __name__ == '__main__':
+    main()

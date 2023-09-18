@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import click
+import command
 import os
-import subprocess
 
 
 @click.group()
@@ -15,7 +15,7 @@ def cli() -> None:
 @cli.command()
 def push() -> None:
     """push current branch as PR"""
-    branch = run('git branch --show-current')
+    branch = command.run('git branch --show-current')
     print(f'Pushing {branch} to origin')
     os.system(f'git push -f origin {branch}')
 
@@ -27,14 +27,6 @@ def pull(id: int) -> None:
     branch=f'review-{id}'
     os.system(f'git fetch origin "pull/{id}/head:{branch}"')
     os.system(f'git checkout {branch}')
-
-
-def run(command: str) -> str:
-    result = subprocess.run(command.split(' '), capture_output=True, text=True)
-    if result.returncode == 0:
-        return result.stdout.strip()
-    else:
-        raise Exception(f'{command} failed with {result.stderr.strip()}')
 
 
 if __name__ == '__main__':

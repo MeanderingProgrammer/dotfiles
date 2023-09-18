@@ -1,6 +1,5 @@
 source ~/.shell/aliases.sh
 source ~/.shell/editor.sh
-source ~/.shell/git.sh
 source ~/.shell/software.sh
 
 # Make scripts runnable without full path
