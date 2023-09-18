@@ -13,9 +13,8 @@ return {
         vim.keymap.set('n', '<leader>r', mark.rm_file)
         vim.keymap.set('n', '<leader><leader>', ui.toggle_quick_menu)
 
-        vim.keymap.set('n', '<leader>1', function() ui.nav_file(1) end)
-        vim.keymap.set('n', '<leader>2', function() ui.nav_file(2) end)
-        vim.keymap.set('n', '<leader>3', function() ui.nav_file(3) end)
-        vim.keymap.set('n', '<leader>4', function() ui.nav_file(4) end)
+        for i = 1, 5 do
+            vim.keymap.set('n', string.format('<leader>%s', i), function() ui.nav_file(i) end)
+        end
     end
 }

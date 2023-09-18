@@ -12,13 +12,16 @@ return {
         'hrsh7th/nvim-cmp',
         'hrsh7th/cmp-nvim-lsp',
         'L3MON4D3/LuaSnip',
+        -- Additional Sources
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
     },
     config = function()
         require('neodev').setup()
 
         local lsp_zero = require('lsp-zero')
-        lsp_zero.on_attach(function(client, bufnr)
-            lsp_zero.default_keymaps({buffer = bufnr})
+        lsp_zero.on_attach(function(_, bufnr)
+            lsp_zero.default_keymaps({ buffer = bufnr })
         end)
 
         require('mason').setup({})
@@ -60,8 +63,13 @@ return {
 
         local cmp = require('cmp')
         cmp.setup({
+            sources = {
+                { name = 'nvim_lsp' },
+                { name = 'buffer' },
+                { name = 'path' },
+            },
             mapping = {
-                ['<CR>'] = cmp.mapping.confirm({select = true}),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
             },
         })
      end,
