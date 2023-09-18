@@ -18,6 +18,7 @@ return {
                 '~/dev/repos/rx-availability',
                 '~/dev/repos/small-apps',
                 '~/dev/repos/full-gradle-app',
+                '~/Documents/notes',
             },
         })
     end,
