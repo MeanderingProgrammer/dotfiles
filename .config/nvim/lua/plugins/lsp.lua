@@ -17,7 +17,7 @@ return {
         'hrsh7th/cmp-path',
     },
     config = function()
-        require('neodev').setup()
+        require('neodev').setup({})
 
         local lsp_zero = require('lsp-zero')
         lsp_zero.on_attach(function(_, bufnr)
