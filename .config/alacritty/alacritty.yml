@@ -1,7 +1,7 @@
 font:
   size: 14
   normal:
-    family: Hack Nerd Font Mono
+    family: JetBrainsMono Nerd Font
     style: Regular
 
 window:
