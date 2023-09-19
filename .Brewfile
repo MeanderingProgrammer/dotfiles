@@ -11,6 +11,7 @@ brew "ripgrep"
 brew "xz"
 cask "alacritty"
 cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 
 # Programming Related
 brew "asdf"
