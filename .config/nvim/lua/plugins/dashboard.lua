@@ -7,7 +7,8 @@ return {
     config = function()
         require('dashboard').setup({
             directories = {
-                '~/.config/nvim',
+                '~/.config',
+                '~/Documents/notes',
                 '~/dev/repos/dashboard.nvim',
                 '~/dev/repos/chess',
                 '~/dev/repos/advent-of-code',
@@ -18,7 +19,6 @@ return {
                 '~/dev/repos/rx-availability',
                 '~/dev/repos/small-apps',
                 '~/dev/repos/full-gradle-app',
-                '~/Documents/notes',
             },
         })
     end,
