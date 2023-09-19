@@ -1,5 +1,6 @@
 # General
 alias ll="ls -latr"
+alias workspace="cd ~/dev/repos"
 
 # Git
 alias gs="git s"
