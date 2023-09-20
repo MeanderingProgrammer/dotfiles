@@ -5,6 +5,9 @@ return {
         'nvim-tree/nvim-web-devicons',
         { 'MaximilianLloyd/ascii.nvim', dependencies = { 'MunifTanjim/nui.nvim' } },
     },
+    keys = {
+        { '<leader>d', '<cmd>Dashboard<cr>', desc = 'Dashboard: open' },
+    },
     config = function()
         require('dashboard').setup({
             header = require('ascii').art.text.neovim.sharp,
