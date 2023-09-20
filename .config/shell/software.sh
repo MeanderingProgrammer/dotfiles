@@ -1,14 +1,12 @@
 # Run environment specific configuration
 system_type=$(uname -s)
-if [[ "${system_type}" == "Darwin" ]]
-then
+if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
     eval "$(/opt/homebrew/bin/brew shellenv)"
     # Setup SSH
     eval "$(ssh-agent -s)"
     ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-elif [[ "${system_type}" == "Linux" ]]
-then
+elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     # Setup SSH
