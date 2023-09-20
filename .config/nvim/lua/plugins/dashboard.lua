@@ -3,7 +3,7 @@ return {
     event = 'VimEnter',
     dependencies = {
         'nvim-tree/nvim-web-devicons',
-        { 'MaximilianLloyd/ascii.nvim', dependencies = { 'MunifTanjim/nui.nvim' } }
+        { 'MaximilianLloyd/ascii.nvim', dependencies = { 'MunifTanjim/nui.nvim' } },
     },
     config = function()
         require('dashboard').setup({
