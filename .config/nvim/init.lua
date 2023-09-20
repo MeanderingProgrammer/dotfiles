@@ -1,3 +1,4 @@
+require('config.globals')
 require('config.options')
 require('config.remaps')
 require('config.commands')
