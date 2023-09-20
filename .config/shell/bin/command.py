@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def run(command: str) -> str:
@@ -7,3 +8,7 @@ def run(command: str) -> str:
         return result.stdout.strip()
     else:
         raise Exception(f'{command} failed with {result.stderr.strip()}')
+
+
+def execute(command: str) -> None:
+    os.system(command)

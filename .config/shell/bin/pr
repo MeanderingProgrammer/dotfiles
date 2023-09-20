@@ -2,7 +2,6 @@
 
 import click
 import command
-import os
 
 
 @click.group()
@@ -17,7 +16,7 @@ def push() -> None:
     """push current branch as PR"""
     branch = command.run('git branch --show-current')
     print(f'Pushing {branch} to origin')
-    os.system(f'git push -f origin {branch}')
+    command.execute(f'git push -f origin {branch}')
 
 
 @cli.command()
@@ -25,8 +24,8 @@ def push() -> None:
 def pull(id: int) -> None:
     """pull PR with ID"""
     branch=f'review-{id}'
-    os.system(f'git fetch origin "pull/{id}/head:{branch}"')
-    os.system(f'git checkout {branch}')
+    command.execute(f'git fetch origin "pull/{id}/head:{branch}"')
+    command.execute(f'git checkout {branch}')
 
 
 if __name__ == '__main__':
