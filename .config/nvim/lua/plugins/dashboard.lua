@@ -1,5 +1,6 @@
 return {
-    dir = '~/dev/repos/dashboard.nvim',
+    'MeanderingProgrammer/dashboard.nvim',
+    dev = true,
     event = 'VimEnter',
     dependencies = {
         'nvim-tree/nvim-web-devicons',
