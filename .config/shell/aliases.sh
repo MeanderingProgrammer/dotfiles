@@ -11,10 +11,13 @@ alias gl="git l"
 alias gac="git aa && git coa"
 
 # YADM
-alias yadm_s="yadm status"
-alias yadm_d="yadm diff"
-alias yadm_a="yadm add -u"
-alias yadm_ls="yadm ls-files ~"
+alias yls="yadm ls-files ~"
+alias ys="yadm status"
+alias yd="yadm diff"
+alias yl="yadm l"
+alias ya="yadm add -u"
+alias yc="yadm com"
+alias yp="yadm push"
 
 # Advent
 alias a_run="./scripts/advent.py run"
