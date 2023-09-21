@@ -14,4 +14,4 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 # Notes
 
 * Changing Python interpreter requires re-installing `requirements.txt`: 
-  `pip install -r .github/requirements.txt`
+  `pip install -r ~/.github/requirements.txt`
