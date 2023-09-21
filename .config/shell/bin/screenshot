@@ -1,34 +1,56 @@
 #!/usr/bin/env python
 
 from argparse import ArgumentParser
+from dataclasses import dataclass
 from pathlib import Path
 from PIL import ImageGrab
+from typing import Self, Tuple
 
 TYPE_MAPPING = dict(
     dashboard=(850, 800),
 )
 
+@dataclass(frozen=True)
+class BoundBox:
+    left: int
+    top: int
+    right: int
+    bottom: int
 
-def main(target: tuple) -> None:
+    def center(self, target: Tuple[int, int]) -> Self:
+        offset = (
+            BoundBox._offset(self.left, self.right, target[0]),
+            BoundBox._offset(self.top, self.bottom, target[1]),
+        )
+        return BoundBox(
+            left=offset[0],
+            top=offset[1],
+            right=offset[0] + target[0],
+            bottom=offset[1] + target[1],
+        )
+
+    def as_tuple(self) -> Tuple[int, int, int, int]:
+        return (self.left, self.top, self.right, self.bottom)
+
+    @staticmethod
+    def _offset(start: int, end: int, inner: int) -> int:
+        offset = (end - start - inner) / 2
+        return int(offset) + start
+
+
+def main(target: Tuple[int, int]) -> None:
     # Accounts for some lost pixels at bottom of screen
     bottom_offset = 150
-    display = ImageGrab.grab().size
-    offset = (
-        get_offset(display[0], target[0]),
-        get_offset(display[1] - bottom_offset, target[1]),
+    display_size = ImageGrab.grab().size
+    display_bound = BoundBox(
+        left=0,
+        top=0,
+        right=display_size[0],
+        bottom=display_size[1] - bottom_offset,
     )
-
-    region = (
-        offset[0], offset[1],
-        offset[0] + target[0], offset[1] + target[1],
-    )
-    screenshot = ImageGrab.grab(region)
+    region = display_bound.center(target)
+    screenshot = ImageGrab.grab(region.as_tuple())
     screenshot.save(Path.home().joinpath('Desktop/screenshot.png'))
-
-
-def get_offset(outer: int, inner: int) -> int:
-    offset = (outer - inner) / 2
-    return int(offset)
 
 
 if __name__ == '__main__':
