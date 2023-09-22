@@ -39,6 +39,7 @@ return {
                 'rust_analyzer', -- Rust
                 'svelte', -- Svelte
                 'tailwindcss', --Tailwind
+                'terraformls', --Terraform
                 'tsserver', -- TypeScript
             },
             handlers = {
