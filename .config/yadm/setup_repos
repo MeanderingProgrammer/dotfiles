@@ -22,17 +22,19 @@ class Repo:
 
 def main() -> None:
     user_name = 'MeanderingProgrammer'
-    root = Path.home().joinpath('dev/repos')
-    open_source_plugins = root.joinpath('open-source/nvim-plugins')
+    document_root = Path.home().joinpath('Documents')
+    repo_root = Path.home().joinpath('dev/repos')
+    open_source_plugins = repo_root.joinpath('open-source/nvim-plugins')
     repos = [
-        Repo(root=root, owner=user_name, name='advent-of-code'),
-        Repo(root=root, owner=user_name, name='chess'),
-        Repo(root=root, owner=user_name, name='dashboard.nvim'),
-        Repo(root=root, owner=user_name, name='full-gradle-app'),
-        Repo(root=root, owner=user_name, name='learning'),
-        Repo(root=root, owner=user_name, name='personal-resume'),
-        Repo(root=root, owner=user_name, name='rx-availability'),
-        Repo(root=root, owner=user_name, name='small-apps'),
+        Repo(root=document_root, owner=user_name, name='notes'),
+        Repo(root=repo_root, owner=user_name, name='advent-of-code'),
+        Repo(root=repo_root, owner=user_name, name='chess'),
+        Repo(root=repo_root, owner=user_name, name='dashboard.nvim'),
+        Repo(root=repo_root, owner=user_name, name='full-gradle-app'),
+        Repo(root=repo_root, owner=user_name, name='learning'),
+        Repo(root=repo_root, owner=user_name, name='personal-resume'),
+        Repo(root=repo_root, owner=user_name, name='rx-availability'),
+        Repo(root=repo_root, owner=user_name, name='small-apps'),
         Repo(root=open_source_plugins, owner='nvimdev', name='dashboard-nvim'),
         Repo(root=open_source_plugins, owner='ThePrimeagen', name='harpoon'),
     ]
