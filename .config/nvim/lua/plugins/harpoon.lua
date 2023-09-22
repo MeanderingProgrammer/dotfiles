@@ -18,5 +18,5 @@ return {
             local description = string.format('Harpoon: Open file %s', i)
             vim.keymap.set('n', key, function() ui.nav_file(i) end, { desc = description })
         end
-    end
+    end,
 }
