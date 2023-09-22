@@ -11,6 +11,7 @@ return {
         require('nvim-tree').setup({
             hijack_cursor = true,
             renderer = {
+                group_empty = true,
                 root_folder_label = function(path)
                     return vim.fn.fnamemodify(path, ':t')
                 end,
