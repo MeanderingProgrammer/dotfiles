@@ -22,3 +22,4 @@ install_asdf_tools() {
 
 install_homebrew
 install_asdf_tools
+/bin/bash -c ~/.config/yadm/setup_repos

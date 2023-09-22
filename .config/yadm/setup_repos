@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Optional
+
+
+@dataclass(frozen=True)
+class Repo:
+    prefix: Optional[str]
+    owner: Optional[str]
+    name: str
+
+    @property
+    def ssh(self) -> str:
+        owner = self.owner or 'MeanderingProgrammer'
+        return f'git@github.com:{owner}/{self.name}.git'
+
+
+def main() -> None:
+    repo_root = Path.home().joinpath('dev/repos')
+
+    repos = [
+        Repo(prefix=None, owner=None, name='advent-of-code'),
+        Repo(prefix=None, owner=None, name='chess'),
+        Repo(prefix=None, owner=None, name='dashboard.nvim'),
+        Repo(prefix=None, owner=None, name='full-gradle-app'),
+        Repo(prefix=None, owner=None, name='learning'),
+        Repo(prefix=None, owner=None, name='personal-resume'),
+        Repo(prefix=None, owner=None, name='rx-availability'),
+        Repo(prefix=None, owner=None, name='small-apps'),
+        Repo(prefix='open-source/nvim-plugins', owner='nvimdev', name='dashboard-nvim'),
+        Repo(prefix='open-source/nvim-plugins', owner='ThePrimeagen', name='harpoon'),
+    ]
+
+    for repo in repos:
+        repo_path = repo_root if repo.prefix is None else repo_root.joinpath(repo.prefix)
+        if not repo_path.is_dir():
+            print(f'Creating: {repo_path}')
+            repo_path.mkdir(parents=True)
+        
+        repo_path = repo_path.joinpath(repo.name)
+        if not repo_path.is_dir():
+            print(f'Cloning {repo} to {repo_path}')
+            os.system(f'git clone {repo.ssh} {repo_path}')
+
+
+if __name__ == '__main__':
+    main()
