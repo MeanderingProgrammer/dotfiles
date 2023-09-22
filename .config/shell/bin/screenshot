@@ -7,7 +7,7 @@ from PIL import ImageGrab
 from typing import Self, Tuple
 
 TYPE_MAPPING = dict(
-    dashboard=(850, 800),
+    dashboard=(850, 450),
 )
 
 @dataclass(frozen=True)
