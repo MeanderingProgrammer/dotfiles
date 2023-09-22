@@ -20,7 +20,6 @@ class Repo:
 
 def main() -> None:
     repo_root = Path.home().joinpath('dev/repos')
-
     repos = [
         Repo(prefix=None, owner=None, name='advent-of-code'),
         Repo(prefix=None, owner=None, name='chess'),
@@ -33,17 +32,19 @@ def main() -> None:
         Repo(prefix='open-source/nvim-plugins', owner='nvimdev', name='dashboard-nvim'),
         Repo(prefix='open-source/nvim-plugins', owner='ThePrimeagen', name='harpoon'),
     ]
+    [clone(repo_root, repo) for repo in repos]
 
-    for repo in repos:
-        repo_path = repo_root if repo.prefix is None else repo_root.joinpath(repo.prefix)
-        if not repo_path.is_dir():
-            print(f'Creating: {repo_path}')
-            repo_path.mkdir(parents=True)
+
+def clone(repo_root: Path, repo: Repo) -> None:
+    repo_path = repo_root if repo.prefix is None else repo_root.joinpath(repo.prefix)
+    if not repo_path.is_dir():
+        print(f'Creating: {repo_path}')
+        repo_path.mkdir(parents=True)
         
-        repo_path = repo_path.joinpath(repo.name)
-        if not repo_path.is_dir():
-            print(f'Cloning {repo} to {repo_path}')
-            os.system(f'git clone {repo.ssh} {repo_path}')
+    repo_path = repo_path.joinpath(repo.name)
+    if not repo_path.is_dir():
+        print(f'Cloning {repo} to {repo_path}')
+        os.system(f'git clone {repo.ssh} {repo_path}')
 
 
 if __name__ == '__main__':
