@@ -1,5 +1,6 @@
 return {
     'smartpde/debuglog',
+    enabled = false,
     config = function()
         local debuglog = require('debuglog')
         debuglog.setup({
