@@ -14,9 +14,10 @@ return {
         vim.keymap.set('n', '<leader><leader>', ui.toggle_quick_menu, { desc = 'Harpoon: Toggle UI' })
 
         for i = 1, 5 do
-            local key = string.format('<leader>%s', i)
-            local description = string.format('Harpoon: Open file %s', i)
-            vim.keymap.set('n', key, function() ui.nav_file(i) end, { desc = description })
+            local open_file = function()
+                ui.nav_file(i)
+            end
+            vim.keymap.set('n', '<leader>' .. i, open_file, { desc = 'Harpoon: Open file ' .. i })
         end
     end,
 }

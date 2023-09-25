@@ -12,7 +12,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Indentation settings
-vim.opt.smartindent  = true
+vim.opt.smartindent = true
 
 -- Tab / Space settings
 vim.opt.tabstop = 4
