@@ -30,6 +30,7 @@ def main() -> None:
         Repo(root=repo_root, owner=user_name, name='advent-of-code'),
         Repo(root=repo_root, owner=user_name, name='chess'),
         Repo(root=repo_root, owner=user_name, name='dashboard.nvim'),
+        Repo(root=repo_root, owner=user_name, name='harpoon-core.nvim'),
         Repo(root=repo_root, owner=user_name, name='full-gradle-app'),
         Repo(root=repo_root, owner=user_name, name='learning'),
         Repo(root=repo_root, owner=user_name, name='personal-resume'),
