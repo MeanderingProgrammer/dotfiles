@@ -58,43 +58,10 @@ return {
             },
             handlers = {
                 lsp_zero.default_setup,
-                bashls = function()
-                    require('lspconfig').bashls.setup({
-                        filetypes = { 'sh', 'zsh' },
-                    })
-                end,
-                lua_ls = function()
-                    local lua_settings = {
-                        workspace = { checkThirdParty = false },
-                        telemetry = { enable = false },
-                    }
-                    require('lspconfig').lua_ls.setup({
-                        settings = { Lua = lua_settings },
-                    })
-                end,
-                gradle_ls = function()
-                    require('lspconfig').gradle_ls.setup({
-                        filetypes = { 'kotlin', 'groovy' },
-                    })
-                end,
-                efm = function()
-                    local languages = {
-                        go = { require('efmls-configs.formatters.gofmt') },
-                        lua = { require('efmls-configs.formatters.stylua') },
-                        rust = { require('efmls-configs.formatters.rustfmt') },
-                    }
-                    require('lspconfig').efm.setup({
-                        filetypes = vim.tbl_keys(languages),
-                        settings = {
-                            rootMarkers = { '.git/' },
-                            languages = languages,
-                        },
-                        init_options = {
-                            documentFormatting = true,
-                            documentRangeFormatting = true,
-                        },
-                    })
-                end
+                bashls = require('plugins.lsp.bash').setup,
+                lua_ls = require('plugins.lsp.lua').setup,
+                gradle_ls = require('plugins.lsp.gradle').setup,
+                efm = require('plugins.lsp.efm').setup,
             },
         })
 
@@ -110,16 +77,6 @@ return {
             },
         })
 
-        local lsp_fmt_group = vim.api.nvim_create_augroup('LspFormattingGroup', {})
-        vim.api.nvim_create_autocmd('BufWritePost', {
-            group = lsp_fmt_group,
-            callback = function()
-                local efm = vim.lsp.get_active_clients({ name = 'efm' })
-                if vim.tbl_isempty(efm) then
-                    return
-                end
-                vim.lsp.buf.format({ name = 'efm' })
-            end,
-        })
-     end,
+        require('plugins.lsp.efm').update_on_write()
+    end,
 }
