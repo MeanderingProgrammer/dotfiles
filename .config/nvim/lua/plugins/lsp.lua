@@ -32,6 +32,7 @@ return {
                 'bashls', -- Bash
                 'eslint', -- ESLint
                 'gopls', -- Go
+                'gradle_ls', -- Gradle
                 'jdtls', -- Java
                 'jsonls', -- JSON
                 'kotlin_language_server', -- Kotlin
@@ -58,6 +59,11 @@ return {
                     }
                     require('lspconfig').lua_ls.setup({
                         settings = { Lua = lua_settings },
+                    })
+                end,
+                gradle_ls = function()
+                    require('lspconfig').gradle_ls.setup({
+                        filetypes = { 'kotlin', 'groovy' },
                     })
                 end,
             },
