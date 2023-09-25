@@ -25,6 +25,14 @@ return {
         local lsp_zero = require('lsp-zero')
         lsp_zero.on_attach(function(_, bufnr)
             lsp_zero.default_keymaps({ buffer = bufnr })
+            vim.keymap.set('n', 'gd', '<cmd>Telescope lsp_definitions<cr>', {
+                buffer = bufnr,
+                desc = 'Telescope: Goto Definitions',
+            })
+            vim.keymap.set('n', 'gr', '<cmd>Telescope lsp_references<cr>', {
+                buffer = bufnr,
+                desc = 'Telescope: Goto References',
+            })
         end)
 
         require('mason').setup({})
