@@ -33,6 +33,7 @@ return {
                 'gopls', -- Go
                 'jdtls', -- Java
                 'jsonls', -- JSON
+                'kotlin_language_server', -- Kotlin
                 'lua_ls', -- Lua
                 'marksman', -- Markdown
                 'pyright', -- Python

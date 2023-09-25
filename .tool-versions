@@ -8,3 +8,4 @@ dotnet-core 7.0.306
 terraform 1.5.7
 scala 3.3.1
 kotlin 1.9.10
+coursier 2.1.7
