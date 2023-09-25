@@ -3,7 +3,12 @@ return {
         local languages = {
             go = { require('efmls-configs.formatters.gofmt') },
             lua = { require('efmls-configs.formatters.stylua') },
+            python = { require('efmls-configs.linters.mypy') },
             rust = { require('efmls-configs.formatters.rustfmt') },
+            typescript = {
+                require('efmls-configs.linters.eslint'),
+                require('efmls-configs.formatters.prettier'),
+            },
         }
         require('lspconfig').efm.setup({
             filetypes = vim.tbl_keys(languages),
