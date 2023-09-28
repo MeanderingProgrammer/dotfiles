@@ -11,6 +11,9 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Set wait time to complete mapping
+vim.opt.timeoutlen = 1000
+
 -- Disable highlight on search
 vim.opt.hlsearch = false
 
