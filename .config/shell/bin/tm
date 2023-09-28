@@ -8,7 +8,7 @@ from pathlib import Path
 def main(path: Path) -> None:
     if not path.is_dir():
         raise Exception(f'{path} is not a valid directory')
-    command.execute(f'tmux new-window -n "{path.stem}" -c "{path}"')
+    command.execute(f'tmux new-window -c "{path}"')
 
 
 if __name__ == '__main__':
