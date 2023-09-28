@@ -11,6 +11,15 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Disable highlight on search
+vim.opt.hlsearch = false
+
+-- Save undo history
+vim.opt.undofile = true
+
+-- Better completion experience
+vim.opt.completeopt = 'menuone,noselect'
+
 -- Indentation settings
 vim.opt.smartindent = true
 
