@@ -6,6 +6,7 @@ return {
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
     config = function()
+        ---@diagnostic disable-next-line: missing-fields
         require('nvim-treesitter.configs').setup({
             ensure_installed = 'all',
             highlight = { enable = true },
@@ -24,12 +25,12 @@ return {
                     enable = true,
                     lookahead = true,
                     keymaps = {
-                        ['aa'] = '@parameter.outer',
-                        ['ia'] = '@parameter.inner',
-                        ['af'] = '@function.outer',
-                        ['if'] = '@function.inner',
-                        ['ac'] = '@class.outer',
-                        ['ic'] = '@class.inner',
+                        ['po'] = '@parameter.outer',
+                        ['pi'] = '@parameter.inner',
+                        ['fo'] = '@function.outer',
+                        ['fi'] = '@function.inner',
+                        ['co'] = '@class.outer',
+                        ['ci'] = '@class.inner',
                     },
                 },
                 move = {

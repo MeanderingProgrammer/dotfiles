@@ -66,6 +66,7 @@ return {
         })
 
         local cmp = require('cmp')
+        ---@diagnostic disable-next-line: missing-fields
         cmp.setup({
             sources = {
                 { name = 'nvim_lsp' },
