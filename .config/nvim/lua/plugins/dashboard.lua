@@ -13,7 +13,7 @@ return {
         require('dashboard').setup({
             header = require('ascii').art.text.neovim.sharp,
             directories = {
-                '~/.config',
+                '~/.config/nvim',
                 '~/Documents/notes',
                 '~/dev/repos/harpoon-core.nvim',
                 '~/dev/repos/dashboard.nvim',
