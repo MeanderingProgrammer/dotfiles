@@ -5,6 +5,8 @@ alias workspace="cd ~/dev/repos"
 # Git
 alias gs="git s"
 alias gb="git b"
+alias ga="git aa"
+alias gc="git com"
 alias gm="git chm"
 alias gu="git bm"
 alias gl="git l"
