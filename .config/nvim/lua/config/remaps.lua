@@ -2,10 +2,10 @@
 vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { noremap = true, silent = true })
 
 -- Move split panes
-vim.keymap.set('n', '<C-H>', '<C-W>H', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-J>', '<C-W>J', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-K>', '<C-W>K', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-L>', '<C-W>L', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-h>', '<C-W>H', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-j>', '<C-W>J', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-k>', '<C-W>K', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-l>', '<C-W>L', { noremap = true, silent = true })
 
 -- Move between panes
 vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
