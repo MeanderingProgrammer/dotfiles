@@ -13,10 +13,8 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
 
--- Various Escapes
+-- Escape
 vim.keymap.set({ 'v', 'i' }, 'ii', '<esc>', { noremap = true, silent = true })
-vim.keymap.set({ 'v', 'i' }, 'jk', '<esc>', { noremap = true, silent = true })
-vim.keymap.set({ 'v', 'i' }, 'kj', '<esc>', { noremap = true, silent = true })
 
 -- Remove my ability to fallback to arrows
 vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', { noremap = true, silent = true })
