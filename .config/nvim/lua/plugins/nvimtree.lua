@@ -16,6 +16,12 @@ return {
                     return vim.fn.fnamemodify(path, ':t')
                 end,
             },
+            tab = {
+                sync = {
+                    open = true,
+                    close = true,
+                },
+            },
         })
     end,
 }
