@@ -13,8 +13,6 @@ return {
         'hrsh7th/nvim-cmp',
         'hrsh7th/cmp-nvim-lsp',
         'L3MON4D3/LuaSnip',
-        -- Formatting / Linting
-        'creativenull/efmls-configs-nvim',
         -- Additional Sources
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
@@ -31,29 +29,27 @@ return {
         require('mason-lspconfig').setup({
             -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             ensure_installed = {
-                'bashls', -- Bash
-                'efm', -- EFM (formatting / linting)
-                'eslint', -- ESLint
-                'gopls', -- Go
-                'gradle_ls', -- Gradle
-                'jdtls', -- Java
-                'jsonls', -- JSON
+                'bashls',                 -- Bash
+                'eslint',                 -- ESLint
+                'gopls',                  -- Go
+                'gradle_ls',              -- Gradle
+                'jdtls',                  -- Java
+                'jsonls',                 -- JSON
                 'kotlin_language_server', -- Kotlin
-                'lua_ls', -- Lua
-                'marksman', -- Markdown
-                'pyright', -- Python
-                'rust_analyzer', -- Rust
-                'svelte', -- Svelte
-                'tailwindcss', --Tailwind
-                'terraformls', --Terraform
-                'tsserver', -- TypeScript
+                'lua_ls',                 -- Lua
+                'marksman',               -- Markdown
+                'pyright',                -- Python
+                'rust_analyzer',          -- Rust
+                'svelte',                 -- Svelte
+                'tailwindcss',            -- Tailwind
+                'terraformls',            -- Terraform
+                'tsserver',               -- TypeScript
             },
             handlers = {
                 lsp_zero.default_setup,
                 bashls = require('plugins.lsp.bash').setup,
                 lua_ls = require('plugins.lsp.lua').setup,
                 gradle_ls = require('plugins.lsp.gradle').setup,
-                efm = require('plugins.lsp.efm').setup,
             },
         })
 
@@ -69,7 +65,5 @@ return {
                 ['<CR>'] = cmp.mapping.confirm({ select = true }),
             },
         })
-
-        require('plugins.lsp.efm').update_on_write()
     end,
 }
