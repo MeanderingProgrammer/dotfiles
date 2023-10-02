@@ -20,7 +20,13 @@ return {
                         group = vim.api.nvim_create_augroup('LspFormatting', { clear = true }),
                         buffer = bufnr,
                         callback = function()
-                            vim.lsp.buf.format({ async = false })
+                            vim.lsp.buf.format({
+                                async = false,
+                                bufnr = bufnr,
+                                filter = function(lsp_client)
+                                    return lsp_client.name == 'null-ls'
+                                end,
+                            })
                         end,
                     })
                 end
