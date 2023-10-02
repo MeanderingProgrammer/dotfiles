@@ -5,15 +5,15 @@ from argparse import ArgumentParser
 
 
 def main() -> None:
-    branches = command.run('git branch').split('\n')
+    branches = command.run("git branch").split("\n")
     if len(branches) != 2:
-        print(f'Can only switch between 2 branches but found {len(branches)}')
+        print(f"Can only switch between 2 branches but found {len(branches)}")
         return
-    branch = branches[1] if branches[0].startswith('*') else branches[0]
-    command.execute(f'git checkout {branch}')
+    branch = branches[1] if branches[0].startswith("*") else branches[0]
+    command.execute(f"git checkout {branch}")
 
 
-if __name__ == '__main__':
-    parser = ArgumentParser(description='Change between 2 branches in a git repo')
+if __name__ == "__main__":
+    parser = ArgumentParser(description="Change between 2 branches in a git repo")
     parser.parse_args()
     main()

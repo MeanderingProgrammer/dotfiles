@@ -17,39 +17,39 @@ class Repo:
 
     @property
     def ssh(self) -> str:
-        return f'git@github.com:{self.owner}/{self.name}.git'
+        return f"git@github.com:{self.owner}/{self.name}.git"
 
 
 def main() -> None:
-    user_name = 'MeanderingProgrammer'
-    document_root = Path.home().joinpath('Documents')
-    repo_root = Path.home().joinpath('dev/repos')
-    open_source_plugins = repo_root.joinpath('open-source/nvim-plugins')
+    user_name = "MeanderingProgrammer"
+    document_root = Path.home().joinpath("Documents")
+    repo_root = Path.home().joinpath("dev/repos")
+    open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
     repos = [
-        Repo(root=document_root, owner=user_name, name='notes'),
-        Repo(root=repo_root, owner=user_name, name='advent-of-code'),
-        Repo(root=repo_root, owner=user_name, name='chess'),
-        Repo(root=repo_root, owner=user_name, name='dashboard.nvim'),
-        Repo(root=repo_root, owner=user_name, name='harpoon-core.nvim'),
-        Repo(root=repo_root, owner=user_name, name='full-gradle-app'),
-        Repo(root=repo_root, owner=user_name, name='learning'),
-        Repo(root=repo_root, owner=user_name, name='personal-resume'),
-        Repo(root=repo_root, owner=user_name, name='rx-availability'),
-        Repo(root=repo_root, owner=user_name, name='small-apps'),
-        Repo(root=open_source_plugins, owner='nvimdev', name='dashboard-nvim'),
-        Repo(root=open_source_plugins, owner='ThePrimeagen', name='harpoon'),
+        Repo(root=document_root, owner=user_name, name="notes"),
+        Repo(root=repo_root, owner=user_name, name="advent-of-code"),
+        Repo(root=repo_root, owner=user_name, name="chess"),
+        Repo(root=repo_root, owner=user_name, name="dashboard.nvim"),
+        Repo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
+        Repo(root=repo_root, owner=user_name, name="full-gradle-app"),
+        Repo(root=repo_root, owner=user_name, name="learning"),
+        Repo(root=repo_root, owner=user_name, name="personal-resume"),
+        Repo(root=repo_root, owner=user_name, name="rx-availability"),
+        Repo(root=repo_root, owner=user_name, name="small-apps"),
+        Repo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
+        Repo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
     ]
     [clone(repo) for repo in repos]
 
 
 def clone(repo: Repo) -> None:
     if not repo.root.is_dir():
-        print(f'Creating: {repo.root}')
+        print(f"Creating: {repo.root}")
         repo.root.mkdir(parents=True)
     if not repo.path.is_dir():
-        print(f'Cloning {repo} to {repo.path}')
-        os.system(f'git clone {repo.ssh} {repo.path}')
+        print(f"Cloning {repo} to {repo.path}")
+        os.system(f"git clone {repo.ssh} {repo.path}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

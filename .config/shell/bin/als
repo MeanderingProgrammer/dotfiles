@@ -7,22 +7,24 @@ from pathlib import Path
 
 
 def main() -> None:
-    aliases_path = Path.home().joinpath('.config/shell/aliases.sh')
+    aliases_path = Path.home().joinpath(".config/shell/aliases.sh")
     if not aliases_path.is_file():
-        raise Exception(f'{aliases_path} file does not exist')
+        raise Exception(f"{aliases_path} file does not exist")
 
     pattern = '^alias (?P<name>.+)="(?P<value>.+)"$'
-    aliases = aliases_path.read_text().split('\n')
+    aliases = aliases_path.read_text().split("\n")
 
     parsed = dict()
     for alias in aliases:
         match = re.match(pattern, alias)
         if match is not None:
-            parsed[match.group('name')] = match.group('value')
+            parsed[match.group("name")] = match.group("value")
     print(json.dumps(parsed, indent=2))
 
 
-if __name__ == '__main__':
-    parser = ArgumentParser(description='Shows custom aliases that have been configured')
+if __name__ == "__main__":
+    parser = ArgumentParser(
+        description="Shows custom aliases that have been configured"
+    )
     parser.parse_args()
     main()
