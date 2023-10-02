@@ -12,7 +12,6 @@ return {
                 null_ls.builtins.diagnostics.eslint,
                 null_ls.builtins.formatting.black,
                 null_ls.builtins.diagnostics.mypy,
-                null_ls.builtins.completion.spell,
             },
             on_attach = function(client, bufnr)
                 if client.supports_method('textDocument/formatting') then

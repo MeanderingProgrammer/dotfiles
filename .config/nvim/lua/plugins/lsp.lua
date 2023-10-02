@@ -29,21 +29,21 @@ return {
         require('mason-lspconfig').setup({
             -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             ensure_installed = {
-                'bashls',                 -- Bash
-                'eslint',                 -- ESLint
-                'gopls',                  -- Go
-                'gradle_ls',              -- Gradle
-                'jdtls',                  -- Java
-                'jsonls',                 -- JSON
+                'bashls', -- Bash
+                'eslint', -- ESLint
+                'gopls', -- Go
+                'gradle_ls', -- Gradle
+                'jdtls', -- Java
+                'jsonls', -- JSON
                 'kotlin_language_server', -- Kotlin
-                'lua_ls',                 -- Lua
-                'marksman',               -- Markdown
-                'pyright',                -- Python
-                'rust_analyzer',          -- Rust
-                'svelte',                 -- Svelte
-                'tailwindcss',            -- Tailwind
-                'terraformls',            -- Terraform
-                'tsserver',               -- TypeScript
+                'lua_ls', -- Lua
+                'marksman', -- Markdown
+                'pyright', -- Python
+                'rust_analyzer', -- Rust
+                'svelte', -- Svelte
+                'tailwindcss', -- Tailwind
+                'terraformls', -- Terraform
+                'tsserver', -- TypeScript
             },
             handlers = {
                 lsp_zero.default_setup,
@@ -62,7 +62,8 @@ return {
                 { name = 'path' },
             },
             mapping = {
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                ['<cr>'] = cmp.mapping.confirm({ select = true }),
+                ['<C-space>'] = cmp.mapping.complete(),
             },
         })
     end,
