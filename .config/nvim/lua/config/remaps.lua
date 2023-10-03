@@ -1,23 +1,31 @@
+local function remap(modes, lhs, rhs)
+    vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
+end
+
 -- Escape in terminal mode
-vim.keymap.set('t', '<esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+remap('t', '<esc>', '<C-\\><C-n>')
 
 -- Move split panes
-vim.keymap.set('n', '<A-h>', '<C-W>H', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-j>', '<C-W>J', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-k>', '<C-W>K', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-l>', '<C-W>L', { noremap = true, silent = true })
+remap('n', '<A-h>', '<C-W>H')
+remap('n', '<A-j>', '<C-W>J')
+remap('n', '<A-k>', '<C-W>K')
+remap('n', '<A-l>', '<C-W>L')
 
 -- Move between panes
-vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+remap('n', '<C-h>', '<C-w>h')
+remap('n', '<C-j>', '<C-w>j')
+remap('n', '<C-k>', '<C-w>k')
+remap('n', '<C-l>', '<C-w>l')
+
+-- Moving by half page
+remap('n', '<C-d>', '<C-d>zz')
+remap('n', '<C-u>', '<C-u>zz')
 
 -- Escape
-vim.keymap.set({ 'v', 'i' }, 'ii', '<esc>', { noremap = true, silent = true })
+remap({ 'v', 'i' }, 'ii', '<esc>')
 
 -- Remove my ability to fallback to arrows
-vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v', 'i' }, '<Down>', '<Nop>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v', 'i' }, '<Left>', '<Nop>', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'v', 'i' }, '<Right>', '<Nop>', { noremap = true, silent = true })
+remap({ 'n', 'v', 'i' }, '<Up>', '<Nop>')
+remap({ 'n', 'v', 'i' }, '<Down>', '<Nop>')
+remap({ 'n', 'v', 'i' }, '<Left>', '<Nop>')
+remap({ 'n', 'v', 'i' }, '<Right>', '<Nop>')
