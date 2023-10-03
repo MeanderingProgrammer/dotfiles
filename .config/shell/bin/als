@@ -4,7 +4,7 @@ import json
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 
 @dataclass(frozen=True)
@@ -63,8 +63,8 @@ ALIAS_GROUPS: List[AliasGroup] = [
 ]
 
 
-def main(update: bool) -> None:
-    overwrite() if update else pretty_print()
+def main(group: Optional[str], update: bool) -> None:
+    overwrite() if update else pretty_print(group)
 
 
 def overwrite() -> None:
@@ -76,20 +76,31 @@ def overwrite() -> None:
         lines.append("")
     alias_file = Path.home().joinpath(".config/shell/aliases.sh")
     alias_file.write_text("\n".join(lines))
+    print(f"Successfully updated {alias_file}")
 
 
-def pretty_print() -> None:
+def pretty_print(target_group: Optional[str]) -> None:
     result = dict()
     for group in ALIAS_GROUPS:
         group_result = dict()
         for alias in group.aliases:
             group_result[alias.name] = alias.command
         result[group.name.lower()] = group_result
-    print(json.dumps(result, indent=2))
+    value = result if target_group is None else result[target_group]
+    print(json.dumps(value, indent=2))
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Shows or update custom aliases")
-    parser.add_argument("--update", action="store_true")
+    parser = ArgumentParser(description="Print or update custom aliases")
+    parser.add_argument(
+        "--group",
+        choices=[group.name.lower() for group in ALIAS_GROUPS],
+        help="Alias group to print information about",
+    )
+    parser.add_argument(
+        "--update",
+        action="store_true",
+        help="Update aliases instead of printing them out",
+    )
     args = parser.parse_args()
-    main(args.update)
+    main(args.group, args.update)
