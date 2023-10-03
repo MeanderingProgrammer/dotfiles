@@ -1,30 +1,95 @@
 #!/usr/bin/env python
 
 import json
-import re
 from argparse import ArgumentParser
+from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
 
-def main() -> None:
-    aliases_path = Path.home().joinpath(".config/shell/aliases.sh")
-    if not aliases_path.is_file():
-        raise Exception(f"{aliases_path} file does not exist")
+@dataclass(frozen=True)
+class Alias:
+    name: str
+    command: str
 
-    pattern = '^alias (?P<name>.+)="(?P<value>.+)"$'
-    aliases = aliases_path.read_text().split("\n")
 
-    parsed = dict()
-    for alias in aliases:
-        match = re.match(pattern, alias)
-        if match is not None:
-            parsed[match.group("name")] = match.group("value")
-    print(json.dumps(parsed, indent=2))
+@dataclass(frozen=True)
+class AliasGroup:
+    name: str
+    aliases: List[Alias]
+
+
+ALIAS_GROUPS: List[AliasGroup] = [
+    AliasGroup(
+        name="General",
+        aliases=[
+            Alias(name="ll", command="ls -latr"),
+            Alias(name="workspace", command="cd ~/dev/repos"),
+        ],
+    ),
+    AliasGroup(
+        name="Git",
+        aliases=[
+            Alias(name="gs", command="git status -uall"),
+            Alias(name="gl", command="git log"),
+            Alias(name="gb", command="git branch"),
+            Alias(name="ga", command="git add --all"),
+            Alias(name="gc", command="git commit -m"),
+            Alias(name="gp", command="git push"),
+            Alias(name="gm", command="git checkout main"),
+            Alias(name="gu", command="git branch -u main"),
+            Alias(name="gac", command="git add --all && git commit --amend"),
+        ],
+    ),
+    AliasGroup(
+        name="Yadm",
+        aliases=[
+            Alias(name="yls", command="yadm ls-files ~"),
+            Alias(name="ys", command="yadm status"),
+            Alias(name="yd", command="yadm diff"),
+            Alias(name="yl", command="yadm l"),
+            Alias(name="ya", command="yadm add -u"),
+            Alias(name="yc", command="yadm com"),
+            Alias(name="yp", command="yadm push"),
+        ],
+    ),
+    AliasGroup(
+        name="Advent",
+        aliases=[
+            Alias(name="a_run", command="./scripts/advent.py run"),
+            Alias(name="a_gen", command="./scripts/advent.py generate"),
+        ],
+    ),
+]
+
+
+def main(update: bool) -> None:
+    overwrite() if update else pretty_print()
+
+
+def overwrite() -> None:
+    lines = []
+    for group in ALIAS_GROUPS:
+        lines.append(f"# {group.name}")
+        for alias in group.aliases:
+            lines.append(f'alias {alias.name}="{alias.command}"')
+        lines.append("")
+    alias_file = Path.home().joinpath(".config/shell/aliases.sh")
+    alias_file.write_text("\n".join(lines))
+
+
+def pretty_print() -> None:
+    result = dict()
+    for group in ALIAS_GROUPS:
+        group_result = dict()
+        for alias in group.aliases:
+            group_result[alias.name] = alias.command
+        result[group.name.lower()] = group_result
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(
-        description="Shows custom aliases that have been configured"
-    )
-    parser.parse_args()
-    main()
+    parser = ArgumentParser(description="Shows or update custom aliases")
+    parser.add_argument("--update", action="store_true")
+    args = parser.parse_args()
+    main(args.update)

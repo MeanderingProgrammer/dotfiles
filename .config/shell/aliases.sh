@@ -13,7 +13,7 @@ alias gm="git checkout main"
 alias gu="git branch -u main"
 alias gac="git add --all && git commit --amend"
 
-# YADM
+# Yadm
 alias yls="yadm ls-files ~"
 alias ys="yadm status"
 alias yd="yadm diff"

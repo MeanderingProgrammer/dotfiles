@@ -23,7 +23,7 @@ class BoundBox:
             BoundBox._offset(self.left, self.right, target[0]),
             BoundBox._offset(self.top, self.bottom, target[1]),
         )
-        return BoundBox(
+        return type(self)(
             left=offset[0],
             top=offset[1],
             right=offset[0] + target[0],
