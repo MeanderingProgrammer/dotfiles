@@ -25,6 +25,7 @@ ALIAS_GROUPS: List[AliasGroup] = [
         aliases=[
             Alias(name="ll", command="ls -latr"),
             Alias(name="workspace", command="cd ~/dev/repos"),
+            Alias(name="notes", command="cd ~/Documents/notes"),
         ],
     ),
     AliasGroup(
