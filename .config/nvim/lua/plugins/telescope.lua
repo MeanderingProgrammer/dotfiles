@@ -1,6 +1,5 @@
 return {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.3',
     lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
@@ -32,7 +31,7 @@ return {
             defaults = {
                 mappings = {
                     i = {
-                        ['<cr>'] = actions.select_default,
+                        ['<cr>'] = actions.select_tab_drop,
                     },
                 },
             },
