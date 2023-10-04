@@ -3,6 +3,7 @@ return {
     dev = true,
     dependencies = {
         'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope.nvim',
     },
     config = function()
         require('harpoon-core').setup({})
@@ -21,5 +22,8 @@ return {
             end
             vim.keymap.set('n', '<leader>' .. i, open_file, { desc = 'Harpoon: Open file ' .. i })
         end
+
+        require('telescope').load_extension('harpoon-core')
+        vim.keymap.set('n', '<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', { desc = 'Harpoon: Telescope menu' })
     end,
 }
