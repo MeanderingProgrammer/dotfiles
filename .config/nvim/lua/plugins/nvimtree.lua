@@ -16,6 +16,9 @@ return {
                     return vim.fn.fnamemodify(path, ':t')
                 end,
             },
+            filters = {
+                git_ignored = false,
+            },
             tab = {
                 sync = {
                     open = true,
