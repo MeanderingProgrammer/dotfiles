@@ -18,7 +18,9 @@ install_asdf_tools() {
 }
 
 install_libraries() {
+    cargo install rust-script
     cargo install stylua
+    asdf reshim rust
     npm install -g eslint
     npm install -g prettier
 }
