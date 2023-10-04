@@ -7,7 +7,9 @@ return {
             sources = {
                 null_ls.builtins.formatting.stylua,
                 null_ls.builtins.formatting.gofmt,
-                null_ls.builtins.formatting.rustfmt,
+                null_ls.builtins.formatting.rustfmt.with({
+                    extra_args = { '--edition=2021' },
+                }),
                 null_ls.builtins.formatting.prettier,
                 null_ls.builtins.diagnostics.eslint,
                 null_ls.builtins.formatting.black,

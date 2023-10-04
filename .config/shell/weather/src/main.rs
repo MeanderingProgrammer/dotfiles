@@ -40,8 +40,10 @@ impl ForecastPeriod {
 impl std::fmt::Display for ForecastPeriod {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let date_format = "%l%P";
-        write!(f, "{} -> {}: {}°F, {}% Rain", 
-            self.start_time.format(date_format), 
+        write!(
+            f,
+            "{} -> {}: {}°F, {}% Rain",
+            self.start_time.format(date_format),
             self.end_time.format(date_format),
             self.temperature,
             self.probability_of_precipitation.value,
@@ -58,7 +60,6 @@ struct ForecastProperties {
 struct Forecast {
     properties: ForecastProperties,
 }
-
 
 #[derive(Parser, Debug, Clone)]
 struct Cli {
@@ -92,15 +93,27 @@ async fn get_forecast(location: (String, String)) -> anyhow::Result<Forecast> {
     let client = reqwest::Client::builder()
         .user_agent("meanderingprogrammer@gmail.com")
         .build()?;
-    let endpoints = client.get(format!("https://api.weather.gov/points/{},{}", location.0, location.1))
-        .send().await?.json::<Endpoints>().await?;
-    let forecast = client.get(endpoints.properties.forecast_hourly)
-        .send().await?.json::<Forecast>().await?;
+    let endpoints = client
+        .get(format!(
+            "https://api.weather.gov/points/{},{}",
+            location.0, location.1
+        ))
+        .send()
+        .await?
+        .json::<Endpoints>()
+        .await?;
+    let forecast = client
+        .get(endpoints.properties.forecast_hourly)
+        .send()
+        .await?
+        .json::<Forecast>()
+        .await?;
     Ok(forecast)
 }
 
 fn write_out(forecast: &Forecast, days: u8) {
-    let groups = forecast.properties.periods.iter()
+    let periods = forecast.properties.periods.iter();
+    let groups = periods
         .group_by(|period| period.get_day())
         .into_iter()
         .map(|(day, group)| (day, group.cloned().collect()))
@@ -108,13 +121,15 @@ fn write_out(forecast: &Forecast, days: u8) {
     for (day, periods) in groups.iter().take(days.into()) {
         println!("{}", day);
         for period in periods.iter() {
-            println!("{}", period); 
+            println!("{}", period);
         }
     }
 }
 
 fn graph_out(forecast: &Forecast) {
-    let points = forecast.properties.periods.iter().enumerate()
+    let periods = forecast.properties.periods.iter();
+    let points = periods
+        .enumerate()
         .map(|(i, period)| (i as f32, period.probability_of_precipitation.value as f32))
         .collect::<Vec<(f32, f32)>>();
     let mut chart = Chart::new_with_y_range(200, 80, 0.0, points.len() as f32, 0.0, 100.0);
