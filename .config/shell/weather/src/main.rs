@@ -1,35 +1,12 @@
-use chrono::{DateTime, Local};
+mod weather;
+
+use anyhow::Result;
 use clap::Parser;
 use ipgeolocate::{Locator, Service};
 use itertools::Itertools;
-use serde::Deserialize;
 use simple_error::SimpleError;
 use textplots::{Chart, Plot, Shape};
-
-#[derive(Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-struct EndpointsProperties {
-    forecast_hourly: String,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-struct Endpoints {
-    properties: EndpointsProperties,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-struct ForecastPrecipitation {
-    value: u32,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-struct ForecastPeriod {
-    start_time: DateTime<Local>,
-    end_time: DateTime<Local>,
-    temperature: u32,
-    probability_of_precipitation: ForecastPrecipitation,
-}
+use weather::{ForecastPeriod, WeatherClient};
 
 impl ForecastPeriod {
     fn get_day(&self) -> String {
@@ -51,16 +28,6 @@ impl std::fmt::Display for ForecastPeriod {
     }
 }
 
-#[derive(Deserialize, Debug, Clone)]
-struct ForecastProperties {
-    periods: Vec<ForecastPeriod>,
-}
-
-#[derive(Deserialize, Debug, Clone)]
-struct Forecast {
-    properties: ForecastProperties,
-}
-
 #[derive(Parser, Debug, Clone)]
 struct Cli {
     /// Number of days to print results for
@@ -69,16 +36,16 @@ struct Cli {
 }
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
+async fn main() -> Result<()> {
     let args = Cli::parse();
     let location = get_location("Seattle").await?;
-    let forecast = get_forecast(location).await?;
-    write_out(&forecast, args.days);
-    graph_out(&forecast);
+    let periods = get_forecast(&location.0, &location.1).await?;
+    write_out(&periods, args.days);
+    graph_out(&periods);
     Ok(())
 }
 
-async fn get_location(target_city: &str) -> anyhow::Result<(String, String)> {
+async fn get_location(target_city: &str) -> Result<(String, String)> {
     for _ in 0..10 {
         let ip = external_ip::get_ip().await.unwrap();
         let ip_info = Locator::get_ipaddr(ip, Service::IpApi).await?;
@@ -89,31 +56,15 @@ async fn get_location(target_city: &str) -> anyhow::Result<(String, String)> {
     Err(SimpleError::new("Could not find IP address in 10 attempts").into())
 }
 
-async fn get_forecast(location: (String, String)) -> anyhow::Result<Forecast> {
-    let client = reqwest::Client::builder()
-        .user_agent("meanderingprogrammer@gmail.com")
-        .build()?;
-    let endpoints = client
-        .get(format!(
-            "https://api.weather.gov/points/{},{}",
-            location.0, location.1
-        ))
-        .send()
-        .await?
-        .json::<Endpoints>()
-        .await?;
-    let forecast = client
-        .get(endpoints.properties.forecast_hourly)
-        .send()
-        .await?
-        .json::<Forecast>()
-        .await?;
-    Ok(forecast)
+async fn get_forecast(long: &str, lat: &str) -> Result<Vec<ForecastPeriod>> {
+    let client = WeatherClient::new("meanderingprogrammer@gmail.com")?;
+    let endpoint = client.get_endpoint(long, lat).await?;
+    client.get_forecast(&endpoint).await
 }
 
-fn write_out(forecast: &Forecast, days: u8) {
-    let periods = forecast.properties.periods.iter();
+fn write_out(periods: &Vec<ForecastPeriod>, days: u8) {
     let groups = periods
+        .iter()
         .group_by(|period| period.get_day())
         .into_iter()
         .map(|(day, group)| (day, group.cloned().collect()))
@@ -126,9 +77,9 @@ fn write_out(forecast: &Forecast, days: u8) {
     }
 }
 
-fn graph_out(forecast: &Forecast) {
-    let periods = forecast.properties.periods.iter();
+fn graph_out(periods: &Vec<ForecastPeriod>) {
     let points = periods
+        .iter()
         .enumerate()
         .map(|(i, period)| (i as f32, period.probability_of_precipitation.value as f32))
         .collect::<Vec<(f32, f32)>>();
