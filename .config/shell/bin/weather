@@ -2,6 +2,7 @@
 
 //! ```cargo
 //! [dependencies]
+//! anyhow = "1.0.75"
 //! chrono = { version = "0.4.31", features = ["serde"] }
 //! clap = { version = "4.4.6", features = ["derive"] }
 //! external-ip = "4.2.0"
@@ -80,26 +81,23 @@ struct Cli {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
     let ip = external_ip::get_ip().await.unwrap();
-    let ip_info = Locator::get_ipaddr(ip, Service::IpApi).await.unwrap();
+    let ip_info = Locator::get_ipaddr(ip, Service::IpApi).await?;
     let location = (ip_info.latitude, ip_info.longitude);
 
     let client = reqwest::Client::builder()
         .user_agent("meanderingprogrammer@gmail.com")
-        .build()
-        .unwrap();
+        .build()?;
 
     let endpoints = client.get(format!("https://api.weather.gov/points/{},{}", location.0, location.1))
-        .send().await.unwrap()
-        .json::<Endpoints>().await.unwrap();
+        .send().await?.json::<Endpoints>().await?;
     let forecast_endpoint = endpoints.properties.forecast_hourly;
 
     let forecast = client.get(forecast_endpoint)
-        .send().await.unwrap()
-        .json::<Forecast>().await.unwrap();
+        .send().await?.json::<Forecast>().await?;
 
     let groups = forecast.properties.periods.iter()
         .group_by(|period| period.get_day())
@@ -113,4 +111,5 @@ async fn main() {
             println!("{}", period); 
         }
     }
+    Ok(())
 }
