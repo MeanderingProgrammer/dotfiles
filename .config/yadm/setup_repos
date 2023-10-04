@@ -42,13 +42,17 @@ def main() -> None:
     [clone(repo) for repo in repos]
 
 
-def clone(repo: Repo) -> None:
+def clone(repo: Repo) -> bool:
     if not repo.root.is_dir():
         print(f"Creating: {repo.root}")
         repo.root.mkdir(parents=True)
     if not repo.path.is_dir():
         print(f"Cloning {repo} to {repo.path}")
         os.system(f"git clone {repo.ssh} {repo.path}")
+        return True
+    else:
+        os.system(f"cd {repo.path} && git pull")
+        return False
 
 
 if __name__ == "__main__":
