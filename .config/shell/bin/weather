@@ -1,0 +1,110 @@
+#!/usr/bin/env rust-script
+
+//! ```cargo
+//! [dependencies]
+//! chrono = { version = "0.4.31", features = ["serde"] }
+//! clap = { version = "4.4.6", features = ["derive"] }
+//! itertools = "0.11.0"
+//! reqwest = { version = "0.11.22", features = ["json"] }
+//! serde = { version = "1.0.188", features = ["derive"] }
+//! tokio = { version = "1.32.0", features = ["full"] }
+//! ```
+
+use chrono::{DateTime, Local};
+use clap::Parser;
+use itertools::Itertools;
+use serde::Deserialize;
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+struct EndpointsProperties {
+    forecast_hourly: String,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+struct Endpoints {
+    properties: EndpointsProperties,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+struct ForecastPrecipitation {
+    value: u32,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+struct ForecastPeriod {
+    start_time: DateTime<Local>,
+    end_time: DateTime<Local>,
+    temperature: u32,
+    probability_of_precipitation: ForecastPrecipitation,
+}
+
+impl ForecastPeriod {
+    fn get_day(&self) -> String {
+        self.start_time.format("%F").to_string()
+    }
+}
+
+impl std::fmt::Display for ForecastPeriod {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        let date_format = "%l%P";
+        write!(f, "{} -> {}: {}°F, {}% Rain", 
+            self.start_time.format(date_format), 
+            self.end_time.format(date_format),
+            self.temperature,
+            self.probability_of_precipitation.value,
+        )
+    }
+}
+
+#[derive(Deserialize, Debug, Clone)]
+struct ForecastProperties {
+    periods: Vec<ForecastPeriod>,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+struct Forecast {
+    properties: ForecastProperties,
+}
+
+
+#[derive(Parser, Debug, Clone)]
+struct Cli {
+    /// Number of days to print results for
+    #[clap(short, long, default_value_t = 1)]
+    days: u8,
+}
+
+#[tokio::main]
+async fn main() {
+    let args = Cli::parse();
+    let location = (47.7, -122.4);
+
+    let client = reqwest::Client::builder()
+        .user_agent("meanderingprogrammer@gmail.com")
+        .build()
+        .unwrap();
+
+    let endpoints = client.get(format!("https://api.weather.gov/points/{},{}", location.0, location.1))
+        .send().await.unwrap()
+        .json::<Endpoints>().await.unwrap();
+    let forecast_endpoint = endpoints.properties.forecast_hourly;
+
+    let forecast = client.get(forecast_endpoint)
+        .send().await.unwrap()
+        .json::<Forecast>().await.unwrap();
+
+    let groups = forecast.properties.periods.iter()
+        .group_by(|period| period.get_day())
+        .into_iter()
+        .map(|(day, group)| (day, group.cloned().collect()))
+        .collect::<Vec<(String, Vec<ForecastPeriod>)>>();
+
+    for (day, periods) in groups.iter().take(args.days.into()) {
+        println!("{}", day);
+        for period in periods.iter() {
+            println!("{}", period); 
+        }
+    }
+}
