@@ -4,6 +4,8 @@
 //! [dependencies]
 //! chrono = { version = "0.4.31", features = ["serde"] }
 //! clap = { version = "4.4.6", features = ["derive"] }
+//! external-ip = "4.2.0"
+//! ipgeolocate = "0.3.5"
 //! itertools = "0.11.0"
 //! reqwest = { version = "0.11.22", features = ["json"] }
 //! serde = { version = "1.0.188", features = ["derive"] }
@@ -12,6 +14,7 @@
 
 use chrono::{DateTime, Local};
 use clap::Parser;
+use ipgeolocate::{Locator, Service};
 use itertools::Itertools;
 use serde::Deserialize;
 
@@ -79,7 +82,10 @@ struct Cli {
 #[tokio::main]
 async fn main() {
     let args = Cli::parse();
-    let location = (47.7, -122.4);
+
+    let ip = external_ip::get_ip().await.unwrap();
+    let ip_info = Locator::get_ipaddr(ip, Service::IpApi).await.unwrap();
+    let location = (ip_info.latitude, ip_info.longitude);
 
     let client = reqwest::Client::builder()
         .user_agent("meanderingprogrammer@gmail.com")
