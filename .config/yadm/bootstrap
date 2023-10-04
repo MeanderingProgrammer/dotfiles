@@ -20,6 +20,7 @@ install_asdf_tools() {
 install_libraries() {
     cargo install rust-script
     cargo install stylua
+    cargo install --path ~/.config/shell/weather
     asdf reshim rust
     npm install -g eslint
     npm install -g prettier
