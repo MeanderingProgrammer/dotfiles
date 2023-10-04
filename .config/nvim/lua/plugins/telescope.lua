@@ -27,11 +27,12 @@ return {
     },
     config = function()
         local telescope = require('telescope')
+        local actions = require('telescope.actions')
         telescope.setup({
             defaults = {
                 mappings = {
                     i = {
-                        ['<cr>'] = require('telescope.actions').select_tab_drop,
+                        ['<cr>'] = actions.select_default,
                     },
                 },
             },
