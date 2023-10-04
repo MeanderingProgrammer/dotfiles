@@ -2,6 +2,7 @@
 tap "homebrew/cask-fonts"
 
 # Shell
+brew "ascii-image-converter"
 brew "cairo"
 brew "coreutils"
 brew "curl"
