@@ -1,4 +1,10 @@
+accelerate
 black
 click
+huggingface_hub
 mypy
 Pillow
+torch
+torchaudio
+torchvision
+transformers
