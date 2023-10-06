@@ -10,6 +10,9 @@ return {
     config = function()
         require('nvim-tree').setup({
             hijack_cursor = true,
+            view = {
+                width = { max = 50 },
+            },
             renderer = {
                 group_empty = true,
                 root_folder_label = function(path)

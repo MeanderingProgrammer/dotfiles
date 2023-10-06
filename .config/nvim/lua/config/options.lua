@@ -20,6 +20,9 @@ vim.opt.hlsearch = false
 -- Save undo history
 vim.opt.undofile = true
 
+-- Split to right side by default
+vim.opt.splitright = true
+
 -- Better completion experience
 vim.opt.completeopt = 'menuone,noselect'
 
