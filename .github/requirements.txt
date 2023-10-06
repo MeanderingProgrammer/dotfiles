@@ -4,6 +4,9 @@ click
 huggingface_hub
 mypy
 Pillow
+protobuf
+safetensors
+sentencepiece
 torch
 torchaudio
 torchvision
