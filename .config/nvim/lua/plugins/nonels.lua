@@ -1,31 +1,40 @@
 return {
     'nvimtools/none-ls.nvim',
-    lazy = false,
+    lazy = true,
+    event = { 'BufReadPre', 'BufNewFile' },
     config = function()
         local null_ls = require('null-ls')
+
+        local formatting = null_ls.builtins.formatting
+        local diagnostics = null_ls.builtins.diagnostics
+
+        local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+
         null_ls.setup({
             sources = {
-                null_ls.builtins.formatting.stylua,
-                null_ls.builtins.formatting.gofmt,
-                null_ls.builtins.formatting.rustfmt.with({
+                formatting.stylua,
+                formatting.gofmt,
+                formatting.rustfmt.with({
                     extra_args = { '--edition=2021' },
                 }),
-                null_ls.builtins.formatting.prettier,
-                null_ls.builtins.diagnostics.eslint,
-                null_ls.builtins.formatting.black,
-                null_ls.builtins.diagnostics.mypy,
+                formatting.prettier.with({
+                    extra_filetypes = { 'svelte' },
+                }),
+                diagnostics.eslint,
+                formatting.black,
+                diagnostics.mypy,
             },
-            on_attach = function(client, bufnr)
-                if client.supports_method('textDocument/formatting') then
+            on_attach = function(current_client, bufnr)
+                if current_client.supports_method('textDocument/formatting') then
+                    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
                     vim.api.nvim_create_autocmd('BufWritePre', {
-                        group = vim.api.nvim_create_augroup('LspFormatting', { clear = true }),
+                        group = augroup,
                         buffer = bufnr,
                         callback = function()
                             vim.lsp.buf.format({
-                                async = false,
                                 bufnr = bufnr,
-                                filter = function(lsp_client)
-                                    return lsp_client.name == 'null-ls'
+                                filter = function(client)
+                                    return client.name == 'null-ls'
                                 end,
                             })
                         end,
