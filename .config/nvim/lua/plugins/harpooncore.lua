@@ -6,7 +6,9 @@ return {
         'nvim-telescope/telescope.nvim',
     },
     config = function()
-        require('harpoon-core').setup({})
+        require('harpoon-core').setup({
+            default_action = 'vs',
+        })
 
         local mark = require('harpoon-core.mark')
         vim.keymap.set('n', '<leader>a', mark.add_file, { desc = 'Harpoon: Add current file' })
