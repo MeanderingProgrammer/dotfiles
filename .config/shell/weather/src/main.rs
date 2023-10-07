@@ -38,7 +38,7 @@ struct Cli {
 async fn main() -> Result<()> {
     let args = Cli::parse();
 
-    let (long, lat) = location::get("Seattle").await?;
+    let (long, lat) = location::get().await?;
 
     let client = WeatherClient::new("meanderingprogrammer@gmail.com")?;
     let endpoint = client.get_endpoint(&long, &lat).await?;

@@ -1,14 +1,12 @@
 use anyhow::Result;
 use ipgeolocate::{Locator, Service};
-use simple_error::SimpleError;
+use std::process::Command;
 
-pub async fn get(target_city: &str) -> Result<(String, String)> {
-    for _ in 0..10 {
-        let ip = external_ip::get_ip().await.unwrap();
-        let ip_info = Locator::get_ipaddr(ip, Service::IpApi).await?;
-        if ip_info.city == target_city {
-            return Ok((ip_info.latitude, ip_info.longitude));
-        }
-    }
-    Err(SimpleError::new("Could not find IP address in 10 attempts").into())
+pub async fn get() -> Result<(String, String)> {
+    let ip_result = Command::new("curl")
+        .args(["-4", "icanhazip.com"])
+        .output()?;
+    let ip = String::from_utf8(ip_result.stdout)?;
+    let ip_info = Locator::get(&ip, Service::IpApi).await?;
+    return Ok((ip_info.latitude, ip_info.longitude));
 }
