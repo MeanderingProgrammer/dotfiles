@@ -57,6 +57,10 @@ return {
         local cmp = require('cmp')
         ---@diagnostic disable-next-line: missing-fields
         cmp.setup({
+            ---@diagnostic disable-next-line: missing-fields
+            completion = {
+                keyword_length = 3,
+            },
             sources = {
                 { name = 'nvim_lsp' },
                 { name = 'buffer' },
