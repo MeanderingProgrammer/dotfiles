@@ -1,10 +1,10 @@
+mod graph;
 mod util;
 mod weather;
 
 use anyhow::Result;
 use clap::Parser;
 use itertools::Itertools;
-use textplots::{Chart, Plot, Shape};
 use weather::{ForecastPeriod, WeatherClient};
 
 impl ForecastPeriod {
@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
     let periods = client.get_forecast(&endpoint).await?;
 
     write_out(&periods, args.days);
-    graph_out(&periods);
+    graph::create(&periods);
     Ok(())
 }
 
@@ -65,14 +65,4 @@ fn write_out(periods: &Vec<ForecastPeriod>, days: u8) {
             println!("{}", period);
         }
     }
-}
-
-fn graph_out(periods: &Vec<ForecastPeriod>) {
-    let points: Vec<(f32, f32)> = periods
-        .iter()
-        .enumerate()
-        .map(|(i, period)| (i as f32, period.probability_of_precipitation.value as f32))
-        .collect();
-    let mut chart = Chart::new_with_y_range(200, 80, 0.0, points.len() as f32, 0.0, 100.0);
-    chart.lineplot(&Shape::Points(&points)).display();
 }
