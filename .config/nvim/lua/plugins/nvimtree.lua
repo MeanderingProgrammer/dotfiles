@@ -20,7 +20,7 @@ return {
                 end,
             },
             filters = {
-                git_ignored = false,
+                exclude = { 'general.md' },
             },
             tab = {
                 sync = {
