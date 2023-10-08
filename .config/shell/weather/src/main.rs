@@ -1,4 +1,4 @@
-mod location;
+mod util;
 mod weather;
 
 use anyhow::Result;
@@ -38,10 +38,11 @@ struct Cli {
 async fn main() -> Result<()> {
     let args = Cli::parse();
 
-    let (long, lat) = location::get().await?;
+    let loc = util::location().await?;
+    println!("Weather in {}", loc.city);
 
     let client = WeatherClient::new("meanderingprogrammer@gmail.com")?;
-    let endpoint = client.get_endpoint(&long, &lat).await?;
+    let endpoint = client.get_endpoint(&loc).await?;
     let periods = client.get_forecast(&endpoint).await?;
 
     write_out(&periods, args.days);

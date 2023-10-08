@@ -1,3 +1,4 @@
+use crate::util::Location;
 use anyhow::Result;
 use chrono::{DateTime, Local};
 use reqwest::Client;
@@ -49,8 +50,8 @@ impl WeatherClient {
         Ok(weather_client)
     }
 
-    pub async fn get_endpoint(&self, long: &str, lat: &str) -> Result<String> {
-        let endpoint = format!("https://api.weather.gov/points/{},{}", long, lat);
+    pub async fn get_endpoint(&self, loc: &Location) -> Result<String> {
+        let endpoint = format!("https://api.weather.gov/points/{},{}", loc.lat, loc.lon);
         let endpoints: Endpoints = self.get(&endpoint).await?;
         Ok(endpoints.properties.forecast_hourly)
     }
