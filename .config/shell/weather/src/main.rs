@@ -41,7 +41,8 @@ async fn main() -> Result<()> {
     let loc = util::location().await?;
     println!("Weather in {}", loc.city);
 
-    let client = WeatherClient::new("meanderingprogrammer@gmail.com")?;
+    let user_agent = util::user_agent()?;
+    let client = WeatherClient::new(&user_agent)?;
     let endpoint = client.get_endpoint(&loc).await?;
     let periods = client.get_forecast(&endpoint).await?;
 

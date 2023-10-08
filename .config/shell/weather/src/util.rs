@@ -1,5 +1,6 @@
 use anyhow::Result;
 use serde::{de::DeserializeOwned, Deserialize};
+use std::process::Command;
 
 #[derive(Deserialize, Debug, Clone)]
 struct Ip {
@@ -22,4 +23,13 @@ pub async fn location() -> Result<Location> {
 async fn get<T: DeserializeOwned>(endpoint: &str) -> Result<T> {
     let result = reqwest::get(endpoint).await?.json::<T>().await?;
     Ok(result)
+}
+
+pub fn user_agent() -> Result<String> {
+    let git_result = Command::new("git")
+        .args(["config", "user.email"])
+        .output()?;
+    let mut git_email = String::from_utf8(git_result.stdout)?;
+    git_email.pop();
+    Ok(git_email)
 }
