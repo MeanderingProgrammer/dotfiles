@@ -16,8 +16,8 @@ return {
 
         local ui = require('harpoon-core.ui')
         vim.keymap.set('n', '<leader><leader>', ui.toggle_quick_menu, { desc = 'Harpoon: Toggle UI' })
-        vim.keymap.set('n', '<leader>n', ui.nav_next, { desc = 'Harpoon: Next file' })
-        vim.keymap.set('n', '<leader>p', ui.nav_prev, { desc = 'Harpoon: Previous file' })
+        vim.keymap.set('n', '<leader><leader>n', ui.nav_next, { desc = 'Harpoon: Next file' })
+        vim.keymap.set('n', '<leader><leader>p', ui.nav_prev, { desc = 'Harpoon: Previous file' })
         for i = 1, 5 do
             local open_file = function()
                 ui.nav_file(i)
