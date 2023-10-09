@@ -35,8 +35,15 @@ struct ForecastProperties {
 }
 
 #[derive(Deserialize, Debug, Clone)]
-struct Forecast {
+pub struct Forecast {
     properties: ForecastProperties,
+}
+
+impl Forecast {
+    pub fn map<T>(&self, f: fn(&ForecastPeriod) -> T) -> Vec<T> {
+        let periods = &self.properties.periods;
+        periods.iter().map(|period| f(period)).collect()
+    }
 }
 
 pub struct WeatherClient {
@@ -56,9 +63,9 @@ impl WeatherClient {
         Ok(endpoints.properties.forecast_hourly)
     }
 
-    pub async fn get_forecast(&self, endpoint: &str) -> Result<Vec<ForecastPeriod>> {
+    pub async fn get_forecast(&self, endpoint: &str) -> Result<Forecast> {
         let forecast: Forecast = self.get(endpoint).await?;
-        Ok(forecast.properties.periods)
+        Ok(forecast)
     }
 
     async fn get<T: DeserializeOwned>(&self, endpoint: &str) -> Result<T> {
