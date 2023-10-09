@@ -4,16 +4,15 @@ set belloff=all
 " Enable syntax highlighting
 syntax on
 
-" Expand tab into spaces
-set expandtab
+" Line number settings
+set number
+set relativenumber
 
-" Set the width of a tab / indent
-set tabstop=4
-set shiftwidth=4
-
-" Enable auto indentation
-set autoindent
+" Indentation settings
 set smartindent
 
-" Show line numbers
-set number
+" Tab / Space settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
