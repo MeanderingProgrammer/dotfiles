@@ -10,22 +10,26 @@ return {
             default_action = 'vs',
         })
 
+        local function map(lhs, rhs, desc)
+            vim.keymap.set('n', lhs, rhs, { desc = 'Harpoon: ' .. desc })
+        end
+
         local mark = require('harpoon-core.mark')
-        vim.keymap.set('n', '<leader>a', mark.add_file, { desc = 'Harpoon: Add current file' })
-        vim.keymap.set('n', '<leader>r', mark.rm_file, { desc = 'Harpoon: Remove current file' })
+        map('<leader>ha', mark.add_file, 'Add current file')
+        map('<leader>hr', mark.rm_file, 'Remove current file')
 
         local ui = require('harpoon-core.ui')
-        vim.keymap.set('n', '<leader><leader><leader>', ui.toggle_quick_menu, { desc = 'Harpoon: Toggle UI' })
-        vim.keymap.set('n', '<leader><leader>n', ui.nav_next, { desc = 'Harpoon: Next file' })
-        vim.keymap.set('n', '<leader><leader>p', ui.nav_prev, { desc = 'Harpoon: Previous file' })
+        map('<leader><leader>', ui.toggle_quick_menu, 'Toggle UI')
+        map('<leader>hn', ui.nav_next, 'Next file')
+        map('<leader>hp', ui.nav_prev, 'Previous file')
         for i = 1, 5 do
             local open_file = function()
                 ui.nav_file(i)
             end
-            vim.keymap.set('n', '<leader>' .. i, open_file, { desc = 'Harpoon: Open file ' .. i })
+            map('<leader>' .. i, open_file, 'Open file ' .. i)
         end
 
         require('telescope').load_extension('harpoon-core')
-        vim.keymap.set('n', '<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', { desc = 'Harpoon: Telescope menu' })
+        map('<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', 'Telescope menu')
     end,
 }
