@@ -40,6 +40,11 @@ pub struct Forecast {
 }
 
 impl Forecast {
+    pub fn start(&self) -> DateTime<Local> {
+        let periods = &self.properties.periods;
+        periods.first().map(|period| period.start_time).unwrap()
+    }
+
     pub fn map<T>(&self, f: fn(&ForecastPeriod) -> T) -> Vec<T> {
         let periods = &self.properties.periods;
         periods.iter().map(|period| f(period)).collect()
