@@ -27,6 +27,7 @@ pub struct ForecastPeriod {
     pub end_time: DateTime<Local>,
     pub temperature: u32,
     pub probability_of_precipitation: ForecastPrecipitation,
+    pub short_forecast: String,
 }
 
 #[derive(Deserialize, Debug, Clone)]
