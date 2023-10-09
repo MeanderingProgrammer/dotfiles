@@ -48,9 +48,9 @@ return {
             },
             handlers = {
                 lsp_zero.default_setup,
-                bashls = require('plugins.lsp.bash').setup,
-                lua_ls = require('plugins.lsp.lua').setup,
-                gradle_ls = require('plugins.lsp.gradle').setup,
+                bashls = require('mp.plugins.lsp.bash').setup,
+                lua_ls = require('mp.plugins.lsp.lua').setup,
+                gradle_ls = require('mp.plugins.lsp.gradle').setup,
             },
         })
 
