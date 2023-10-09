@@ -9,12 +9,10 @@ impl ForecastPeriod {
 
 impl std::fmt::Display for ForecastPeriod {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let date_format = "%l%P";
         write!(
             f,
-            "{} -> {}: {}°F, {}% Rain",
-            self.start_time.format(date_format),
-            self.end_time.format(date_format),
+            "{}: {}°F, {}% Rain",
+            self.start_time.format("%l%P"),
             self.temperature,
             self.probability_of_precipitation.value,
         )
@@ -30,9 +28,9 @@ pub fn write(periods: &Vec<ForecastPeriod>, days: u8) {
         .collect();
 
     for (day, periods) in groups.iter().take(days.into()) {
-        println!("{}", day);
+        println!("{day}");
         for period in periods.iter() {
-            println!("{}", period);
+            println!("{period}");
         }
     }
 }
