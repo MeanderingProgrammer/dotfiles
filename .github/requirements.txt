@@ -1,10 +1,13 @@
-accelerate
+# General
 black
 click
-huggingface_hub
 mypy
 Pillow
 protobuf
+
+# Machine Learning
+accelerate
+huggingface_hub
 safetensors
 sentencepiece
 torch
