@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
 
+import argcomplete
 import json
 from argparse import ArgumentParser
 from dataclasses import dataclass
@@ -103,5 +105,6 @@ if __name__ == "__main__":
         action="store_true",
         help="Update aliases instead of printing them out",
     )
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     main(args.group, args.update)

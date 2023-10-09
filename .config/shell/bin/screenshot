@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+# PYTHON_ARGCOMPLETE_OK
 
+import argcomplete
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from pathlib import Path
@@ -59,5 +61,6 @@ if __name__ == "__main__":
         description="Takes a screenshot within a region based on type"
     )
     parser.add_argument("--type", choices=TYPE_MAPPING.keys(), default="dashboard")
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
     main(TYPE_MAPPING[args.type])

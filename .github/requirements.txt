@@ -1,4 +1,5 @@
 # General
+argcomplete
 black
 click
 mypy
