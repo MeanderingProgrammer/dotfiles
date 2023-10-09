@@ -14,9 +14,6 @@ vim.opt.relativenumber = true
 -- Set wait time to complete mapping
 vim.opt.timeoutlen = 1000
 
--- Disable highlight on search
-vim.opt.hlsearch = false
-
 -- Save undo history
 vim.opt.undofile = true
 
@@ -34,6 +31,9 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+
+-- Keep some context in view
+vim.opt.scrolloff = 8
 
 -- Use system clipboard
 vim.opt.clipboard = 'unnamedplus'

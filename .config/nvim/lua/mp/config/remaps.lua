@@ -24,6 +24,7 @@ remap('n', '<C-u>', '<C-u>zz')
 -- Searching
 remap('n', 'n', 'nzz')
 remap('n', 'N', 'Nzz')
+remap('n', '<cr>', ':noh<cr><cr>')
 
 -- Escape
 remap({ 'v', 'i' }, 'ii', '<esc>')

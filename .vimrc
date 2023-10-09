@@ -20,5 +20,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
+" Keep some context in view
+set scrolloff=8
+
 " Use system clipboard
 set clipboard=unnamedplus
