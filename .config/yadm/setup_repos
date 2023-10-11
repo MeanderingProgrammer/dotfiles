@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-import os
 from dataclasses import dataclass
 from git.config import GitConfigParser
+from git.repo import Repo
 from pathlib import Path
 
 
 @dataclass(frozen=True)
-class Repo:
+class LocalRepo:
     root: Path
     owner: str
     name: str
@@ -27,18 +27,18 @@ def main() -> None:
     repo_root = Path.home().joinpath("dev/repos")
     open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
     repos = [
-        Repo(root=document_root, owner=user_name, name="notes"),
-        Repo(root=repo_root, owner=user_name, name="advent-of-code"),
-        Repo(root=repo_root, owner=user_name, name="chess"),
-        Repo(root=repo_root, owner=user_name, name="dashboard.nvim"),
-        Repo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
-        Repo(root=repo_root, owner=user_name, name="full-gradle-app"),
-        Repo(root=repo_root, owner=user_name, name="learning"),
-        Repo(root=repo_root, owner=user_name, name="personal-resume"),
-        Repo(root=repo_root, owner=user_name, name="rx-availability"),
-        Repo(root=repo_root, owner=user_name, name="small-apps"),
-        Repo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
-        Repo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
+        LocalRepo(root=document_root, owner=user_name, name="notes"),
+        LocalRepo(root=repo_root, owner=user_name, name="advent-of-code"),
+        LocalRepo(root=repo_root, owner=user_name, name="chess"),
+        LocalRepo(root=repo_root, owner=user_name, name="dashboard.nvim"),
+        LocalRepo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
+        LocalRepo(root=repo_root, owner=user_name, name="full-gradle-app"),
+        LocalRepo(root=repo_root, owner=user_name, name="learning"),
+        LocalRepo(root=repo_root, owner=user_name, name="personal-resume"),
+        LocalRepo(root=repo_root, owner=user_name, name="rx-availability"),
+        LocalRepo(root=repo_root, owner=user_name, name="small-apps"),
+        LocalRepo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
+        LocalRepo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
     ]
     [clone(repo) for repo in repos]
 
@@ -49,16 +49,17 @@ def get_user_name() -> str:
     return str(user_name)
 
 
-def clone(repo: Repo) -> bool:
+def clone(repo: LocalRepo) -> bool:
     if not repo.root.is_dir():
         print(f"Creating: {repo.root}")
         repo.root.mkdir(parents=True)
     if not repo.path.is_dir():
-        print(f"Cloning {repo} to {repo.path}")
-        os.system(f"git clone {repo.ssh} {repo.path}")
+        print(f"Cloning {repo.ssh} to {repo.path}")
+        Repo.clone_from(repo.ssh, repo.path)
         return True
     else:
-        os.system(f"cd {repo.path} && git pull")
+        print(f"Pulling: {repo.path}")
+        Repo(repo.path).remote().pull()
         return False
 
 
