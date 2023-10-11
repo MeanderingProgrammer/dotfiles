@@ -43,10 +43,14 @@ return {
             if vim.tbl_contains(lhs_filter, keymap.lhs) then
                 return false
             end
-            if keymap.rhs ~= nil and string.match(keymap.rhs, '<Plug>') then
-                return false
+
+            local rhs_filters = { '<Plug>', '<SNR>' }
+            for _, rhs_filter in ipairs(rhs_filters) do
+                if keymap.rhs ~= nil and string.match(keymap.rhs, rhs_filter) then
+                    return false
+                end
             end
-            print(keymap.lhs, keymap.rhs)
+
             return true
         end
         map(
