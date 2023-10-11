@@ -12,6 +12,7 @@ return {
     config = function()
         require('dashboard').setup({
             header = require('ascii').art.text.neovim.sharp,
+            include_metadata = true,
             directories = {
                 '~/.config/nvim',
                 '~/Documents/notes',
