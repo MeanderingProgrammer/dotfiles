@@ -2,6 +2,7 @@
 
 import os
 from dataclasses import dataclass
+from git.config import GitConfigParser
 from pathlib import Path
 
 
@@ -21,7 +22,7 @@ class Repo:
 
 
 def main() -> None:
-    user_name = "MeanderingProgrammer"
+    user_name = get_user_name()
     document_root = Path.home().joinpath("Documents")
     repo_root = Path.home().joinpath("dev/repos")
     open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
@@ -40,6 +41,12 @@ def main() -> None:
         Repo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
     ]
     [clone(repo) for repo in repos]
+
+
+def get_user_name() -> str:
+    config = GitConfigParser()
+    user_name = config.get_value("user", "name")
+    return str(user_name)
 
 
 def clone(repo: Repo) -> bool:

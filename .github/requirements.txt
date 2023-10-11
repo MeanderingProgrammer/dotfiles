@@ -2,6 +2,7 @@
 argcomplete
 black
 click
+GitPython
 mypy
 Pillow
 protobuf
