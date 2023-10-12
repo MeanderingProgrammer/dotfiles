@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 @dataclass(frozen=True)
-class LocalRepo:
+class RepoInfo:
     root: Path
     owner: str
     name: str
@@ -27,18 +27,18 @@ def main() -> None:
     repo_root = Path.home().joinpath("dev/repos")
     open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
     repos = [
-        LocalRepo(root=document_root, owner=user_name, name="notes"),
-        LocalRepo(root=repo_root, owner=user_name, name="advent-of-code"),
-        LocalRepo(root=repo_root, owner=user_name, name="chess"),
-        LocalRepo(root=repo_root, owner=user_name, name="dashboard.nvim"),
-        LocalRepo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
-        LocalRepo(root=repo_root, owner=user_name, name="full-gradle-app"),
-        LocalRepo(root=repo_root, owner=user_name, name="learning"),
-        LocalRepo(root=repo_root, owner=user_name, name="personal-resume"),
-        LocalRepo(root=repo_root, owner=user_name, name="rx-availability"),
-        LocalRepo(root=repo_root, owner=user_name, name="small-apps"),
-        LocalRepo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
-        LocalRepo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
+        RepoInfo(root=document_root, owner=user_name, name="notes"),
+        RepoInfo(root=repo_root, owner=user_name, name="advent-of-code"),
+        RepoInfo(root=repo_root, owner=user_name, name="chess"),
+        RepoInfo(root=repo_root, owner=user_name, name="dashboard.nvim"),
+        RepoInfo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
+        RepoInfo(root=repo_root, owner=user_name, name="full-gradle-app"),
+        RepoInfo(root=repo_root, owner=user_name, name="learning"),
+        RepoInfo(root=repo_root, owner=user_name, name="personal-resume"),
+        RepoInfo(root=repo_root, owner=user_name, name="rx-availability"),
+        RepoInfo(root=repo_root, owner=user_name, name="small-apps"),
+        RepoInfo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
+        RepoInfo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
     ]
     [clone(repo) for repo in repos]
 
@@ -49,7 +49,7 @@ def get_user_name() -> str:
     return str(user_name)
 
 
-def clone(repo: LocalRepo) -> bool:
+def clone(repo: RepoInfo) -> bool:
     if not repo.root.is_dir():
         print(f"Creating: {repo.root}")
         repo.root.mkdir(parents=True)
