@@ -12,7 +12,6 @@ return {
     config = function()
         require('dashboard').setup({
             header = require('ascii').art.text.neovim.sharp,
-            include_metadata = true,
             directories = {
                 '~/.config/nvim',
                 '~/Documents/notes',
@@ -28,6 +27,7 @@ return {
                 '~/dev/repos/small-apps',
                 '~/dev/repos/full-gradle-app',
             },
+            footer = { 'version', 'startuptime' },
         })
     end,
 }
