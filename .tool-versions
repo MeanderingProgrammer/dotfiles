@@ -4,7 +4,7 @@ coursier 2.1.7
 dotnet-core 7.0.306
 golang 1.20.6
 gradle 8.2.1
-java temurin-19.0.2+7
+java temurin-21.0.0+35.0.LTS
 kotlin 1.9.10
 nodejs 18.16.0
 python 3.11.3
