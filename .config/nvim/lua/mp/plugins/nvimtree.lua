@@ -12,8 +12,8 @@ return {
             hijack_cursor = true,
             view = {
                 width = {
-                    min = 50,
-                    max = 50,
+                    min = 30,
+                    max = 30,
                 },
             },
             renderer = {
