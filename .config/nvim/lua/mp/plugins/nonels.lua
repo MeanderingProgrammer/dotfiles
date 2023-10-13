@@ -22,7 +22,8 @@ return {
                 }),
                 diagnostics.eslint,
                 formatting.black,
-                diagnostics.mypy,
+                -- Too noisy for the time being, probably just not well configured
+                -- diagnostics.mypy,
             },
             on_attach = function(current_client, bufnr)
                 if current_client.supports_method('textDocument/formatting') then

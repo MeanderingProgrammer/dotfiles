@@ -11,7 +11,10 @@ return {
         require('nvim-tree').setup({
             hijack_cursor = true,
             view = {
-                width = { max = 50 },
+                width = {
+                    min = 50,
+                    max = 50,
+                },
             },
             renderer = {
                 group_empty = true,
