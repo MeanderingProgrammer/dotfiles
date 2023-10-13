@@ -46,15 +46,16 @@ pub fn create(city: &str, forecast: &Forecast) {
 }
 
 fn color(description: &str) -> NamedColor {
+    // Colors: https://www.w3schools.com/cssref/css_colors.php
     match description {
-        "Partly Cloudy" => NamedColor::LightGray,
-        "Cloudy" => NamedColor::Gray,
-        "Mostly Cloudy" => NamedColor::DarkGray,
-        "Chance Light Rain" | "Light Rain Likely" | "Light Rain" => NamedColor::LightBlue,
-        "Chance Rain Showers" => NamedColor::Blue,
-        "Rain Showers Likely" | "Rain Showers" => NamedColor::Red,
-        "Partly Sunny" => NamedColor::Goldenrod,
         "Mostly Sunny" => NamedColor::Gold,
+        "Partly Sunny" => NamedColor::Goldenrod,
+        "Clear" | "Mostly Clear" => NamedColor::DarkBlue,
+        "Partly Cloudy" => NamedColor::Blue,
+        "Cloudy" | "Mostly Cloudy" => NamedColor::LightBlue,
+        "Patchy Fog" | "Slight Chance Light Rain" | "Chance Light Rain" => NamedColor::LightGray,
+        "Chance Rain Showers" | "Light Rain" | "Light Rain Likely" => NamedColor::DarkGray,
+        "Rain Showers Likely" | "Rain Showers" | "Rain" => NamedColor::Red,
         _ => panic!("No color matches: {description}"),
     }
 }
