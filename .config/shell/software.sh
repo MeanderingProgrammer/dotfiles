@@ -24,6 +24,10 @@ autoload -Uz compinit && compinit
 export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
 [[ -f $ASDF_SRC ]] && source "${ASDF_SRC}"
 
+# Setup opam
+export OPAM_INIT="${HOME}/.opam/opam-init/init.zsh"
+[[ -r $OPAM_INIT ]] && source "${OPAM_INIT}"
+
 # Setup Airflow
 export AIRFLOW_DIR="$HOME/airflow"
 [[ -d $AIRFLOW_DIR ]] && export AIRFLOW_HOME=$AIRFLOW_DIR
