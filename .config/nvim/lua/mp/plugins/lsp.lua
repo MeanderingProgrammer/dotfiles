@@ -39,6 +39,7 @@ return {
                 'kotlin_language_server', -- Kotlin
                 'lua_ls', -- Lua
                 'marksman', -- Markdown
+                'ocamllsp', -- OCaml
                 'pyright', -- Python
                 'rust_analyzer', -- Rust
                 'svelte', -- Svelte

@@ -18,12 +18,16 @@ install_asdf_tools() {
 }
 
 install_libraries() {
+    # Rust
     cargo install rust-script
     cargo install stylua
     cargo install --path ~/.config/shell/weather
     asdf reshim rust
+    # Node
     npm install -g eslint
     npm install -g prettier
+    # OCaml
+    opam install ocamlformat
 }
 
 install_homebrew
