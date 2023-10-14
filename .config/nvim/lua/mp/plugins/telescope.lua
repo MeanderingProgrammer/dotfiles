@@ -1,10 +1,8 @@
 return {
     'nvim-telescope/telescope.nvim',
-    lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
         'debugloop/telescope-undo.nvim',
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
     config = function()
         local telescope = require('telescope')
@@ -28,8 +26,6 @@ return {
         local builtin = require('telescope.builtin')
         map('<leader>tf', builtin.find_files, {}, 'Find Files')
         map('<leader>tg', builtin.live_grep, {}, 'Grep Files')
-        map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
-        map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
 
         local function keymap_filter(keymap)
             local lhs_filter = {}
@@ -53,13 +49,11 @@ return {
 
             return true
         end
-        map(
-            '<leader>th',
-            builtin.keymaps,
-            { modes = { 'n', 'x' }, show_plug = false, filter = keymap_filter },
-            'Show Keymaps'
-        )
-
-        telescope.load_extension('fzf')
+        local keymap_options = {
+            modes = { 'n', 'x' },
+            show_plug = false,
+            filter = keymap_filter,
+        }
+        map('<leader>th', builtin.keymaps, keymap_options, 'Show Keymaps')
     end,
 }

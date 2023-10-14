@@ -1,8 +1,9 @@
 return {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
-    lazy = false,
     dependencies = {
+        -- Use Telescope for keymaps
+        'nvim-telescope/telescope.nvim',
         -- Lua LSP Improvement
         'folke/neodev.nvim',
         -- LSP Support
@@ -24,6 +25,15 @@ return {
         local lsp_zero = require('lsp-zero')
         lsp_zero.on_attach(function(_, bufnr)
             lsp_zero.default_keymaps({ buffer = bufnr })
+            local function map(lhs, f, opts, desc)
+                local function rhs()
+                    f(opts)
+                end
+                vim.keymap.set('n', lhs, rhs, { buffer = bufnr, desc = 'LSP: ' .. desc })
+            end
+            local builtin = require('telescope.builtin')
+            map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
+            map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
         end)
 
         require('mason').setup({})
