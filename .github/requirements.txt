@@ -1,4 +1,3 @@
-# General
 argcomplete
 black
 click
@@ -6,13 +5,3 @@ GitPython
 mypy
 Pillow
 protobuf
-
-# Machine Learning
-accelerate
-huggingface_hub
-safetensors
-sentencepiece
-torch
-torchaudio
-torchvision
-transformers
