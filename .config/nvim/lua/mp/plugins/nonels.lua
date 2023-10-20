@@ -3,12 +3,31 @@ return {
     lazy = true,
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-        local null_ls = require('null-ls')
+        local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+        local function null_ls_filter(client)
+            return client.name == 'null-ls'
+        end
+        local function save_on_write(client, bufnr)
+            if not client.supports_method('textDocument/formatting') then
+                return
+            end
+            local ignore_auto_format = { 'markdown' }
+            if vim.tbl_contains(ignore_auto_format, vim.bo[bufnr].filetype) then
+                return
+            end
+            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                group = augroup,
+                buffer = bufnr,
+                callback = function()
+                    vim.lsp.buf.format({ bufnr = bufnr, filter = null_ls_filter })
+                end,
+            })
+        end
 
+        local null_ls = require('null-ls')
         local formatting = null_ls.builtins.formatting
         local diagnostics = null_ls.builtins.diagnostics
-
-        local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
         null_ls.setup({
             sources = {
@@ -25,23 +44,7 @@ return {
                 -- Too noisy for the time being, probably just not well configured
                 -- diagnostics.mypy,
             },
-            on_attach = function(current_client, bufnr)
-                if current_client.supports_method('textDocument/formatting') then
-                    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-                    vim.api.nvim_create_autocmd('BufWritePre', {
-                        group = augroup,
-                        buffer = bufnr,
-                        callback = function()
-                            vim.lsp.buf.format({
-                                bufnr = bufnr,
-                                filter = function(client)
-                                    return client.name == 'null-ls'
-                                end,
-                            })
-                        end,
-                    })
-                end
-            end,
+            on_attach = save_on_write,
         })
     end,
 }
