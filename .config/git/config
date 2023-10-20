@@ -1,6 +1,8 @@
 [user]
     name = MeanderingProgrammer
     email = meanderingprogrammer@gmail.com
+[core]
+    commentChar = ";"
 [alias]
     aa = add --all
     b = branch
