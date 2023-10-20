@@ -29,21 +29,30 @@ return {
         local formatting = null_ls.builtins.formatting
         local diagnostics = null_ls.builtins.diagnostics
 
-        null_ls.setup({
-            sources = {
-                formatting.stylua,
-                formatting.gofmt,
-                formatting.rustfmt.with({
-                    extra_args = { '--edition=2021' },
-                }),
-                formatting.prettier.with({
-                    extra_filetypes = { 'svelte' },
-                }),
+        local languages = {
+            lua = { formatting.stylua },
+            go = { formatting.gofmt },
+            rust = {
+                formatting.rustfmt.with({ extra_args = { '--edition=2021' } }),
+            },
+            ocaml = { formatting.ocamlformat },
+            typescript = {
+                formatting.prettier.with({ extra_filetypes = { 'svelte' } }),
                 diagnostics.eslint,
+            },
+            python = {
                 formatting.black,
                 -- Too noisy for the time being, probably just not well configured
                 -- diagnostics.mypy,
             },
+        }
+        local sources = {}
+        for _, language_sources in pairs(languages) do
+            vim.list_extend(sources, language_sources)
+        end
+
+        null_ls.setup({
+            sources = sources,
             on_attach = save_on_write,
         })
     end,
