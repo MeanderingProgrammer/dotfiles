@@ -48,7 +48,7 @@ pub fn create(city: &str, forecast: &Forecast) {
 fn color(description: &str) -> NamedColor {
     // Colors: https://www.w3schools.com/cssref/css_colors.php
     match description {
-        "Mostly Sunny" => NamedColor::Gold,
+        "Sunny" | "Mostly Sunny" => NamedColor::Gold,
         "Partly Sunny" => NamedColor::Goldenrod,
         "Clear" | "Mostly Clear" => NamedColor::DarkBlue,
         "Partly Cloudy" => NamedColor::Blue,
