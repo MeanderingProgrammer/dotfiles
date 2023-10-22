@@ -19,7 +19,7 @@ return {
         map('<leader>hr', mark.rm_file, 'Remove current file')
 
         local ui = require('harpoon-core.ui')
-        map('<leader><leader>', ui.toggle_quick_menu, 'Toggle UI')
+        map('<leader>hu', ui.toggle_quick_menu, 'Toggle UI')
         map('<leader>hn', ui.nav_next, 'Next file')
         map('<leader>hp', ui.nav_prev, 'Previous file')
         for i = 1, 5 do

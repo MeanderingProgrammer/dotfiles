@@ -11,7 +11,7 @@ return {
             defaults = {
                 mappings = {
                     i = {
-                        ['<cr>'] = actions.select_tab_drop,
+                        ['<cr>'] = actions.select_drop,
                     },
                 },
             },
@@ -24,8 +24,13 @@ return {
             vim.keymap.set('n', lhs, rhs, { desc = 'Telescope: ' .. desc })
         end
         local builtin = require('telescope.builtin')
+        map('<leader><leader>', builtin.buffers, {}, 'Find Existing Buffers')
+        map('<leader>?', builtin.oldfiles, {}, 'Find Recently Opened Files')
         map('<leader>tf', builtin.find_files, {}, 'Find Files')
         map('<leader>tg', builtin.live_grep, {}, 'Grep Files')
+        map('<leader>td', builtin.diagnostics, {}, 'Diagnostics')
+        map('<leader>tw', builtin.grep_string, {}, 'Current Word')
+        map('<leader>tt', builtin.help_tags, {}, 'Help Tags')
 
         local function keymap_filter(keymap)
             local lhs_filter = {}
