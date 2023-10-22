@@ -1,4 +1,9 @@
+# OS related
+.DS_Store
+# Python
 __pycache__
+# Lazy.nvim lock file
+lazy-lock.json
+# Applications
 chessx
 qBittorrent
-lazy-lock.json
