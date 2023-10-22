@@ -22,6 +22,7 @@ install_libraries() {
     pip install --upgrade pip
     pip install -r ~/.github/requirements.txt
     # Rust
+    cargo install aoc-cli
     cargo install rust-script
     cargo install stylua
     cargo install --path ~/.config/shell/weather
