@@ -8,13 +8,11 @@ return {
         { '<leader>nt', '<cmd>NvimTreeToggle<cr>', desc = 'NvimTree: Toggle file tree' },
     },
     config = function()
+        local size = 30
         require('nvim-tree').setup({
             hijack_cursor = true,
             view = {
-                width = {
-                    min = 30,
-                    max = 30,
-                },
+                width = { min = size, max = size },
             },
             renderer = {
                 group_empty = true,
@@ -23,7 +21,8 @@ return {
                 end,
             },
             filters = {
-                exclude = { 'general.md' },
+                custom = { '^.git$' },
+                exclude = { 'dnd', 'general.md' },
             },
             tab = {
                 sync = {
