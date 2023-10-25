@@ -5,4 +5,3 @@ GitPython
 mypy
 Pillow
 protobuf
-pynvim

@@ -5,9 +5,11 @@ dotnet-core 7.0.306
 golang 1.20.6
 gradle 8.4
 java temurin-20.0.2+9
+julia 1.9.3
 kotlin 1.9.10
 nodejs 18.16.0
 opam 2.1.5
+perl 5.38.0
 python 3.12.0
 rust 1.73.0
 scala 3.3.1

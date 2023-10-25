@@ -3,11 +3,13 @@ tap "homebrew/cask-fonts"
 
 # Programming Related
 brew "asdf"
+brew "bison"
 brew "curl"
 brew "fd"
 brew "git"
 brew "jq"
 brew "just"
+brew "libsodium"
 brew "luarocks"
 brew "pass"
 brew "ripgrep"
