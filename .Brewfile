@@ -24,7 +24,6 @@ cask "font-symbols-only-nerd-font"
 cask "kitty"
 
 # General
-brew "ascii-image-converter"
 brew "cairo"
 brew "cmake"
 brew "coreutils"
