@@ -29,6 +29,7 @@ install_libraries() {
     asdf reshim rust
     # Node
     npm install -g eslint
+    npm install -g neovim
     npm install -g prettier
     # OCaml
     opam install ocamlformat
