@@ -1,5 +1,4 @@
 argcomplete
-black
 click
 GitPython
 mypy
