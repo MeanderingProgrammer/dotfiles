@@ -11,6 +11,7 @@ return {
                 'black',
                 'google-java-format',
                 'isort',
+                'ktlint',
                 'prettier',
                 'stylua',
             },
@@ -18,6 +19,7 @@ return {
         require('conform').setup({
             formatters_by_ft = {
                 java = { 'google-java-format' },
+                kotlin = { 'ktlint' },
                 lua = { 'stylua' },
                 ocaml = { 'ocamlformat' },
                 python = { 'isort', 'black' },
