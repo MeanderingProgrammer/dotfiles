@@ -33,32 +33,20 @@ return {
         map('<leader>tt', builtin.help_tags, {}, 'Help Tags')
 
         local function keymap_filter(keymap)
-            local lhs_filter = {}
-            vim.list_extend(lhs_filter, { '<Up>', '<Down>', '<Left>', '<Right>' })
-            vim.list_extend(lhs_filter, { '<C-H>', '<C-J>', '<C-K>', '<C-L>' })
-            vim.list_extend(lhs_filter, { '<M-h>', '<M-j>', '<M-k>', '<M-l>' })
-            vim.list_extend(lhs_filter, { '<F1>', '<F2>', '<F3>', '<F4>', '<F5>' })
-            vim.list_extend(lhs_filter, { 'f', 'F', 't', 'T' })
-            vim.list_extend(lhs_filter, { '<C-U>', '<C-D>', 'n', 'N', '<CR>', 'ii' })
-            vim.list_extend(lhs_filter, { '<C-W>', 'y<C-G>', 'Y', '&', ';', ',', '*', '#' })
-            if vim.tbl_contains(lhs_filter, keymap.lhs) then
-                return false
-            end
-
-            local rhs_filters = { '<Plug>', '<SNR>' }
-            for _, rhs_filter in ipairs(rhs_filters) do
-                if keymap.rhs ~= nil and string.match(keymap.rhs, rhs_filter) then
-                    return false
+            local descriptors = {}
+            vim.list_extend(descriptors, { 'Telescope', 'Harpoon', 'LSP', 'NvimTree', 'Dashboard', 'FTerm' })
+            vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
+            if keymap.desc ~= nil then
+                print(keymap.desc)
+                for _, descriptor in ipairs(descriptors) do
+                    if string.find(keymap.desc, descriptor) ~= nil then
+                        return true
+                    end
                 end
             end
-
-            return true
+            return false
         end
-        local keymap_options = {
-            modes = { 'n', 'x' },
-            show_plug = false,
-            filter = keymap_filter,
-        }
+        local keymap_options = { modes = { 'n', 'x' }, show_plug = false, filter = keymap_filter }
         map('<leader>th', builtin.keymaps, keymap_options, 'Show Keymaps')
     end,
 }
