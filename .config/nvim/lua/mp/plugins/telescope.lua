@@ -32,21 +32,21 @@ return {
         map('<leader>tw', builtin.grep_string, {}, 'Current Word')
         map('<leader>tt', builtin.help_tags, {}, 'Help Tags')
 
+        local descriptors = {}
+        vim.list_extend(descriptors, { 'Telescope', 'Harpoon', 'LSP', 'NvimTree', 'Dashboard', 'FTerm' })
+        vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
         local function keymap_filter(keymap)
-            local descriptors = {}
-            vim.list_extend(descriptors, { 'Telescope', 'Harpoon', 'LSP', 'NvimTree', 'Dashboard', 'FTerm' })
-            vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
-            if keymap.desc ~= nil then
-                print(keymap.desc)
-                for _, descriptor in ipairs(descriptors) do
-                    if string.find(keymap.desc, descriptor) ~= nil then
-                        return true
-                    end
+            if keymap.desc == nil then
+                return false
+            end
+            for _, descriptor in ipairs(descriptors) do
+                if string.find(keymap.desc, descriptor) ~= nil then
+                    return true
                 end
             end
             return false
         end
-        local keymap_options = { modes = { 'n', 'x' }, show_plug = false, filter = keymap_filter }
+        local keymap_options = { modes = { 'n', 'x' }, filter = keymap_filter }
         map('<leader>th', builtin.keymaps, keymap_options, 'Show Keymaps')
     end,
 }

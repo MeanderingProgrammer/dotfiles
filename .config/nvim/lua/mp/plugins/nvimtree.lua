@@ -1,13 +1,11 @@
 return {
     'nvim-tree/nvim-tree.lua',
-    lazy = false,
     dependencies = {
         'nvim-tree/nvim-web-devicons',
     },
-    keys = {
-        { '<leader>nt', '<cmd>NvimTreeToggle<cr>', desc = 'NvimTree: Toggle file tree' },
-    },
     config = function()
+        vim.keymap.set('n', '<leader>nt', '<cmd>NvimTreeToggle<cr>', { desc = 'NvimTree: Toggle file tree' })
+
         local size = 30
         require('nvim-tree').setup({
             hijack_cursor = true,
@@ -21,7 +19,7 @@ return {
                 end,
             },
             filters = {
-                custom = { '^.git$' },
+                custom = { '^.git$', '^__pycache__$', '^.mypy_cache$' },
                 exclude = { 'dnd', 'general.md' },
             },
             tab = {
