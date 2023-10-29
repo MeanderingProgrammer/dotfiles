@@ -59,9 +59,26 @@ return {
             },
             handlers = {
                 lsp_zero.default_setup,
-                bashls = require('mp.plugins.lsp.bash').setup,
-                lua_ls = require('mp.plugins.lsp.lua').setup,
-                gradle_ls = require('mp.plugins.lsp.gradle').setup,
+                bashls = function()
+                    require('lspconfig').bashls.setup({
+                        filetypes = { 'sh', 'zsh' },
+                    })
+                end,
+                lua_ls = function()
+                    require('lspconfig').lua_ls.setup({
+                        settings = {
+                            Lua = {
+                                workspace = { checkThirdParty = false },
+                                telemetry = { enable = false },
+                            },
+                        },
+                    })
+                end,
+                gradle_ls = function()
+                    require('lspconfig').gradle_ls.setup({
+                        filetypes = { 'kotlin', 'groovy' },
+                    })
+                end,
             },
         })
 
@@ -82,9 +99,7 @@ return {
         ---@diagnostic disable-next-line: missing-fields
         cmp.setup.cmdline('/', {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = {
-                { name = 'buffer' },
-            },
+            sources = { { name = 'buffer' } },
         })
 
         ---@diagnostic disable-next-line: missing-fields
