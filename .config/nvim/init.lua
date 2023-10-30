@@ -1,5 +1,2 @@
-require('mp.config.globals')
-require('mp.config.options')
-require('mp.config.remaps')
-require('mp.config.commands')
-require('mp.config.lazy')
+require('mp.config')
+require('mp.lazy')
