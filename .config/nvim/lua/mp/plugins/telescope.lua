@@ -3,6 +3,7 @@ return {
     dependencies = {
         'nvim-lua/plenary.nvim',
         'debugloop/telescope-undo.nvim',
+        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
     config = function()
         local telescope = require('telescope')
@@ -48,5 +49,8 @@ return {
         end
         local keymap_options = { modes = { 'n', 'x' }, filter = keymap_filter }
         map('<leader>th', builtin.keymaps, keymap_options, 'Show Keymaps')
+
+        telescope.load_extension('fzf')
+        telescope.load_extension('undo')
     end,
 }
