@@ -5,11 +5,18 @@ vim.g.maplocalleader = ' '
 -- Disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- Color settings
 vim.opt.termguicolors = true
+vim.opt.cursorline = true
 
 -- Line number settings
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- Search settings
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- Set wait time to complete mapping
 vim.opt.timeoutlen = 1000
@@ -17,8 +24,9 @@ vim.opt.timeoutlen = 1000
 -- Save undo history
 vim.opt.undofile = true
 
--- Split to right side by default
+-- Split to right / below by default
 vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 -- Better completion experience
 vim.opt.completeopt = 'menuone,noselect'
