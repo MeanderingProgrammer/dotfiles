@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import json
+import os
+
+
+def main() -> None:
+    path = os.getenv("PATH")
+    assert path is not None
+    parsed_path = json.dumps(path.split(":"), indent=2)
+    print(parsed_path)
+
+
+if __name__ == "__main__":
+    main()
