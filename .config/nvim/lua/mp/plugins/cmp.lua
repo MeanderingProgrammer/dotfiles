@@ -2,6 +2,8 @@ return {
     'hrsh7th/nvim-cmp',
     dependencies = {
         'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip',
+        'rafamadriz/friendly-snippets',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-cmdline',
@@ -9,7 +11,11 @@ return {
     },
     config = function()
         local cmp = require('cmp')
+
         local luasnip = require('luasnip')
+        require('luasnip.loaders.from_vscode').lazy_load()
+        luasnip.config.setup({})
+
         ---@diagnostic disable-next-line: missing-fields
         cmp.setup({
             sources = {

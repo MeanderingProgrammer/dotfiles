@@ -1,29 +1,39 @@
 return {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
+    'neovim/nvim-lspconfig',
     dependencies = {
         'nvim-telescope/telescope.nvim',
+        'hrsh7th/nvim-cmp',
         'folke/neodev.nvim',
-        'neovim/nvim-lspconfig',
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
     },
     config = function()
         require('neodev').setup({})
 
-        local lsp_zero = require('lsp-zero')
-        lsp_zero.on_attach(function(_, bufnr)
-            lsp_zero.default_keymaps({ buffer = bufnr })
-            local function map(lhs, f, opts, desc)
-                local function rhs()
-                    f(opts)
+        local lspconfig = require('lspconfig')
+
+        local cmp_capabilites = require('cmp_nvim_lsp').default_capabilities()
+        local lsp_defaults = lspconfig.util.default_config
+        lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, cmp_capabilites)
+
+        vim.api.nvim_create_autocmd('LspAttach', {
+            desc = 'LSP actions',
+            callback = function(event)
+                local function map(lhs, f, opts, desc)
+                    local function rhs()
+                        f(opts)
+                    end
+                    vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP: ' .. desc })
                 end
-                vim.keymap.set('n', lhs, rhs, { buffer = bufnr, desc = 'LSP: ' .. desc })
-            end
-            local builtin = require('telescope.builtin')
-            map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
-            map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
-        end)
+                local builtin = require('telescope.builtin')
+                map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
+                map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
+            end,
+        })
+
+        local default_setup = function(server)
+            lspconfig[server].setup({})
+        end
 
         require('mason').setup({})
         require('mason-lspconfig').setup({
@@ -47,14 +57,14 @@ return {
                 'tsserver', -- TypeScript
             },
             handlers = {
-                lsp_zero.default_setup,
+                default_setup,
                 bashls = function()
-                    require('lspconfig').bashls.setup({
+                    lspconfig.bashls.setup({
                         filetypes = { 'sh', 'zsh' },
                     })
                 end,
                 lua_ls = function()
-                    require('lspconfig').lua_ls.setup({
+                    lspconfig.lua_ls.setup({
                         settings = {
                             Lua = {
                                 workspace = { checkThirdParty = false },
@@ -64,7 +74,7 @@ return {
                     })
                 end,
                 gradle_ls = function()
-                    require('lspconfig').gradle_ls.setup({
+                    lspconfig.gradle_ls.setup({
                         filetypes = { 'kotlin', 'groovy' },
                     })
                 end,
