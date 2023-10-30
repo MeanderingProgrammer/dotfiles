@@ -1,8 +1,9 @@
 return {
     'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
         'nvim-telescope/telescope.nvim',
-        'hrsh7th/nvim-cmp',
+        'hrsh7th/cmp-nvim-lsp',
         'folke/neodev.nvim',
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
