@@ -11,6 +11,9 @@ elif [[ "${system_type}" == "Linux" ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     # Setup SSH
     eval "$(ssh-agent -s)"
+    # Add System32 to PATH
+    export PATH="$PATH:/mnt/c/Windows/System32"
+    export PATH="$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 else
     echo "Unhandled system type ${system_type}, stopping setup"
     return
