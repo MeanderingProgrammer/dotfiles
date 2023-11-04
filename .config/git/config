@@ -4,6 +4,8 @@
 [core]
     commentChar = ";"
     pager = delta
+[delta]
+    side-by-side = true
 [alias]
     aa = add --all
     b = branch
