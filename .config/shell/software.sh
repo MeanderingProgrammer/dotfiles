@@ -32,9 +32,6 @@ export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
 export OPAM_INIT="${HOME}/.opam/opam-init/init.zsh"
 [[ -r $OPAM_INIT ]] && source "${OPAM_INIT}"
 
-# Setup Lombok for JDTLS
-export JDTLS_JVM_ARGS="-javaagent:$HOME/.local/share/nvim/mason/packages/jdtls/lombok.jar"
-
 # Setup Airflow
 export AIRFLOW_DIR="$HOME/airflow"
 [[ -d $AIRFLOW_DIR ]] && export AIRFLOW_HOME=$AIRFLOW_DIR

@@ -32,8 +32,11 @@ return {
             end,
         })
 
+        local skip_setup = { 'jdtls' }
         local default_setup = function(server)
-            lspconfig[server].setup({})
+            if not vim.tbl_contains(skip_setup, server) then
+                lspconfig[server].setup({})
+            end
         end
 
         require('mason').setup({})
