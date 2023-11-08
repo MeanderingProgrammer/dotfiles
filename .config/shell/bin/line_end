@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+
+from argparse import ArgumentParser
+from dataclasses import dataclass
+from enum import StrEnum, auto
+from pathlib import Path
+from typing import List, Optional
+
+
+@dataclass(frozen=True)
+class FileFilter:
+    ignore_suffixes: List[str]
+    ignore_dirs: List[str]
+
+    def run(self, file: Path) -> bool:
+        if not file.is_file():
+            return False
+        if file.suffix in self.ignore_suffixes:
+            return False
+        for part in file.parts:
+            if part in self.ignore_dirs:
+                return False
+        return True
+
+
+class LineEnding(StrEnum):
+    CRLF = auto()
+    LF = auto()
+
+
+def main(fix: bool) -> None:
+    file_filter = FileFilter(
+        ignore_suffixes=[".prefs", ".class", ".png"],
+        ignore_dirs=[
+            ".git",
+            "__pycache__",
+            "aoc.egg-info",
+            ".gradle",
+            "gradle",
+            "build",
+            "_build",
+            "target",
+            ".factorypath",
+            ".classpath",
+            ".project",
+        ],
+    )
+    files = [file for file in Path(".").rglob("*") if file_filter.run(file)]
+    print(f"Files = {len(files)}")
+    files_to_fix = [
+        file
+        for file in files
+        if get_line_ending(file) == LineEnding.CRLF and file.suffix not in [".bat"]
+    ]
+    print(f"Files to fix = {len(files_to_fix)}")
+    for file in files_to_fix:
+        print(file)
+        if fix:
+            fix_file(file)
+
+
+def get_line_ending(file: Path) -> Optional[LineEnding]:
+    lines = read_lines(file)
+    if len(lines) <= 1:
+        return None
+    line = lines[0]
+    if b"\r\n" in line:
+        return LineEnding.CRLF
+    elif b"\n" in line:
+        return LineEnding.LF
+    else:
+        raise Exception(f"Unkwnown: {line}")
+
+
+def fix_file(file: Path) -> None:
+    lines = read_lines(file)
+    with file.open(mode="wb") as f:
+        for line in lines:
+            line = line.replace(b"\r\n", b"\n")
+            f.write(line)
+
+
+def read_lines(file: Path) -> List[bytes]:
+    lines = []
+    with file.open(mode="rb") as f:
+        lines = [line for line in f]
+    return lines
+
+
+if __name__ == "__main__":
+    parser = ArgumentParser(description="Detect / Change line endings for files")
+    parser.add_argument("--fix", action="store_true")
+    args = parser.parse_args()
+    main(args.fix)
