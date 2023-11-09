@@ -1,5 +1,6 @@
 accelerate
 huggingface_hub
+langchain
 safetensors
 sentencepiece
 torch
