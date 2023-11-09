@@ -4,3 +4,4 @@ GitPython
 mypy
 Pillow
 protobuf
+requests
