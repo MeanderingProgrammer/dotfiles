@@ -54,7 +54,9 @@ fn color(description: &str) -> NamedColor {
         "Partly Cloudy" => NamedColor::Blue,
         "Cloudy" | "Mostly Cloudy" => NamedColor::LightBlue,
         "Patchy Fog" | "Slight Chance Light Rain" | "Chance Light Rain" => NamedColor::LightGray,
-        "Chance Rain Showers" | "Light Rain" | "Light Rain Likely" => NamedColor::DarkGray,
+        "Chance Rain Showers" | "Light Rain" | "Light Rain Likely" | "Rain Likely" => {
+            NamedColor::DarkGray
+        }
         "Rain Showers Likely" | "Rain Showers" | "Rain" => NamedColor::Red,
         _ => panic!("No color matches: {description}"),
     }
