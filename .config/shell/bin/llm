@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+
+import click
+import requests
+
+
+@click.group()
+def cli() -> None:
+    """
+    Interact with llm: ollama serve
+    """
+    pass
+
+
+@cli.command()
+@click.argument("file", type=Path)
+def cr(file: Path) -> None:
+    """
+    Provides a code review for an input file
+    """
+    assert file.is_file(), "Input must be a valid file"
+    run("Can you provide a code review for the following:\n\n" + file.read_text())
+
+
+@cli.command()
+@click.argument("input", type=str)
+def prompt(input: str) -> None:
+    """
+    Passes prompt directly to llm
+    """
+    run(input)
+
+
+def run(prompt: str) -> None:
+    response = requests.post(
+        "http://127.0.0.1:11434/api/generate",
+        json=dict(model="codellama", prompt=prompt, stream=False),
+    )
+    assert response.status_code == 200, "LLM response failed"
+    print(response.json().get("response"))
+
+
+if __name__ == "__main__":
+    cli()
