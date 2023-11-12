@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 
-import argcomplete
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Self
+
+import argcomplete
 from PIL import ImageGrab
-from typing import Self, Tuple
 
 TYPE_MAPPING = dict(
     dashboard=(850, 450),
@@ -20,7 +21,7 @@ class BoundBox:
     right: int
     bottom: int
 
-    def center(self, target: Tuple[int, int]) -> Self:
+    def center(self, target: tuple[int, int]) -> Self:
         offset = (
             BoundBox._offset(self.left, self.right, target[0]),
             BoundBox._offset(self.top, self.bottom, target[1]),
@@ -32,7 +33,7 @@ class BoundBox:
             bottom=offset[1] + target[1],
         )
 
-    def as_tuple(self) -> Tuple[int, int, int, int]:
+    def as_tuple(self) -> tuple[int, int, int, int]:
         return (self.left, self.top, self.right, self.bottom)
 
     @staticmethod
@@ -41,7 +42,7 @@ class BoundBox:
         return int(offset) + start
 
 
-def main(target: Tuple[int, int]) -> None:
+def main(target: tuple[int, int]) -> None:
     # Accounts for some lost pixels at bottom of screen
     bottom_offset = 150
     display_size = ImageGrab.grab().size

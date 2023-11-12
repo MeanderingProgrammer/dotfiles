@@ -6,6 +6,8 @@ if [[ "${system_type}" == "Darwin" ]]; then
     # Setup SSH
     eval "$(ssh-agent -s)"
     ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    # Start ollama
+    brew services start ollama
 elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
