@@ -4,10 +4,16 @@ if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
     eval "$(/opt/homebrew/bin/brew shellenv)"
     # Setup SSH
-    eval "$(ssh-agent -s)"
-    ssh-add --apple-use-keychain ~/.ssh/id_ed25519
-    # Start ollama
-    brew services start ollama
+    # eval "$(ssh-agent -s)"
+    # ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+    # Start services
+    services=("ollama")
+    for service in "${services[@]}"; do
+        is_running=$(brew services list | grep "$service.*started")
+        if [[ -z "$is_running" ]]; then
+            brew services start $service
+        fi
+    done
 elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
