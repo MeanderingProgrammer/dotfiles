@@ -3,9 +3,6 @@ system_type=$(uname -s)
 if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    # Setup SSH
-    # eval "$(ssh-agent -s)"
-    # ssh-add --apple-use-keychain ~/.ssh/id_ed25519
     # Start services
     services=("ollama")
     for service in "${services[@]}"; do
