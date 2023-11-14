@@ -20,7 +20,7 @@ return {
             },
             filters = {
                 custom = { '^.git$', '^__pycache__$', '^.mypy_cache$' },
-                exclude = { 'dnd', 'general.md' },
+                exclude = { 'dnd.md', 'general.md' },
             },
             tab = {
                 sync = {
