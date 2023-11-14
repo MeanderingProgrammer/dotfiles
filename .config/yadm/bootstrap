@@ -1,14 +1,5 @@
 #!/bin/sh
 
-install_homebrew() {
-    if ! command -v brew >/dev/null 2>&1; then
-        echo "Installing Homebrew"
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    echo "Updating Homebrew bundle"
-    brew bundle --global
-}
-
 install_asdf_tools() {
     while read line; do
         plugin=$(echo "${line}" | cut -d' ' -f1)
@@ -32,7 +23,7 @@ install_libraries() {
     opam install ocamlformat
 }
 
-install_homebrew
+brew bundle --global
 install_asdf_tools
 install_libraries
 /bin/bash -c ~/.config/yadm/setup_repos
