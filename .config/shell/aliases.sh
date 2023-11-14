@@ -1,4 +1,5 @@
 # General
+alias reload="source ~/.zshrc"
 alias ll="ls -latr"
 alias workspace="cd ~/dev/repos"
 alias notes="cd ~/Documents/notes"

@@ -26,6 +26,7 @@ ALIAS_GROUPS: list[AliasGroup] = [
     AliasGroup(
         name="General",
         aliases=[
+            Alias(name="reload", command="source ~/.zshrc"),
             Alias(name="ll", command="ls -latr"),
             Alias(name="workspace", command="cd ~/dev/repos"),
             Alias(name="notes", command="cd ~/Documents/notes"),
