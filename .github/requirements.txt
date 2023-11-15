@@ -1,7 +1,7 @@
-argcomplete
-click
-GitPython
-mypy
-Pillow
-protobuf
-requests
+argcomplete==3.1.6
+click==8.1.7
+GitPython==3.1.40
+mypy==1.7.0
+Pillow==10.1.0
+protobuf==4.25.0
+requests==2.31.0
