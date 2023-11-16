@@ -44,6 +44,7 @@ return {
             -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
             ensure_installed = {
                 'bashls', -- Bash
+                'csharp_ls', -- C#
                 'eslint', -- ESLint
                 'gopls', -- Go
                 'gradle_ls', -- Gradle

@@ -32,8 +32,12 @@ export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
 [[ -f $ASDF_SRC ]] && source "${ASDF_SRC}"
 
 # Setup opam
-export OPAM_INIT="${HOME}/.opam/opam-init/init.zsh"
+export OPAM_INIT="$HOME/.opam/opam-init/init.zsh"
 [[ -r $OPAM_INIT ]] && source "${OPAM_INIT}"
+
+# Setup C#
+export C_SHARP_INIT="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
+[[ -r $C_SHARP_INIT ]] && source "${C_SHARP_INIT}"
 
 # Setup Airflow
 export AIRFLOW_DIR="$HOME/airflow"
