@@ -21,7 +21,18 @@ def cr(file: Path) -> None:
     Provides a code review for an input file
     """
     assert file.is_file(), "Input must be a valid file"
-    run("Can you provide a code review for the following:\n\n" + file.read_text())
+    run(["Can you provide a code review for the following:", file.read_text()])
+
+
+@cli.command()
+@click.argument("language", type=str)
+@click.argument("file", type=Path)
+def rewrite(language: str, file: Path) -> None:
+    """
+    Rewrite the input file to a different langauge
+    """
+    assert file.is_file(), "Input must be a valid file"
+    run([f"Can you rewrite the folowing to {language}:", file.read_text()])
 
 
 @cli.command()
@@ -30,13 +41,13 @@ def prompt(input: str) -> None:
     """
     Passes prompt directly to llm
     """
-    run(input)
+    run([input])
 
 
-def run(prompt: str) -> None:
+def run(prompt: list[str]) -> None:
     response = requests.post(
         "http://127.0.0.1:11434/api/generate",
-        json=dict(model="codellama", prompt=prompt, stream=False),
+        json=dict(model="codellama", prompt="\n\n".join(prompt), stream=False),
     )
     assert response.status_code == 200, "LLM response failed"
     print(response.json().get("response"))
