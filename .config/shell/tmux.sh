@@ -1,25 +1,24 @@
-main_session="main"
-notes_session="notes"
-
 # Don't do anything if some terminal is already attached
 attached_sessions=$(tmux ls | grep attached)
 if [[ ${#attached_sessions} != 0 ]]; then
     return
 fi
 
-# Only create a new main session if one isn't currently running
-existing_main_session=$(tmux ls | grep ${main_session})
-if [[ ${#existing_main_session} == 0 ]]; then
-    tmux new -d -s ${main_session}
-    tmux send-keys -t ${main_session} "workspace" ENTER
-fi
+start_new_session() {
+    if [[ "$#" -ne 2 ]]; then
+        echo "Usage $0: session_name command_name"
+        return
+    fi
+    # Only create a new session if one isn't currently running
+    existing_session=$(tmux ls | grep "$1")
+    if [[ ${#existing_session} == 0 ]]; then
+        tmux new -d -s "$1"
+        tmux send-keys -t "$1" "$2" ENTER
+    fi
+}
 
-# Only create a new notes session if one isn't currently running
-existing_notes_session=$(tmux ls | grep ${notes_session})
-if [[ ${#existing_notes_session} == 0 ]]; then
-    tmux new -d -s ${notes_session}
-    tmux send-keys -t ${notes_session} "notes && vim ." ENTER
-fi
+start_new_session "main" "workspace"
+start_new_session "notes" "notes"
 
 # Attach to the main session
-tmux attach -t ${main_session}
+tmux attach -t "main"
