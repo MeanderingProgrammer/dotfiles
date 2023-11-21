@@ -3,8 +3,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 
-from git.config import GitConfigParser
-from git.repo import Repo
+import git
 
 
 @dataclass(frozen=True)
@@ -23,7 +22,7 @@ class RepoInfo:
 
 
 def main() -> None:
-    user_name = str(GitConfigParser().get_value("user", "name"))
+    user_name = str(git.GitConfigParser().get_value("user", "name"))
     document_root = Path.home().joinpath("Documents")
     repo_root = Path.home().joinpath("dev/repos")
     open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
@@ -50,11 +49,11 @@ def clone(repo: RepoInfo) -> bool:
         repo.root.mkdir(parents=True)
     if not repo.path.is_dir():
         print(f"Cloning {repo.ssh} to {repo.path}")
-        Repo.clone_from(repo.ssh, repo.path)
+        git.Repo.clone_from(repo.ssh, repo.path)
         return True
     else:
         print(f"Pulling: {repo.path}")
-        Repo(repo.path).remote().pull()
+        git.Repo(repo.path).remote().pull()
         return False
 
 
