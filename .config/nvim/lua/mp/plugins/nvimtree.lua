@@ -10,6 +10,7 @@ return {
         require('nvim-tree').setup({
             hijack_cursor = true,
             view = {
+                number = true,
                 width = { min = size, max = size },
             },
             renderer = {
