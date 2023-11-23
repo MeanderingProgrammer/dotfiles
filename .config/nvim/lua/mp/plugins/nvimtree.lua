@@ -11,6 +11,7 @@ return {
             hijack_cursor = true,
             view = {
                 number = true,
+                relativenumber = true,
                 width = { min = size, max = size },
             },
             renderer = {
