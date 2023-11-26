@@ -30,6 +30,7 @@ return {
                 map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
                 map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
                 map('gi', builtin.lsp_implementations, { jump_type = 'never' }, 'Goto Implementations')
+                map('gh', vim.lsp.buf.hover, {}, 'Show Hover Information')
             end,
         })
 
