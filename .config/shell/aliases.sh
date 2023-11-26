@@ -27,3 +27,4 @@ alias yp="yadm push"
 # Advent
 alias a_run="./scripts/advent.py run"
 alias a_gen="./scripts/advent.py generate"
+alias a_graph="./scripts/advent.py graph"
