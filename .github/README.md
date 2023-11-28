@@ -17,6 +17,12 @@ MacOS: eval "$(/opt/homebrew/bin/brew shellenv)"
  WSL2: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ```
 
+WSL2 requirements
+
+```
+sudo apt install make gcc
+```
+
 Install [git](https://formulae.brew.sh/formula/git) and [yadm](https://formulae.brew.sh/formula/yadm)
 
 ```
