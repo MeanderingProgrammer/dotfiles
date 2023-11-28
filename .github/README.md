@@ -51,10 +51,10 @@ MacOS: ~/.ssh/id_ed25519.pub | pbcopy
 yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ```
 
-Use [zshell](https://www.zsh.org/)
+Use [zshell](https://www.zsh.org/) for WSL2
 
 ```
-brew install zsh
+sudo apt install zsh
 chsh -s $(which zsh)
 ```
 
