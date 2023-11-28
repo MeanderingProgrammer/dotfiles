@@ -51,6 +51,13 @@ MacOS: ~/.ssh/id_ed25519.pub | pbcopy
 yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ```
 
+Use [zshell](https://www.zsh.org/)
+
+```
+brew install zsh
+chsh -s $(which zsh)
+```
+
 # Commands
 
 | Command          | Description                      |
