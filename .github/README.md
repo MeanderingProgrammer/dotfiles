@@ -31,6 +31,15 @@ mkdir ~/.ssh && touch ~/.ssh/known_hosts
 ssh-keyscan github.com > ~/.ssh/known_hosts
 ```
 
+[Generate](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) ssh key
+
+```
+ssh-keygen -t ed25519 -C "meanderingprogrammer@gmail.com"
+eval "$(ssh-agent -s)"
+```
+
+[Add](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) ssh key to github
+
 [Bootstrap](https://yadm.io/docs/bootstrap) dotfiles repo
 
 ```
