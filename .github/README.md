@@ -14,7 +14,7 @@ Evaluate [homebrew](https://brew.sh/)
 
 ```
 MacOS: eval "$(/opt/homebrew/bin/brew shellenv)"
-Linux: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+ WSL2: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ```
 
 Install [git](https://formulae.brew.sh/formula/git) and [yadm](https://formulae.brew.sh/formula/yadm)
@@ -39,6 +39,11 @@ eval "$(ssh-agent -s)"
 ```
 
 [Add](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) ssh key to github
+
+```
+MacOS: ~/.ssh/id_ed25519.pub | pbcopy
+ WSL2: ~/.ssh/id_ed25519.pub | clip.exe
+```
 
 [Bootstrap](https://yadm.io/docs/bootstrap) dotfiles repo
 
