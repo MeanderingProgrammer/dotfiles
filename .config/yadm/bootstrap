@@ -20,6 +20,7 @@ install_libraries() {
     # Node
     npm install -g neovim
     # OCaml
+    opam init
     opam install ocamlformat
 }
 

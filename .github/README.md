@@ -59,6 +59,8 @@ MacOS: ~/.ssh/id_ed25519.pub | pbcopy
 yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ```
 
+* Python installation may fail [2823](https://github.com/pyenv/pyenv/issues/2823): `brew unlink pkg-config`
+
 Use [zshell](https://www.zsh.org/) for WSL2
 
 ```
