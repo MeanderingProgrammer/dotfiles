@@ -28,6 +28,7 @@ Set git [known hosts](https://docs.github.com/en/authentication/keeping-your-acc
 
 ```
 mkdir ~/.ssh && touch ~/.ssh/known_hosts
+ssh-keyscan github.com > ~/.ssh/known_hosts
 ```
 
 [Bootstrap](https://yadm.io/docs/bootstrap) dotfiles repo
