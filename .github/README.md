@@ -20,7 +20,9 @@ MacOS: eval "$(/opt/homebrew/bin/brew shellenv)"
 WSL2 requirements
 
 ```
-sudo apt install make gcc
+sudo apt install make gcc build-essential libssl-dev zlib1g-dev \
+  libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev \
+  xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
 Install [git](https://formulae.brew.sh/formula/git) and [yadm](https://formulae.brew.sh/formula/yadm)
