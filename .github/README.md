@@ -4,10 +4,27 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 
 # Setup
 
-Install Homebrew and yadm then bootstrap the repo.
+Install and evaluate Homebrew
 
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+MacOS
+
+```
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+Linux
+
+```
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+```
+
+Install yadm then bootstrap the repo
+
+```
 brew install yadm
 yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ```
