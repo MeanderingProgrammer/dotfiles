@@ -33,6 +33,7 @@ alias pap="pass git push"
 alias papl="pass git pull"
 
 # Advent
+alias a_setup="./scripts/advent.py setup"
 alias a_run="./scripts/advent.py run"
 alias a_gen="./scripts/advent.py generate"
 alias a_graph="./scripts/advent.py graph"
