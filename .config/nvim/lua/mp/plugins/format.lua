@@ -26,8 +26,7 @@ return {
                 svelte = { 'prettier' },
                 typescript = { 'prettier' },
             },
-            format_on_save = {
-                timeout_ms = 1000,
+            format_after_save = {
                 lsp_fallback = true,
             },
         })
