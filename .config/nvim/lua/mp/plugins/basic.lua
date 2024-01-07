@@ -6,6 +6,7 @@ local function load_fterm(mode, prefix)
 end
 
 return {
+    { 'j-hui/fidget.nvim', config = true },
     { 'mg979/vim-visual-multi' },
     { 'numToStr/Comment.nvim', config = true },
     {
