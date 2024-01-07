@@ -9,7 +9,6 @@ return {
         require('mason-tool-installer').setup({
             ensure_installed = {
                 'black',
-                'google-java-format',
                 'isort',
                 'ktlint',
                 'prettier',
@@ -18,7 +17,6 @@ return {
         })
         require('conform').setup({
             formatters_by_ft = {
-                java = { 'google-java-format' },
                 kotlin = { 'ktlint' },
                 lua = { 'stylua' },
                 ocaml = { 'ocamlformat' },
