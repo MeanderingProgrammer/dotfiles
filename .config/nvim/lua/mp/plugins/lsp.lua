@@ -1,6 +1,5 @@
 return {
     'neovim/nvim-lspconfig',
-    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
         'nvim-telescope/telescope.nvim',
         'hrsh7th/cmp-nvim-lsp',
@@ -18,11 +17,16 @@ return {
         lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, cmp_capabilites)
 
         vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
             callback = function(event)
                 local function map(lhs, f, opts, desc)
                     local function rhs()
-                        f(opts)
+                        if opts == nil then
+                            f()
+                        else
+                            f(opts)
+                        end
                     end
                     vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP: ' .. desc })
                 end
@@ -30,9 +34,10 @@ return {
                 map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
                 map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
                 map('gi', builtin.lsp_implementations, { jump_type = 'never' }, 'Goto Implementations')
-                map('<leader>gh', vim.lsp.buf.hover, {}, 'Hover Information')
-                map('<leader>gca', vim.lsp.buf.code_action, {}, 'Code Actions')
-                map('<leader>grn', vim.lsp.buf.rename, {}, 'Rename')
+                map('<leader>k', vim.lsp.buf.hover, nil, 'Hover Information')
+                map('<leader><C-k>', vim.lsp.buf.signature_help, nil, 'Signature Help')
+                map('<leader>ca', vim.lsp.buf.code_action, nil, 'Code Actions')
+                map('<leader>rn', vim.lsp.buf.rename, nil, 'Rename')
             end,
         })
 
