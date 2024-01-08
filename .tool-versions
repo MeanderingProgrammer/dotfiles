@@ -2,7 +2,7 @@ awscli 2.13.25
 bun 1.0.4
 coursier 2.1.7
 dotnet-core 7.0.404
-golang 1.20.6
+golang 1.21.5
 gradle 8.4
 java temurin-20.0.2+9
 julia 1.9.3
