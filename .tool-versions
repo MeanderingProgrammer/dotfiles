@@ -3,10 +3,10 @@ bun 1.0.4
 coursier 2.1.7
 dotnet-core 7.0.404
 golang 1.21.5
-gradle 8.4
-java temurin-20.0.2+9
+gradle 8.5
+java temurin-21.0.1+12.0.LTS
 julia 1.9.3
-kotlin 1.9.10
+kotlin 1.9.20
 nodejs 18.16.0
 opam 2.1.5
 perl 5.38.0
