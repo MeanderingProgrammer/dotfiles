@@ -1,6 +1,6 @@
 argcomplete==3.1.6
 click==8.1.7
-GitPython==3.1.40
+GitPython==3.1.41
 mypy==1.7.0
 Pillow==10.1.0
 protobuf==4.25.0
