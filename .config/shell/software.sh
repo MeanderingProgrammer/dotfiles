@@ -31,6 +31,10 @@ export ASDF_FORCE_PREPEND="yes"
 export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
 [[ -f $ASDF_SRC ]] && source "${ASDF_SRC}"
 
+# Setup Java
+export JAVA_INIT="$HOME/.asdf/plugins/java/set-java-home.zsh"
+[[ -r $JAVA_INIT ]] && source "${JAVA_INIT}"
+
 # Setup opam
 export OPAM_INIT="$HOME/.opam/opam-init/init.zsh"
 [[ -r $OPAM_INIT ]] && source "${OPAM_INIT}"
