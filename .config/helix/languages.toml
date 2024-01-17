@@ -1,0 +1,20 @@
+[[language]]
+name = "rust"
+
+[[language]]
+name = "go"
+
+[[language]]
+name = "python"
+
+[[language]]
+name = "ocaml"
+
+[[language]]
+name = "java"
+
+[[language]]
+name = "bash"
+
+[[language]]
+name = "lua"
