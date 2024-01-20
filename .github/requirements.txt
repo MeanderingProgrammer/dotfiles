@@ -1,10 +1,10 @@
-argcomplete==3.1.6
+argcomplete==3.2.1
 click==8.1.7
 GitPython==3.1.41
-mypy==1.7.0
+mypy==1.8.0
 numpy==1.26.3
-pandas==2.1.4
-Pillow==10.1.0
-protobuf==4.25.0
+pandas==2.2.0
+Pillow==10.2.0
+protobuf==4.25.2
 pynvim==0.5.0
 requests==2.31.0
