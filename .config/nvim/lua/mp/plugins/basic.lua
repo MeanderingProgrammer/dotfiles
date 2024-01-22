@@ -7,6 +7,15 @@ end
 
 return {
     { 'j-hui/fidget.nvim', config = true },
+    {
+        'lukas-reineke/indent-blankline.nvim',
+        config = function()
+            require('ibl').setup({
+                exclude = { filetypes = { 'dashboard' } },
+                scope = { enabled = false },
+            })
+        end,
+    },
     { 'mg979/vim-visual-multi' },
     { 'numToStr/Comment.nvim', config = true },
     {
