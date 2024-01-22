@@ -62,3 +62,8 @@ if vim.fn.has('wsl') == 1 then
     }
 end
 vim.opt.clipboard = 'unnamedplus'
+
+-- Disable default providers
+for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
+    vim.g['loaded_' .. provider .. '_provider'] = 0
+end
