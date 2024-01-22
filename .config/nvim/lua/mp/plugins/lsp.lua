@@ -56,10 +56,8 @@ return {
                 'csharp_ls', -- C#
                 'eslint', -- ESLint
                 'gopls', -- Go
-                'gradle_ls', -- Gradle
                 'jdtls', -- Java
                 'jsonls', -- JSON
-                'kotlin_language_server', -- Kotlin
                 'lua_ls', -- Lua
                 'marksman', -- Markdown
                 'ocamllsp', -- OCaml
@@ -85,11 +83,6 @@ return {
                                 telemetry = { enable = false },
                             },
                         },
-                    })
-                end,
-                gradle_ls = function()
-                    lspconfig.gradle_ls.setup({
-                        filetypes = { 'kotlin', 'groovy' },
                     })
                 end,
             },
