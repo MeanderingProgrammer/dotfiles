@@ -22,7 +22,7 @@ return {
             },
             filters = {
                 custom = { '^.git$', '^__pycache__$', '^.mypy_cache$' },
-                exclude = { 'sample.txt', 'puzzle.md', 'dnd.md', 'general.md' },
+                exclude = { '^.*.txt$', '^.*.md$' },
             },
             tab = {
                 sync = {
