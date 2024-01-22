@@ -19,7 +19,10 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Set wait time to complete mapping
-vim.opt.timeoutlen = 1000
+vim.opt.timeoutlen = 500
+
+-- Set wait time for detecting changes
+vim.opt.updatetime = 250
 
 -- Save undo history
 vim.opt.undofile = true

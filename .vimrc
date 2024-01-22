@@ -8,6 +8,9 @@ syntax on
 set number
 set relativenumber
 
+" Set wait time for detecting changes
+set updatetime=250
+
 " Split to right side by default
 set splitright
 
