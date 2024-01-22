@@ -7,6 +7,8 @@ return {
         require('mason-tool-installer').setup({
             ensure_installed = {
                 'black',
+                'gofumpt',
+                'goimports',
                 'isort',
                 'prettier',
                 'stylua',
@@ -14,6 +16,7 @@ return {
         })
         require('conform').setup({
             formatters_by_ft = {
+                go = { 'goimports', 'gofumpt' },
                 lua = { 'stylua' },
                 ocaml = { 'ocamlformat' },
                 python = { 'isort', 'black' },
