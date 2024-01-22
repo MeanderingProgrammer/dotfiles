@@ -15,6 +15,7 @@ return {
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
+            'saecki/crates.nvim',
             'saadparwaiz1/cmp_luasnip',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
@@ -45,6 +46,7 @@ return {
                 },
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
+                    { name = 'crates' },
                     { name = 'luasnip' },
                     { name = 'buffer' },
                     { name = 'path' },

@@ -11,7 +11,9 @@ return {
             map('cd', crates.show_dependencies_popup, 'Show Dependency Popup')
             map('cu', crates.update_all_crates, 'Update')
             map('cU', crates.upgrade_all_crates, 'Upgrade')
-            crates.setup({})
+            crates.setup({
+                src = { cmp = { enabled = true } },
+            })
         end,
     },
 }
