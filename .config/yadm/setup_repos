@@ -7,18 +7,37 @@ import git
 
 
 @dataclass(frozen=True)
-class RepoInfo:
-    root: Path
+class Repo:
     owner: str
     name: str
 
     @property
-    def path(self) -> Path:
-        return self.root.joinpath(self.name)
-
-    @property
     def ssh(self) -> str:
         return f"git@github.com:{self.owner}/{self.name}.git"
+
+    def clone(self, root: Path) -> bool:
+        if not root.is_dir():
+            print(f"Creating: {root}")
+            root.mkdir(parents=True)
+        path = root.joinpath(self.name)
+        if not path.is_dir():
+            print(f"Cloning {self.ssh} to {path}")
+            git.Repo.clone_from(self.ssh, path)
+            return True
+        else:
+            print(f"Pulling: {path}")
+            git.Repo(path).remote().pull()
+            return False
+
+
+@dataclass(frozen=True)
+class RepoDirectory:
+    root: Path
+    repos: list[Repo]
+
+    def clone_all(self) -> bool:
+        results = [repo.clone(self.root) for repo in self.repos]
+        return any(results)
 
 
 def main() -> None:
@@ -26,35 +45,36 @@ def main() -> None:
     document_root = Path.home().joinpath("Documents")
     repo_root = Path.home().joinpath("dev/repos")
     open_source_plugins = repo_root.joinpath("open-source/nvim-plugins")
-    repos = [
-        RepoInfo(root=document_root, owner=user_name, name="notes"),
-        RepoInfo(root=repo_root, owner=user_name, name="advent-of-code"),
-        RepoInfo(root=repo_root, owner=user_name, name="chess"),
-        RepoInfo(root=repo_root, owner=user_name, name="dashboard.nvim"),
-        RepoInfo(root=repo_root, owner=user_name, name="harpoon-core.nvim"),
-        RepoInfo(root=repo_root, owner=user_name, name="full-gradle-app"),
-        RepoInfo(root=repo_root, owner=user_name, name="learning"),
-        RepoInfo(root=repo_root, owner=user_name, name="personal-resume"),
-        RepoInfo(root=repo_root, owner=user_name, name="rx-availability"),
-        RepoInfo(root=repo_root, owner=user_name, name="small-apps"),
-        RepoInfo(root=open_source_plugins, owner="nvimdev", name="dashboard-nvim"),
-        RepoInfo(root=open_source_plugins, owner="ThePrimeagen", name="harpoon"),
+    repo_directories: list[RepoDirectory] = [
+        RepoDirectory(
+            root=document_root,
+            repos=[Repo(owner=user_name, name="notes")],
+        ),
+        RepoDirectory(
+            root=repo_root,
+            repos=[
+                Repo(owner=user_name, name="advent-of-code"),
+                Repo(owner=user_name, name="chess"),
+                Repo(owner=user_name, name="dashboard.nvim"),
+                Repo(owner=user_name, name="harpoon-core.nvim"),
+                Repo(owner=user_name, name="py-requirements.nvim"),
+                Repo(owner=user_name, name="full-gradle-app"),
+                Repo(owner=user_name, name="learning"),
+                Repo(owner=user_name, name="personal-resume"),
+                Repo(owner=user_name, name="rx-availability"),
+                Repo(owner=user_name, name="small-apps"),
+            ],
+        ),
+        RepoDirectory(
+            root=open_source_plugins,
+            repos=[
+                Repo(owner="nvimdev", name="dashboard-nvim"),
+                Repo(owner="ThePrimeagen", name="harpoon"),
+                Repo(owner="Saecki", name="crates.nvim"),
+            ],
+        ),
     ]
-    [clone(repo) for repo in repos]
-
-
-def clone(repo: RepoInfo) -> bool:
-    if not repo.root.is_dir():
-        print(f"Creating: {repo.root}")
-        repo.root.mkdir(parents=True)
-    if not repo.path.is_dir():
-        print(f"Cloning {repo.ssh} to {repo.path}")
-        git.Repo.clone_from(repo.ssh, repo.path)
-        return True
-    else:
-        print(f"Pulling: {repo.path}")
-        git.Repo(repo.path).remote().pull()
-        return False
+    [repo.clone_all() for repo in repo_directories]
 
 
 if __name__ == "__main__":
