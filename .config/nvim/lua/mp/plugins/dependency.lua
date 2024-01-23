@@ -22,8 +22,10 @@ return {
         end,
     },
     {
-        'MeanderingProgrammer/py-requirements.nvim.git',
+        'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        config = function() end,
+        config = function()
+            require('py-requirements').setup({})
+        end,
     },
 }
