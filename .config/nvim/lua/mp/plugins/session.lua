@@ -5,8 +5,8 @@ return {
     },
     config = function()
         local config = require('session_manager.config')
-        require('session_manager').setup({
-            autoload_mode = config.AutoloadMode.CurrentDir,
-        })
+        local manager = require('session_manager')
+        manager.setup({ autoload_mode = config.AutoloadMode.Disabled })
+        vim.keymap.set('n', '<leader>sd', manager.load_current_dir_session, { desc = 'Session: Load Directory' })
     end,
 }

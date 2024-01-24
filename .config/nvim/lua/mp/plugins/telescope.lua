@@ -34,8 +34,9 @@ return {
         map('<leader>tt', builtin.help_tags, {}, 'Help Tags')
 
         local descriptors = {}
-        vim.list_extend(descriptors, { 'Telescope', 'Harpoon', 'LSP', 'NvimTree', 'Dashboard', 'FTerm' })
-        vim.list_extend(descriptors, { 'Crates', 'textobject', 'named node', 'Goto', 'Swap' })
+        vim.list_extend(descriptors, { 'Telescope', 'Harpoon', 'LSP', 'NvimTree', 'Dashboard' })
+        vim.list_extend(descriptors, { 'FTerm', 'Crates', 'Session' })
+        vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
         local function keymap_filter(keymap)
             if keymap.desc == nil then
                 return false
