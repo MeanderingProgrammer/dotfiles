@@ -24,6 +24,9 @@ return {
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+        },
         config = function()
             require('py-requirements').setup({})
         end,
