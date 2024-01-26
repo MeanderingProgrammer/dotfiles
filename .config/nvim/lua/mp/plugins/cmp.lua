@@ -17,6 +17,7 @@ return {
         dependencies = {
             'saecki/crates.nvim',
             'saadparwaiz1/cmp_luasnip',
+            'MeanderingProgrammer/py-requirements.nvim',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-path',
@@ -47,6 +48,7 @@ return {
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
                     { name = 'crates' },
+                    { name = 'py-requirements' },
                     { name = 'luasnip' },
                     { name = 'buffer' },
                     { name = 'path' },
