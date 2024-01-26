@@ -37,6 +37,7 @@ return {
                 'ocaml',
                 'python',
                 'query',
+                'requirements',
                 'rust',
                 'scala',
                 'scss',
