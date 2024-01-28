@@ -13,8 +13,8 @@ return {
             map('ct', crates.toggle, 'Toggle UI')
             map('cv', crates.show_versions_popup, 'Show Version Popup')
             map('cd', crates.show_dependencies_popup, 'Show Dependency Popup')
-            map('cu', crates.update_all_crates, 'Update')
-            map('cU', crates.upgrade_all_crates, 'Upgrade')
+            map('cu', crates.upgrade_crate, 'Upgrade')
+            map('cU', crates.upgrade_all_crates, 'Upgrade All')
             crates.setup({
                 ---@diagnostic disable-next-line: missing-fields
                 src = { cmp = { enabled = true } },
@@ -30,7 +30,8 @@ return {
                 n_map('Requirements', lhs, rhs, desc)
             end
             local requirements = require('py-requirements')
-            map('ru', requirements.update_all, 'Update')
+            map('ru', requirements.upgrade, 'Upgrade')
+            map('rU', requirements.upgrade_all, 'Upgrade All')
             requirements.setup({})
         end,
     },
