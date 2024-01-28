@@ -1,8 +1,6 @@
 return {
     'nanozuki/tabby.nvim',
-    dependencies = {
-        'nvim-tree/nvim-web-devicons',
-    },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     init = function()
         vim.o.showtabline = 2
     end,

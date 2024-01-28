@@ -1,8 +1,6 @@
 return {
     'nvim-tree/nvim-tree.lua',
-    dependencies = {
-        'nvim-tree/nvim-web-devicons',
-    },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         vim.keymap.set('n', '<leader>nt', '<cmd>NvimTreeToggle<cr>', { desc = 'NvimTree: Toggle file tree' })
 

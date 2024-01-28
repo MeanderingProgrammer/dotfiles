@@ -24,11 +24,14 @@ return {
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-        },
+        dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
-            require('py-requirements').setup({})
+            local function map(lhs, rhs, desc)
+                n_map('Requirements', lhs, rhs, desc)
+            end
+            local requirements = require('py-requirements')
+            map('ru', requirements.update_all, 'Update')
+            requirements.setup({})
         end,
     },
 }
