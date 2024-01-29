@@ -3,11 +3,13 @@ return {
     dependencies = {
         'nvim-telescope/telescope.nvim',
         'hrsh7th/cmp-nvim-lsp',
+        'folke/neoconf.nvim',
         'folke/neodev.nvim',
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
     },
     config = function()
+        require('neoconf').setup({})
         require('neodev').setup({})
 
         local lspconfig = require('lspconfig')
@@ -71,24 +73,17 @@ return {
             handlers = {
                 default_setup,
                 bashls = function()
+                    ---@diagnostic disable-next-line: missing-fields
                     lspconfig.bashls.setup({
                         filetypes = { 'sh', 'zsh' },
-                    })
-                end,
-                lua_ls = function()
-                    lspconfig.lua_ls.setup({
-                        settings = {
-                            Lua = {
-                                workspace = { checkThirdParty = false },
-                                telemetry = { enable = false },
-                            },
-                        },
                     })
                 end,
                 rust_analyzer = function()
                     lspconfig.rust_analyzer.setup({
                         settings = {
+                            ---@diagnostic disable-next-line: missing-fields
                             ['rust-analyzer'] = {
+                                ---@diagnostic disable-next-line: missing-fields
                                 check = { command = 'clippy' },
                             },
                         },

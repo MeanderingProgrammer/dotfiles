@@ -21,7 +21,6 @@ return {
                 'gomod',
                 'gosum',
                 'gowork',
-                'groovy',
                 'html',
                 'java',
                 'javascript',
