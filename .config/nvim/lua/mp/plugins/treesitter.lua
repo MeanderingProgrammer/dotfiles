@@ -27,6 +27,7 @@ return {
                 'jq',
                 'jsdoc',
                 'json',
+                'jsonc',
                 'kotlin',
                 'latex',
                 'lua',
