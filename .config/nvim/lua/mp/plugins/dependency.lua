@@ -32,7 +32,7 @@ return {
             local requirements = require('py-requirements')
             map('ru', requirements.upgrade, 'Upgrade')
             map('rU', requirements.upgrade_all, 'Upgrade All')
-            -- map('rd', requirements.show_description, 'Show Description')
+            map('rd', requirements.show_description, 'Show Description')
             requirements.setup({
                 file_patterns = { '.*requirements.*.txt' },
             })
