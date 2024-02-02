@@ -22,6 +22,7 @@ return {
         },
         config = function()
             local cmp = require('cmp')
+            local compare = require('cmp.config.compare')
 
             cmp.setup.cmdline({ '/', '?' }, {
                 mapping = cmp.mapping.preset.cmdline(),
@@ -62,16 +63,16 @@ return {
                 sorting = {
                     priority_weight = 2,
                     comparators = {
-                        cmp.config.compare.sort_text,
+                        compare.sort_text,
                         -- Below is default: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
-                        cmp.config.compare.offset,
-                        cmp.config.compare.exact,
-                        cmp.config.compare.score,
-                        cmp.config.compare.recently_used,
-                        cmp.config.compare.locality,
-                        cmp.config.compare.kind,
-                        cmp.config.compare.length,
-                        cmp.config.compare.order,
+                        compare.offset,
+                        compare.exact,
+                        compare.score,
+                        compare.recently_used,
+                        compare.locality,
+                        compare.kind,
+                        compare.length,
+                        compare.order,
                     },
                 },
                 snippet = {
