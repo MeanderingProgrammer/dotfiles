@@ -63,11 +63,12 @@ return {
                 sorting = {
                     priority_weight = 2,
                     comparators = {
-                        compare.sort_text,
-                        -- Below is default: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
-                        compare.offset,
+                        -- Default: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
+                        -- With sort_text added
                         compare.exact,
                         compare.score,
+                        compare.sort_text,
+                        compare.offset,
                         compare.recently_used,
                         compare.locality,
                         compare.kind,
