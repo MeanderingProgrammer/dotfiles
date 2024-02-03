@@ -34,7 +34,7 @@ return {
             map('rU', requirements.upgrade_all, 'Upgrade All')
             map('rd', requirements.show_description, 'Show Description')
             requirements.setup({
-                file_patterns = { '.*requirements.*.txt', '.*pyproject.*.toml' },
+                file_patterns = { '.*requirements.*.txt' },
             })
         end,
     },
