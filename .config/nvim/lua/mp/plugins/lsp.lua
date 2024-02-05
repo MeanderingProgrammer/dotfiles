@@ -69,6 +69,7 @@ return {
                 'tailwindcss', -- Tailwind
                 'terraformls', -- Terraform
                 'tsserver', -- TypeScript
+                'zls', -- Zig
             },
             handlers = {
                 default_setup,
