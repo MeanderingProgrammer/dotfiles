@@ -2,16 +2,16 @@
 
 from argparse import ArgumentParser
 
-import command
+import git
 
 
 def main() -> None:
-    branches = command.run("git branch").split("\n")
-    if len(branches) != 2:
-        print(f"Can only switch between 2 branches but found {len(branches)}")
-        return
-    branch = branches[1] if branches[0].startswith("*") else branches[0]
-    command.execute(f"git checkout {branch}")
+    repo = git.Repo(".")
+    branches = list(repo.heads)
+    assert len(branches) == 2, f"Only possible with 2 branches found {len(branches)}"
+    checkout = [branch for branch in branches if branch != repo.active_branch]
+    assert len(checkout) == 1, f"Should be left with 1 branch found {len(checkout)}"
+    checkout[0].checkout()
 
 
 if __name__ == "__main__":

@@ -12,9 +12,9 @@ alias gpl="git pull"
 alias ga="git add --all"
 alias gc="git commit -m"
 alias gb="git branch"
+alias gac="git add --all && git commit --amend"
 alias gm="git checkout main"
 alias gu="git branch -u main"
-alias gac="git add --all && git commit --amend"
 alias gundo="git restore ."
 
 # Yadm
@@ -24,6 +24,7 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
+alias yac="yadm add ~/.config/"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 
