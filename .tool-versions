@@ -1,5 +1,5 @@
 awscli 2.13.25
-bun 1.0.4
+bun 1.0.26
 coursier 2.1.7
 dotnet-core 8.0.101
 golang 1.21.5
