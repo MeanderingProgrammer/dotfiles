@@ -18,6 +18,7 @@ install_libraries() {
     cargo install --path ~/.config/shell/weather
     asdf reshim rust
     # Node
+    npm install -g pnpm
     npm install -g neovim
     # OCaml
     opam init
