@@ -5,4 +5,12 @@ return {
             vim.list_extend(opts.ensure_installed, { 'ocaml' })
         end,
     },
+    {
+        'neovim/nvim-lspconfig',
+        opts = {
+            servers = {
+                ocamllsp = {},
+            },
+        },
+    },
 }

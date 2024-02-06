@@ -3,15 +3,13 @@ return {
     dependencies = {
         'nvim-telescope/telescope.nvim',
         'hrsh7th/cmp-nvim-lsp',
-        'folke/neoconf.nvim',
-        'folke/neodev.nvim',
         'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
     },
-    config = function()
-        require('neoconf').setup({})
-        require('neodev').setup({})
-
+    opts = {
+        servers = {},
+    },
+    config = function(_, opts)
         local lspconfig = require('lspconfig')
 
         local cmp_capabilites = require('cmp_nvim_lsp').default_capabilities()
@@ -22,12 +20,12 @@ return {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
             callback = function(event)
-                local function map(lhs, f, opts, desc)
+                local function map(lhs, f, map_opts, desc)
                     local function rhs()
-                        if opts == nil then
+                        if map_opts == nil then
                             f()
                         else
-                            f(opts)
+                            f(map_opts)
                         end
                     end
                     vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP: ' .. desc })
@@ -43,52 +41,21 @@ return {
             end,
         })
 
-        local skip_setup = { 'jdtls' }
-        local default_setup = function(server)
-            if not vim.tbl_contains(skip_setup, server) then
-                lspconfig[server].setup({})
-            end
+        local ensure_installed = {}
+        for server in pairs(opts.servers) do
+            table.insert(ensure_installed, server)
         end
 
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-            ensure_installed = {
-                'bashls', -- Bash
-                'csharp_ls', -- C#
-                'eslint', -- ESLint
-                'gopls', -- Go
-                'jdtls', -- Java
-                'jsonls', -- JSON
-                'lua_ls', -- Lua
-                'marksman', -- Markdown
-                'ocamllsp', -- OCaml
-                'pyright', -- Python
-                'rust_analyzer', -- Rust
-                'svelte', -- Svelte
-                'tailwindcss', -- Tailwind
-                'terraformls', -- Terraform
-                'tsserver', -- TypeScript
-                'zls', -- Zig
-            },
+            ensure_installed = ensure_installed,
             handlers = {
-                default_setup,
-                bashls = function()
-                    ---@diagnostic disable-next-line: missing-fields
-                    lspconfig.bashls.setup({
-                        filetypes = { 'sh', 'zsh' },
-                    })
-                end,
-                rust_analyzer = function()
-                    lspconfig.rust_analyzer.setup({
-                        settings = {
-                            ---@diagnostic disable-next-line: missing-fields
-                            ['rust-analyzer'] = {
-                                ---@diagnostic disable-next-line: missing-fields
-                                check = { command = 'clippy' },
-                            },
-                        },
-                    })
+                function(server)
+                    -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+                    local setup = opts.servers[server]
+                    if setup then
+                        lspconfig[server].setup(setup)
+                    end
                 end,
             },
         })

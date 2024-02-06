@@ -6,4 +6,12 @@ return {
             vim.list_extend(opts.ensure_installed, c_grammars)
         end,
     },
+    {
+        'neovim/nvim-lspconfig',
+        opts = {
+            servers = {
+                csharp_ls = {},
+            },
+        },
+    },
 }

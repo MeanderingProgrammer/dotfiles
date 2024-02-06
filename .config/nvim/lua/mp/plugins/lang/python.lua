@@ -5,4 +5,12 @@ return {
             vim.list_extend(opts.ensure_installed, { 'python', 'requirements' })
         end,
     },
+    {
+        'neovim/nvim-lspconfig',
+        opts = {
+            servers = {
+                pyright = {},
+            },
+        },
+    },
 }

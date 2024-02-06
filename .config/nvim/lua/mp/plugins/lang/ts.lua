@@ -6,4 +6,15 @@ return {
             vim.list_extend(opts.ensure_installed, ts_grammars)
         end,
     },
+    {
+        'neovim/nvim-lspconfig',
+        opts = {
+            servers = {
+                eslint = {},
+                svelte = {},
+                tailwindcss = {},
+                tsserver = {},
+            },
+        },
+    },
 }
