@@ -21,8 +21,7 @@ install_libraries() {
     npm install -g pnpm
     npm install -g neovim
     # OCaml
-    opam init
-    opam install ocamlformat
+    opam init --no
 }
 
 brew bundle --global
