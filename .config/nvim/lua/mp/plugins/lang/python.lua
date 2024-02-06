@@ -38,4 +38,12 @@ return {
             table.insert(opts.sources, { name = 'py-requirements' })
         end,
     },
+    {
+        'stevearc/conform.nvim',
+        opts = {
+            formatters_by_ft = {
+                python = { 'isort', 'black' },
+            },
+        },
+    },
 }
