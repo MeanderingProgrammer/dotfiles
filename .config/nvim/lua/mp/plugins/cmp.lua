@@ -13,14 +13,15 @@ return {
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
-            'saecki/crates.nvim',
             'saadparwaiz1/cmp_luasnip',
-            'MeanderingProgrammer/py-requirements.nvim',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-path',
         },
-        config = function()
+        opts = {
+            sources = {},
+        },
+        config = function(_, opts)
             local cmp = require('cmp')
             local compare = require('cmp.config.compare')
 
@@ -36,6 +37,13 @@ return {
                 sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }),
             })
 
+            vim.list_extend(opts.sources, {
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' },
+                { name = 'buffer' },
+                { name = 'path' },
+            })
+
             cmp.setup({
                 window = {
                     completion = cmp.config.window.bordered({ border = 'rounded' }),
@@ -44,14 +52,7 @@ return {
                 completion = {
                     completeopt = 'menu,menuone,noinsert',
                 },
-                sources = cmp.config.sources({
-                    { name = 'nvim_lsp' },
-                    { name = 'crates' },
-                    { name = 'py-requirements' },
-                    { name = 'luasnip' },
-                    { name = 'buffer' },
-                    { name = 'path' },
-                }),
+                sources = cmp.config.sources(opts.sources),
                 mapping = cmp.mapping.preset.insert({
                     ['<cr>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-space>'] = cmp.mapping.complete(),
