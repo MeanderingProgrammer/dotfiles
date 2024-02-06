@@ -45,6 +45,7 @@ vim.opt.expandtab = true
 
 -- Keep some context in view
 vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
 
 -- Use system clipboard / WSL fix
 if vim.fn.has('wsl') == 1 then

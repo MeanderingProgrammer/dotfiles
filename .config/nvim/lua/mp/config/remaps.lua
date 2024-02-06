@@ -5,10 +5,14 @@ end
 -- Escape in terminal mode
 remap('t', '<esc>', '<C-\\><C-n>')
 
--- Move split panes
+-- Move lines up / down
+remap('n', '<A-j>', '<cmd>m .+1<cr>==')
+remap('n', '<A-k>', '<cmd>m .-2<cr>==')
+remap('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi')
+remap('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi')
+
+-- Move split panes left / right
 remap('n', '<A-h>', '<C-W>H')
-remap('n', '<A-j>', '<C-W>J')
-remap('n', '<A-k>', '<C-W>K')
 remap('n', '<A-l>', '<C-W>L')
 
 -- Move between panes
