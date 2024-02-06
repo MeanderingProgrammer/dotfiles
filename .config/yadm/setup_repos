@@ -15,19 +15,22 @@ class Repo:
     def ssh(self) -> str:
         return f"git@github.com:{self.owner}/{self.name}.git"
 
-    def clone(self, root: Path) -> bool:
-        if not root.is_dir():
-            print(f"Creating: {root}")
-            root.mkdir(parents=True)
+    def clone(self, root: Path) -> None:
+        repo = self.get_repo(root)
+        for submodule in repo.submodules:
+            print(f"Updating submodule: {submodule}")
+            submodule.update(init=True)
+
+    def get_repo(self, root: Path) -> git.Repo:
         path = root.joinpath(self.name)
         if not path.is_dir():
             print(f"Cloning {self.ssh} to {path}")
-            git.Repo.clone_from(self.ssh, path)
-            return True
+            return git.Repo.clone_from(self.ssh, path)
         else:
             print(f"Pulling: {path}")
-            git.Repo(path).remote().pull()
-            return False
+            repo = git.Repo(path)
+            repo.remote().pull()
+            return repo
 
 
 @dataclass(frozen=True)
@@ -35,9 +38,11 @@ class RepoDirectory:
     root: Path
     repos: list[Repo]
 
-    def clone_all(self) -> bool:
-        results = [repo.clone(self.root) for repo in self.repos]
-        return any(results)
+    def clone_all(self) -> None:
+        if not self.root.is_dir():
+            print(f"Creating: {self.root}")
+            self.root.mkdir(parents=True)
+        [repo.clone(self.root) for repo in self.repos]
 
 
 def main() -> None:
