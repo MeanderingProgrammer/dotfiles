@@ -46,3 +46,7 @@ export C_SHARP_INIT="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
 # Setup Airflow
 export AIRFLOW_DIR="$HOME/airflow"
 [[ -d $AIRFLOW_DIR ]] && export AIRFLOW_HOME=$AIRFLOW_DIR
+
+# Setup Password Store Extensions
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+export PASSWORD_STORE_EXTENSIONS_DIR="/usr/local/lib/password-store/extensions"
