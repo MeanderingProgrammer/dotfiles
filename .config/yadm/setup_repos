@@ -19,22 +19,32 @@ class Repo:
         return f"git@github.com:{owner}/{self.name}.git"
 
     def clone(self, root: Path) -> None:
-        repo: git.Repo = self.repo(root)
-        for submodule in repo.submodules:
-            print(f"Updating submodule: {submodule}")
-            submodule.update(init=True)
-
-    def repo(self, root: Path) -> git.Repo:
         directory: str = self.directory or self.name
         path: Path = root.joinpath(directory)
         if not path.is_dir():
             print(f"Cloning {self.ssh} to {path}")
-            return git.Repo.clone_from(self.ssh, path)
+            repo: git.Repo = git.Repo.clone_from(self.ssh, path)
+            Repo.update_submodules(repo)
         else:
-            print(f"Pulling: {path}")
-            repo = git.Repo(path)
-            repo.remote().pull()
-            return repo
+            repo: git.Repo = git.Repo(path)
+            changes: int = len(repo.index.diff(None)) + len(repo.untracked_files)
+            local_commit: str = str(repo.head.commit)
+            revision: str = f"{repo.remote().name}/{repo.active_branch.name}"
+            merged_commit: str = str(repo.rev_parse(revision))
+            if changes > 0:
+                print(f"Found {changes} unstaged changes, not updating {path}")
+            elif local_commit != merged_commit:
+                print(f"Found unmerged commits, not updating {path}")
+            else:
+                print(f"Pulling: {path}")
+                repo.remote().pull()
+                Repo.update_submodules(repo)
+
+    @staticmethod
+    def update_submodules(repo: git.Repo) -> None:
+        for submodule in repo.submodules:
+            print(f"Updating submodule: {submodule}")
+            submodule.update(init=True)
 
 
 @cache

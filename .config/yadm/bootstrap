@@ -14,7 +14,6 @@ install_libraries() {
     pip install -r ~/.github/requirements.txt
     # Rust
     cargo install aoc-cli
-    cargo install rust-script
     cargo install --path ~/.config/shell/weather
     asdf reshim rust
     # Node
