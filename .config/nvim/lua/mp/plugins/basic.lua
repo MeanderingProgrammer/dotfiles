@@ -1,5 +1,8 @@
 local icons = 'nvim-tree/nvim-web-devicons'
 
+---@param mode string
+---@param prefix string
+---@return table
 local function load_fterm(mode, prefix)
     local command = '<cmd>lua require("FTerm").toggle()<cr>'
     return { '<A-i>', prefix .. command, mode = mode, desc = 'FTerm: Toggle' }

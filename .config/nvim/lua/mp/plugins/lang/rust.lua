@@ -25,6 +25,9 @@ return {
             {
                 'Saecki/crates.nvim',
                 config = function()
+                    ---@param lhs string
+                    ---@param rhs fun()
+                    ---@param desc string
                     local function map(lhs, rhs, desc)
                         vim.keymap.set('n', '<leader>' .. lhs, rhs, { silent = true, desc = 'Crates: ' .. desc })
                     end

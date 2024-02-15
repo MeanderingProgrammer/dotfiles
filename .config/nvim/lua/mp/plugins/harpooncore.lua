@@ -10,6 +10,9 @@ return {
             default_action = 'vs',
         })
 
+        ---@param lhs string
+        ---@param rhs fun()|string
+        ---@param desc string
         local function map(lhs, rhs, desc)
             vim.keymap.set('n', lhs, rhs, { desc = 'Harpoon: ' .. desc })
         end

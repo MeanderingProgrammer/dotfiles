@@ -11,6 +11,10 @@ return {
         local mappings = { ['<cr>'] = actions.select_drop }
         telescope.setup({ defaults = { mappings = { i = mappings } } })
 
+        ---@param lhs string
+        ---@param f fun(opts: table)
+        ---@param opts table
+        ---@param desc string
         local function map(lhs, f, opts, desc)
             local function rhs()
                 f(opts)
@@ -30,6 +34,8 @@ return {
         vim.list_extend(descriptors, { 'Harpoon', 'Dashboard', 'Requirements' })
         vim.list_extend(descriptors, { 'Telescope', 'LSP', 'NvimTree', 'FTerm', 'Crates', 'Session' })
         vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
+        ---@param keymap table
+        ---@return boolean
         local function keymap_filter(keymap)
             if keymap.desc ~= nil then
                 for _, descriptor in ipairs(descriptors) do

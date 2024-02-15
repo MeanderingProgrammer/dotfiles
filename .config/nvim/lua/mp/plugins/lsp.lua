@@ -20,13 +20,13 @@ return {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
             callback = function(event)
+                ---@param lhs string
+                ---@param f fun(opts: table|nil)
+                ---@param map_opts table|nil
+                ---@param desc string
                 local function map(lhs, f, map_opts, desc)
                     local function rhs()
-                        if map_opts == nil then
-                            f()
-                        else
-                            f(map_opts)
-                        end
+                        f(map_opts)
                     end
                     vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP: ' .. desc })
                 end

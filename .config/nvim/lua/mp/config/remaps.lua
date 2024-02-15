@@ -1,3 +1,6 @@
+---@param modes string|string[]
+---@param lhs string
+---@param rhs string
 local function remap(modes, lhs, rhs)
     vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
 end
