@@ -91,7 +91,7 @@ def get_alias_groups() -> AliasGroups:
         AliasGroup(
             name="Advent",
             aliases=[
-                Alias(name="a_setup", command="./scripts/advent.py setup"),
+                Alias(name="a_build", command="./scripts/advent.py build"),
                 Alias(name="a_run", command="./scripts/advent.py run"),
                 Alias(name="a_gen", command="./scripts/advent.py generate"),
                 Alias(name="a_graph", command="./scripts/advent.py graph"),
