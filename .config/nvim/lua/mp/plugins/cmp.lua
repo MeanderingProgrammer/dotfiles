@@ -33,14 +33,11 @@ return {
             })
 
             cmp.setup({
+                sources = cmp.config.sources(opts.sources),
                 window = {
                     completion = cmp.config.window.bordered({ border = 'rounded' }),
                     documentation = cmp.config.window.bordered({ border = 'rounded' }),
                 },
-                completion = {
-                    completeopt = 'menu,menuone,noinsert',
-                },
-                sources = cmp.config.sources(opts.sources),
                 mapping = cmp.mapping.preset.insert({
                     ['<cr>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-space>'] = cmp.mapping.complete(),
@@ -51,6 +48,13 @@ return {
                     ['<tab>'] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<S-tab>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
                         else
                             fallback()
                         end

@@ -31,26 +31,17 @@ return {
 
         local lspconfig = require('lspconfig')
 
-        local capabilities = vim.tbl_deep_extend(
-            'force',
-            vim.lsp.protocol.make_client_capabilities(),
-            require('cmp_nvim_lsp').default_capabilities()
-        )
-
-        local ensure_installed = {}
-        for server in pairs(opts.servers) do
-            table.insert(ensure_installed, server)
-        end
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        local default = { capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities) }
 
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = ensure_installed,
+            ensure_installed = vim.tbl_keys(opts.servers),
             handlers = {
                 function(server)
                     -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
                     local setup = opts.servers[server]
                     if setup then
-                        local default = { capabilities = vim.deepcopy(capabilities) }
                         local server_setup = vim.tbl_deep_extend('force', default, setup)
                         lspconfig[server].setup(server_setup)
                     end
