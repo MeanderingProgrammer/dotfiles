@@ -4,7 +4,7 @@ return {
     opts = {
         linters_by_ft = {},
         linter_configs = {},
-        events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
+        events = { 'BufRead', 'BufWritePost', 'InsertLeave' },
     },
     config = function(_, opts)
         local utils = require('mp.config.utils')
