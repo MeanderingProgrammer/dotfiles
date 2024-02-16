@@ -24,7 +24,7 @@ return {
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        dependencies = { 'nvim-lua/plenary.nvim' },
+        dependencies = { 'nvim-lua/plenary.nvim', 'hrsh7th/nvim-cmp' },
         config = function()
             local requirements = require('py-requirements')
             requirements.setup({
@@ -39,7 +39,6 @@ return {
     },
     {
         'hrsh7th/nvim-cmp',
-        dependencies = { 'MeanderingProgrammer/py-requirements.nvim' },
         opts = function(_, opts)
             table.insert(opts.sources, { name = 'py-requirements' })
         end,

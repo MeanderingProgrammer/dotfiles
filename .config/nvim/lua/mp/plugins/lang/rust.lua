@@ -21,6 +21,7 @@ return {
     },
     {
         'Saecki/crates.nvim',
+        dependencies = { 'hrsh7th/nvim-cmp' },
         config = function()
             local crates = require('crates')
             crates.setup({
@@ -37,7 +38,6 @@ return {
     },
     {
         'hrsh7th/nvim-cmp',
-        dependencies = { 'Saecki/crates.nvim' },
         opts = function(_, opts)
             table.insert(opts.sources, { name = 'crates' })
         end,
