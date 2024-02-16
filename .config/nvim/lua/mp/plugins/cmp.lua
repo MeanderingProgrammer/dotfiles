@@ -25,18 +25,6 @@ return {
             local cmp = require('cmp')
             local compare = require('cmp.config.compare')
 
-            cmp.setup.cmdline({ '/', '?' }, {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = { { name = 'buffer' } },
-            })
-
-            cmp.setup.cmdline(':', {
-                mapping = cmp.mapping.preset.cmdline({
-                    ['<tab>'] = cmp.mapping.confirm({ select = false }),
-                }),
-                sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }),
-            })
-
             vim.list_extend(opts.sources, {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' },
@@ -60,6 +48,13 @@ return {
                     ['<C-p>'] = cmp.mapping.select_prev_item(),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+                    ['<tab>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
                 }),
                 sorting = {
                     priority_weight = 2,
@@ -82,6 +77,19 @@ return {
                         require('luasnip').lsp_expand(args.body)
                     end,
                 },
+                experimental = {
+                    ghost_text = true,
+                },
+            })
+
+            cmp.setup.cmdline({ '/', '?' }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = { { name = 'buffer' } },
+            })
+
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }),
             })
         end,
     },

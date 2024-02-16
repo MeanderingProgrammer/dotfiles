@@ -10,12 +10,6 @@ return {
         servers = {},
     },
     config = function(_, opts)
-        local lspconfig = require('lspconfig')
-
-        local cmp_capabilites = require('cmp_nvim_lsp').default_capabilities()
-        local lsp_defaults = lspconfig.util.default_config
-        lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, cmp_capabilites)
-
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
@@ -35,6 +29,14 @@ return {
             end,
         })
 
+        local lspconfig = require('lspconfig')
+
+        local capabilities = vim.tbl_deep_extend(
+            'force',
+            vim.lsp.protocol.make_client_capabilities(),
+            require('cmp_nvim_lsp').default_capabilities()
+        )
+
         local ensure_installed = {}
         for server in pairs(opts.servers) do
             table.insert(ensure_installed, server)
@@ -48,7 +50,9 @@ return {
                     -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
                     local setup = opts.servers[server]
                     if setup then
-                        lspconfig[server].setup(setup)
+                        local default = { capabilities = vim.deepcopy(capabilities) }
+                        local server_setup = vim.tbl_deep_extend('force', default, setup)
+                        lspconfig[server].setup(server_setup)
                     end
                 end,
             },
