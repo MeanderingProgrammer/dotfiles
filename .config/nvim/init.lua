@@ -1,2 +1,5 @@
 require('mp.config')
-require('mp.lazy')
+
+if not vim.g.vscode then
+    require('mp.lazy')
+end
