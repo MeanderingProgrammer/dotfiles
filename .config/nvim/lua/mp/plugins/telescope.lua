@@ -11,29 +11,22 @@ return {
         local mappings = { ['<cr>'] = actions.select_drop }
         telescope.setup({ defaults = { mappings = { i = mappings } } })
 
-        ---@param lhs string
-        ---@param f fun(opts: table)
-        ---@param opts table
-        ---@param desc string
-        local function map(lhs, f, opts, desc)
-            local function rhs()
-                f(opts)
-            end
-            vim.keymap.set('n', '<leader>' .. lhs, rhs, { desc = 'Telescope: ' .. desc })
-        end
         local builtin = require('telescope.builtin')
-        map('<leader>', builtin.buffers, {}, 'Find Existing Buffers')
-        map('?', builtin.oldfiles, {}, 'Find Recently Opened Files')
-        map('tf', builtin.find_files, {}, 'Find Files')
-        map('tg', builtin.live_grep, {}, 'Grep Files')
-        map('td', builtin.diagnostics, {}, 'Diagnostics')
-        map('tw', builtin.grep_string, {}, 'Current Word')
-        map('tt', builtin.help_tags, {}, 'Help Tags')
+        local map = require('mp.config.utils').leader_map
+
+        map('<leader>', builtin.buffers, 'Telescope: Find Existing Buffers')
+        map('?', builtin.oldfiles, 'Telescope: Find Recently Opened Files')
+        map('tf', builtin.find_files, 'Telescope: Find Files')
+        map('tg', builtin.live_grep, 'Telescope: Grep Files')
+        map('td', builtin.diagnostics, 'Telescope: Diagnostics')
+        map('tw', builtin.grep_string, 'Telescope: Current Word')
+        map('tt', builtin.help_tags, 'Telescope: Help Tags')
 
         local descriptors = {}
         vim.list_extend(descriptors, { 'Harpoon', 'Dashboard', 'Requirements' })
         vim.list_extend(descriptors, { 'Telescope', 'LSP', 'NvimTree', 'FTerm', 'Crates', 'Session' })
         vim.list_extend(descriptors, { 'textobject', 'named node', 'Goto', 'Swap' })
+
         ---@param keymap table
         ---@return boolean
         local function keymap_filter(keymap)
@@ -47,7 +40,7 @@ return {
             return false
         end
         local keymap_options = { modes = { 'n', 'x' }, filter = keymap_filter }
-        map('th', builtin.keymaps, keymap_options, 'Show Keymaps')
+        map('th', builtin.keymaps, 'Telescope: Show Keymaps', keymap_options)
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')

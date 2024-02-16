@@ -5,6 +5,8 @@ return {
         local config = require('session_manager.config')
         local manager = require('session_manager')
         manager.setup({ autoload_mode = config.AutoloadMode.Disabled })
-        vim.keymap.set('n', '<leader>sd', manager.load_current_dir_session, { desc = 'Session: Load Directory' })
+
+        local map = require('mp.config.utils').leader_map
+        map('sd', manager.load_current_dir_session, 'Session: Load Directory')
     end,
 }

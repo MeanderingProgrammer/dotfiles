@@ -10,29 +10,20 @@ return {
             default_action = 'vs',
         })
 
-        ---@param lhs string
-        ---@param rhs fun()|string
-        ---@param desc string
-        local function map(lhs, rhs, desc)
-            vim.keymap.set('n', lhs, rhs, { desc = 'Harpoon: ' .. desc })
-        end
-
         local mark = require('harpoon-core.mark')
-        map('<leader>ha', mark.add_file, 'Add current file')
-        map('<leader>hr', mark.rm_file, 'Remove current file')
-
         local ui = require('harpoon-core.ui')
-        map('<leader>hu', ui.toggle_quick_menu, 'Toggle UI')
-        map('<leader>hn', ui.nav_next, 'Next file')
-        map('<leader>hp', ui.nav_prev, 'Previous file')
+        local map = require('mp.config.utils').leader_map
+
+        map('ha', mark.add_file, 'Harpoon: Add current file')
+        map('hr', mark.rm_file, 'Harpoon: Remove current file')
+        map('hu', ui.toggle_quick_menu, 'Harpoon: Toggle UI')
+        map('hn', ui.nav_next, 'Harpoon: Next file')
+        map('hp', ui.nav_prev, 'Harpoon: Previous file')
         for i = 1, 5 do
-            local open_file = function()
-                ui.nav_file(i)
-            end
-            map('<leader>' .. i, open_file, 'Open file ' .. i)
+            map(i, ui.nav_file, 'Harpoon: Open file ' .. i, i)
         end
 
         require('telescope').load_extension('harpoon-core')
-        map('<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', 'Telescope menu')
+        map('ht', 'Telescope harpoon-core marks', 'Harpoon: Telescope menu')
     end,
 }

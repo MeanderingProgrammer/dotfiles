@@ -2,8 +2,6 @@ return {
     'nvim-tree/nvim-tree.lua',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-        vim.keymap.set('n', '<leader>nt', '<cmd>NvimTreeToggle<cr>', { desc = 'NvimTree: Toggle file tree' })
-
         local size = 30
         require('nvim-tree').setup({
             hijack_cursor = true,
@@ -26,5 +24,9 @@ return {
                 sync = { open = true, close = true },
             },
         })
+
+        local api = require('nvim-tree.api')
+        local map = require('mp.config.utils').leader_map
+        map('nt', api.tree.toggle, 'NvimTree: Toggle file tree')
     end,
 }

@@ -7,16 +7,9 @@ return {
         events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
     },
     config = function(_, opts)
-        local ensure_installed = {}
-        for _, linters in pairs(opts.linters_by_ft) do
-            for _, linter in ipairs(linters) do
-                if not vim.tbl_contains(ensure_installed, linter) then
-                    table.insert(ensure_installed, linter)
-                end
-            end
-        end
+        local utils = require('mp.config.utils')
         require('mason-tool-installer').setup({
-            ensure_installed = ensure_installed,
+            ensure_installed = utils.flat_values(opts.linters_by_ft),
         })
 
         local lint = require('lint')

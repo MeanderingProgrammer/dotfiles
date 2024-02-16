@@ -22,21 +22,17 @@ return {
     {
         'Saecki/crates.nvim',
         config = function()
-            ---@param lhs string
-            ---@param rhs fun()
-            ---@param desc string
-            local function map(lhs, rhs, desc)
-                vim.keymap.set('n', '<leader>' .. lhs, rhs, { silent = true, desc = 'Crates: ' .. desc })
-            end
             local crates = require('crates')
-            map('ct', crates.toggle, 'Toggle UI')
-            map('cv', crates.show_versions_popup, 'Show Version Popup')
-            map('cd', crates.show_dependencies_popup, 'Show Dependency Popup')
-            map('cu', crates.upgrade_crate, 'Upgrade')
-            map('cU', crates.upgrade_all_crates, 'Upgrade All')
             crates.setup({
                 src = { cmp = { enabled = true } },
             })
+
+            local map = require('mp.config.utils').leader_map
+            map('ct', crates.toggle, 'Crates: Toggle UI')
+            map('cv', crates.show_versions_popup, 'Crates: Show Version Popup')
+            map('cd', crates.show_dependencies_popup, 'Crates: Show Dependency Popup')
+            map('cu', crates.upgrade_crate, 'Crates: Upgrade')
+            map('cU', crates.upgrade_all_crates, 'Crates: Upgrade All')
         end,
     },
     {

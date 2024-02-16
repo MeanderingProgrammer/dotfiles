@@ -20,24 +20,18 @@ return {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
             callback = function(event)
-                ---@param lhs string
-                ---@param f fun(opts: table|nil)
-                ---@param map_opts table|nil
-                ---@param desc string
-                local function map(lhs, f, map_opts, desc)
-                    local function rhs()
-                        f(map_opts)
-                    end
-                    vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP: ' .. desc })
-                end
+                local buf = event.buf
                 local builtin = require('telescope.builtin')
-                map('gd', builtin.lsp_definitions, { jump_type = 'never' }, 'Goto Definitions')
-                map('gr', builtin.lsp_references, { jump_type = 'never' }, 'Goto References')
-                map('gi', builtin.lsp_implementations, { jump_type = 'never' }, 'Goto Implementations')
-                map('<leader>k', vim.lsp.buf.hover, nil, 'Hover Information')
-                map('<leader><C-k>', vim.lsp.buf.signature_help, nil, 'Signature Help')
-                map('<leader>ca', vim.lsp.buf.code_action, nil, 'Code Actions')
-                map('<leader>rn', vim.lsp.buf.rename, nil, 'Rename')
+                local jump_opts = { jump_type = 'never' }
+                local map = require('mp.config.utils').map
+
+                map('gd', builtin.lsp_definitions, 'LSP: Goto Definitions', buf, jump_opts)
+                map('gr', builtin.lsp_references, 'LSP: Goto References', buf, jump_opts)
+                map('gi', builtin.lsp_implementations, 'LSP: Goto Implementations', buf, jump_opts)
+                map('<leader>k', vim.lsp.buf.hover, 'LSP: Hover Information', buf)
+                map('<leader><C-k>', vim.lsp.buf.signature_help, 'LSP: Signature Help', buf)
+                map('<leader>ca', vim.lsp.buf.code_action, 'LSP: Code Actions', buf)
+                map('<leader>rn', vim.lsp.buf.rename, 'LSP: Rename', buf)
             end,
         })
 

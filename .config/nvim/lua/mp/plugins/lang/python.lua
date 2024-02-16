@@ -26,19 +26,15 @@ return {
         dev = true,
         dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
-            ---@param lhs string
-            ---@param rhs fun()
-            ---@param desc string
-            local function map(lhs, rhs, desc)
-                vim.keymap.set('n', '<leader>' .. lhs, rhs, { silent = true, desc = 'Requirements: ' .. desc })
-            end
             local requirements = require('py-requirements')
-            map('ru', requirements.upgrade, 'Upgrade')
-            map('rU', requirements.upgrade_all, 'Upgrade All')
-            map('rd', requirements.show_description, 'Show Description')
             requirements.setup({
                 file_patterns = { '.*requirements.*.txt' },
             })
+
+            local map = require('mp.config.utils').leader_map
+            map('ru', requirements.upgrade, 'Requirements: Upgrade')
+            map('rU', requirements.upgrade_all, 'Requirements: Upgrade All')
+            map('rd', requirements.show_description, 'Requirements: Show Description')
         end,
     },
     {
