@@ -26,4 +26,30 @@ return {
             },
         },
     },
+    {
+        'mfussenegger/nvim-lint',
+        opts = {
+            linters_by_ft = {
+                lua = { 'luacheck' },
+            },
+            linter_configs = {
+                luacheck = {
+                    args = {
+                        -- https://luacheck.readthedocs.io/en/stable/cli.html
+                        '--globals',
+                        'vim',
+                        'assert',
+                        'describe',
+                        'it',
+                        -- https://github.com/mfussenegger/nvim-lint/blob/master/lua/lint/linters/luacheck.lua
+                        '--formatter',
+                        'plain',
+                        '--codes',
+                        '--ranges',
+                        '-',
+                    },
+                },
+            },
+        },
+    },
 }
