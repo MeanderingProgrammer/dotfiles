@@ -4,13 +4,13 @@ from argparse import ArgumentParser
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 
 @dataclass(frozen=True)
 class FileFilter:
-    ignore_suffixes: List[str]
-    ignore_dirs: List[str]
+    ignore_suffixes: list[str]
+    ignore_dirs: list[str]
 
     def run(self, file: Path) -> bool:
         if not file.is_file():
@@ -80,7 +80,7 @@ def fix_file(file: Path) -> None:
             f.write(line)
 
 
-def read_lines(file: Path) -> List[bytes]:
+def read_lines(file: Path) -> list[bytes]:
     lines = []
     with file.open(mode="rb") as f:
         lines = [line for line in f]
