@@ -26,7 +26,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 ## WSL2 requirements
 
-```
+```bash
 sudo apt install \
   wget curl make gcc llvm wl-clipboard \
   build-essential bubblewrap xz-utils \
