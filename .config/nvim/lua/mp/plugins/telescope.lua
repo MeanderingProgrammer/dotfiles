@@ -48,7 +48,7 @@ return {
             end
             return false
         end
-        local keymap_opts = { modes = { 'n', 'x' }, filter = keymap_filter }
+        local keymap_opts = { modes = { 'n', 'x', 't' }, filter = keymap_filter }
         map('th', utils.thunk(builtin.keymaps, keymap_opts), 'Show Keymaps')
 
         telescope.load_extension('fzf')
