@@ -26,7 +26,9 @@ return {
         })
 
         local api = require('nvim-tree.api')
-        local map = require('mp.config.utils').leader_map
-        map('nt', api.tree.toggle, 'NvimTree: Toggle file tree')
+        vim.keymap.set('n', '<leader>nt', api.tree.toggle, {
+            silent = true,
+            desc = 'NvimTree: Toggle File Tree',
+        })
     end,
 }

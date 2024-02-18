@@ -5,9 +5,6 @@ local function remap(modes, lhs, rhs)
     vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
 end
 
--- Escape in terminal mode
-remap('t', '<esc>', '<C-\\><C-n>')
-
 -- Move lines up / down
 remap('n', '<A-j>', '<cmd>m .+1<cr>==')
 remap('n', '<A-k>', '<cmd>m .-2<cr>==')
@@ -32,9 +29,6 @@ remap('n', '<C-u>', '<C-u>zz')
 remap('n', 'n', 'nzz')
 remap('n', 'N', 'Nzz')
 remap('n', '<cr>', ':noh<cr><cr>')
-
--- Escape
-remap({ 'v', 'i' }, 'ii', '<esc>')
 
 -- Remove my ability to fallback to arrows
 remap({ 'n', 'v', 'i' }, '<Up>', '<Nop>')

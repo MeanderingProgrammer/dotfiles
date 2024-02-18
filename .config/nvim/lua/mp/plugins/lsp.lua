@@ -14,18 +14,27 @@ return {
             group = vim.api.nvim_create_augroup('UserLspConfig', {}),
             desc = 'LSP actions',
             callback = function(event)
-                local buf = event.buf
                 local builtin = require('telescope.builtin')
                 local jump_opts = { jump_type = 'never' }
-                local map = require('mp.config.utils').map
+                local utils = require('mp.config.utils')
 
-                map('gd', builtin.lsp_definitions, 'LSP: Goto Definitions', buf, jump_opts)
-                map('gr', builtin.lsp_references, 'LSP: Goto References', buf, jump_opts)
-                map('gi', builtin.lsp_implementations, 'LSP: Goto Implementations', buf, jump_opts)
-                map('<leader>k', vim.lsp.buf.hover, 'LSP: Hover Information', buf)
-                map('<leader><C-k>', vim.lsp.buf.signature_help, 'LSP: Signature Help', buf)
-                map('<leader>ca', vim.lsp.buf.code_action, 'LSP: Code Actions', buf)
-                map('<leader>rn', vim.lsp.buf.rename, 'LSP: Rename', buf)
+                ---@param lhs string
+                ---@param rhs fun()
+                ---@param desc string
+                local function map(lhs, rhs, desc)
+                    vim.keymap.set('n', lhs, rhs, {
+                        silent = true,
+                        buffer = event.buf,
+                        desc = 'LSP: ' .. desc,
+                    })
+                end
+                map('gd', utils.thunk(builtin.lsp_definitions, jump_opts), 'Goto Definitions')
+                map('gr', utils.thunk(builtin.lsp_references, jump_opts), 'Goto References')
+                map('gi', utils.thunk(builtin.lsp_implementations, jump_opts), 'Goto Implementations')
+                map('<leader>k', vim.lsp.buf.hover, 'Hover Information')
+                map('<leader><C-k>', vim.lsp.buf.signature_help, 'Signature Help')
+                map('<leader>ca', vim.lsp.buf.code_action, 'Code Actions')
+                map('<leader>rn', vim.lsp.buf.rename, 'Rename')
             end,
         })
 

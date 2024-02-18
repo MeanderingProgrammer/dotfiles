@@ -12,15 +12,24 @@ return {
         telescope.setup({ defaults = { mappings = { i = mappings } } })
 
         local builtin = require('telescope.builtin')
-        local map = require('mp.config.utils').leader_map
+        local utils = require('mp.config.utils')
 
-        map('<leader>', builtin.buffers, 'Telescope: Find Existing Buffers')
-        map('?', builtin.oldfiles, 'Telescope: Find Recently Opened Files')
-        map('tf', builtin.find_files, 'Telescope: Find Files')
-        map('tg', builtin.live_grep, 'Telescope: Grep Files')
-        map('td', builtin.diagnostics, 'Telescope: Diagnostics')
-        map('tw', builtin.grep_string, 'Telescope: Current Word')
-        map('tt', builtin.help_tags, 'Telescope: Help Tags')
+        ---@param lhs string
+        ---@param rhs fun()
+        ---@param desc string
+        local function map(lhs, rhs, desc)
+            vim.keymap.set('n', '<leader>' .. lhs, rhs, {
+                silent = true,
+                desc = 'Telescope: ' .. desc,
+            })
+        end
+        map('<leader>', builtin.buffers, 'Find Existing Buffers')
+        map('?', builtin.oldfiles, 'Find Recently Opened Files')
+        map('tf', builtin.find_files, 'Find Files')
+        map('tg', builtin.live_grep, 'Grep Files')
+        map('td', builtin.diagnostics, 'Diagnostics')
+        map('tw', builtin.grep_string, 'Current Word')
+        map('tt', builtin.help_tags, 'Help Tags')
 
         local descriptors = {}
         vim.list_extend(descriptors, { 'Harpoon', 'Dashboard', 'Requirements' })
@@ -39,8 +48,8 @@ return {
             end
             return false
         end
-        local keymap_options = { modes = { 'n', 'x' }, filter = keymap_filter }
-        map('th', builtin.keymaps, 'Telescope: Show Keymaps', keymap_options)
+        local keymap_opts = { modes = { 'n', 'x' }, filter = keymap_filter }
+        map('th', utils.thunk(builtin.keymaps, keymap_opts), 'Show Keymaps')
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')
