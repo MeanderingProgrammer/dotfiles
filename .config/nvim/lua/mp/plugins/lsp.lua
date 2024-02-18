@@ -18,23 +18,20 @@ return {
                 local jump_opts = { jump_type = 'never' }
                 local utils = require('mp.config.utils')
 
-                ---@param lhs string
-                ---@param rhs fun()
-                ---@param desc string
-                local function map(lhs, rhs, desc)
-                    vim.keymap.set('n', lhs, rhs, {
-                        silent = true,
-                        buffer = event.buf,
-                        desc = 'LSP: ' .. desc,
-                    })
-                end
-                map('gd', utils.thunk(builtin.lsp_definitions, jump_opts), 'Goto Definitions')
-                map('gr', utils.thunk(builtin.lsp_references, jump_opts), 'Goto References')
-                map('gi', utils.thunk(builtin.lsp_implementations, jump_opts), 'Goto Implementations')
-                map('<leader>k', vim.lsp.buf.hover, 'Hover Information')
-                map('<leader><C-k>', vim.lsp.buf.signature_help, 'Signature Help')
-                map('<leader>ca', vim.lsp.buf.code_action, 'Code Actions')
-                map('<leader>rn', vim.lsp.buf.rename, 'Rename')
+                require('which-key').register({
+                    g = {
+                        name = 'goto',
+                        d = { utils.thunk(builtin.lsp_definitions, jump_opts), 'LSP Definitions' },
+                        r = { utils.thunk(builtin.lsp_references, jump_opts), 'LSP References' },
+                        i = { utils.thunk(builtin.lsp_implementations, jump_opts), 'LSP Implementations' },
+                    },
+                    ['<leader>'] = {
+                        ['k'] = { vim.lsp.buf.hover, 'LSP Hover Information' },
+                        ['<C-k>'] = { vim.lsp.buf.signature_help, 'LSP Signature Help' },
+                        ['<C-a>'] = { vim.lsp.buf.code_action, 'LSP Code Actions' },
+                        ['<C-r>'] = { vim.lsp.buf.rename, 'LSP Rename' },
+                    },
+                }, { buffer = event.buf })
             end,
         })
 

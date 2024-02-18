@@ -26,9 +26,11 @@ return {
         })
 
         local api = require('nvim-tree.api')
-        vim.keymap.set('n', '<leader>nt', api.tree.toggle, {
-            silent = true,
-            desc = 'NvimTree: Toggle File Tree',
+        require('which-key').register({
+            ['<leader>n'] = {
+                name = 'nvim-tree',
+                t = { api.tree.toggle, 'Toggle File Tree' },
+            },
         })
     end,
 }

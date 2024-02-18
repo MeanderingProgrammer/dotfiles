@@ -6,9 +6,11 @@ return {
         local manager = require('session_manager')
         manager.setup({ autoload_mode = config.AutoloadMode.Disabled })
 
-        vim.keymap.set('n', '<leader>sd', manager.load_current_dir_session, {
-            silent = true,
-            desc = 'Session: Load Directory',
+        require('which-key').register({
+            ['<leader>s'] = {
+                name = 'session',
+                d = { manager.load_current_dir_session, 'Load Directory' },
+            },
         })
     end,
 }

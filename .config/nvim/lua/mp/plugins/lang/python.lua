@@ -31,18 +31,14 @@ return {
                 file_patterns = { '.*requirements.*.txt' },
             })
 
-            ---@param lhs string
-            ---@param rhs fun()
-            ---@param desc string
-            local function map(lhs, rhs, desc)
-                vim.keymap.set('n', '<leader>' .. lhs, rhs, {
-                    silent = true,
-                    desc = 'Requirements: ' .. desc,
-                })
-            end
-            map('ru', requirements.upgrade, 'Upgrade')
-            map('rU', requirements.upgrade_all, 'Upgrade All')
-            map('rd', requirements.show_description, 'Show Description')
+            require('which-key').register({
+                ['<leader>r'] = {
+                    name = 'requirements',
+                    u = { requirements.upgrade, 'Upgrade' },
+                    U = { requirements.upgrade_all, 'Upgrade All' },
+                    d = { requirements.show_description, 'Show Description' },
+                },
+            })
         end,
     },
     {
