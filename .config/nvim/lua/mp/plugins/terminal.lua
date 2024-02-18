@@ -4,8 +4,15 @@ return {
         local fterm = require('FTerm')
         fterm.setup({})
 
-        local map_opts = { silent = true, desc = 'FTerm: Toggle' }
-        vim.keymap.set({ 'n', 't' }, '<A-t>', fterm.toggle, map_opts)
-        vim.keymap.set('t', '<esc>', fterm.toggle, map_opts)
+        ---@param modes string|string[]
+        ---@param lhs string
+        local function toggle(modes, lhs)
+            vim.keymap.set(modes, lhs, fterm.toggle, {
+                silent = true,
+                desc = 'FTerm: Toggle',
+            })
+        end
+        toggle({ 'n', 't' }, '<A-t>')
+        toggle('t', '<esc>')
     end,
 }
