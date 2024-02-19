@@ -10,4 +10,5 @@ lazy-lock.json
 # Applications
 asciinema
 chessx
+pypoetry
 qBittorrent
