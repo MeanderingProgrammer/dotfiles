@@ -93,6 +93,14 @@ sudo apt install zsh
 chsh -s $(which zsh)
 ```
 
+## Install [nix](https://nixos.org/)
+
+Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
+
 # Commands
 
 | Command          | Description                      |
