@@ -31,6 +31,15 @@ return {
                         ['<C-a>'] = { vim.lsp.buf.code_action, 'LSP Code Actions' },
                         ['<C-r>'] = { vim.lsp.buf.rename, 'LSP Rename' },
                     },
+                    ['<leader>w'] = {
+                        name = 'workspaces',
+                        l = {
+                            function()
+                                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                            end,
+                            'LSP List',
+                        },
+                    },
                 }, { buffer = event.buf })
             end,
         })

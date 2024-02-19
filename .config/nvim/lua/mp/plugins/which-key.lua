@@ -17,7 +17,7 @@ return {
         wk.register({
             ['<leader>'] = {
                 name = 'leader',
-                w = { wk.show, 'Show WhichKey' },
+                ww = { wk.show, 'Show WhichKey' },
             },
         })
     end,
