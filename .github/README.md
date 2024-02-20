@@ -93,6 +93,12 @@ sudo apt install zsh
 chsh -s $(which zsh)
 ```
 
+## Activate Argcomplete
+
+```bash
+activate-global-python-argcomplete --user
+```
+
 ## Install [nix](https://nixos.org/)
 
 Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
