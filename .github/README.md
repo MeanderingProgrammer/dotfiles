@@ -15,6 +15,7 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 
 ## [Homebrew](https://brew.sh/)
 
+
 <details>
 <summary>Install</summary>
 
@@ -41,6 +42,9 @@ fi
 
 ## Install WSL2 Requirements
 
+<details>
+<summary>Command</summary>
+
 ```bash
 sudo apt install \
   wget curl make gcc llvm wl-clipboard \
@@ -51,6 +55,8 @@ sudo apt install \
   libxml2-dev libxmlsec1-dev \
   tk-dev zlib1g-dev
 ```
+
+</details>
 
 ## [Git](https://git-scm.com/)
 

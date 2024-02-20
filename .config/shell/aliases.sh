@@ -25,7 +25,7 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-alias yac="yadm add ~/.config/"
+alias yac="yadm add ~/.config/ && yadm add ~/.github/"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

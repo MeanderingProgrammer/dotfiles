@@ -75,7 +75,7 @@ def get_alias_groups() -> AliasGroups:
                 Alias(name="ypl", command="yadm pull"),
                 Alias(name="ya", command="yadm add -u"),
                 Alias(name="yc", command="yadm commit -m"),
-                Alias(name="yac", command="yadm add ~/.config/"),
+                Alias(name="yac", command="yadm add ~/.config/ && yadm add ~/.github/"),
                 Alias(name="yls", command="yadm ls-files ~"),
                 Alias(name="yd", command="yadm diff"),
             ],
