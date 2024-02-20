@@ -2,29 +2,44 @@
 
 Using [yadm](https://yadm.io/) to store all my dotfiles.
 
+# Commands
+
+| Command          | Description                      |
+|------------------|----------------------------------|
+| `yadm bootstrap` | Run bootstrap script             |
+| `yadm status`    | Status of yadm git repository    |
+| `yadm add -u`    | Stage all modified files at once |
+| `yadm push`      | Push commited changes            |
+
 # Setup
 
-## Install [homebrew](https://brew.sh/)
+## [Homebrew](https://brew.sh/)
+
+<details>
+<summary>Install</summary>
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## Evaluate [homebrew](https://brew.sh/)
+</details>
 
-### MacOS
-
-```bash
-eval "$(/opt/homebrew/bin/brew shellenv)"
-```
-
-### WSL2
+<details>
+<summary>Evaluate</summary>
 
 ```bash
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [[ $(uname -s) == "Darwin" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ $(uname -s) == "Linux" ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+else
+    echo "Unhandled system type $(uname -s)"
+fi
 ```
 
-## WSL2 requirements
+</details>
+
+## Install WSL2 Requirements
 
 ```bash
 sudo apt install \
@@ -37,13 +52,21 @@ sudo apt install \
   tk-dev zlib1g-dev
 ```
 
-## Install [git](https://formulae.brew.sh/formula/git) and [yadm](https://formulae.brew.sh/formula/yadm)
+## [Git](https://git-scm.com/)
+
+<details>
+<summary>Install</summary>
+
+[Formula](https://formulae.brew.sh/formula/git) 
 
 ```bash
-brew install git yadm
+brew install git
 ```
 
-## Set git known hosts
+</details>
+
+<details>
+<summary>Set Known Hosts</summary>
 
 [Doc](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints)
 
@@ -52,7 +75,10 @@ mkdir ~/.ssh && touch ~/.ssh/known_hosts
 ssh-keyscan github.com > ~/.ssh/known_hosts
 ```
 
-## Generate SSH key
+</details>
+
+<details>
+<summary>Generate SSH Key</summary>
 
 [Doc](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
@@ -61,23 +87,42 @@ ssh-keygen -t ed25519 -C "meanderingprogrammer@gmail.com"
 eval "$(ssh-agent -s)"
 ```
 
-## Add SSH key to github
+</details>
+
+<details>
+<summary>Add SSH Key to GitHub</summary>
 
 [Doc](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 
-### MacOS
-
 ```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
+if [[ $(uname -s) == "Darwin" ]]; then
+    cat ~/.ssh/id_ed25519.pub | pbcopy
+elif [[ $(uname -s) == "Linux" ]]; then
+    cat ~/.ssh/id_ed25519.pub | clip.exe
+else
+    echo "Unhandled system type $(uname -s)"
+fi
 ```
 
-### WSL2
+</details>
+
+## [yadm](https://yadm.io/)
+
+<details>
+<summary>Install</summary>
+
+[Formula](https://formulae.brew.sh/formula/yadm)
 
 ```bash
-cat ~/.ssh/id_ed25519.pub | clip.exe
+brew install yadm
 ```
 
-## [Bootstrap](https://yadm.io/docs/bootstrap) dotfiles repo
+</details>
+
+<details>
+<summary>Bootstrap</summary>
+
+[Doc](https://yadm.io/docs/bootstrap)
 
 ```bash
 yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
@@ -86,20 +131,37 @@ yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 - Python installation may fail see [ISSUE-2823](https://github.com/pyenv/pyenv/issues/2823)
 - Solution: `brew unlink pkg-config`
 
-## Use [zshell](https://www.zsh.org/) for WSL2
+</details>
+
+## Miscellaneous
+
+<details>
+<summary>Use Z Shell in WSL2</summary>
+
+[Shell](https://www.zsh.org/)
 
 ```bash
 sudo apt install zsh
 chsh -s $(which zsh)
 ```
 
-## Activate Argcomplete
+</details>
+
+<details>
+<summary>Activate Argcomplete</summary>
+
+[Doc](https://github.com/kislyuk/argcomplete?tab=readme-ov-file#installation)
 
 ```bash
 activate-global-python-argcomplete --user
 ```
 
-## Install [nix](https://nixos.org/)
+</details>
+
+## [Nix](https://nixos.org/)
+
+<details>
+<summary>Install</summary>
 
 Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
 
@@ -107,11 +169,4 @@ Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-# Commands
-
-| Command          | Description                      |
-|------------------|----------------------------------|
-| `yadm bootstrap` | Run bootstrap script             |
-| `yadm status`    | Status of yadm git repository    |
-| `yadm add -u`    | Stage all modified files at once |
-| `yadm push`      | Push commited changes            |
+</details>
