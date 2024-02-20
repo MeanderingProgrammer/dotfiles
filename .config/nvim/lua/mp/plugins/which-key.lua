@@ -3,6 +3,8 @@ return {
     event = 'VeryLazy',
     config = function()
         local wk = require('which-key')
+        -- (gc & gcc) / (gb & gbc) have the same prefix so overlap
+        -- according to which-key, this is not really a problem
         wk.setup({
             plugins = {
                 presets = {
