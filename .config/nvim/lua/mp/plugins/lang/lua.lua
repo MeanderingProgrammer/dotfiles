@@ -12,11 +12,9 @@ return {
             { 'folke/neoconf.nvim', config = true },
             { 'folke/neodev.nvim', config = true },
         },
-        opts = {
-            servers = {
-                lua_ls = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.lua_ls = {}
+        end,
     },
     {
         'stevearc/conform.nvim',

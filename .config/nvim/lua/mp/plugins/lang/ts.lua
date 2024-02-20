@@ -8,14 +8,12 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                eslint = {},
-                svelte = {},
-                tailwindcss = {},
-                tsserver = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.eslint = {}
+            opts.servers.svelte = {}
+            opts.servers.tailwindcss = {}
+            opts.servers.tsserver = {}
+        end,
     },
     {
         'stevearc/conform.nvim',

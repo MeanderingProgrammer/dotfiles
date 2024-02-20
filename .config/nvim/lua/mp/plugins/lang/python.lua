@@ -7,22 +7,20 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/pyright.lua
-                pyright = {
-                    root_dir = function(fname)
-                        local root_files = {
-                            'pyproject.toml',
-                            'requirements.txt',
-                            'pyrightconfig.json',
-                            '.git',
-                        }
-                        return require('lspconfig').util.root_pattern(unpack(root_files))(fname)
-                    end,
-                },
-            },
-        },
+        opts = function(_, opts)
+            -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/pyright.lua
+            opts.servers.pyright = {
+                root_dir = function(fname)
+                    local root_files = {
+                        'pyproject.toml',
+                        'requirements.txt',
+                        'pyrightconfig.json',
+                        '.git',
+                    }
+                    return require('lspconfig').util.root_pattern(unpack(root_files))(fname)
+                end,
+            }
+        end,
     },
     {
         'stevearc/conform.nvim',

@@ -7,10 +7,8 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                zls = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.zls = {}
+        end,
     },
 }

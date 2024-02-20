@@ -7,10 +7,10 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                nil_ls = {},
-            },
-        },
+        opts = function(_, opts)
+            if vim.fn.has('mac') == 1 then
+                opts.servers.nil_ls = {}
+            end
+        end,
     },
 }

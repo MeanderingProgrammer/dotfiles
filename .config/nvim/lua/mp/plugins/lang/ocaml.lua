@@ -7,11 +7,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                ocamllsp = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.ocamllsp = {}
+        end,
     },
     {
         'stevearc/conform.nvim',

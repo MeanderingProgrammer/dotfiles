@@ -7,10 +7,8 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                terraformls = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.terraformls = {}
+        end,
     },
 }

@@ -8,10 +8,8 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                csharp_ls = {},
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.csharp_ls = {}
+        end,
     },
 }

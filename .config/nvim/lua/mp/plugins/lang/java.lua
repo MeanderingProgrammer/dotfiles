@@ -7,11 +7,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                jdtls = false,
-            },
-        },
+        opts = function(_, opts)
+            opts.servers.jdtls = false
+        end,
     },
     {
         'mfussenegger/nvim-jdtls',

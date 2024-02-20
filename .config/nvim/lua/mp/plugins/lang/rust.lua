@@ -7,17 +7,15 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        opts = {
-            servers = {
-                rust_analyzer = {
-                    settings = {
-                        ['rust-analyzer'] = {
-                            check = { command = 'clippy' },
-                        },
+        opts = function(_, opts)
+            opts.servers.rust_analyzer = {
+                settings = {
+                    ['rust-analyzer'] = {
+                        check = { command = 'clippy' },
                     },
                 },
-            },
-        },
+            }
+        end,
     },
     {
         'Saecki/crates.nvim',
