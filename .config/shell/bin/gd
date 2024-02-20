@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+import os
+
 import click
-import command
 
 
 @click.command()
@@ -44,7 +45,10 @@ def cli(previous: bool, name: bool, all: bool, debug: bool) -> None:
     options = "--name-only" if name else "--"
     files = "" if all else f'. {exclude("lock.json")} {exclude("lock.yaml")}'
     diff_command = f"git diff {branch} {options} {files}"
-    print(diff_command) if debug else command.execute(diff_command)
+    if debug:
+        print(diff_command)
+    else:
+        os.system(diff_command)
 
 
 def exclude(suffix: str) -> str:
