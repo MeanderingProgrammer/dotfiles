@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 
+import argparse
 import subprocess
-from argparse import ArgumentParser
 
 import argcomplete
+from termcolor import colored
 
 
 class Asdf:
@@ -12,7 +13,8 @@ class Asdf:
     https://asdf-vm.com/manage/commands.html
     """
 
-    def plugins(self) -> list[str]:
+    @staticmethod
+    def plugins() -> list[str]:
         result: str = Asdf.run(["asdf", "current"])
         plugins: list[str] = [plugin.split()[0] for plugin in result.splitlines()]
         # Some plugins have complex version names so latest is not supported
@@ -20,20 +22,25 @@ class Asdf:
             plugins.remove(plugin)
         return plugins
 
-    def current(self, name: str) -> str:
+    @staticmethod
+    def current(name: str) -> str:
         result: str = Asdf.run(["asdf", "current", name])
         return result.split()[1]
 
-    def latest(self, name: str) -> str:
+    @staticmethod
+    def latest(name: str) -> str:
         return Asdf.run(["asdf", "latest", name])
 
-    def install(self, name: str, version: str) -> None:
+    @staticmethod
+    def install(name: str, version: str) -> None:
         Asdf.run(["asdf", "install", name, version])
 
-    def set_global(self, name: str, version: str) -> None:
+    @staticmethod
+    def set_global(name: str, version: str) -> None:
         Asdf.run(["asdf", "global", name, version])
 
-    def uninstall(self, name: str, version: str) -> None:
+    @staticmethod
+    def uninstall(name: str, version: str) -> None:
         Asdf.run(["asdf", "uninstall", name, version])
 
     @staticmethod
@@ -45,19 +52,17 @@ class Asdf:
             raise Exception(f"{command} failed with {result.stderr.strip()}")
 
 
-def main(name: str) -> None:
-    asdf = Asdf()
-    if name == "all":
-        plugins: list[str] = asdf.plugins()
+def main(plugins: list[str], update: bool) -> None:
+    if update:
+        [update_plugin(plugin) for plugin in plugins]
     else:
-        plugins: list[str] = [name]
-    for plugin in plugins:
-        update_plugin(asdf, plugin)
+        max_len: int = max(map(len, plugins))
+        [plugin_info(plugin, max_len) for plugin in plugins]
 
 
-def update_plugin(asdf: Asdf, name: str) -> None:
-    current: str = asdf.current(name)
-    latest: str = asdf.latest(name)
+def update_plugin(name: str) -> None:
+    current: str = Asdf.current(name)
+    latest: str = Asdf.latest(name)
     if current == latest:
         print(f"{name} is already at latest version {latest}")
         return
@@ -70,13 +75,13 @@ def update_plugin(asdf: Asdf, name: str) -> None:
     cleanup: bool = get_user_input(f"Uninstall {name} version {current}?")
 
     print(f"Installing {name} {latest}")
-    asdf.install(name, latest)
+    Asdf.install(name, latest)
     print(f"Setting {name} to {latest}")
-    asdf.set_global(name, latest)
+    Asdf.set_global(name, latest)
 
     if cleanup:
         print(f"Uninstalling {name} {current}")
-        asdf.uninstall(name, current)
+        Asdf.uninstall(name, current)
 
 
 def get_user_input(prompt: str) -> bool:
@@ -90,11 +95,36 @@ def get_user_input(prompt: str) -> bool:
         return get_user_input(prompt)
 
 
+def plugin_info(name: str, max_len: int) -> None:
+    current: str = Asdf.current(name)
+    latest: str = Asdf.latest(name)
+    if current == latest:
+        print(colored(f"{name:{max_len}} Up to date", "green"))
+    else:
+        print(colored(f"{name:{max_len}} {current} -> {latest}", "red"))
+
+
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Interactive update script for asdf plugins")
+    parser = argparse.ArgumentParser(
+        description="Update script for asdf plugins",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     parser.add_argument(
-        "name", choices=Asdf().plugins() + ["all"], help="Name of plugin to update"
+        "name",
+        nargs="?",
+        default="all",
+        choices=Asdf.plugins() + ["all"],
+        help="Name of plugin to update",
+    )
+    parser.add_argument(
+        "-u",
+        "--update",
+        action="store_true",
+        help="Interactively update instead of printing information",
     )
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
-    main(args.name)
+    main(
+        plugins=Asdf.plugins() if args.name == "all" else [args.name],
+        update=args.update,
+    )
