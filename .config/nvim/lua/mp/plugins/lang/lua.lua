@@ -37,6 +37,8 @@ return {
                         '--globals',
                         'vim',
                         'assert',
+                        'before_each',
+                        'after_each',
                         'describe',
                         'it',
                         -- https://github.com/mfussenegger/nvim-lint/blob/master/lua/lint/linters/luacheck.lua
