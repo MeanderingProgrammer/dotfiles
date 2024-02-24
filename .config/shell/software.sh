@@ -4,7 +4,7 @@ if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
     eval "$(/opt/homebrew/bin/brew shellenv)"
     # Start services
-    services=("ollama")
+    services=("ollama" "libvirt")
     for service in "${services[@]}"; do
         is_running=$(brew services list | grep "$service.*started")
         if [[ -z "$is_running" ]]; then
