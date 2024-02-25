@@ -10,5 +10,6 @@ lazy-lock.json
 # Applications
 asciinema
 chessx
+libvirt
 pypoetry
 qBittorrent
