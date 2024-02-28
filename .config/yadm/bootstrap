@@ -1,5 +1,11 @@
 #!/bin/sh
 
+upgrade_homebrew() {
+    brew bundle --global
+    brew update
+    brew upgrade
+}
+
 install_asdf_tools() {
     while read line; do
         plugin=$(echo "${line}" | cut -d' ' -f1)
@@ -23,7 +29,7 @@ install_libraries() {
     opam init --no
 }
 
-brew bundle --global
+upgrade_homebrew
 install_asdf_tools
 install_libraries
 /bin/bash -c ~/.config/yadm/setup_repos
