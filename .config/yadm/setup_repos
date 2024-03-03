@@ -26,19 +26,23 @@ class Repo:
             repo: git.Repo = git.Repo.clone_from(self.ssh, path)
             Repo.update_submodules(repo)
         else:
-            repo: git.Repo = git.Repo(path)
-            changes: int = len(repo.index.diff(None)) + len(repo.untracked_files)
-            local_commit: str = str(repo.head.commit)
-            revision: str = f"{repo.remote().name}/{repo.active_branch.name}"
-            merged_commit: str = str(repo.rev_parse(revision))
-            if changes > 0:
-                print(f"Found {changes} unstaged changes, not updating {path}")
-            elif local_commit != merged_commit:
-                print(f"Found unmerged commits, not updating {path}")
-            else:
-                print(f"Pulling: {path}")
-                repo.remote().pull()
-                Repo.update_submodules(repo)
+            Repo.update_existing_repo(path)
+
+    @staticmethod
+    def update_existing_repo(path: Path) -> None:
+        repo: git.Repo = git.Repo(path)
+        changes: int = len(repo.index.diff(None)) + len(repo.untracked_files)
+        local_commit: str = str(repo.head.commit)
+        revision: str = f"{repo.remote().name}/{repo.active_branch.name}"
+        merged_commit: str = str(repo.rev_parse(revision))
+        if changes > 0:
+            print(f"Found {changes} unstaged changes, not updating {path}")
+        elif local_commit != merged_commit:
+            print(f"Found unmerged commits, not updating {path}")
+        else:
+            print(f"Pulling: {path}")
+            repo.remote().pull()
+            Repo.update_submodules(repo)
 
     @staticmethod
     def update_submodules(repo: git.Repo) -> None:
