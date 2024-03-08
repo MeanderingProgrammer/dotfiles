@@ -15,6 +15,9 @@ return {
         telescope.load_extension('undo')
 
         local builtin = require('telescope.builtin')
+        local find_files = require('mp.config.utils').thunk(builtin.find_files, {
+            find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
+        })
         require('which-key').register({
             ['<leader>'] = {
                 ['<leader>'] = { builtin.buffers, 'Find Existing Buffers' },
@@ -22,7 +25,7 @@ return {
             },
             ['<leader>t'] = {
                 name = 'telescope',
-                f = { builtin.find_files, 'Find Files' },
+                f = { find_files, 'Find Files' },
                 g = { builtin.live_grep, 'Grep Files' },
                 d = { builtin.diagnostics, 'Diagnostics' },
                 w = { builtin.grep_string, 'Current Word' },
