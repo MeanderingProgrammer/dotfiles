@@ -14,6 +14,13 @@ function M.flat_values(config)
     return result
 end
 
+---@return boolean
+function M.challenge_mode()
+    local challenge_directories = { 'leetcode' }
+    local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+    return vim.tbl_contains(challenge_directories, directory)
+end
+
 ---@param f fun(opts: any)
 ---@param opts any
 ---@return fun()
