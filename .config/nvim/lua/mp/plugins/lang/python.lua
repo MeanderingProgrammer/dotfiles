@@ -38,7 +38,7 @@ return {
             local requirements = require('py-requirements')
             requirements.setup({
                 file_patterns = { '.*requirements.*.txt' },
-                final_release = true,
+                filter = { final_release = true },
             })
 
             require('which-key').register({
