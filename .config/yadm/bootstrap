@@ -17,7 +17,7 @@ install_asdf_tools() {
 install_libraries() {
     # Python
     pip install --upgrade pip
-    pip install -r ~/.github/requirements.txt
+    pip install -r ~/.config/lang/python/requirements.txt
     # Rust
     cargo install aoc-cli
     cargo install --path ~/.config/shell/weather
