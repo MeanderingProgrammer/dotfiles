@@ -8,8 +8,8 @@ __pycache__
 lazy-lock.json
 
 # Applications
-asciinema
-chessx
-libvirt
-pypoetry
-qBittorrent
+/.config/asciinema/
+/.config/chessx/
+/.config/libvirt/
+/.config/pypoetry/
+/.config/qBittorrent/
