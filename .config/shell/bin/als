@@ -69,6 +69,7 @@ def get_alias_groups() -> AliasGroups:
         AliasGroup(
             name="Yadm",
             aliases=[
+                Alias(name="yb", command="yadm bootstrap"),
                 Alias(name="ys", command="yadm status"),
                 Alias(name="yl", command="yadm log"),
                 Alias(name="yp", command="yadm push"),

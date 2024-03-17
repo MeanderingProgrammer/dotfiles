@@ -19,6 +19,7 @@ alias gu="git branch -u main"
 alias gundo="git restore ."
 
 # Yadm
+alias yb="yadm bootstrap"
 alias ys="yadm status"
 alias yl="yadm log"
 alias yp="yadm push"
