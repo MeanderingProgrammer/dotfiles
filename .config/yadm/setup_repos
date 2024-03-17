@@ -48,6 +48,8 @@ class Repo:
     def update_submodules(repo: git.Repo) -> None:
         for submodule in repo.submodules:
             print(f"Updating submodule: {submodule}")
+            # Requires 'branch' to be specified in .gitmodules
+            # https://github.com/gitpython-developers/GitPython/issues/1058
             submodule.update(init=True)
 
 
@@ -69,38 +71,44 @@ class RepoRoot:
 
 
 def main() -> None:
+    home_root = RepoRoot(
+        root=Path.home(),
+        repos=[Repo(name="pass", directory=".password-store")],
+    )
+    document_root = RepoRoot(
+        root=Path.home().joinpath("Documents"),
+        repos=[Repo(name="notes")],
+    )
+    personal_root = RepoRoot(
+        root=Path.home().joinpath("dev/repos/personal"),
+        repos=[
+            Repo(name="py-requirements.nvim"),
+            Repo(name="harpoon-core.nvim"),
+            Repo(name="dashboard.nvim"),
+            Repo(name="advent-of-code"),
+            Repo(name="learning"),
+            Repo(name="chess"),
+            Repo(name="resume"),
+            Repo(name="rx-availability"),
+            Repo(name="pass-yank"),
+            Repo(name="debug-it"),
+            Repo(name="small-apps"),
+            Repo(name="full-gradle-app"),
+        ],
+    )
+    plugin_root = RepoRoot(
+        root=Path.home().joinpath("dev/repos/open-source/nvim-plugins"),
+        repos=[
+            Repo(owner="nvimdev", name="dashboard-nvim"),
+            Repo(owner="ThePrimeagen", name="harpoon"),
+            Repo(owner="Saecki", name="crates.nvim"),
+        ],
+    )
     repo_roots: list[RepoRoot] = [
-        RepoRoot(
-            root=Path.home(),
-            repos=[Repo(name="pass", directory=".password-store")],
-        ),
-        RepoRoot(
-            root=Path.home().joinpath("Documents"),
-            repos=[Repo(name="notes")],
-        ),
-        RepoRoot(
-            root=Path.home().joinpath("dev/repos"),
-            repos=[
-                Repo(name="advent-of-code"),
-                Repo(name="chess"),
-                Repo(name="dashboard.nvim"),
-                Repo(name="harpoon-core.nvim"),
-                Repo(name="py-requirements.nvim"),
-                Repo(name="full-gradle-app"),
-                Repo(name="learning"),
-                Repo(name="personal-resume"),
-                Repo(name="rx-availability"),
-                Repo(name="small-apps"),
-            ],
-        ),
-        RepoRoot(
-            root=Path.home().joinpath("dev/repos/open-source/nvim-plugins"),
-            repos=[
-                Repo(owner="nvimdev", name="dashboard-nvim"),
-                Repo(owner="ThePrimeagen", name="harpoon"),
-                Repo(owner="Saecki", name="crates.nvim"),
-            ],
-        ),
+        home_root,
+        document_root,
+        personal_root,
+        plugin_root,
     ]
     [repo_root.clone() for repo_root in repo_roots]
 

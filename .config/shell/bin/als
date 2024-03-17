@@ -46,7 +46,7 @@ def get_alias_groups() -> AliasGroups:
                 Alias(name="reload", command="source ~/.zshrc"),
                 Alias(name="sys-update", command="yadm pull && yadm bootstrap"),
                 Alias(name="ll", command="ls -latr"),
-                Alias(name="workspace", command="cd ~/dev/repos"),
+                Alias(name="workspace", command="cd ~/dev/repos/personal"),
                 Alias(name="notes", command="cd ~/Documents/notes"),
             ],
         ),
