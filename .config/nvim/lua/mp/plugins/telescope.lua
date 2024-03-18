@@ -8,8 +8,9 @@ return {
     config = function()
         local telescope = require('telescope')
         local actions = require('telescope.actions')
-        local mappings = { ['<cr>'] = actions.select_drop }
-        telescope.setup({ defaults = { mappings = { i = mappings } } })
+        telescope.setup({ defaults = { mappings = {
+            i = { ['<cr>'] = actions.select_drop },
+        } } })
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')
@@ -30,7 +31,8 @@ return {
                 d = { builtin.diagnostics, 'Diagnostics' },
                 w = { builtin.grep_string, 'Current Word' },
                 t = { builtin.help_tags, 'Help Tags' },
-                h = { builtin.keymaps, 'Show Keymaps' },
+                k = { builtin.keymaps, 'Keymaps' },
+                h = { builtin.highlights, 'Highlights' },
             },
         })
     end,
