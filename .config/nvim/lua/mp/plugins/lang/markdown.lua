@@ -11,4 +11,11 @@ return {
             opts.servers.marksman = {}
         end,
     },
+    {
+        'MeanderingProgrammer/markdown.nvim',
+        dev = true,
+        config = function()
+            require('markdown').setup({})
+        end,
+    },
 }

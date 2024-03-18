@@ -17,6 +17,7 @@ return {
                 '~/.config/nvim',
                 '~/Documents/notes',
                 '~/dev/repos/personal/py-requirements.nvim',
+                '~/dev/repos/personal/markdown.nvim',
                 '~/dev/repos/personal/harpoon-core.nvim',
                 '~/dev/repos/personal/dashboard.nvim',
                 '~/dev/repos/personal/advent-of-code',

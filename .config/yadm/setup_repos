@@ -83,6 +83,7 @@ def main() -> None:
         root=Path.home().joinpath("dev/repos/personal"),
         repos=[
             Repo(name="py-requirements.nvim"),
+            Repo(name="markdown.nvim"),
             Repo(name="harpoon-core.nvim"),
             Repo(name="dashboard.nvim"),
             Repo(name="advent-of-code"),
