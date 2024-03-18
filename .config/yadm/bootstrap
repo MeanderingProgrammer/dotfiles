@@ -18,15 +18,20 @@ install_libraries() {
     # Python
     pip install --upgrade pip
     pip install -r ~/.config/lang/python/requirements.txt
+
     # Rust
     cargo install aoc-cli
     cargo install --path ~/.config/shell/weather
     asdf reshim rust
+
     # Node
     npm install -g pnpm
     npm install -g neovim
+
     # OCaml
     opam init --no
+    opam update
+    opam upgrade --yes
 }
 
 setup_repos() {
