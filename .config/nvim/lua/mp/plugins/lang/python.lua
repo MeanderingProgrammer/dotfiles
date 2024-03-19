@@ -33,7 +33,11 @@ return {
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        dependencies = { 'nvim-lua/plenary.nvim', 'hrsh7th/nvim-cmp' },
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'nvim-treesitter/nvim-treesitter',
+            'hrsh7th/nvim-cmp',
+        },
         config = function()
             local requirements = require('py-requirements')
             requirements.setup({
