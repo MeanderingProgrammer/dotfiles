@@ -4,7 +4,6 @@ GitPython==3.1.42
 mypy==1.9.0
 numpy==1.26.4
 pandas==2.2.1
-Pillow==10.2.0
 pip-tools==7.4.1
 protobuf==5.26.0
 pyarrow==15.0.2
