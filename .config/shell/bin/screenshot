@@ -37,7 +37,7 @@ class Region:
 
 TYPE_MAPPING: dict[str, Region] = dict(
     dashboard=Region(left=30, width=40, top=20, height=50),
-    markdown=Region(left=0, width=100, top=0, height=50),
+    markdown=Region(left=0, width=25, top=0, height=50),
 )
 
 
