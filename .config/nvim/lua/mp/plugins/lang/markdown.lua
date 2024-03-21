@@ -16,7 +16,7 @@ return {
         dev = true,
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         config = function()
-            require('markdown').setup({})
+            require('render-markdown').setup({})
         end,
     },
 }
