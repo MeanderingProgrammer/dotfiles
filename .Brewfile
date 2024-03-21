@@ -18,9 +18,7 @@ brew "wget"
 brew "yadm"
 cask "alacritty"
 cask "font-hack-nerd-font"
-cask "font-jetbrains-mono"
 cask "font-jetbrains-mono-nerd-font"
-cask "font-symbols-only-nerd-font"
 cask "kitty"
 
 # General
