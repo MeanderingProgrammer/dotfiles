@@ -4,64 +4,64 @@
 from argparse import ArgumentParser
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Self
 
 import argcomplete
 from PIL import ImageGrab
 
-TYPE_MAPPING = dict(
-    dashboard=(850, 450),
-)
+# MacOS Dock aligned to the right, causes horizontal split offset
+DOCK_WIDTH: int = 90
+# MacOS top menu + Terminal application header
+TOP_BAR_HEIGHT: int = 53
 
 
 @dataclass(frozen=True)
-class BoundBox:
+class Region:
+    """
+    All values are assumed to be a percentage with the fill width and height
+    """
+
     left: int
+    width: int
     top: int
-    right: int
-    bottom: int
+    height: int
 
-    def center(self, target: tuple[int, int]) -> Self:
-        offset = (
-            BoundBox._offset(self.left, self.right, target[0]),
-            BoundBox._offset(self.top, self.bottom, target[1]),
-        )
-        return type(self)(
-            left=offset[0],
-            top=offset[1],
-            right=offset[0] + target[0],
-            bottom=offset[1] + target[1],
-        )
+    def from_total(self, width: int, height: int) -> tuple[int, int, int, int]:
+        left: int = int(self.left * (width / 100))
+        right: int = left + int(self.width * (width / 100))
 
-    def as_tuple(self) -> tuple[int, int, int, int]:
-        return (self.left, self.top, self.right, self.bottom)
+        top: int = int(self.top * (height / 100)) + TOP_BAR_HEIGHT
+        bottom: int = top + int(self.height * (height / 100))
 
-    @staticmethod
-    def _offset(start: int, end: int, inner: int) -> int:
-        offset = (end - start - inner) / 2
-        return int(offset) + start
+        return (left, top, right, bottom)
 
 
-def main(target: tuple[int, int]) -> None:
-    # Accounts for some lost pixels at bottom of screen
-    bottom_offset = 150
+TYPE_MAPPING: dict[str, Region] = dict(
+    dashboard=Region(left=30, width=40, top=20, height=50),
+    markdown=Region(left=0, width=100, top=0, height=50),
+)
+
+
+def main(target: Region) -> None:
+    """
+    Needs to run on large display: 5120 x 1440
+    Assumes we are trying to screenshot a terminal, which is in top
+    left and occupies half the screen width
+    """
     display_size = ImageGrab.grab().size
-    display_bound = BoundBox(
-        left=0,
-        top=0,
-        right=display_size[0],
-        bottom=display_size[1] - bottom_offset,
-    )
-    region = display_bound.center(target)
-    screenshot = ImageGrab.grab(region.as_tuple())
+    assert display_size == (5120, 1440)
+
+    width = (display_size[0] - DOCK_WIDTH) // 2
+    height = display_size[1] - TOP_BAR_HEIGHT
+
+    region = target.from_total(width, height)
+
+    screenshot = ImageGrab.grab(region)
     screenshot.save(Path.home().joinpath("Desktop/screenshot.png"))
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(
-        description="Takes a screenshot within a region based on type"
-    )
-    parser.add_argument("--type", choices=TYPE_MAPPING.keys(), default="dashboard")
+    parser = ArgumentParser(description="Takes screenshot within a region")
+    parser.add_argument("type", choices=TYPE_MAPPING.keys(), default="dashboard")
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
     main(TYPE_MAPPING[args.type])
