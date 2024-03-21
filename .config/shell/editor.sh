@@ -3,8 +3,8 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 # Aliases common editor commands
-alias n="$VISUAL"
-alias v="$VISUAL"
+alias n="$VISUAL ."
+alias v="$VISUAL ."
 alias vim="$VISUAL"
 
 # Fix vi mode search behavior for <esc>+/
