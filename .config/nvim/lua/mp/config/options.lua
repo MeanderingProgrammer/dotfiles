@@ -69,7 +69,7 @@ for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
     vim.g['loaded_' .. provider .. '_provider'] = 0
 end
 
--- Remove once just is natively supported: https://github.com/neovim/neovim/pull/25511
+-- TODO: Remove once just is natively supported - https://github.com/neovim/neovim/pull/25511
 vim.filetype.add({
     filename = {
         ['justfile'] = 'just',
