@@ -19,6 +19,7 @@ brew "yadm"
 cask "alacritty"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
+cask "font-monaspace"
 cask "kitty"
 
 # General
