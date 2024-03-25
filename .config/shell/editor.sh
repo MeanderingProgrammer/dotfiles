@@ -7,6 +7,8 @@ alias n="$VISUAL ."
 alias v="$VISUAL ."
 alias vim="$VISUAL"
 
+# Use vi mode, set explicitly
+bindkey -v
 # Fix vi mode search behavior for <esc>+/
 vi-search-fix() {
     zle vi-cmd-mode
