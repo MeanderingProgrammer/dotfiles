@@ -20,6 +20,8 @@ cask "alacritty"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace"
+cask "font-monaspace-nerd-font"
+cask "font-symbols-only-nerd-font"
 cask "kitty"
 
 # General

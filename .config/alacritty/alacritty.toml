@@ -1,9 +1,9 @@
 [font]
-size = 14
+size = 14.0
 
 [font.normal]
-family = "JetBrainsMono Nerd Font"
-style = "Regular"
+family = "MonaspiceNe Nerd Font"
+style = "Light"
 
 [window]
 opacity = 0.9
