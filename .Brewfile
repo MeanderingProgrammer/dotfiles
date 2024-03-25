@@ -16,6 +16,7 @@ brew "ripgrep"
 brew "tmux"
 brew "wget"
 brew "yadm"
+brew "zsh-syntax-highlighting"
 
 # Terminals
 cask "alacritty"
