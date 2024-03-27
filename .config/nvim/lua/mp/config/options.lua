@@ -14,6 +14,9 @@ vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Mode is already in status line plugin
+vim.opt.showmode = false
+
 -- Search settings
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
