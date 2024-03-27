@@ -19,4 +19,21 @@ return {
             require('render-markdown').setup({})
         end,
     },
+    {
+        'mfussenegger/nvim-lint',
+        opts = {
+            linters_by_ft = {
+                markdown = { 'markdownlint' },
+            },
+            linter_configs = {
+                markdownlint = {
+                    args = {
+                        '--disable',
+                        'MD025', -- allow multiple top-level headings in the same document
+                        '--',
+                    },
+                },
+            },
+        },
+    },
 }
