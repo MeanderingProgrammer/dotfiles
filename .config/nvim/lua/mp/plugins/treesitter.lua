@@ -6,8 +6,7 @@ return {
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
     opts = {
-        -- TODO: Add just when possible - https://github.com/nvim-treesitter/nvim-treesitter/pull/6245
-        ensure_installed = { 'dart', 'dockerfile', 'kotlin', 'latex', 'scala', 'yaml' },
+        ensure_installed = { 'dart', 'dockerfile', 'just', 'kotlin', 'latex', 'scala', 'yaml' },
         highlight = { enable = true },
         indent = { enable = true },
         incremental_selection = {
