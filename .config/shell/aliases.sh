@@ -16,6 +16,7 @@ alias gb="git branch"
 alias gac="git add --all && git commit --amend"
 alias gm="git checkout main"
 alias gu="git branch -u main"
+alias gr="git rebase -i"
 alias gundo="git restore ."
 
 # Yadm

@@ -63,6 +63,7 @@ def get_alias_groups() -> AliasGroups:
                 Alias(name="gac", command="git add --all && git commit --amend"),
                 Alias(name="gm", command="git checkout main"),
                 Alias(name="gu", command="git branch -u main"),
+                Alias(name="gr", command="git rebase -i"),
                 Alias(name="gundo", command="git restore ."),
             ],
         ),
