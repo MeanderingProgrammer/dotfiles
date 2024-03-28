@@ -59,5 +59,6 @@ cask "rectangle"
 cask "vlc"
 
 # Playing Around
+brew "mpv"
 brew "stockfish"
 cask "chessx"
