@@ -1,4 +1,7 @@
-# Run environment specific configuration
+#--------------------------------------------------------------------#
+#                        Environment Specific                        #
+#--------------------------------------------------------------------#
+
 system_type=$(uname -s)
 if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
@@ -22,26 +25,92 @@ else
     return
 fi
 
+#--------------------------------------------------------------------#
+#                         Language / Software                        #
+#--------------------------------------------------------------------#
+
 # Setup ASDF
 export ASDF_FORCE_PREPEND="yes"
-export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
-[[ -f $ASDF_SRC ]] && source "${ASDF_SRC}"
+asdf_src="$(brew --prefix asdf)/libexec/asdf.sh"
+[[ -f $asdf_src ]] && source "${asdf_src}"
 
 # Setup Java
-export JAVA_INIT="$HOME/.asdf/plugins/java/set-java-home.zsh"
-[[ -r $JAVA_INIT ]] && source "${JAVA_INIT}"
+java_init="$HOME/.asdf/plugins/java/set-java-home.zsh"
+[[ -f $java_init ]] && source "${java_init}"
 
 # Setup opam
-export OPAM_INIT="$HOME/.opam/opam-init/init.zsh"
-[[ -r $OPAM_INIT ]] && source "${OPAM_INIT}"
+opam_init="$HOME/.opam/opam-init/init.zsh"
+[[ -f $opam_init ]] && source "${opam_init}"
 
 # Setup C#
-export C_SHARP_INIT="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
-[[ -r $C_SHARP_INIT ]] && source "${C_SHARP_INIT}"
+c_sharp_init="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
+[[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
 # Setup Airflow
-export AIRFLOW_DIR="$HOME/airflow"
-[[ -d $AIRFLOW_DIR ]] && export AIRFLOW_HOME=$AIRFLOW_DIR
+airflow_dir="$HOME/airflow"
+[[ -d $airflow_dir ]] && export AIRFLOW_HOME=$airflow_dir
 
 # Setup Password Store Extensions
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+
+#--------------------------------------------------------------------#
+#                                PATH                                #
+#--------------------------------------------------------------------#
+
+# Add shell config bin folder
+export PATH="${HOME}/.config/shell/bin:$PATH"
+
+# Add user bin folder
+user_bin="${HOME}/bin"
+[[ -d $user_bin ]] && export PATH="${user_bin}:$PATH"
+
+#--------------------------------------------------------------------#
+#                        Plugins / Completion                        #
+#--------------------------------------------------------------------#
+
+# Add general tab completion
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+# This runs: autoload -Uz compinit && compinit
+zsh_complete="zsh-autocomplete"
+zsh_complete_init="$(brew --prefix)/share/$zsh_complete/$zsh_complete.plugin.zsh"
+[[ -f $zsh_complete_init ]] && source "${zsh_complete_init}"
+
+zsh_highlight="zsh-syntax-highlighting"
+zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
+[[ -f $zsh_highlight_init ]] && source "${zsh_highlight_init}"
+
+# Add tab completion for click scripts
+eval "$(_GD_COMPLETE=zsh_source gd)"
+eval "$(_LLM_COMPLETE=zsh_source llm)"
+eval "$(_PR_COMPLETE=zsh_source pr)"
+
+#--------------------------------------------------------------------#
+#                         Editor with Aliases                        #
+#--------------------------------------------------------------------#
+
+# Change default editor
+export VISUAL="nvim"
+export EDITOR="$VISUAL"
+
+# Aliases common editor commands
+alias n="$VISUAL ."
+alias v="$VISUAL ."
+alias vim="$VISUAL"
+
+#--------------------------------------------------------------------#
+#                      VIM Mode and Keybindings                      #
+#--------------------------------------------------------------------#
+
+# Use vi mode, set explicitly
+bindkey -v
+# Fix vi mode search behavior for <esc>+/
+vi-search-fix() {
+    zle vi-cmd-mode
+    zle .vi-history-search-backward
+}
+zle -N vi-search-fix
+# For all valid escape sequences: man zshzle
+bindkey -M viins "\e/" vi-search-fix
+# Fix ability to delete characters
+bindkey "^?" backward-delete-char
