@@ -28,8 +28,8 @@ return {
             linter_configs = {
                 markdownlint = {
                     args = {
-                        '--disable',
-                        'MD025', -- allow multiple top-level headings in the same document
+                        '--config',
+                        '~/.config/nvim/markdownlint.yaml',
                         '--',
                     },
                 },

@@ -1,0 +1,8 @@
+default: true
+
+single-title: false
+no-inline-html: false
+
+line-length:
+  code_blocks: false
+  tables: false
