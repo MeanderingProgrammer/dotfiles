@@ -22,10 +22,6 @@ else
     return
 fi
 
-# Enable Autocomplete
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-autoload -Uz compinit && compinit
-
 # Setup ASDF
 export ASDF_FORCE_PREPEND="yes"
 export ASDF_SRC="$(brew --prefix asdf)/libexec/asdf.sh"
