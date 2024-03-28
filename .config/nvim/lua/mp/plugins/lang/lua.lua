@@ -33,20 +33,8 @@ return {
             linter_configs = {
                 luacheck = {
                     args = {
-                        -- https://luacheck.readthedocs.io/en/stable/cli.html
-                        '--globals',
-                        'vim',
-                        'assert',
-                        'before_each',
-                        'after_each',
-                        'describe',
-                        'it',
-                        -- https://github.com/mfussenegger/nvim-lint/blob/master/lua/lint/linters/luacheck.lua
-                        '--formatter',
-                        'plain',
-                        '--codes',
-                        '--ranges',
-                        '-',
+                        '--config',
+                        require('mp.config.utils').lint_config('.luacheckrc'),
                     },
                 },
             },

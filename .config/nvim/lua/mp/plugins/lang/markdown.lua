@@ -30,7 +30,6 @@ return {
                     args = {
                         '--config',
                         require('mp.config.utils').lint_config('markdownlint.yaml'),
-                        '--',
                     },
                 },
             },
