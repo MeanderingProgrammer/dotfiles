@@ -29,7 +29,7 @@ return {
                 markdownlint = {
                     args = {
                         '--config',
-                        '~/.config/nvim/markdownlint.yaml',
+                        require('mp.config.utils').lint_config('markdownlint.yaml'),
                         '--',
                     },
                 },

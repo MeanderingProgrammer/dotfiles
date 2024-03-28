@@ -1,5 +1,11 @@
 local M = {}
 
+---@param file string
+---@return string
+function M.lint_config(file)
+    return vim.fn.stdpath('config') .. '/lint_configs/' .. file
+end
+
 ---@param config table<string, string[]>
 ---@return string[]
 function M.flat_values(config)
