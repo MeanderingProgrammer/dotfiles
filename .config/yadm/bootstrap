@@ -21,7 +21,7 @@ install_libraries() {
 
     # Rust
     cargo install aoc-cli
-    cargo install --path ~/.config/shell/weather
+    cargo install --path ~/.config/weather
     asdf reshim rust
 
     # Node
