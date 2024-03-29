@@ -70,11 +70,7 @@ user_bin="${HOME}/bin"
 
 # Add general tab completion
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-
-# This runs: autoload -Uz compinit && compinit
-zsh_complete="zsh-autocomplete"
-zsh_complete_init="$(brew --prefix)/share/$zsh_complete/$zsh_complete.plugin.zsh"
-[[ -f $zsh_complete_init ]] && source "${zsh_complete_init}"
+autoload -Uz compinit && compinit
 
 zsh_highlight="zsh-syntax-highlighting"
 zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"

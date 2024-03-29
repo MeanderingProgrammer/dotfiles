@@ -1,6 +1,6 @@
 # General
 alias reload="source ~/.zshrc"
-alias sys-update="yadm pull && yadm bootstrap"
+alias update-sys="yadm pull && yadm bootstrap"
 alias ll="ls -latr"
 alias workspace="cd ~/dev/repos/personal"
 alias notes="cd ~/Documents/notes"
@@ -38,7 +38,7 @@ alias pap="pass git push"
 alias papl="pass git pull"
 
 # Advent
-alias a_build="./scripts/advent.py build"
-alias a_run="./scripts/advent.py run"
-alias a_gen="./scripts/advent.py generate"
-alias a_graph="./scripts/advent.py graph"
+alias a-build="./scripts/advent.py build"
+alias a-run="./scripts/advent.py run"
+alias a-gen="./scripts/advent.py generate"
+alias a-graph="./scripts/advent.py graph"

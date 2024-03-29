@@ -44,7 +44,7 @@ def get_alias_groups() -> AliasGroups:
             name="General",
             aliases=[
                 Alias(name="reload", command="source ~/.zshrc"),
-                Alias(name="sys-update", command="yadm pull && yadm bootstrap"),
+                Alias(name="update-sys", command="yadm pull && yadm bootstrap"),
                 Alias(name="ll", command="ls -latr"),
                 Alias(name="workspace", command="cd ~/dev/repos/personal"),
                 Alias(name="notes", command="cd ~/Documents/notes"),
@@ -94,10 +94,10 @@ def get_alias_groups() -> AliasGroups:
         AliasGroup(
             name="Advent",
             aliases=[
-                Alias(name="a_build", command="./scripts/advent.py build"),
-                Alias(name="a_run", command="./scripts/advent.py run"),
-                Alias(name="a_gen", command="./scripts/advent.py generate"),
-                Alias(name="a_graph", command="./scripts/advent.py graph"),
+                Alias(name="a-build", command="./scripts/advent.py build"),
+                Alias(name="a-run", command="./scripts/advent.py run"),
+                Alias(name="a-gen", command="./scripts/advent.py generate"),
+                Alias(name="a-graph", command="./scripts/advent.py graph"),
             ],
         ),
     ]

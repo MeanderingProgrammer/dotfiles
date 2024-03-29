@@ -17,7 +17,6 @@ brew "ripgrep"
 brew "tmux"
 brew "wget"
 brew "yadm"
-brew "zsh-autocomplete"
 brew "zsh-syntax-highlighting"
 
 # Terminals
