@@ -48,7 +48,7 @@ impl Forecast {
 
     pub fn map<T>(&self, f: fn(&ForecastPeriod) -> T) -> Vec<T> {
         let periods = &self.properties.periods;
-        periods.iter().map(|period| f(period)).collect()
+        periods.iter().map(f).collect()
     }
 }
 

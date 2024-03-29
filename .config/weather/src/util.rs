@@ -17,7 +17,7 @@ pub struct Location {
 pub async fn location() -> Result<Location> {
     let ip: Ip = get("http://httpbin.org/ip").await?;
     let loc: Location = get(&format!("http://ip-api.com/json/{}", &ip.origin)).await?;
-    return Ok(loc);
+    Ok(loc)
 }
 
 async fn get<T: DeserializeOwned>(endpoint: &str) -> Result<T> {
