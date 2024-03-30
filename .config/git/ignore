@@ -11,5 +11,6 @@ lazy-lock.json
 /.config/asciinema/
 /.config/chessx/
 /.config/libvirt/
+/.config/mpv/
 /.config/pypoetry/
 /.config/qBittorrent/

@@ -9,9 +9,14 @@ return {
             end, buffer_clients)
             return vim.fn.join(clients, ' ')
         end
+        local filename_section = { 'filename', path = 1 }
         require('lualine').setup({
             sections = {
+                lualine_c = { filename_section },
                 lualine_x = { lsp_clients, 'filetype' },
+            },
+            inactive_sections = {
+                lualine_c = { filename_section },
             },
             extensions = { 'nvim-tree' },
         })
