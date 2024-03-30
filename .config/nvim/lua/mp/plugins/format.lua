@@ -8,7 +8,7 @@ return {
         },
     },
     config = function(_, opts)
-        local utils = require('mp.config.utils')
+        local utils = require('mp.utils')
         require('mason-tool-installer').setup({
             ensure_installed = utils.flat_values(opts.formatters_by_ft),
         })

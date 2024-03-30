@@ -16,7 +16,7 @@ return {
             callback = function(event)
                 local builtin = require('telescope.builtin')
                 local jump_opts = { jump_type = 'never' }
-                local utils = require('mp.config.utils')
+                local utils = require('mp.utils')
 
                 require('which-key').register({
                     g = {

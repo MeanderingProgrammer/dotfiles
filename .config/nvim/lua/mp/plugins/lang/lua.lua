@@ -34,7 +34,7 @@ return {
                 luacheck = {
                     args = {
                         '--config',
-                        require('mp.config.utils').lint_config('.luacheckrc'),
+                        require('mp.utils').lint_config('.luacheckrc'),
                     },
                 },
             },

@@ -13,7 +13,7 @@ return {
 
         local mark = require('harpoon-core.mark')
         local ui = require('harpoon-core.ui')
-        local utils = require('mp.config.utils')
+        local utils = require('mp.utils')
 
         require('which-key').register({
             ['<leader>'] = {

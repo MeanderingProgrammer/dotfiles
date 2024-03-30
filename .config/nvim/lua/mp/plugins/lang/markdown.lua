@@ -29,7 +29,7 @@ return {
                 markdownlint = {
                     args = {
                         '--config',
-                        require('mp.config.utils').lint_config('markdownlint.yaml'),
+                        require('mp.utils').lint_config('markdownlint.yaml'),
                     },
                 },
             },
