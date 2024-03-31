@@ -6,7 +6,7 @@ return {
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
     opts = {
-        ensure_installed = { 'dart', 'just', 'latex', 'yaml' },
+        ensure_installed = {},
         highlight = { enable = true },
         indent = { enable = true },
         incremental_selection = {
