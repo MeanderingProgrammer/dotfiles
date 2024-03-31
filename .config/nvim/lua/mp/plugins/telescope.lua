@@ -28,6 +28,7 @@ return {
                 name = 'telescope',
                 f = { find_files, 'Find Files' },
                 g = { builtin.live_grep, 'Grep Files' },
+                u = { '<cmd>Telescope undo<cr>', 'Undo Tree' },
                 d = { builtin.diagnostics, 'Diagnostics' },
                 w = { builtin.grep_string, 'Current Word' },
                 t = { builtin.help_tags, 'Help Tags' },

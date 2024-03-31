@@ -27,7 +27,9 @@ vim.opt.timeoutlen = 500
 -- Set wait time for detecting changes
 vim.opt.updatetime = 250
 
--- Save undo history
+-- Save / Backup / Undo settings
+vim.opt.swapfile = false
+vim.opt.backup = false
 vim.opt.undofile = true
 
 -- Split to right / below by default

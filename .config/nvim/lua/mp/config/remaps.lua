@@ -1,37 +1,32 @@
----@param modes string|string[]
----@param lhs string
----@param rhs string
-local function remap(modes, lhs, rhs)
-    vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
-end
+local opts = { noremap = true, silent = true }
 
 -- Move lines up / down
-remap('n', '<A-j>', '<cmd>m .+1<cr>==')
-remap('n', '<A-k>', '<cmd>m .-2<cr>==')
-remap('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi')
-remap('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi')
+vim.keymap.set('n', '<A-j>', '<cmd>m .+1<cr>==', opts)
+vim.keymap.set('n', '<A-k>', '<cmd>m .-2<cr>==', opts)
+vim.keymap.set('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', opts)
+vim.keymap.set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', opts)
 
 -- Move split panes left / right
-remap('n', '<A-h>', '<C-W>H')
-remap('n', '<A-l>', '<C-W>L')
+vim.keymap.set('n', '<A-h>', '<C-w>H', opts)
+vim.keymap.set('n', '<A-l>', '<C-w>L', opts)
 
 -- Move between panes
-remap('n', '<C-h>', '<C-w>h')
-remap('n', '<C-j>', '<C-w>j')
-remap('n', '<C-k>', '<C-w>k')
-remap('n', '<C-l>', '<C-w>l')
+vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
 
 -- Moving by half page
-remap('n', '<C-d>', '<C-d>zz')
-remap('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz', opts)
+vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
 
 -- Searching
-remap('n', 'n', 'nzz')
-remap('n', 'N', 'Nzz')
-remap('n', '<cr>', ':noh<cr><cr>')
+vim.keymap.set('n', 'n', 'nzz', opts)
+vim.keymap.set('n', 'N', 'Nzz', opts)
+vim.keymap.set('n', '<cr>', ':noh<cr><cr>', opts)
 
--- Remove my ability to fallback to arrows
-remap({ 'n', 'v', 'i' }, '<Up>', '<Nop>')
-remap({ 'n', 'v', 'i' }, '<Down>', '<Nop>')
-remap({ 'n', 'v', 'i' }, '<Left>', '<Nop>')
-remap({ 'n', 'v', 'i' }, '<Right>', '<Nop>')
+-- Remove ability to fallback to arrows
+vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', opts)
+vim.keymap.set({ 'n', 'v', 'i' }, '<Down>', '<Nop>', opts)
+vim.keymap.set({ 'n', 'v', 'i' }, '<Left>', '<Nop>', opts)
+vim.keymap.set({ 'n', 'v', 'i' }, '<Right>', '<Nop>', opts)
