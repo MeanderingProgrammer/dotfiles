@@ -46,10 +46,6 @@ opam_init="$HOME/.opam/opam-init/init.zsh"
 c_sharp_init="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
-# Setup Airflow
-airflow_dir="$HOME/airflow"
-[[ -d $airflow_dir ]] && export AIRFLOW_HOME=$airflow_dir
-
 # Setup Password Store Extensions
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
