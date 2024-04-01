@@ -7,6 +7,9 @@ return {
             allowed_windows = {
                 not_current = false,
             },
+            mappings = {
+                start_jumping = '<tab>',
+            },
         })
     end,
 }
