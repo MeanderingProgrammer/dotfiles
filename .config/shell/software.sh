@@ -17,9 +17,12 @@ if [[ "${system_type}" == "Darwin" ]]; then
 elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    # Add System32 to PATH
-    export PATH="$PATH:/mnt/c/Windows/System32"
-    export PATH="$PATH:/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
+    # Add System32 to PATH if it exists (WSL)
+    sys32_path="/mnt/c/Windows/System32"
+    if [[ -d $sys32_path ]]; then 
+        export PATH="$PATH:${sys32_path}"
+        export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
+    fi
 else
     echo "Unhandled system type ${system_type}, stopping setup"
     return
