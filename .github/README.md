@@ -13,8 +13,26 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 
 # Setup
 
-## [Homebrew](https://brew.sh/)
+## Install Linux Requirements
 
+<details>
+<summary>Command</summary>
+
+```bash
+sudo apt install \
+  curl git \
+  wget make gcc llvm wl-clipboard \
+  build-essential bubblewrap xz-utils \
+  libbz2-dev libffi-dev liblzma-dev \
+  libncursesw5-dev libreadline-dev \
+  libsqlite3-dev libssl-dev \
+  libxml2-dev libxmlsec1-dev \
+  tk-dev zlib1g-dev
+```
+
+</details>
+
+## [Homebrew](https://brew.sh/)
 
 <details>
 <summary>Install</summary>
@@ -40,30 +58,12 @@ fi
 
 </details>
 
-## Install WSL2 Requirements
-
-<details>
-<summary>Command</summary>
-
-```bash
-sudo apt install \
-  wget curl make gcc llvm wl-clipboard \
-  build-essential bubblewrap xz-utils \
-  libbz2-dev libffi-dev liblzma-dev \
-  libncursesw5-dev libreadline-dev \
-  libsqlite3-dev libssl-dev \
-  libxml2-dev libxmlsec1-dev \
-  tk-dev zlib1g-dev
-```
-
-</details>
-
 ## [Git](https://git-scm.com/)
 
 <details>
 <summary>Install</summary>
 
-[Formula](https://formulae.brew.sh/formula/git) 
+[Formula](https://formulae.brew.sh/formula/git)
 
 ```bash
 brew install git
