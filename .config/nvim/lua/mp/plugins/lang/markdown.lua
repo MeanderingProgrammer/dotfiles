@@ -12,14 +12,6 @@ return {
         end,
     },
     {
-        'MeanderingProgrammer/markdown.nvim',
-        dev = true,
-        dependencies = { 'nvim-treesitter/nvim-treesitter' },
-        config = function()
-            require('render-markdown').setup({})
-        end,
-    },
-    {
         'mfussenegger/nvim-lint',
         opts = {
             linters_by_ft = {
@@ -34,5 +26,13 @@ return {
                 },
             },
         },
+    },
+    {
+        'MeanderingProgrammer/markdown.nvim',
+        dev = true,
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        config = function()
+            require('render-markdown').setup({})
+        end,
     },
 }
