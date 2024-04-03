@@ -13,10 +13,10 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 
 # Setup
 
-## Install Linux Requirements
+## Linux
 
 <details>
-<summary>Command</summary>
+<summary>Install Requirements</summary>
 
 ```bash
 sudo apt install \
@@ -28,6 +28,18 @@ sudo apt install \
   libsqlite3-dev libssl-dev \
   libxml2-dev libxmlsec1-dev \
   tk-dev zlib1g-dev
+```
+
+</details>
+
+<details>
+<summary>Switch to Z Shell</summary>
+
+[Shell](https://www.zsh.org/)
+
+```bash
+sudo apt install zsh
+chsh -s $(which zsh)
 ```
 
 </details>
@@ -142,18 +154,6 @@ yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ## Miscellaneous
 
 <details>
-<summary>Use Z Shell in Linux</summary>
-
-[Shell](https://www.zsh.org/)
-
-```bash
-sudo apt install zsh
-chsh -s $(which zsh)
-```
-
-</details>
-
-<details>
 <summary>Activate Argcomplete</summary>
 
 [Doc](https://github.com/kislyuk/argcomplete?tab=readme-ov-file#installation)
@@ -164,10 +164,10 @@ activate-global-python-argcomplete --user
 
 </details>
 
-## [Nix](https://nixos.org/)
-
 <details>
-<summary>Install</summary>
+<summary>Install Nix</summary>
+
+[Doc](https://nixos.org/)
 
 Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
 

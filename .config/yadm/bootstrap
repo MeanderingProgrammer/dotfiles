@@ -1,7 +1,7 @@
 #!/bin/bash
 
 upgrade_homebrew() {
-    brew bundle --global
+    brew bundle --no-lock --file ~/.config/homebrew/Brewfile
     brew update
     brew upgrade
 }
@@ -9,8 +9,8 @@ upgrade_homebrew() {
 upgrade_apt() {
     system_type=$(uname -s)
     if [[ "${system_type}" == "Linux" ]]; then
-        sudo apt-get update
-        sudo apt-get upgrade
+        sudo apt-get --yes update
+        sudo apt-get --yes upgrade
     fi
 }
 
