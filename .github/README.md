@@ -77,7 +77,7 @@ brew install git
 [Doc](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints)
 
 ```bash
-mkdir ~/.ssh && touch ~/.ssh/known_hosts
+mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
 ssh-keyscan github.com > ~/.ssh/known_hosts
 ```
 
@@ -104,7 +104,7 @@ eval "$(ssh-agent -s)"
 if [[ $(uname -s) == "Darwin" ]]; then
     cat ~/.ssh/id_ed25519.pub | pbcopy
 elif [[ $(uname -s) == "Linux" ]]; then
-    cat ~/.ssh/id_ed25519.pub | clip.exe
+    cat ~/.ssh/id_ed25519.pub | wl-copy
 else
     echo "Unhandled system type $(uname -s)"
 fi
@@ -142,7 +142,7 @@ yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 ## Miscellaneous
 
 <details>
-<summary>Use Z Shell in WSL2</summary>
+<summary>Use Z Shell in Linux</summary>
 
 [Shell](https://www.zsh.org/)
 
