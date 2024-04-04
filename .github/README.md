@@ -13,145 +13,29 @@ Using [yadm](https://yadm.io/) to store all my dotfiles.
 
 # Setup
 
-## Linux
-
-<details>
-<summary>Install Requirements</summary>
+## Install `curl` (Linux)
 
 ```bash
-sudo apt install \
-  curl git \
-  wget make gcc llvm wl-clipboard \
-  build-essential bubblewrap xz-utils \
-  libbz2-dev libffi-dev liblzma-dev \
-  libncursesw5-dev libreadline-dev \
-  libsqlite3-dev libssl-dev \
-  libxml2-dev libxmlsec1-dev \
-  tk-dev zlib1g-dev
+sudo apt install curl
 ```
 
-</details>
-
-<details>
-<summary>Switch to Z Shell</summary>
-
-[Shell](https://www.zsh.org/)
+## Download Setup Script
 
 ```bash
-sudo apt install zsh
-chsh -s $(which zsh)
+curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/.github/setup.sh
 ```
 
-</details>
+## Execute Script Commands in Order
 
-## [Homebrew](https://brew.sh/)
+| Command            | Description                           |
+|--------------------|---------------------------------------|
+| `./setup.sh deps`  | Installs dependencies                 |
+| `./setup.sh shell` | Changes the shell                     |
+| `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
+| `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
+| `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
 
-<details>
-<summary>Install</summary>
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-</details>
-
-<details>
-<summary>Evaluate</summary>
-
-```bash
-if [[ $(uname -s) == "Darwin" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ $(uname -s) == "Linux" ]]; then
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-else
-    echo "Unhandled system type $(uname -s)"
-fi
-```
-
-</details>
-
-## [Git](https://git-scm.com/)
-
-<details>
-<summary>Install</summary>
-
-[Formula](https://formulae.brew.sh/formula/git)
-
-```bash
-brew install git
-```
-
-</details>
-
-<details>
-<summary>Set Known Hosts</summary>
-
-[Doc](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints)
-
-```bash
-mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
-ssh-keyscan github.com > ~/.ssh/known_hosts
-```
-
-</details>
-
-<details>
-<summary>Generate SSH Key</summary>
-
-[Doc](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-
-```bash
-ssh-keygen -t ed25519 -C "meanderingprogrammer@gmail.com"
-eval "$(ssh-agent -s)"
-```
-
-</details>
-
-<details>
-<summary>Add SSH Key to GitHub</summary>
-
-[Doc](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
-
-```bash
-if [[ $(uname -s) == "Darwin" ]]; then
-    cat ~/.ssh/id_ed25519.pub | pbcopy
-elif [[ $(uname -s) == "Linux" ]]; then
-    cat ~/.ssh/id_ed25519.pub | wl-copy
-else
-    echo "Unhandled system type $(uname -s)"
-fi
-```
-
-</details>
-
-## [yadm](https://yadm.io/)
-
-<details>
-<summary>Install</summary>
-
-[Formula](https://formulae.brew.sh/formula/yadm)
-
-```bash
-brew install yadm
-```
-
-</details>
-
-<details>
-<summary>Bootstrap</summary>
-
-[Doc](https://yadm.io/docs/bootstrap)
-
-```bash
-yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
-```
-
-- Python installation may fail see [ISSUE-2823](https://github.com/pyenv/pyenv/issues/2823)
-- Solution: `brew unlink pkg-config`
-
-</details>
-
-## Miscellaneous
+# Optional
 
 <details>
 <summary>Activate Argcomplete</summary>

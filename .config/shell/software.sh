@@ -17,6 +17,8 @@ if [[ "${system_type}" == "Darwin" ]]; then
 elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    # Building python with asdf: https://github.com/pyenv/pyenv/pull/2906
+    export PYTHON_BUILD_USE_HOMEBREW=1
 else
     echo "Unhandled system type ${system_type}, stopping setup"
     return
