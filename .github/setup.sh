@@ -85,15 +85,16 @@ install_homebrew() {
     evaluate_homebrew
 }
 
-install_git() {
-    # https://formulae.brew.sh/formula/git
+brew_install() {
     evaluate_homebrew
-    echo "Installing git with homebrew"
-    brew install git
+    echo "Installing ${1} with homebrew"
+    brew install ${1}
     echo "  Done"
+}
 
-    # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    known_hosts_file="$HOME/.ssh/known_hosts"
+known_hosts_file="$HOME/.ssh/known_hosts"
+
+initialize_known_hosts() {
     echo "Creating empty file: ${known_hosts_file}"
     if [[ -f $known_hosts_file ]]; then
         echo "  Already exists"
@@ -103,51 +104,63 @@ install_git() {
         touch ${known_hosts_file}
         echo "  Done"
     fi
-    echo "Adding GitHub hosts"
-    github_hosts=$(cat ${known_hosts_file} | grep "github")
-    if [[ -z "${github_hosts}" ]]; then
-        ssh-keyscan github.com >> ${known_hosts_file}
+}
+
+add_known_hosts() {
+    echo "Adding ${1} hosts to: ${known_hosts_file}"
+    hosts=$(cat ${known_hosts_file} | grep ${1})
+    if [[ -z "${hosts}" ]]; then
+        ssh-keyscan ${1} >> ${known_hosts_file}
         echo "  Done"
     else
         echo "  Already added"
     fi
+}
 
-    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-    ssh_file="$HOME/.ssh/id_ed25519.pub"
+generate_ssh_key() {
+    ssh_file="$HOME/.ssh/${1}"
     echo "Generating SSH key: ${ssh_file}"
     if [[ -f $ssh_file ]]; then
         echo "  Already exists"
     else
-        ssh-keygen -t ed25519 -C "meanderingprogrammer@gmail.com"
+        ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
         echo "  Done"
     fi
-
-    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    echo "Copying SSH key to clipboard"
+    echo "Command to copy to clipboard: ${2}"
     if [[ "${system_type}" == "Darwin" ]]; then
-        cat ${ssh_file} | pbcopy
+        echo "  cat ${ssh_file}.pub | pbcopy"
     elif [[ "${system_type}" == "Linux" ]]; then
-        cat ${ssh_file} | wl-copy
+        echo "  cat ${ssh_file}.pub | wl-copy"
     else
         echo "  Error: unhandled system type"
         exit 1
     fi
-    echo "  DONE PASTE IN GITHUB"
+}
+
+install_git() {
+    # https://formulae.brew.sh/formula/git
+    brew_install "git"
+
+    # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+    initialize_known_hosts
+    add_known_hosts "github.com"
+    add_known_hosts "gitlab.com"
+
+    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+    generate_ssh_key "id_ed25519" "github"
+    generate_ssh_key "id_ed25519_lab" "gitlab"
 }
 
 install_yadm() {
     # https://formulae.brew.sh/formula/yadm
-    evaluate_homebrew
-    echo "Installing yadm with homebrew"
-    brew install yadm
-    echo "  Done"
+    brew_install "yadm"
 
     # https://yadm.io/docs/bootstrap
     echo "Cloning dotfiles repo"
     yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
     echo "  Done"
-
 }
 
 cleanup_script() {
