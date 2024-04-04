@@ -13,7 +13,7 @@ def main(command: list[str]) -> None:
     command = ["git"] + command
     rows: list[dict[str, str]] = []
     for git_folder in Path().rglob(".git"):
-        if git_folder.is_dir():
+        if git_folder.stat().st_size > 0:
             git_repo = git_folder.parent
             result = run(git_repo, command)
             row: dict[str, str] = dict(

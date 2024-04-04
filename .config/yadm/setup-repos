@@ -78,19 +78,17 @@ def main() -> None:
     personal_root = RepoRoot(
         root=Path.home().joinpath("dev/repos/personal"),
         repos=[
-            Repo(name="py-requirements.nvim"),
             Repo(name="markdown.nvim"),
+            Repo(name="py-requirements.nvim"),
             Repo(name="harpoon-core.nvim"),
             Repo(name="dashboard.nvim"),
             Repo(name="advent-of-code"),
             Repo(name="learning"),
             Repo(name="chess"),
             Repo(name="resume"),
-            Repo(name="rx-availability"),
             Repo(name="pass-yank"),
             Repo(name="debug-it"),
             Repo(name="small-apps"),
-            Repo(name="full-gradle-app"),
         ],
     )
     open_source_root = RepoRoot(

@@ -25,7 +25,6 @@ return {
                 '~/dev/repos/personal/learning',
                 '~/dev/repos/personal/chess',
                 '~/dev/repos/personal/resume',
-                '~/dev/repos/personal/rx-availability',
             },
             footer = { 'version', 'startuptime' },
             on_load = function()

@@ -80,6 +80,7 @@ zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
 
 # Add tab completion for click scripts
 eval "$(_GD_COMPLETE=zsh_source gd)"
+eval "$(_GIT_REMOTE_COMPLETE=zsh_source git-remote)"
 eval "$(_LLM_COMPLETE=zsh_source llm)"
 eval "$(_PR_COMPLETE=zsh_source pr)"
 

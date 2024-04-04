@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+
+import click
+
+import git
+
+
+@dataclass(frozen=True)
+class GitRemote:
+    name: str
+    url: str
+    auto_creates: bool
+
+
+REMOTES: list[GitRemote] = [
+    GitRemote(name="lab", url="git@gitlab.com", auto_creates=True),
+    GitRemote(name="bit", url="git@bitbucket.org", auto_creates=False),
+]
+
+
+@click.group()
+@click.help_option("-h", "--help")
+def cli() -> None:
+    """Scripts to automate interacting with multiple remotes"""
+    pass
+
+
+@cli.command()
+def sync() -> None:
+    """Sync all repos to remotes"""
+
+    home: Path = Path.home()
+    repo_paths: list[Path] = [
+        home.joinpath(".local/share/yadm/repo.git"),
+        home.joinpath(".password-store"),
+        home.joinpath("Documents/notes"),
+    ]
+    for git_folder in home.joinpath("dev/repos/personal").rglob(".git"):
+        if git_folder.stat().st_size > 0:
+            git_repo: Path = git_folder.parent
+            repo_paths.append(git_repo)
+
+    for repo_path in repo_paths:
+        repo: git.Repo = git.Repo(repo_path)
+        push_remotes(repo)
+
+
+@cli.command()
+def push() -> None:
+    """Push current repo to remotes"""
+    repo: git.Repo = git.Repo()
+    push_remotes(repo)
+
+
+def push_remotes(repo: git.Repo) -> None:
+    assert "origin" in repo.remotes
+    origin_url = repo.remotes["origin"].url
+    _, repo_path = origin_url.split(":")
+
+    for remote in REMOTES:
+        if remote.name in repo.remotes:
+            print(f"{remote.name} is already a remote")
+        else:
+            remote_url = ":".join([remote.url, repo_path])
+            assert run_command(repo, ["git", "remote", "add", remote.name, remote_url])
+            assert remote.name in repo.remotes
+
+    for remote in REMOTES:
+        success = run_command(repo, ["git", "push", remote.name])
+        # Only check for failures if remote is able to auto create repos
+        if remote.auto_creates:
+            assert success
+
+
+def run_command(repo: git.Repo, command: list[str]) -> bool:
+    # GitPython struggles with yadm so need to run some things directly
+    print(f"Running {command} in {repo.git_dir}")
+    result = subprocess.run(command, cwd=repo.git_dir)
+    return result.returncode == 0
+
+
+if __name__ == "__main__":
+    cli()
