@@ -88,8 +88,14 @@ install_homebrew() {
 brew_install() {
     evaluate_homebrew
     echo "Installing ${1} with homebrew"
-    brew install ${1}
-    echo "  Done"
+    brew list ${1}
+    # $? is a special value that stores the exit status of the last executed command
+    if [[ $? == 0 ]]; then
+        echo "  Already installed"
+    else
+        brew install ${1}
+        echo "  Done"
+    fi
 }
 
 known_hosts_file="$HOME/.ssh/known_hosts"
@@ -106,7 +112,8 @@ initialize_known_hosts() {
     fi
 }
 
-add_known_hosts() {
+setup_ssh() {
+    # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
     echo "Adding ${1} hosts to: ${known_hosts_file}"
     hosts=$(cat ${known_hosts_file} | grep ${1})
     if [[ -z "${hosts}" ]]; then
@@ -115,10 +122,9 @@ add_known_hosts() {
     else
         echo "  Already added"
     fi
-}
 
-generate_ssh_key() {
-    ssh_file="$HOME/.ssh/${1}"
+    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+    ssh_file="$HOME/.ssh/${2}"
     echo "Generating SSH key: ${ssh_file}"
     if [[ -f $ssh_file ]]; then
         echo "  Already exists"
@@ -127,7 +133,9 @@ generate_ssh_key() {
         eval "$(ssh-agent -s)"
         echo "  Done"
     fi
-    echo "Command to copy to clipboard: ${2}"
+
+    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+    echo "Command to copy to clipboard: ${1}"
     if [[ "${system_type}" == "Darwin" ]]; then
         echo "  cat ${ssh_file}.pub | pbcopy"
     elif [[ "${system_type}" == "Linux" ]]; then
@@ -142,15 +150,11 @@ install_git() {
     # https://formulae.brew.sh/formula/git
     brew_install "git"
 
-    # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+    # Setup SSH keys for each git host
     initialize_known_hosts
-    add_known_hosts "github.com"
-    add_known_hosts "gitlab.com"
-
-    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-    # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    generate_ssh_key "id_ed25519" "github"
-    generate_ssh_key "id_ed25519_lab" "gitlab"
+    setup_ssh "github.com" "id_ed25519"
+    setup_ssh "gitlab.com" "id_ed25519_lab"
+    setup_ssh "bitbucket.org" "id_ed25519_bit"
 }
 
 install_yadm() {
