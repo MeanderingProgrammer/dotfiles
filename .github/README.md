@@ -30,7 +30,7 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | Command            | Description                           |
 |--------------------|---------------------------------------|
 | `./setup.sh deps`  | Installs dependencies                 |
-| `./setup.sh shell` | Changes the shell                     |
+| `./setup.sh shell` | Changes [shell](https://www.zsh.org/) |
 | `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
 | `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |

@@ -39,7 +39,6 @@ install_deps() {
 }
 
 change_shell() {
-    # https://www.zsh.org/
     if [[ "${system_type}" == "Darwin" ]]; then
         echo "mac already uses Z Shell"
     elif [[ "${system_type}" == "Linux" ]]; then
