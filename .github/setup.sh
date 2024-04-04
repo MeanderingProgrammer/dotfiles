@@ -52,7 +52,7 @@ change_shell() {
 }
 
 evaluate_homebrew() {
-    if [[ $(command -v brew) == "" ]]; then
+    if [[ -z $(command -v brew) ]]; then
         if [[ "${system_type}" == "Darwin" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         elif [[ "${system_type}" == "Linux" ]]; then
@@ -67,7 +67,7 @@ evaluate_homebrew() {
 }
 
 install_homebrew() {
-    if [[ $(command -v brew) == "" ]]; then
+    if [[ -z $(command -v brew) ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         evaluate_homebrew
     else
@@ -81,9 +81,16 @@ install_git() {
     brew install git
 
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    mkdir -p ~/.ssh
-    touch ~/.ssh/known_hosts
-    ssh-keyscan github.com >> ~/.ssh/known_hosts
+    known_hosts_file="$HOME/.ssh/known_hosts"
+    if [[ ! -f $known_hosts_file ]]; then
+        ssh_directory=$(dirname ${known_hosts_file})
+        mkdir -p ${ssh_directory}
+        touch ${known_hosts_file}
+    fi
+    github_hosts=$(cat ${known_hosts_file} | grep "github")
+    if [[ -z "${github_hosts}" ]]; then
+        ssh-keyscan github.com >> ${known_hosts_file}
+    fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
     ssh_file="$HOME/.ssh/id_ed25519.pub"
