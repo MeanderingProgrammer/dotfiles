@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import click
-
 import git
 
 
@@ -70,10 +69,7 @@ def push_remotes(repo: git.Repo) -> None:
             assert remote.name in repo.remotes
 
     for remote in REMOTES:
-        success = run_command(repo, ["git", "push", remote.name])
-        # Only check for failures if remote is able to auto create repos
-        if remote.auto_creates:
-            assert success
+        assert run_command(repo, ["git", "push", remote.name])
 
 
 def run_command(repo: git.Repo, command: list[str]) -> bool:
