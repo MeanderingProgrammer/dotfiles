@@ -116,6 +116,10 @@ install_yadm() {
     yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
 }
 
+cleanup_script() {
+    rm -rf "setup.sh"
+}
+
 case ${1} in
   "deps")
     install_deps
@@ -132,9 +136,12 @@ case ${1} in
   "yadm")
     install_yadm
     ;;
+  "clean")
+    cleanup_script
+    ;;
   *)
     echo "Unknown command: ${1}"
-    echo "Commands: deps, shell, brew, git, yadm"
+    echo "Commands: deps, shell, brew, git, yadm, clean"
     exit 1
     ;;
 esac

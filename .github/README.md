@@ -22,7 +22,7 @@ sudo apt install curl
 ## Download Setup Script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/.github/setup.sh
+curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/.github/setup.sh -o setup.sh && chmod +x setup.sh
 ```
 
 ## Execute Script Commands in Order
@@ -34,6 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
 | `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
+| `./setup.sh clean` | Deletes the setup script              |
 
 # Optional
 
