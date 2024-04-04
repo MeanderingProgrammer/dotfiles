@@ -6,11 +6,14 @@ if [[ "${#}" -ne 1 ]]; then
 fi
 
 system_type=$(uname -s)
+echo "System type: ${system_type}"
 
 install_deps() {
+    echo "Installing dependencies"
     if [[ "${system_type}" == "Darwin" ]]; then
-        echo "No additional dependencies for mac"
+        echo "  None"
     elif [[ "${system_type}" == "Linux" ]]; then
+        echo "  Starting"
         sudo apt install \
           git \
           wget \
@@ -33,97 +36,124 @@ install_deps() {
           tk-dev \
           zlib1g-dev
     else
-        echo "Unhandled system type ${system_type}"
+        echo "  Error: unhandled system type"
         exit 1
     fi
 }
 
 change_shell() {
+    echo "Changing shell to Zsh"
     if [[ "${system_type}" == "Darwin" ]]; then
-        echo "mac already uses Z Shell"
+        echo "  Already the default"
     elif [[ "${system_type}" == "Linux" ]]; then
+        echo "  Installing"
         sudo apt install zsh
+        echo "  Changing"
         chsh -s $(which zsh)
-        echo "Shell changed, restart your terminal"
+        echo "  SUCCESS RESTART TERMINAL"
     else
-        echo "Unhandled system type ${system_type}"
+        echo "  Error: unhandled system type"
         exit 1
     fi
 }
 
 evaluate_homebrew() {
+    echo "Evaluating homebrew"
     if [[ -z $(command -v brew) ]]; then
         if [[ "${system_type}" == "Darwin" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         elif [[ "${system_type}" == "Linux" ]]; then
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         else
-            echo "Unhandled system type ${system_type}"
+            echo "  Error: unhandled system type"
             exit 1
         fi
+        echo "  Done"
     else
-        echo "Homebrew already evaluated"
+        echo "  Already evaluated"
     fi
 }
 
 install_homebrew() {
+    echo "Installing homebrew"
     if [[ -z $(command -v brew) ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        evaluate_homebrew
+        echo "  Done"
     else
-        echo "Homebrew already installed"
+        echo "  Already installed"
     fi
+    evaluate_homebrew
 }
 
 install_git() {
     # https://formulae.brew.sh/formula/git
     evaluate_homebrew
+    echo "Installing git with homebrew"
     brew install git
+    echo "  Done"
 
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
     known_hosts_file="$HOME/.ssh/known_hosts"
-    if [[ ! -f $known_hosts_file ]]; then
+    echo "Creating empty file: ${known_hosts_file}"
+    if [[ -f $known_hosts_file ]]; then
+        echo "  Already exists"
+    else
         ssh_directory=$(dirname ${known_hosts_file})
         mkdir -p ${ssh_directory}
         touch ${known_hosts_file}
+        echo "  Done"
     fi
+    echo "Adding GitHub hosts"
     github_hosts=$(cat ${known_hosts_file} | grep "github")
     if [[ -z "${github_hosts}" ]]; then
         ssh-keyscan github.com >> ${known_hosts_file}
+        echo "  Done"
+    else
+        echo "  Already added"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
     ssh_file="$HOME/.ssh/id_ed25519.pub"
+    echo "Generating SSH key: ${ssh_file}"
     if [[ -f $ssh_file ]]; then
-        echo "${ssh_file} already exists"
+        echo "  Already exists"
     else
         ssh-keygen -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
+        echo "  Done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+    echo "Copying SSH key to clipboard"
     if [[ "${system_type}" == "Darwin" ]]; then
         cat ${ssh_file} | pbcopy
     elif [[ "${system_type}" == "Linux" ]]; then
         cat ${ssh_file} | wl-copy
     else
-        echo "Unhandled system type ${system_type}"
+        echo "  Error: unhandled system type"
         exit 1
     fi
-    echo "SSH key copied to clipboard, paste to GitHub"
+    echo "  DONE PASTE IN GITHUB"
 }
 
 install_yadm() {
     # https://formulae.brew.sh/formula/yadm
     evaluate_homebrew
+    echo "Installing yadm with homebrew"
     brew install yadm
+    echo "  Done"
 
     # https://yadm.io/docs/bootstrap
+    echo "Cloning dotfiles repo"
     yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
+    echo "  Done"
+
 }
 
 cleanup_script() {
+    echo "Deleting setup.sh"
     rm -rf "setup.sh"
+    echo "  Done"
 }
 
 case ${1} in
