@@ -43,7 +43,7 @@ install_libraries() {
 }
 
 setup_repos() {
-    /bin/bash -c ~/.config/yadm/setup_repos
+    /bin/bash -c ~/.config/yadm/setup-repos
 }
 
 upgrade_homebrew

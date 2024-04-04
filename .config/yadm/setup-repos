@@ -46,11 +46,7 @@ class Repo:
 
     @staticmethod
     def update_submodules(repo: git.Repo) -> None:
-        for submodule in repo.submodules:
-            print(f"Updating submodule: {submodule}")
-            # Requires 'branch' to be specified in .gitmodules
-            # https://github.com/gitpython-developers/GitPython/issues/1058
-            submodule.update(init=True)
+        repo.git.submodule("update", "--init", "--recursive")
 
 
 @cache
