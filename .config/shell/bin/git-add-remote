@@ -1,39 +1,31 @@
 #!/usr/bin/env python
-# PYTHON_ARGCOMPLETE_OK
 
 from argparse import ArgumentParser
 
-import argcomplete
-
 import git
 
-REMOTES: dict[str, str] = dict(
-    lab="git@gitlab.com",
-)
+REMOTES: list[tuple[str, str]] = [
+    ("lab", "git@gitlab.com"),
+]
 
 
-def main(name: str) -> None:
+def main() -> None:
     repo: git.Repo = git.Repo()
-    if name in repo.remotes:
-        print(f"{name} is already a remote")
-    else:
-        assert "origin" in repo.remotes
-        origin_url = repo.remotes["origin"].url
-        _, repo_path = origin_url.split(":")
-        remote_url = ":".join([REMOTES[name], repo_path])
-        print(f"Adding remote {name} to {remote_url}")
-        repo.create_remote(name, remote_url)
+
+    assert "origin" in repo.remotes
+    origin_url = repo.remotes["origin"].url
+    _, repo_path = origin_url.split(":")
+
+    for name, git_url in REMOTES:
+        if name in repo.remotes:
+            print(f"{name} is already a remote")
+        else:
+            remote_url = ":".join([git_url, repo_path])
+            print(f"Adding remote {name} to {remote_url}")
+            repo.create_remote(name, remote_url)
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Add additioanl remote to a git repo")
-    parser.add_argument(
-        "-n",
-        "--name",
-        choices=REMOTES.keys(),
-        default="lab",
-        help="Name of remote",
-    )
-    argcomplete.autocomplete(parser)
-    args = parser.parse_args()
-    main(args.name)
+    parser = ArgumentParser(description="Add additioanl remotes to git repo")
+    parser.parse_args()
+    main()
