@@ -163,8 +163,13 @@ install_yadm() {
 
     # https://yadm.io/docs/bootstrap
     echo "Cloning dotfiles repo"
-    yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
-    echo "  Done"
+    yadm_directory="$HOME/.config/yadm"
+    if [[ -d $yadm_directory ]]; then
+        echo "  Already cloned"
+    else
+        yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
+        echo "  Done"
+    fi
 }
 
 cleanup_script() {
