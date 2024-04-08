@@ -43,16 +43,22 @@ install_deps() {
 
 change_shell() {
     echo "Changing shell to Zsh"
-    if [[ "${system_type}" == "Darwin" ]]; then
-        echo "  Already the default"
-    elif [[ "${system_type}" == "Linux" ]]; then
-        echo "  Installing"
-        sudo apt install zsh
-        echo "  Changing"
-        chsh -s $(which zsh)
-        echo "  SUCCESS RESTART TERMINAL"
+    shell_type=$(basename "$SHELL")
+    if [[ "${shell_type}" == "zsh" ]]; then
+        echo "  Already using zsh"
+    elif [[ "${shell_type}" == "bash" ]]; then
+        if [[ "${system_type}" == "Linux" ]]; then
+            echo "  Installing"
+            sudo apt install zsh
+            echo "  Changing"
+            chsh -s $(which zsh)
+            echo "  SUCCESS RESTART TERMINAL"
+        else
+            echo "  Error: unhandled system type"
+            exit 1
+        fi
     else
-        echo "  Error: unhandled system type"
+        echo "  Error: unhandled shell type ${shell_type}"
         exit 1
     fi
 }
