@@ -38,6 +38,7 @@ install_libraries() {
     npm install -g neovim
 
     # OCaml
+    # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
     opam init --no
     opam update
     opam upgrade --yes
