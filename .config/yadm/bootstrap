@@ -10,8 +10,8 @@ upgrade_apt() {
     system_type=$(uname -s)
     if [[ "${system_type}" == "Linux" ]]; then
         source $(dirname $0)/complex/wezterm.sh
-        sudo apt-get --yes update
-        sudo apt-get --yes upgrade
+        sudo apt --yes update
+        sudo apt --yes upgrade
     fi
 }
 

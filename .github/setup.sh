@@ -14,7 +14,7 @@ install_deps() {
         echo "  None"
     elif [[ "${system_type}" == "Linux" ]]; then
         echo "  Starting"
-        sudo apt install \
+        sudo apt --yes install \
           git \
           wget \
           make \
@@ -49,7 +49,7 @@ change_shell() {
     elif [[ "${shell_type}" == "bash" ]]; then
         if [[ "${system_type}" == "Linux" ]]; then
             echo "  Installing"
-            sudo apt install zsh
+            sudo apt --yes install zsh
             echo "  Changing"
             chsh -s $(which zsh)
             echo "  SUCCESS RESTART TERMINAL"
