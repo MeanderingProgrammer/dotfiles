@@ -95,7 +95,16 @@ export EDITOR="$VISUAL"
 # Aliases common editor commands
 alias n="$VISUAL ."
 alias v="$VISUAL ."
-alias vim="$VISUAL"
+
+vim() {
+    if [[ "${#}" -eq 0 ]]; then
+        nvim
+    elif [[ "${#}" -eq 1 ]]; then
+        cd "${1}" && nvim .
+    else
+        echo "Usage: <path>?"
+    fi
+}
 
 #--------------------------------------------------------------------#
 #                      VIM Mode and Keybindings                      #

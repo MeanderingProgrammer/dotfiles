@@ -17,14 +17,14 @@ return {
                 '~/.config',
                 '~/.config/nvim',
                 '~/Documents/notes',
-                '~/dev/repos/personal/py-requirements.nvim',
-                '~/dev/repos/personal/markdown.nvim',
-                '~/dev/repos/personal/harpoon-core.nvim',
-                '~/dev/repos/personal/dashboard.nvim',
-                '~/dev/repos/personal/advent-of-code',
-                '~/dev/repos/personal/learning',
-                '~/dev/repos/personal/chess',
-                '~/dev/repos/personal/resume',
+                ---@return string[]
+                function()
+                    local directory = '~/dev/repos/personal'
+                    local find_command = string.format('find %s -type d -name ".git"', directory)
+                    local cleanded_command = find_command .. ' | sort | xargs dirname | sed "s|$HOME|~|g"'
+                    local git_directories = vim.fn.system(cleanded_command)
+                    return vim.split(vim.trim(git_directories), '\n', { plain = true })
+                end,
             },
             footer = { 'version', 'startuptime' },
             on_load = function()
