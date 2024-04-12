@@ -1,22 +1,25 @@
 #!/bin/bash
 
-upgrade_homebrew() {
+bootstrap_homebrew() {
     brew bundle --no-lock --file ~/.config/homebrew/Brewfile
     brew update
     brew upgrade
 }
 
-upgrade_apt() {
+bootstrap_apt() {
     system_type=$(uname -s)
+    wsl_sys32_path="/mnt/c/Windows/System32"
     if [[ "${system_type}" == "Linux" ]]; then
-        source $(dirname $0)/complex/wezterm.sh
-        source $(dirname $0)/complex/fonts.sh
+        if [[ ! -d $wsl_sys32_path ]]; then
+            source $(dirname $0)/complex/wezterm.sh
+            source $(dirname $0)/complex/fonts.sh
+        fi
         sudo apt --yes update
         sudo apt --yes upgrade
     fi
 }
 
-install_asdf_tools() {
+bootstrap_asdf_tools() {
     while read line; do
         plugin=$(echo "${line}" | cut -d' ' -f1)
         asdf plugin add "${plugin}"
@@ -24,7 +27,7 @@ install_asdf_tools() {
     asdf install
 }
 
-install_libraries() {
+bootstrap_libraries() {
     # Python
     pip install --upgrade pip
     pip install -r ~/.config/lang/python/requirements.txt
@@ -45,12 +48,12 @@ install_libraries() {
     opam upgrade --yes
 }
 
-setup_repos() {
+bootstrap_repos() {
     /bin/bash -c $(dirname $0)/setup-repos
 }
 
-upgrade_homebrew
-upgrade_apt
-install_asdf_tools
-install_libraries
-setup_repos
+bootstrap_homebrew
+bootstrap_apt
+bootstrap_asdf_tools
+bootstrap_libraries
+bootstrap_repos
