@@ -51,6 +51,7 @@ def sync() -> None:
 @cli.command()
 def push() -> None:
     """Push current repo to remotes"""
+
     repo: git.Repo = git.Repo()
     push_remotes(repo)
 
@@ -74,7 +75,7 @@ def push_remotes(repo: git.Repo) -> None:
 
 def run_command(repo: git.Repo, command: list[str]) -> bool:
     # GitPython struggles with yadm so need to run some things directly
-    print(f"Running {command} in {repo.git_dir}")
+    print(f"Running '{' '.join(command)}' in: {repo.git_dir}")
     result = subprocess.run(command, cwd=repo.git_dir)
     return result.returncode == 0
 
