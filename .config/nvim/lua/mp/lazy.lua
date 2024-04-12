@@ -19,4 +19,5 @@ require('lazy').setup({
     },
     ---@diagnostic disable-next-line: assign-type-mismatch
     dev = { path = '~/dev/repos/personal' },
+    change_detection = { notify = false },
 })
