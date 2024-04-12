@@ -2,23 +2,42 @@ return {
     'nvim-telescope/telescope.nvim',
     dependencies = {
         'nvim-lua/plenary.nvim',
-        'debugloop/telescope-undo.nvim',
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        'debugloop/telescope-undo.nvim',
+        'pschmitt/telescope-yadm.nvim',
     },
     config = function()
         local telescope = require('telescope')
         local actions = require('telescope.actions')
-        telescope.setup({ defaults = { mappings = {
-            i = { ['<cr>'] = actions.select_drop },
-        } } })
+
+        telescope.setup({
+            defaults = {
+                mappings = {
+                    i = { ['<cr>'] = actions.select_drop },
+                },
+            },
+            pickers = {
+                find_files = {
+                    find_command = {
+                        'rg',
+                        '--files',
+                        '--hidden',
+                        '-g',
+                        '!**/.git/*',
+                        '-g',
+                        '!**/target/*',
+                        '-g',
+                        '!**/.mypy_cache/*',
+                    },
+                },
+            },
+        })
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')
+        telescope.load_extension('yadm_files')
 
         local builtin = require('telescope.builtin')
-        local find_files = require('mp.utils').thunk(builtin.find_files, {
-            find_command = { 'rg', '--files', '--hidden', '-g', '!.git' },
-        })
         require('which-key').register({
             ['<leader>'] = {
                 ['<leader>'] = { builtin.buffers, 'Find Existing Buffers' },
@@ -26,8 +45,10 @@ return {
             },
             ['<leader>t'] = {
                 name = 'telescope',
-                f = { find_files, 'Find Files' },
-                g = { builtin.live_grep, 'Grep Files' },
+                f = { builtin.find_files, 'Find Files' },
+                g = { builtin.git_files, 'Git Files' },
+                y = { '<cmd>Telescope yadm_files<cr>', 'YADM files' },
+                s = { builtin.live_grep, 'Grep Files' },
                 u = { '<cmd>Telescope undo<cr>', 'Undo Tree' },
                 d = { builtin.diagnostics, 'Diagnostics' },
                 w = { builtin.grep_string, 'Current Word' },

@@ -18,7 +18,7 @@ return {
             inactive_sections = {
                 lualine_c = { filename_section },
             },
-            extensions = { 'nvim-tree' },
+            extensions = { 'oil' },
         })
     end,
 }
