@@ -48,18 +48,33 @@ pub fn create(city: &str, forecast: &Forecast) {
 fn color(description: &str) -> NamedColor {
     // Colors: https://www.w3schools.com/cssref/css_colors.php
     match description {
-        "Sunny" | "Mostly Sunny" => NamedColor::Gold,
-        "Partly Sunny" => NamedColor::Goldenrod,
-        "Clear" | "Mostly Clear" => NamedColor::DarkBlue,
+        "Sunny" => NamedColor::Gold,
+        "Mostly Sunny" => NamedColor::Gold,
+        "Partly Sunny" => NamedColor::Gold,
+
+        "Clear" => NamedColor::DarkBlue,
+        "Mostly Clear" => NamedColor::DarkBlue,
+
+        "Cloudy" => NamedColor::Blue,
+        "Mostly Cloudy" => NamedColor::Blue,
         "Partly Cloudy" => NamedColor::Blue,
-        "Cloudy" | "Mostly Cloudy" => NamedColor::LightBlue,
-        "Patchy Fog" | "Slight Chance Light Rain" | "Chance Light Rain" => NamedColor::LightGray,
-        "Chance Rain Showers"
-        | "Chance Rain And Snow"
-        | "Light Rain"
-        | "Light Rain Likely"
-        | "Rain Likely" => NamedColor::DarkGray,
-        "Rain Showers Likely" | "Rain Showers" | "Rain" => NamedColor::Red,
+
+        "" => NamedColor::LightGray,
+        "Patchy Fog" => NamedColor::LightGray,
+
+        "Light Rain" => NamedColor::DarkGray,
+        "Light Rain Likely" => NamedColor::DarkGray,
+        "Chance Light Rain" => NamedColor::DarkGray,
+        "Slight Chance Light Rain" => NamedColor::DarkGray,
+
+        "Rain Showers" => NamedColor::Red,
+        "Rain Showers Likely" => NamedColor::Red,
+        "Chance Rain Showers" => NamedColor::Red,
+
+        "Rain" => NamedColor::Red,
+        "Rain Likely" => NamedColor::Red,
+        "Chance Rain And Snow" => NamedColor::Red,
+
         _ => panic!("No color matches: {description}"),
     }
 }
