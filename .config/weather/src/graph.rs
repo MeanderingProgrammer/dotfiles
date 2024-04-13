@@ -73,7 +73,9 @@ fn color(description: &str) -> NamedColor {
 
         "Rain" => NamedColor::Red,
         "Rain Likely" => NamedColor::Red,
+
         "Chance Rain And Snow" => NamedColor::Red,
+        "Slight Chance Rain And Snow" => NamedColor::Red,
 
         _ => panic!("No color matches: {description}"),
     }
