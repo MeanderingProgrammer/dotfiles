@@ -7,9 +7,13 @@ return {
         'pschmitt/telescope-yadm.nvim',
     },
     config = function()
+        local find_command = { 'rg', '--files', '--hidden' }
+        for _, directory in pairs({ '.git', 'target', '.mypy_cache' }) do
+            vim.list_extend(find_command, { '-g', string.format('!**/%s/*', directory) })
+        end
+
         local telescope = require('telescope')
         local actions = require('telescope.actions')
-
         telescope.setup({
             defaults = {
                 mappings = {
@@ -18,17 +22,7 @@ return {
             },
             pickers = {
                 find_files = {
-                    find_command = {
-                        'rg',
-                        '--files',
-                        '--hidden',
-                        '-g',
-                        '!**/.git/*',
-                        '-g',
-                        '!**/target/*',
-                        '-g',
-                        '!**/.mypy_cache/*',
-                    },
+                    find_command = find_command,
                 },
             },
         })
