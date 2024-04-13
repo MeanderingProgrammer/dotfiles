@@ -2,6 +2,7 @@ default: true
 
 heading-increment: false
 single-title: false
+no-bare-urls: false
 no-inline-html: false
 blanks-around-lists: false
 ul-style: false
