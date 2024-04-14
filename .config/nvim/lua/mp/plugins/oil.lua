@@ -21,13 +21,9 @@ return {
             },
         })
 
-        local function toggle_oil()
-            oil.toggle_float(vim.fn.getcwd())
-        end
         require('which-key').register({
-            ['<leader>o'] = {
-                name = 'oil',
-                t = { toggle_oil, 'Toggle' },
+            ['<leader>'] = {
+                o = { oil.toggle_float, 'Oil Toggle' },
             },
         })
     end,
