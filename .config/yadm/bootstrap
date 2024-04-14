@@ -2,6 +2,7 @@
 
 bootstrap_homebrew() {
     brew bundle --no-lock --file ~/.config/homebrew/Brewfile
+    brew pin tmux
     brew update
     brew upgrade
 }
