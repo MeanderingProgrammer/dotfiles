@@ -1,7 +1,3 @@
-# Search broke: https://github.com/tmux/tmux/issues/3864
-# Cause: https://github.com/tmux/tmux/commit/43e5e80343185e69a1b864fc48095ede0b898180
-# Working version: https://github.com/Homebrew/homebrew-core/blob/defd6d81be1be58f137bef2fa2dc389100d0125b/Formula/t/tmux.rb
-
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
