@@ -61,8 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 
 # Optional
 
-<details>
-<summary>Activate Argcomplete</summary>
+## Activate Argcomplete
 
 [Doc](https://github.com/kislyuk/argcomplete?tab=readme-ov-file#installation)
 
@@ -70,10 +69,7 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 activate-global-python-argcomplete --user
 ```
 
-</details>
-
-<details>
-<summary>Install Nix</summary>
+## Install Nix
 
 [Doc](https://nixos.org/)
 
@@ -82,5 +78,3 @@ Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
-
-</details>
