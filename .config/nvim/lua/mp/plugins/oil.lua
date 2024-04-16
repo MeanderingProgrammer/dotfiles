@@ -2,9 +2,8 @@ return {
     'stevearc/oil.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-        local hidden_files = { '.DS_Store', '.git', '.idea', '.obsidian' }
-        vim.list_extend(hidden_files, { '.gradle', '_build', 'target', 'node_modules' })
-        vim.list_extend(hidden_files, { '__pycache__', '.pytest_cache', '.mypy_cache' })
+        local hidden_files = { '.DS_Store' }
+        vim.list_extend(hidden_files, require('mp.utils').hidden_directories())
 
         local oil = require('oil')
         oil.setup({

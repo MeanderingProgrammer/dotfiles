@@ -27,6 +27,14 @@ function M.challenge_mode()
     return vim.tbl_contains(challenge_directories, directory)
 end
 
+---@return string[]
+function M.hidden_directories()
+    local directories = { '.git', '.idea', '.obsidian' }
+    vim.list_extend(directories, { '.gradle', '_build', 'target', 'node_modules' })
+    vim.list_extend(directories, { '__pycache__', '.pytest_cache', '.mypy_cache' })
+    return directories
+end
+
 ---@param f fun(opts: any)
 ---@param opts any
 ---@return fun()
