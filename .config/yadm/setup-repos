@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from dataclasses import dataclass
+import subprocess
+from dataclasses import dataclass, field
 from functools import cache
 from pathlib import Path
 
@@ -12,21 +13,28 @@ class Repo:
     name: str
     owner: str | None = None
     directory: str | None = None
+    post_update: list[str] = field(default_factory=list)
 
     @property
     def ssh(self) -> str:
         owner: str = self.owner or get_user_name()
         return f"git@github.com:{owner}/{self.name}.git"
 
-    def clone(self, root: Path) -> None:
+    def setup(self, root: Path) -> None:
+        directory: Path = self.update(root)
+        for command in self.post_update:
+            Repo.run(directory, command)
+
+    def update(self, root: Path) -> Path:
         directory: str = self.directory or self.name
         path: Path = root.joinpath(directory)
-        if not path.is_dir():
+        if path.is_dir():
+            Repo.update_existing_repo(path)
+        else:
             print(f"Cloning {self.ssh} to {path}")
             repo: git.Repo = git.Repo.clone_from(self.ssh, path)
             Repo.update_submodules(repo)
-        else:
-            Repo.update_existing_repo(path)
+        return path
 
     @staticmethod
     def update_existing_repo(path: Path) -> None:
@@ -48,6 +56,12 @@ class Repo:
     def update_submodules(repo: git.Repo) -> None:
         repo.git.submodule("update", "--init", "--recursive")
 
+    @staticmethod
+    def run(directory: Path, command: str) -> None:
+        print(f"Runnning '{command}' in '{directory}'")
+        result = subprocess.run(command.split(), cwd=directory)
+        assert result.returncode == 0
+
 
 @cache
 def get_user_name() -> str:
@@ -59,11 +73,11 @@ class RepoRoot:
     root: Path
     repos: list[Repo]
 
-    def clone(self) -> None:
+    def setup(self) -> None:
         if not self.root.is_dir():
             print(f"Creating: {self.root}")
             self.root.mkdir(parents=True)
-        [repo.clone(self.root) for repo in self.repos]
+        [repo.setup(self.root) for repo in self.repos]
 
 
 def main() -> None:
@@ -78,16 +92,17 @@ def main() -> None:
     personal_root = RepoRoot(
         root=Path.home().joinpath("dev/repos/personal"),
         repos=[
-            Repo(name="markdown.nvim"),
-            Repo(name="py-requirements.nvim"),
-            Repo(name="harpoon-core.nvim"),
-            Repo(name="dashboard.nvim"),
             Repo(name="advent-of-code"),
-            Repo(name="learning"),
             Repo(name="chess"),
-            Repo(name="resume"),
-            Repo(name="pass-yank"),
+            Repo(name="cli", post_update=["just install"]),
+            Repo(name="dashboard.nvim"),
             Repo(name="debug-it"),
+            Repo(name="harpoon-core.nvim"),
+            Repo(name="learning"),
+            Repo(name="markdown.nvim"),
+            Repo(name="pass-yank"),
+            Repo(name="py-requirements.nvim"),
+            Repo(name="resume"),
             Repo(name="small-apps"),
         ],
     )
@@ -98,9 +113,8 @@ def main() -> None:
     plugin_root = RepoRoot(
         root=Path.home().joinpath("dev/repos/open-source/nvim-plugins"),
         repos=[
-            Repo(owner="nvimdev", name="dashboard-nvim"),
-            Repo(owner="ThePrimeagen", name="harpoon"),
             Repo(owner="Saecki", name="crates.nvim"),
+            Repo(owner="ThePrimeagen", name="harpoon"),
         ],
     )
     repo_roots: list[RepoRoot] = [
@@ -110,7 +124,7 @@ def main() -> None:
         open_source_root,
         plugin_root,
     ]
-    [repo_root.clone() for repo_root in repo_roots]
+    [repo_root.setup() for repo_root in repo_roots]
 
 
 if __name__ == "__main__":

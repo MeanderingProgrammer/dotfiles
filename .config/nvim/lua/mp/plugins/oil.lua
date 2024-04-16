@@ -4,7 +4,7 @@ return {
     config = function()
         local hidden_files = { '.DS_Store', '.git', '.idea', '.obsidian' }
         vim.list_extend(hidden_files, { '.gradle', '_build', 'target', 'node_modules' })
-        vim.list_extend(hidden_files, { '.pytest_cache', '__pycache__' })
+        vim.list_extend(hidden_files, { '__pycache__', '.pytest_cache', '.mypy_cache' })
 
         local oil = require('oil')
         oil.setup({
