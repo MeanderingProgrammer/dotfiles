@@ -100,7 +100,7 @@ def main() -> None:
             Repo(name="harpoon-core.nvim"),
             Repo(name="learning"),
             Repo(name="markdown.nvim"),
-            Repo(name="pass-yank"),
+            Repo(name="pass-yank", post_update=["just install"]),
             Repo(name="py-requirements.nvim"),
             Repo(name="resume"),
             Repo(name="small-apps"),
