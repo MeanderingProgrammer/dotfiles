@@ -28,24 +28,27 @@ fi
 #                         Language / Software                        #
 #--------------------------------------------------------------------#
 
-# Setup ASDF
+# ASDF
 export ASDF_FORCE_PREPEND="yes"
 asdf_src="$(brew --prefix asdf)/libexec/asdf.sh"
 [[ -f $asdf_src ]] && source "${asdf_src}"
 
-# Setup Java
+# Java
 java_init="$HOME/.asdf/plugins/java/set-java-home.zsh"
 [[ -f $java_init ]] && source "${java_init}"
 
-# Setup opam
+# opam
 opam_init="$HOME/.opam/opam-init/init.zsh"
 [[ -f $opam_init ]] && source "${opam_init}"
 
-# Setup C#
+# C#
 c_sharp_init="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
-# Setup Password Store Extensions
+# The Fuck
+eval $(thefuck --alias)
+
+# Password Store Extensions
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
 #--------------------------------------------------------------------#
