@@ -66,6 +66,7 @@ return {
                     vim.fn.stdpath('cache') .. '/nvim-jdtls/' .. project_name,
                 }
 
+                -- https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line
                 local lsp_settings = {
                     java = {
                         eclipse = { downloadSources = true },
@@ -75,16 +76,16 @@ return {
                         referencesCodeLens = { enabled = true },
                         format = { enabled = true },
                         saveActions = { organizeImports = true },
+                        sources = {
+                            organizeImports = {
+                                starThreshold = 2,
+                                staticStarThreshold = 2,
+                            },
+                        },
                     },
                     signatureHelp = { enabled = true },
                     contentProvider = { preferred = 'fernflower' },
                     extendedClientCapabilities = jdtls.extendedClientCapabilities,
-                    sources = {
-                        organizeImports = {
-                            starThreshold = 9999,
-                            staticStarThreshold = 9999,
-                        },
-                    },
                     codeGeneration = {
                         toString = {
                             template = '${object.className}{${member.name()}=${member.value}, ${otherMembers}}',
