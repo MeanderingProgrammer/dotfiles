@@ -75,6 +75,7 @@ fi
 
 # Add general tab completion
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 autoload -Uz compinit && compinit
 
 zsh_highlight="zsh-syntax-highlighting"
