@@ -15,7 +15,6 @@ require('lazy').setup({
     spec = {
         { import = 'mp.plugins' },
         { import = 'mp.plugins.lang' },
-        { import = 'mp.plugins.coding' },
     },
     ---@diagnostic disable-next-line: assign-type-mismatch
     dev = { path = '~/dev/repos/personal' },
