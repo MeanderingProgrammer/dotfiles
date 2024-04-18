@@ -3,17 +3,3 @@
 
 # Python
 __pycache__
-
-# Allowed Application Configs
-/.config/*
-!/.config/alacritty/
-!/.config/git/
-!/.config/helix/
-!/.config/homebrew/
-!/.config/kitty/
-!/.config/lang/
-!/.config/nvim/
-!/.config/shell/
-!/.config/tmux/
-!/.config/wezterm/
-!/.config/yadm/
