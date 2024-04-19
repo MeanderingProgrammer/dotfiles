@@ -39,15 +39,16 @@ export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
 # Julia
 export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
 
-# ---- Language ---- #
+# ---- Language Setup ---- #
 
 # ASDF
+export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
 export ASDF_FORCE_PREPEND="yes"
 asdf_src="$(brew --prefix asdf)/libexec/asdf.sh"
 [[ -f $asdf_src ]] && source "${asdf_src}"
 
 # Java
-java_init="$HOME/.asdf/plugins/java/set-java-home.zsh"
+java_init="${ASDF_DATA_DIR}/plugins/java/set-java-home.zsh"
 [[ -f $java_init ]] && source "${java_init}"
 
 # Opam
@@ -55,13 +56,18 @@ opam_init="${OPAMROOT}/opam-init/init.zsh"
 [[ -f $opam_init ]] && source "${opam_init}"
 
 # C#
-c_sharp_init="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
+c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
-# ---- Software ---- #
+# ---- Software Home Cleanup ---- #
 
 # GPG
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+
+# Less
+export LESSHISTFILE="${XDG_STATE_HOME}/lesshst"
+
+# ---- Software Setup ---- #
 
 # The Fuck
 eval $(thefuck --alias)
