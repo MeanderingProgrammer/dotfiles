@@ -22,7 +22,7 @@ else
     return
 fi
 
-# ---- Language / Software ---- #
+# ---- Language ---- #
 
 # ASDF
 export ASDF_FORCE_PREPEND="yes"
@@ -40,6 +40,11 @@ opam_init="$HOME/.opam/opam-init/init.zsh"
 # C#
 c_sharp_init="$HOME/.asdf/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
+
+# ---- Software ---- #
+
+# GPG
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 
 # The Fuck
 eval $(thefuck --alias)
