@@ -64,11 +64,16 @@ if [[ -d $sys32_path ]]; then
 fi
 
 # ---- Plugins / Completion ---- #
+zsh_cache_home="${XDG_CACHE_HOME}/zsh"
+[[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
 
-# Add general tab completion
+# Add completion directories
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
-autoload -Uz compinit && compinit
+
+# man zshcompsys
+zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
+autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
 zsh_highlight="zsh-syntax-highlighting"
 zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
