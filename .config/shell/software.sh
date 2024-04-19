@@ -22,6 +22,23 @@ else
     return
 fi
 
+# ---- Language Home Cleanup ---- #
+
+# Gradle
+export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
+
+# Opam
+export OPAMROOT="${XDG_DATA_HOME}/opam"
+
+# C#
+export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
+
+# Node
+export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
+
+# Julia
+export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
+
 # ---- Language ---- #
 
 # ASDF
@@ -33,8 +50,8 @@ asdf_src="$(brew --prefix asdf)/libexec/asdf.sh"
 java_init="$HOME/.asdf/plugins/java/set-java-home.zsh"
 [[ -f $java_init ]] && source "${java_init}"
 
-# opam
-opam_init="$HOME/.opam/opam-init/init.zsh"
+# Opam
+opam_init="${OPAMROOT}/opam-init/init.zsh"
 [[ -f $opam_init ]] && source "${opam_init}"
 
 # C#
