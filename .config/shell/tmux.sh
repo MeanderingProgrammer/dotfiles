@@ -1,4 +1,4 @@
-# Don't do anything if some terminal is already attached
+# ---- Skip if some terminal is already attached ---- #
 attached_sessions=$(tmux ls | grep attached)
 if [[ ${#attached_sessions} != 0 ]]; then
     return
@@ -20,5 +20,5 @@ start_new_session() {
 start_new_session "main" "workspace"
 start_new_session "notes" "notes"
 
-# Attach to the main session
+# ---- Attach to main session ---- #
 tmux attach -t "main"

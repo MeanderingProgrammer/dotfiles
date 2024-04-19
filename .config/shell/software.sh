@@ -1,6 +1,4 @@
-#--------------------------------------------------------------------#
-#                        Environment Specific                        #
-#--------------------------------------------------------------------#
+# ---- Environment Specific ---- #
 
 system_type=$(uname -s)
 if [[ "${system_type}" == "Darwin" ]]; then
@@ -24,9 +22,7 @@ else
     return
 fi
 
-#--------------------------------------------------------------------#
-#                         Language / Software                        #
-#--------------------------------------------------------------------#
+# ---- Language / Software ---- #
 
 # ASDF
 export ASDF_FORCE_PREPEND="yes"
@@ -51,9 +47,7 @@ eval $(thefuck --alias)
 # Password Store Extensions
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
-#--------------------------------------------------------------------#
-#                                PATH                                #
-#--------------------------------------------------------------------#
+# ---- PATH ---- #
 
 # Add shell config bin folder
 export PATH="${HOME}/.config/shell/bin:$PATH"
@@ -69,9 +63,7 @@ if [[ -d $sys32_path ]]; then
     export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
 fi
 
-#--------------------------------------------------------------------#
-#                        Plugins / Completion                        #
-#--------------------------------------------------------------------#
+# ---- Plugins / Completion ---- #
 
 # Add general tab completion
 FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -88,9 +80,7 @@ eval "$(_GIT_REMOTE_COMPLETE=zsh_source git-remote)"
 eval "$(_LLM_COMPLETE=zsh_source llm)"
 eval "$(_PR_COMPLETE=zsh_source pr)"
 
-#--------------------------------------------------------------------#
-#                         Editor with Aliases                        #
-#--------------------------------------------------------------------#
+# ---- Editor with Aliases ---- #
 
 # Change default editor
 export VISUAL="nvim"
@@ -116,9 +106,7 @@ vim() {
     fi
 }
 
-#--------------------------------------------------------------------#
-#                      VIM Mode and Keybindings                      #
-#--------------------------------------------------------------------#
+# ---- VIM Mode and Keybindings ---- #
 
 # Use vi mode, set explicitly
 bindkey -v
