@@ -45,7 +45,7 @@ sudo apt install curl
 ## Download Setup Script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/.github/setup.sh -o setup.sh && chmod +x setup.sh
+curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/docs/setup.sh -o setup.sh && chmod +x setup.sh
 ```
 
 ## Execute Script Commands in Order
