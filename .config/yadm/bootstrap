@@ -29,23 +29,33 @@ bootstrap_asdf_tools() {
 }
 
 bootstrap_libraries() {
-    # Python
-    pip install --upgrade pip
-    pip install -r ~/.config/lang/python/requirements.txt
+    bootstrap_python() {
+        pip install --upgrade pip
+        pip install -r ~/.config/lang/python/requirements.txt
+    }
 
-    # Rust
-    cargo install aoc-cli
-    asdf reshim rust
+    bootstrap_rust() {
+        cargo install aoc-cli
+        asdf reshim rust
+    }
 
-    # Node
-    npm install -g pnpm
-    npm install -g neovim
+    bootstrap_node() {
+        npm install -g npm
+        npm install -g pnpm
+        npm install -g neovim
+    }
 
-    # OCaml
-    # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
-    opam init --no
-    opam update
-    opam upgrade --yes
+    bootstrap_ocaml() {
+        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
+        opam init --no
+        opam update
+        opam upgrade --yes
+    }
+
+    bootstrap_python
+    bootstrap_rust
+    bootstrap_node
+    bootstrap_ocaml
 }
 
 bootstrap_repos() {
