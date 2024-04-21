@@ -32,20 +32,24 @@ def cli() -> None:
 def sync() -> None:
     """Sync all repos to remotes"""
 
-    home: Path = Path.home()
     repo_paths: list[Path] = [
-        home.joinpath(".local/share/yadm/repo.git"),
-        home.joinpath(".password-store"),
-        home.joinpath("Documents/notes"),
+        Path.home().joinpath(".local/share/yadm/repo.git"),
     ]
-    for git_folder in home.joinpath("dev/repos/personal").rglob(".git"):
-        if git_folder.stat().st_size > 0:
-            git_repo: Path = git_folder.parent
-            repo_paths.append(git_repo)
+    repo_paths.extend(repos_in_directory("Documents"))
+    repo_paths.extend(repos_in_directory("dev/repos/personal"))
 
     for repo_path in repo_paths:
         repo: git.Repo = git.Repo(repo_path)
         push_remotes(repo)
+
+
+def repos_in_directory(directory: str) -> list[Path]:
+    result: list[Path] = []
+    for git_folder in Path.home().joinpath(directory).rglob(".git"):
+        if git_folder.stat().st_size > 0:
+            git_repo: Path = git_folder.parent
+            result.append(git_repo)
+    return result
 
 
 @cli.command()

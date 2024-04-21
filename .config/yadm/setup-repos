@@ -12,7 +12,6 @@ import git
 class Repo:
     name: str
     owner: str | None = None
-    directory: str | None = None
     post_update: list[str] = field(default_factory=list)
 
     @property
@@ -26,8 +25,7 @@ class Repo:
             Repo.run(directory, command)
 
     def update(self, root: Path) -> Path:
-        directory: str = self.directory or self.name
-        path: Path = root.joinpath(directory)
+        path: Path = root.joinpath(self.name)
         if path.is_dir():
             Repo.update_existing_repo(path)
         else:
@@ -81,13 +79,12 @@ class RepoRoot:
 
 
 def main() -> None:
-    home_root = RepoRoot(
-        root=Path.home(),
-        repos=[Repo(name="pass", directory=".password-store")],
-    )
     document_root = RepoRoot(
         root=Path.home().joinpath("Documents"),
-        repos=[Repo(name="notes")],
+        repos=[
+            Repo(name="notes"),
+            Repo(name="pass"),
+        ],
     )
     personal_root = RepoRoot(
         root=Path.home().joinpath("dev/repos/personal"),
@@ -118,7 +115,6 @@ def main() -> None:
         ],
     )
     repo_roots: list[RepoRoot] = [
-        home_root,
         document_root,
         personal_root,
         open_source_root,

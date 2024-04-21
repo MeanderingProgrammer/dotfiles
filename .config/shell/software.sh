@@ -67,12 +67,15 @@ export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 # Less
 export LESSHISTFILE="${XDG_STATE_HOME}/lesshst"
 
+# Password Store
+export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
+
 # ---- Software Setup ---- #
 
 # The Fuck
 eval $(thefuck --alias)
 
-# Password Store Extensions
+# Password Store
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
 # ---- PATH ---- #
