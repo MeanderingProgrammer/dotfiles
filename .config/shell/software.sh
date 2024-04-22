@@ -62,6 +62,9 @@ c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
 
 # ---- Software Home Cleanup ---- #
 
+# AWS
+export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
+
 # GPG
 export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 
