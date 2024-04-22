@@ -27,7 +27,7 @@ alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/homebrew/ ~/.config/kitty/ ~/.config/lang/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/tmux/ ~/.config/wezterm/ ~/.config/yadm/"
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/homebrew/ ~/.config/kitty/ ~/.config/lang/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 

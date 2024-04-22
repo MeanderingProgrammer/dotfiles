@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/Users/vlad/dev/repos/personal/advent-of-code/2015/04'
+let g:netrw_dirhist_4='/Users/vlad/dev/repos/personal/advent-of-code/2015'
+let g:netrw_dirhist_3='/Users/vlad/dev/repos/personal/advent-of-code/2015/01'
+let g:netrw_dirhist_2='/Users/vlad/dev/repos/personal/advent-of-code/2015'
+let g:netrw_dirhist_1='/Users/vlad/dev/repos/personal/advent-of-code/2015/01'

@@ -46,6 +46,7 @@ brew "xz"
 
 # Code / Text Editors
 brew "neovim"
+brew "vim"
 cask "intellij-idea-ce"
 cask "mactex"
 cask "sublime-text"
