@@ -76,6 +76,9 @@ export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 
 # ---- Software Setup ---- #
 
+# Matplotlib
+export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
+
 # The Fuck
 eval $(thefuck --alias)
 
