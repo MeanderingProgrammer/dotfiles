@@ -9,7 +9,6 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.eslint = {}
             opts.servers.svelte = {}
             opts.servers.tailwindcss = {}
             opts.servers.tsserver = {}
@@ -19,7 +18,17 @@ return {
         'stevearc/conform.nvim',
         opts = {
             formatters_by_ft = {
+                javascript = { 'prettierd' },
                 typescript = { 'prettierd' },
+            },
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        opts = {
+            linters_by_ft = {
+                javascript = { 'eslint_d' },
+                typescript = { 'eslint_d' },
             },
         },
     },
