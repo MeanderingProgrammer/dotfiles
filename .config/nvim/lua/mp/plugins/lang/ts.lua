@@ -11,7 +11,13 @@ return {
         opts = function(_, opts)
             opts.servers.svelte = {}
             opts.servers.tailwindcss = {}
-            opts.servers.tsserver = {}
+            opts.servers.tsserver = {
+                settings = {
+                    implicitProjectConfiguration = {
+                        checkJs = true,
+                    },
+                },
+            }
         end,
     },
     {
