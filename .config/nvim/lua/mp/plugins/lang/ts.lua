@@ -22,6 +22,9 @@ return {
     },
     {
         'stevearc/conform.nvim',
+        init = function()
+            vim.env.PRETTIERD_LOCAL_PRETTIER_ONLY = 1
+        end,
         opts = {
             formatters_by_ft = {
                 javascript = { 'prettierd' },
@@ -31,6 +34,9 @@ return {
     },
     {
         'mfussenegger/nvim-lint',
+        init = function()
+            vim.env.ESLINT_D_LOCAL_ESLINT_ONLY = 1
+        end,
         opts = {
             linters_by_ft = {
                 javascript = { 'eslint_d' },
