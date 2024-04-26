@@ -1,103 +1,57 @@
-- name: Setup repositories
+- name: 'Setup repositories'
   hosts: localhost
   vars:
-    documents: "{{ lookup('env', 'HOME') }}/Documents"
-    personal: "{{ lookup('env', 'HOME') }}/dev/repos/personal"
-    open_source: "{{ lookup('env', 'HOME') }}/dev/repos/open-source"
-    plugins: "{{ lookup('env', 'HOME') }}/dev/repos/open-source/nvim-plugins"
+    documents: '{{ lookup("env", "HOME") }}/Documents'
+    personal: '{{ lookup("env", "HOME") }}/dev/repos/personal'
+    open_source: '{{ lookup("env", "HOME") }}/dev/repos/open-source'
+    plugins: '{{ lookup("env", "HOME") }}/dev/repos/open-source/nvim-plugins'
 
   tasks:
-  - name: Clone notes
+  - name: 'Clone documents repos'
     git:
-      repo: git@github.com:MeanderingProgrammer/notes.git
-      dest: "{{ documents }}/notes"
+      repo: 'git@github.com:MeanderingProgrammer/{{ item }}.git'
+      dest: '{{ documents }}/{{ item }}'
+    loop:
+      - notes
+      - pass
 
-  - name: Clone pass
+  - name: 'Clone personal repos'
     git:
-      repo: git@github.com:MeanderingProgrammer/pass.git
-      dest: "{{ documents }}/pass"
+      repo: 'git@github.com:MeanderingProgrammer/{{ item }}.git'
+      dest: '{{ personal }}/{{ item }}'
+    loop:
+      - advent-of-code
+      - chess
+      - cli
+      - dashboard.nvim
+      - debug-it
+      - harpoon-core.nvim
+      - learning
+      - markdown.nvim
+      - pass-yank
+      - py-requirements.nvim
+      - resume
+      - small-apps
 
-  - name: Clone advent-of-code
-    git:
-      repo: git@github.com:MeanderingProgrammer/advent-of-code.git
-      dest: "{{ personal }}/advent-of-code"
-
-  - name: Clone chess
-    git:
-      repo: git@github.com:MeanderingProgrammer/chess.git
-      dest: "{{ personal }}/chess"
-
-  - name: Clone cli
-    git:
-      repo: git@github.com:MeanderingProgrammer/cli.git
-      dest: "{{ personal }}/cli"
-
-  - name: Install cli
+  - name: 'Install personal repos'
     shell:
-      chdir: "{{ personal }}/cli"
-      cmd: "just install"
+      chdir: '{{ personal }}/{{ item }}'
+      cmd: 'just install'
+    loop:
+      - cli
+      - pass-yank
 
-  - name: Clone dashboard.nvim
+  - name: 'Clone open source repos'
     git:
-      repo: git@github.com:MeanderingProgrammer/dashboard.nvim.git
-      dest: "{{ personal }}/dashboard.nvim"
+      repo: 'git@github.com:{{ item.user }}/{{ item.name }}.git'
+      dest: '{{ open_source }}/{{ item.name }}'
+    loop:
+      - { user: 'kdheepak', name: 'panvimdoc' }
 
-  - name: Clone debug-it
+  - name: 'Clone nvim plugin repos'
     git:
-      repo: git@github.com:MeanderingProgrammer/debug-it.git
-      dest: "{{ personal }}/debug-it"
-
-  - name: Clone harpoon-core.nvim
-    git:
-      repo: git@github.com:MeanderingProgrammer/harpoon-core.nvim.git
-      dest: "{{ personal }}/harpoon-core.nvim"
-
-  - name: Clone learning
-    git:
-      repo: git@github.com:MeanderingProgrammer/learning.git
-      dest: "{{ personal }}/learning"
-
-  - name: Clone markdown.nvim
-    git:
-      repo: git@github.com:MeanderingProgrammer/markdown.nvim.git
-      dest: "{{ personal }}/markdown.nvim"
-
-  - name: Clone pass-yank
-    git:
-      repo: git@github.com:MeanderingProgrammer/pass-yank.git
-      dest: "{{ personal }}/pass-yank"
-
-  - name: Install pass-yank
-    shell:
-      chdir: "{{ personal }}/pass-yank"
-      cmd: "just install"
-
-  - name: Clone py-requirements.nvim
-    git:
-      repo: git@github.com:MeanderingProgrammer/py-requirements.nvim.git
-      dest: "{{ personal }}/py-requirements.nvim"
-
-  - name: Clone resume
-    git:
-      repo: git@github.com:MeanderingProgrammer/resume.git
-      dest: "{{ personal }}/resume"
-
-  - name: Clone small-apps
-    git:
-      repo: git@github.com:MeanderingProgrammer/small-apps.git
-      dest: "{{ personal }}/small-apps"
-
-  - name: Clone panvimdoc
-    git:
-      repo: git@github.com:kdheepak/panvimdoc.git
-      dest: "{{ open_source }}/panvimdoc"
-
-  - name: Clone crates.nvim
-    git:
-      repo: git@github.com:Saecki/crates.nvim.git
-      dest: "{{ plugins }}/crates.nvim"
-
-  - name: Clone harpoon
-    git:
-      repo: git@github.com:ThePrimeagen/harpoon.git
-      dest: "{{ plugins }}/harpoon"
+      repo: 'git@github.com:{{ item.user }}/{{ item.name }}.git'
+      dest: '{{ plugins }}/{{ item.name }}'
+    loop:
+      - { user: 'Saecki', name: 'crates.nvim' }
+      - { user: 'ThePrimeagen', name: 'harpoon' }
