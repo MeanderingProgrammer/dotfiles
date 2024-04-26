@@ -13,6 +13,15 @@ return {
             ensure_installed = utils.flat_values(opts.formatters_by_ft),
         })
 
+        -- Due to prettierd not picking up changes
+        vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+            group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
+            pattern = '*prettier*',
+            callback = function()
+                vim.fn.system('prettierd restart')
+            end,
+        })
+
         require('conform').setup(opts)
     end,
 }

@@ -42,6 +42,7 @@ bootstrap_libraries() {
     bootstrap_node() {
         npm install -g npm
         npm install -g pnpm
+        npm install -g yarn
         npm install -g neovim
     }
 
