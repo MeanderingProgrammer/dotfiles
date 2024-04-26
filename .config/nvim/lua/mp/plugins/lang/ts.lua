@@ -42,6 +42,17 @@ return {
                 javascript = { 'eslint_d' },
                 typescript = { 'eslint_d' },
             },
+            linter_override = {
+                eslint_d = function(config)
+                    local original_parser = config.parser
+                    config.parser = function(output, bufnr)
+                        if vim.tbl_contains({ 'No ESLint found' }, vim.trim(output)) then
+                            return {}
+                        end
+                        return original_parser(output, bufnr)
+                    end
+                end,
+            },
         },
     },
 }

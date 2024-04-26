@@ -17,13 +17,13 @@ return {
             linters_by_ft = {
                 markdown = { 'markdownlint' },
             },
-            linter_configs = {
-                markdownlint = {
-                    args = {
+            linter_override = {
+                markdownlint = function(config)
+                    config.args = {
                         '--config',
                         require('mp.utils').lint_config('markdownlint.yaml'),
-                    },
-                },
+                    }
+                end,
             },
         },
     },

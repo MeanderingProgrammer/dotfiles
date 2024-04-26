@@ -30,13 +30,11 @@ return {
             linters_by_ft = {
                 lua = { 'luacheck' },
             },
-            linter_configs = {
-                luacheck = {
-                    args = {
-                        '--config',
-                        require('mp.utils').lint_config('.luacheckrc'),
-                    },
-                },
+            linter_override = {
+                luacheck = function(config)
+                    table.insert(config.args, 1, '--default-config')
+                    table.insert(config.args, 2, require('mp.utils').lint_config('.luacheckrc'))
+                end,
             },
         },
     },
