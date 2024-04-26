@@ -60,7 +60,7 @@ bootstrap_libraries() {
 }
 
 bootstrap_repos() {
-    /bin/bash -c $(dirname $0)/setup-repos
+    ansible-playbook -vv $(dirname $0)/setup-repos.yml
 }
 
 bootstrap_homebrew

@@ -1,0 +1,103 @@
+- name: Setup repositories
+  hosts: localhost
+  vars:
+    documents: "{{ lookup('env', 'HOME') }}/Documents"
+    personal: "{{ lookup('env', 'HOME') }}/dev/repos/personal"
+    open_source: "{{ lookup('env', 'HOME') }}/dev/repos/open-source"
+    plugins: "{{ lookup('env', 'HOME') }}/dev/repos/open-source/nvim-plugins"
+
+  tasks:
+  - name: Clone notes
+    git:
+      repo: git@github.com:MeanderingProgrammer/notes.git
+      dest: "{{ documents }}/notes"
+
+  - name: Clone pass
+    git:
+      repo: git@github.com:MeanderingProgrammer/pass.git
+      dest: "{{ documents }}/pass"
+
+  - name: Clone advent-of-code
+    git:
+      repo: git@github.com:MeanderingProgrammer/advent-of-code.git
+      dest: "{{ personal }}/advent-of-code"
+
+  - name: Clone chess
+    git:
+      repo: git@github.com:MeanderingProgrammer/chess.git
+      dest: "{{ personal }}/chess"
+
+  - name: Clone cli
+    git:
+      repo: git@github.com:MeanderingProgrammer/cli.git
+      dest: "{{ personal }}/cli"
+
+  - name: Install cli
+    shell:
+      chdir: "{{ personal }}/cli"
+      cmd: "just install"
+
+  - name: Clone dashboard.nvim
+    git:
+      repo: git@github.com:MeanderingProgrammer/dashboard.nvim.git
+      dest: "{{ personal }}/dashboard.nvim"
+
+  - name: Clone debug-it
+    git:
+      repo: git@github.com:MeanderingProgrammer/debug-it.git
+      dest: "{{ personal }}/debug-it"
+
+  - name: Clone harpoon-core.nvim
+    git:
+      repo: git@github.com:MeanderingProgrammer/harpoon-core.nvim.git
+      dest: "{{ personal }}/harpoon-core.nvim"
+
+  - name: Clone learning
+    git:
+      repo: git@github.com:MeanderingProgrammer/learning.git
+      dest: "{{ personal }}/learning"
+
+  - name: Clone markdown.nvim
+    git:
+      repo: git@github.com:MeanderingProgrammer/markdown.nvim.git
+      dest: "{{ personal }}/markdown.nvim"
+
+  - name: Clone pass-yank
+    git:
+      repo: git@github.com:MeanderingProgrammer/pass-yank.git
+      dest: "{{ personal }}/pass-yank"
+
+  - name: Install pass-yank
+    shell:
+      chdir: "{{ personal }}/pass-yank"
+      cmd: "just install"
+
+  - name: Clone py-requirements.nvim
+    git:
+      repo: git@github.com:MeanderingProgrammer/py-requirements.nvim.git
+      dest: "{{ personal }}/py-requirements.nvim"
+
+  - name: Clone resume
+    git:
+      repo: git@github.com:MeanderingProgrammer/resume.git
+      dest: "{{ personal }}/resume"
+
+  - name: Clone small-apps
+    git:
+      repo: git@github.com:MeanderingProgrammer/small-apps.git
+      dest: "{{ personal }}/small-apps"
+
+  - name: Clone panvimdoc
+    git:
+      repo: git@github.com:kdheepak/panvimdoc.git
+      dest: "{{ open_source }}/panvimdoc"
+
+  - name: Clone crates.nvim
+    git:
+      repo: git@github.com:Saecki/crates.nvim.git
+      dest: "{{ plugins }}/crates.nvim"
+
+  - name: Clone harpoon
+    git:
+      repo: git@github.com:ThePrimeagen/harpoon.git
+      dest: "{{ plugins }}/harpoon"
