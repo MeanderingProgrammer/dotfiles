@@ -74,10 +74,13 @@ export LESSHISTFILE="${XDG_STATE_HOME}/lesshst"
 # Password Store
 export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 
-# ---- Software Setup ---- #
+# Ansible
+export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
 
 # Matplotlib
 export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
+
+# ---- Software Setup ---- #
 
 # The Fuck
 eval $(thefuck --alias)
