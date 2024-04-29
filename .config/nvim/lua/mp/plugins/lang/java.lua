@@ -52,7 +52,7 @@ return {
                     '-Dlog.protocol=true',
                     '-Dlog.level=ALL',
                     '-javaagent:' .. jdtls_install .. '/lombok.jar',
-                    '-Xms1g',
+                    '-Xms2g',
                     '--add-modules=ALL-SYSTEM',
                     '--add-opens',
                     'java.base/java.util=ALL-UNNAMED',
@@ -74,6 +74,7 @@ return {
                         maven = { downloadSources = true },
                         implementationsCodeLens = { enabled = true },
                         referencesCodeLens = { enabled = true },
+                        signatureHelp = { enabled = true },
                         format = { enabled = true },
                         saveActions = { organizeImports = true },
                         sources = {
@@ -83,7 +84,6 @@ return {
                             },
                         },
                     },
-                    signatureHelp = { enabled = true },
                     contentProvider = { preferred = 'fernflower' },
                     extendedClientCapabilities = jdtls.extendedClientCapabilities,
                     codeGeneration = {
