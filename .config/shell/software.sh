@@ -76,6 +76,7 @@ export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 
 # Ansible
 export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
+export ANSIBLE_REMOTE_TEMP="${ANSIBLE_HOME}/tmp"
 
 # Matplotlib
 export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
