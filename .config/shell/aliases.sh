@@ -1,7 +1,7 @@
 # General
 alias reload="source ~/.zshrc"
 alias update-sys="yadm pull && yadm bootstrap"
-alias ll="ls -latr"
+alias ll="ls -latrh"
 alias workspace="cd ~/dev/repos/personal"
 alias notes="cd ~/Documents/notes"
 
