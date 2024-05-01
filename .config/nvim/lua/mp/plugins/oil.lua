@@ -7,10 +7,15 @@ return {
 
         local oil = require('oil')
         oil.setup({
-            -- Use telescope keymaps
             keymaps = {
+                -- Use telescope keymaps
                 ['<C-v>'] = 'actions.select_vsplit',
                 ['<C-x>'] = 'actions.select_split',
+                -- Escape to close
+                ['<esc>'] = 'actions.close',
+                -- Disable navigation keymaps
+                ['<C-h>'] = false,
+                ['<C-l>'] = false,
             },
             view_options = {
                 show_hidden = true,
@@ -18,6 +23,7 @@ return {
                     return vim.tbl_contains(hidden_files, name)
                 end,
             },
+            float = { padding = 10 },
         })
 
         require('which-key').register({
