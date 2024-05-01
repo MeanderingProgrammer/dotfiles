@@ -1,17 +1,15 @@
 # ---- Environment Specific ---- #
 
 system_type=$(uname -s)
+services=()
 if [[ "${system_type}" == "Darwin" ]]; then
     # Setup Homebrew
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    # Start services
-    services=("ollama")
-    for service in "${services[@]}"; do
-        is_running=$(brew services list | grep "$service.*started")
-        if [[ -z "$is_running" ]]; then
-            brew services start $service
-        fi
-    done
+    # Add services only if we're not running in TMUX
+    # This speeds up starting shells as brew services call takes ~1 second
+    if [[ -z $TMUX ]]; then
+        services+=("ollama")
+    fi
 elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -21,6 +19,15 @@ else
     echo "Unhandled system type ${system_type}, stopping setup"
     return
 fi
+
+# ---- Start Homebrew Services ---- #
+
+for service in "${services[@]}"; do
+    is_running=$(brew services list | grep "$service.*started")
+    if [[ -z "$is_running" ]]; then
+        brew services start $service
+    fi
+done
 
 # ---- Language Home Cleanup ---- #
 
@@ -95,7 +102,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 # ---- PATH ---- #
 
 # Add shell config bin folder
-export PATH="${HOME}/.config/shell/bin:$PATH"
+export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
 
 # Add user bin folder
 user_bin="${HOME}/bin"
@@ -120,15 +127,25 @@ FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
+register_click_completion() {
+    completion_file="${XDG_CONFIG_HOME}/shell/completions/${1}-complete.zsh"
+    # Only re-generate completions outside of TMUX
+    if [[ ! -f $completion_file || -z $TMUX ]]; then
+        click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+        eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+    fi
+    source "${completion_file}"
+}
+
+# Add completions for click scripts
+register_click_completion "gd"
+register_click_completion "git-remote"
+register_click_completion "llm"
+register_click_completion "pr"
+
 zsh_highlight="zsh-syntax-highlighting"
 zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
 [[ -f $zsh_highlight_init ]] && source "${zsh_highlight_init}"
-
-# Add tab completion for click scripts
-eval "$(_GD_COMPLETE=zsh_source gd)"
-eval "$(_GIT_REMOTE_COMPLETE=zsh_source git-remote)"
-eval "$(_LLM_COMPLETE=zsh_source llm)"
-eval "$(_PR_COMPLETE=zsh_source pr)"
 
 # ---- Editor with Aliases ---- #
 
