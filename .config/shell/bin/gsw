@@ -1,17 +1,22 @@
 #!/usr/bin/env python
 
+import subprocess
 from argparse import ArgumentParser
-
-import git
 
 
 def main() -> None:
-    repo = git.Repo(".")
-    branches = list(repo.heads)
+    branches = run("git branch").split("\n")
     assert len(branches) == 2, f"Only possible with 2 branches found {len(branches)}"
-    checkout = [branch for branch in branches if branch != repo.active_branch]
-    assert len(checkout) == 1, f"Should be left with 1 branch found {len(checkout)}"
-    checkout[0].checkout()
+    branch = branches[1] if branches[0].startswith("*") else branches[0]
+    run(f"git checkout {branch}")
+
+
+def run(command: str) -> str:
+    result = subprocess.run(command.split(), capture_output=True, text=True)
+    if result.returncode == 0:
+        return result.stdout.strip()
+    else:
+        raise Exception(f"{command} failed due to: {result.stderr.strip()}")
 
 
 if __name__ == "__main__":
