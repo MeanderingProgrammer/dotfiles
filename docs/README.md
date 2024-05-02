@@ -61,14 +61,6 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 
 # Optional
 
-## Activate Argcomplete
-
-[Doc](https://github.com/kislyuk/argcomplete?tab=readme-ov-file#installation)
-
-```bash
-activate-global-python-argcomplete --user
-```
-
 ## Install Nix
 
 [Doc](https://nixos.org/)
