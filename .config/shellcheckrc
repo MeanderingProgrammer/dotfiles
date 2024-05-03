@@ -1,0 +1,7 @@
+shell=zsh
+external-sources=true
+
+disable=1090 # Can't follow non-constant source
+disable=2034 # foo appears unused
+disable=2046 # Quote this to prevent word splitting
+disable=2086 # Double quote to prevent globbing and word splitting

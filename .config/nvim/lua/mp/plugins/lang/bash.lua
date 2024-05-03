@@ -13,4 +13,14 @@ return {
             }
         end,
     },
+    {
+        'mfussenegger/nvim-lint',
+        opts = {
+            linters_by_ft = {
+                bash = { 'shellcheck' },
+                sh = { 'shellcheck' },
+                zsh = { 'shellcheck' },
+            },
+        },
+    },
 }

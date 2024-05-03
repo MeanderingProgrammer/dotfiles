@@ -21,7 +21,7 @@ bootstrap_apt() {
 }
 
 bootstrap_asdf_tools() {
-    while read line; do
+    while read -r line; do
         plugin=$(echo "${line}" | cut -d' ' -f1)
         asdf plugin add "${plugin}"
     done < ~/.tool-versions

@@ -162,8 +162,8 @@ export VISUAL="nvim"
 export EDITOR="$VISUAL"
 
 # Aliases common editor commands
-alias n="$VISUAL ."
-alias v="$VISUAL ."
+alias n='$VISUAL .'
+alias v='$VISUAL .'
 
 vim() {
     if [[ "${#}" -eq 0 ]]; then
