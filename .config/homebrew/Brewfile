@@ -21,6 +21,7 @@ brew "tlrc"
 brew "~/.config/tmux/tmux.rb"
 brew "wget"
 brew "yadm"
+brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Terminals

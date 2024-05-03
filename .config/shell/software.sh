@@ -115,7 +115,7 @@ if [[ -d $sys32_path ]]; then
     export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
 fi
 
-# ---- Plugins / Completion ---- #
+# ---- Completions ---- #
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 [[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
 
@@ -127,8 +127,11 @@ FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
+click_completion_home="${XDG_CONFIG_HOME}/shell/completions"
+[[ ! -d $click_completion_home ]] && mkdir -p $click_completion_home
+
 register_click_completion() {
-    completion_file="${XDG_CONFIG_HOME}/shell/completions/${1}-complete.zsh"
+    completion_file="${click_completion_home}/${1}-complete.zsh"
     # Only re-generate completions outside of TMUX
     if [[ ! -f $completion_file || -z $TMUX ]]; then
         click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
@@ -137,11 +140,16 @@ register_click_completion() {
     source "${completion_file}"
 }
 
-# Add completions for click scripts
+# Add click scripts
 register_click_completion "gd"
 register_click_completion "git-remote"
 register_click_completion "llm"
 register_click_completion "pr"
+
+# ---- Plugins ---- #
+zsh_suggest="zsh-autosuggestions"
+zsh_suggest_init="$(brew --prefix)/share/$zsh_suggest/$zsh_suggest.zsh"
+[[ -f $zsh_suggest_init ]] && source "${zsh_suggest_init}"
 
 zsh_highlight="zsh-syntax-highlighting"
 zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
@@ -187,3 +195,6 @@ zle -N vi-search-fix
 bindkey -M viins "\e/" vi-search-fix
 # Fix ability to delete characters
 bindkey "^?" backward-delete-char
+# Prefix based search
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
