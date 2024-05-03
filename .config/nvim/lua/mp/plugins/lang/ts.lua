@@ -9,6 +9,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
+            opts.servers.eslint = {}
             opts.servers.svelte = {}
             opts.servers.tailwindcss = {}
             opts.servers.tsserver = {
@@ -29,29 +30,6 @@ return {
             formatters_by_ft = {
                 javascript = { 'prettierd' },
                 typescript = { 'prettierd' },
-            },
-        },
-    },
-    {
-        'mfussenegger/nvim-lint',
-        init = function()
-            vim.env.ESLINT_D_LOCAL_ESLINT_ONLY = 1
-        end,
-        opts = {
-            linters_by_ft = {
-                javascript = { 'eslint_d' },
-                typescript = { 'eslint_d' },
-            },
-            linter_override = {
-                eslint_d = function(config)
-                    local original_parser = config.parser
-                    config.parser = function(output, bufnr)
-                        if vim.tbl_contains({ 'No ESLint found' }, vim.trim(output)) then
-                            return {}
-                        end
-                        return original_parser(output, bufnr)
-                    end
-                end,
             },
         },
     },
