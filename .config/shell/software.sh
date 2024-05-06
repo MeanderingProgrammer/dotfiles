@@ -127,11 +127,11 @@ FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
-click_completion_home="${XDG_CONFIG_HOME}/shell/completions"
-[[ ! -d $click_completion_home ]] && mkdir -p $click_completion_home
+completions_home="${XDG_DATA_HOME}/completions"
+[[ ! -d $completions_home ]] && mkdir -p $completions_home
 
 register_click_completion() {
-    completion_file="${click_completion_home}/${1}-complete.zsh"
+    completion_file="${completions_home}/${1}-complete.zsh"
     # Only re-generate completions outside of TMUX
     if [[ ! -f $completion_file || -z $TMUX ]]; then
         click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
