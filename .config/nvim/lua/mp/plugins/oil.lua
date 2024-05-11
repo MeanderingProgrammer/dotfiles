@@ -11,8 +11,6 @@ return {
                 -- Use telescope keymaps
                 ['<C-v>'] = 'actions.select_vsplit',
                 ['<C-x>'] = 'actions.select_split',
-                -- Escape to close
-                ['<esc>'] = 'actions.close',
                 -- Disable navigation keymaps
                 ['<C-h>'] = false,
                 ['<C-l>'] = false,
