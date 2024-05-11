@@ -108,13 +108,6 @@ export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
 user_bin="${HOME}/bin"
 [[ -d $user_bin ]] && export PATH="${user_bin}:$PATH"
 
-# Add System32 if it exists (WSL)
-sys32_path="/mnt/c/Windows/System32"
-if [[ -d $sys32_path ]]; then
-    export PATH="$PATH:${sys32_path}"
-    export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
-fi
-
 # ---- Completions ---- #
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 [[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
