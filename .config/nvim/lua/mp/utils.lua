@@ -35,13 +35,4 @@ function M.hidden_directories()
     return directories
 end
 
----@param f fun(opts: any)
----@param opts any
----@return fun()
-function M.thunk(f, opts)
-    return function()
-        f(opts)
-    end
-end
-
 return M

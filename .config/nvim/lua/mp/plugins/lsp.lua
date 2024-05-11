@@ -15,15 +15,27 @@ return {
             desc = 'LSP actions',
             callback = function(event)
                 local builtin = require('telescope.builtin')
-                local jump_opts = { winnr = 0, jump_type = 'never' }
-                local utils = require('mp.utils')
-
                 require('which-key').register({
                     g = {
                         name = 'goto',
-                        d = { utils.thunk(builtin.lsp_definitions, jump_opts), 'LSP Definitions' },
-                        r = { utils.thunk(builtin.lsp_references, jump_opts), 'LSP References' },
-                        i = { utils.thunk(builtin.lsp_implementations, jump_opts), 'LSP Implementations' },
+                        d = {
+                            function()
+                                builtin.lsp_definitions({ jump_type = 'never' })
+                            end,
+                            'LSP Definitions',
+                        },
+                        r = {
+                            function()
+                                builtin.lsp_references({ jump_type = 'never' })
+                            end,
+                            'LSP References',
+                        },
+                        i = {
+                            function()
+                                builtin.lsp_implementations({ jump_type = 'never' })
+                            end,
+                            'LSP Implementations',
+                        },
                         s = { builtin.lsp_document_symbols, 'LSP Document Symbols' },
                     },
                     ['<leader>'] = {

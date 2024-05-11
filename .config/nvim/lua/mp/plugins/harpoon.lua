@@ -13,15 +13,39 @@ return {
 
         local mark = require('harpoon-core.mark')
         local ui = require('harpoon-core.ui')
-        local utils = require('mp.utils')
 
         require('which-key').register({
             ['<leader>'] = {
-                ['1'] = { utils.thunk(ui.nav_file, 1), 'Harpoon Open file 1' },
-                ['2'] = { utils.thunk(ui.nav_file, 2), 'Harpoon Open file 2' },
-                ['3'] = { utils.thunk(ui.nav_file, 3), 'Harpoon Open file 3' },
-                ['4'] = { utils.thunk(ui.nav_file, 4), 'Harpoon Open file 4' },
-                ['5'] = { utils.thunk(ui.nav_file, 5), 'Harpoon Open file 5' },
+                ['1'] = {
+                    function()
+                        ui.nav_file(1)
+                    end,
+                    'Harpoon Open file 1',
+                },
+                ['2'] = {
+                    function()
+                        ui.nav_file(2)
+                    end,
+                    'Harpoon Open file 2',
+                },
+                ['3'] = {
+                    function()
+                        ui.nav_file(3)
+                    end,
+                    'Harpoon Open file 3',
+                },
+                ['4'] = {
+                    function()
+                        ui.nav_file(4)
+                    end,
+                    'Harpoon Open file 4',
+                },
+                ['5'] = {
+                    function()
+                        ui.nav_file(5)
+                    end,
+                    'Harpoon Open file 5',
+                },
             },
             ['<leader>h'] = {
                 name = 'harpoon',
