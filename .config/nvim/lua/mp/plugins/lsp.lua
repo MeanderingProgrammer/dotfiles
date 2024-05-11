@@ -15,7 +15,7 @@ return {
             desc = 'LSP actions',
             callback = function(event)
                 local builtin = require('telescope.builtin')
-                local jump_opts = { jump_type = 'never' }
+                local jump_opts = { winnr = 0, jump_type = 'never' }
                 local utils = require('mp.utils')
 
                 require('which-key').register({
