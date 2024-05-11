@@ -2,8 +2,9 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            local ts_grammars = { 'css', 'html', 'javascript', 'jsdoc', 'scss', 'svelte', 'typescript', 'vue' }
-            vim.list_extend(opts.ensure_installed, ts_grammars)
+            vim.list_extend(opts.ensure_installed, { 'html', 'css', 'scss' })
+            vim.list_extend(opts.ensure_installed, { 'javascript', 'jsdoc', 'typescript' })
+            vim.list_extend(opts.ensure_installed, { 'svelte', 'vue' })
         end,
     },
     {
@@ -24,7 +25,18 @@ return {
     {
         'stevearc/conform.nvim',
         init = function()
+            -- Avoid running when project does not use prettier
             vim.env.PRETTIERD_LOCAL_PRETTIER_ONLY = 1
+
+            -- Due to prettierd not picking up changes
+            -- https://github.com/fsouza/prettierd/issues/719
+            vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+                group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
+                pattern = '*prettier*',
+                callback = function()
+                    vim.fn.system('prettierd restart')
+                end,
+            })
         end,
         opts = {
             formatters_by_ft = {

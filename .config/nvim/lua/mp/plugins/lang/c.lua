@@ -2,8 +2,8 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            local c_grammars = { 'c', 'c_sharp', 'cmake', 'cpp', 'make' }
-            vim.list_extend(opts.ensure_installed, c_grammars)
+            vim.list_extend(opts.ensure_installed, { 'c', 'cpp', 'c_sharp' })
+            vim.list_extend(opts.ensure_installed, { 'cmake', 'make' })
         end,
     },
     {
@@ -11,6 +11,12 @@ return {
         opts = function(_, opts)
             opts.servers.clangd = {}
             opts.servers.csharp_ls = {}
+        end,
+    },
+    {
+        'stevearc/conform.nvim',
+        opts = function(_, opts)
+            vim.list_extend(opts.disabled_fts, { 'c', 'cpp' })
         end,
     },
 }
