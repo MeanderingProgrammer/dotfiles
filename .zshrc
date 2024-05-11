@@ -4,11 +4,11 @@ shell_main() {
 
     # ---- XDG Base Directory ---- #
     # https://wiki.archlinux.org/title/XDG_Base_Directory
-    export XDG_CONFIG_HOME="$HOME/.config"     # Configurations
-    export XDG_CACHE_HOME="$HOME/.cache"       # Non-essential (cached) data
-    export XDG_DATA_HOME="$HOME/.local/share"  # State data that should persist between restarts
-    export XDG_STATE_HOME="$HOME/.local/state" # State data but is not important or portable enough
-    export XDG_RUNTIME_DIR="/tmp"              # Non-essential runtime files and other file objects
+    export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # Configurations
+    export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"       # Non-essential (cached) data
+    export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # State data that should persist between restarts
+    export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # State data but is not important or portable enough
+    export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp}"             # Non-essential runtime files and other file objects
 
     # ---- History configuration ---- #
     zsh_state_home="${XDG_STATE_HOME}/zsh"
