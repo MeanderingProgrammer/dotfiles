@@ -90,9 +90,6 @@ export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
 
 # ---- Software Setup ---- #
 
-# The Fuck
-eval $(thefuck --alias)
-
 # Password Store
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
@@ -108,12 +105,19 @@ export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
 user_bin="${HOME}/bin"
 [[ -d $user_bin ]] && export PATH="${user_bin}:$PATH"
 
+# Add System32 if it exists (WSL)
+sys32_path="/mnt/c/Windows/System32"
+if [[ -d $sys32_path ]]; then
+    export PATH="$PATH:${sys32_path}"
+    export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
+fi
+
 # ---- Completions ---- #
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 [[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
 
 # Add completion directories
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 
 # man zshcompsys
@@ -141,11 +145,11 @@ register_click_completion "pr"
 
 # ---- Plugins ---- #
 zsh_suggest="zsh-autosuggestions"
-zsh_suggest_init="$(brew --prefix)/share/$zsh_suggest/$zsh_suggest.zsh"
+zsh_suggest_init="$HOMEBREW_PREFIX/share/$zsh_suggest/$zsh_suggest.zsh"
 [[ -f $zsh_suggest_init ]] && source "${zsh_suggest_init}"
 
 zsh_highlight="zsh-syntax-highlighting"
-zsh_highlight_init="$(brew --prefix)/share/$zsh_highlight/$zsh_highlight.zsh"
+zsh_highlight_init="$HOMEBREW_PREFIX/share/$zsh_highlight/$zsh_highlight.zsh"
 [[ -f $zsh_highlight_init ]] && source "${zsh_highlight_init}"
 
 # ---- Editor with Aliases ---- #
