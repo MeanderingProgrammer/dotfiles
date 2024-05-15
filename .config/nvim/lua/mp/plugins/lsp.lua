@@ -46,13 +46,19 @@ return {
                     },
                     ['<leader>w'] = {
                         name = 'workspaces',
+                        s = { builtin.lsp_dynamic_workspace_symbols, 'LSP Symbols' },
                         f = {
                             function()
                                 vim.print(vim.lsp.buf.list_workspace_folders())
                             end,
                             'LSP List Folders',
                         },
-                        s = { builtin.lsp_dynamic_workspace_symbols, 'LSP Symbols' },
+                        i = {
+                            function()
+                                vim.print(vim.lsp.get_active_clients({ bufnr = event.buf }))
+                            end,
+                            'LSP Client Info',
+                        },
                     },
                 }, { buffer = event.buf })
 
