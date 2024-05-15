@@ -23,7 +23,9 @@ return {
         config = function()
             local crates = require('crates')
             crates.setup({
-                src = { cmp = { enabled = true } },
+                completion = {
+                    cmp = { enabled = true },
+                },
             })
 
             require('which-key').register({
