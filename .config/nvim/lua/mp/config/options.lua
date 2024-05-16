@@ -37,7 +37,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 -- Better completion experience
-vim.opt.completeopt = 'menu,menuone,noselect'
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Indentation settings
 vim.opt.smartindent = true
