@@ -43,6 +43,13 @@ return {
                         ['<C-k>'] = { vim.lsp.buf.signature_help, 'LSP Signature Help' },
                         ['<C-a>'] = { vim.lsp.buf.code_action, 'LSP Code Actions' },
                         ['<C-r>'] = { vim.lsp.buf.rename, 'LSP Rename' },
+                        ['<C-h>'] = {
+                            function()
+                                local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+                                vim.lsp.inlay_hint.enable(not enabled, { bufnr = event.buf })
+                            end,
+                            'LSP Toggle Inlay Hints',
+                        },
                     },
                     ['<leader>w'] = {
                         name = 'workspaces',
