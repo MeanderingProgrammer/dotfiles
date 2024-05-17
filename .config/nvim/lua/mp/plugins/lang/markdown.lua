@@ -18,11 +18,9 @@ return {
                 markdown = { 'markdownlint' },
             },
             linter_override = {
-                markdownlint = function(config)
-                    config.args = {
-                        '--config',
-                        require('mp.utils').lint_config('markdownlint.yaml'),
-                    }
+                markdownlint = function(linter)
+                    local config = require('mp.utils').lint_config('markdownlint.yaml')
+                    linter.args = { '--config', config }
                 end,
             },
         },
