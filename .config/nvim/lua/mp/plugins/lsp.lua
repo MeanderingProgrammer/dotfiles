@@ -55,7 +55,7 @@ return {
                         },
                         i = {
                             function()
-                                vim.print(vim.lsp.get_active_clients({ bufnr = event.buf }))
+                                vim.print(vim.lsp.get_clients({ bufnr = event.buf }))
                             end,
                             'LSP Client Info',
                         },
