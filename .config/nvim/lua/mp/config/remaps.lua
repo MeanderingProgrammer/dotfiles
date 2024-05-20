@@ -25,6 +25,9 @@ vim.keymap.set('n', 'n', 'nzz', opts)
 vim.keymap.set('n', 'N', 'Nzz', opts)
 vim.keymap.set('n', '<cr>', ':noh<cr><cr>', opts)
 
+-- Diagnostics
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+
 -- Remove ability to fallback to arrows
 vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', opts)
 vim.keymap.set({ 'n', 'v', 'i' }, '<Down>', '<Nop>', opts)

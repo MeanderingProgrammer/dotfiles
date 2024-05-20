@@ -6,9 +6,6 @@ return {
         { 'MaximilianLloyd/ascii.nvim', dependencies = { 'MunifTanjim/nui.nvim' } },
         { 'Shatur/neovim-session-manager' },
     },
-    keys = {
-        { '<leader>d', '<cmd>Dashboard<cr>', desc = 'Dashboard: open' },
-    },
     config = function()
         local manager = require('session_manager')
         require('dashboard').setup({
