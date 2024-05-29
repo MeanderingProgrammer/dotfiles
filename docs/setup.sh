@@ -15,15 +15,11 @@ install_deps() {
     elif [[ "${system_type}" == "Linux" ]]; then
         echo "  Starting"
         sudo apt --yes install \
-          git \
-          wget \
-          make \
-          gcc \
-          llvm \
-          wl-clipboard \
-          build-essential \
           bubblewrap \
-          xz-utils \
+          build-essential \
+          gcc \
+          git \
+          latexmk \
           libbz2-dev \
           libffi-dev \
           liblzma-dev \
@@ -33,7 +29,14 @@ install_deps() {
           libssl-dev \
           libxml2-dev \
           libxmlsec1-dev \
+          llvm \
+          make \
+          texlive \
+          texlive-xetex \
           tk-dev \
+          wget \
+          wl-clipboard \
+          xz-utils \
           zlib1g-dev
     else
         echo "  Error: unhandled system type"

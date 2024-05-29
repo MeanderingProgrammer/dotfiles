@@ -8,15 +8,11 @@
       update_cache_retries: 1
       state: latest
       name:
-        - git
-        - wget
-        - make
-        - gcc
-        - llvm
-        - wl-clipboard
-        - build-essential
         - bubblewrap
-        - xz-utils
+        - build-essential
+        - gcc
+        - git
+        - latexmk
         - libbz2-dev
         - libffi-dev
         - liblzma-dev
@@ -26,7 +22,14 @@
         - libssl-dev
         - libxml2-dev
         - libxmlsec1-dev
+        - llvm
+        - make
+        - texlive
+        - texlive-xetex
         - tk-dev
+        - wget
+        - wl-clipboard
+        - xz-utils
         - zlib1g-dev
     become: true
     when: ansible_facts['os_family'] == 'Debian'
