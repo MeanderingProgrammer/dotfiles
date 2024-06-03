@@ -2,9 +2,9 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'html', 'css', 'scss' })
-            vim.list_extend(opts.ensure_installed, { 'javascript', 'jsdoc', 'typescript' })
-            vim.list_extend(opts.ensure_installed, { 'svelte', 'vue' })
+            vim.list_extend(opts.languages, { 'html', 'css', 'scss' })
+            vim.list_extend(opts.languages, { 'javascript', 'jsdoc', 'typescript' })
+            vim.list_extend(opts.languages, { 'svelte', 'vue' })
         end,
     },
     {

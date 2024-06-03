@@ -2,8 +2,8 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'vim', 'vimdoc' })
-            vim.list_extend(opts.ensure_installed, { 'lua', 'luadoc', 'query' })
+            vim.list_extend(opts.languages, { 'vim', 'vimdoc' })
+            vim.list_extend(opts.languages, { 'lua', 'luadoc', 'query' })
         end,
     },
     {

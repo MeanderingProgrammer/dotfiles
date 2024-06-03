@@ -2,8 +2,8 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'go' })
-            vim.list_extend(opts.ensure_installed, { 'gomod', 'gosum', 'gowork' })
+            vim.list_extend(opts.languages, { 'go' })
+            vim.list_extend(opts.languages, { 'gomod', 'gosum', 'gowork' })
         end,
     },
     {

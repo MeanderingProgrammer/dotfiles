@@ -2,7 +2,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'ocaml' })
+            vim.list_extend(opts.languages, { 'ocaml' })
         end,
     },
     {

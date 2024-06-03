@@ -2,8 +2,8 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'c', 'cpp', 'c_sharp' })
-            vim.list_extend(opts.ensure_installed, { 'cmake', 'make' })
+            vim.list_extend(opts.languages, { 'c', 'cpp', 'c_sharp' })
+            vim.list_extend(opts.languages, { 'cmake', 'make' })
         end,
     },
     {

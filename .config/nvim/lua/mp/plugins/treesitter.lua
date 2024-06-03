@@ -6,20 +6,23 @@ return {
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
     opts = {
-        ensure_installed = {},
-        highlight = { enable = true },
-        indent = { enable = true },
-        incremental_selection = {
-            enable = true,
-            keymaps = {
-                init_selection = '<c-v>',
-                node_incremental = 'v',
-                node_decremental = 'V',
-                scope_incremental = false,
-            },
-        },
+        languages = {},
     },
     config = function(_, opts)
-        require('nvim-treesitter.configs').setup(opts)
+        ---@diagnostic disable-next-line: missing-fields
+        require('nvim-treesitter.configs').setup({
+            ensure_installed = opts.languages,
+            highlight = { enable = true },
+            indent = { enable = true },
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = '<c-v>',
+                    node_incremental = 'v',
+                    node_decremental = 'V',
+                    scope_incremental = false,
+                },
+            },
+        })
     end,
 }

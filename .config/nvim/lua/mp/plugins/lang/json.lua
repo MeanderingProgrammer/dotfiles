@@ -2,7 +2,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'jq', 'json', 'json5', 'jsonc' })
+            vim.list_extend(opts.languages, { 'jq', 'json', 'json5', 'jsonc' })
         end,
     },
     {
