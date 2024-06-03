@@ -10,7 +10,6 @@ return {
         'neovim/nvim-lspconfig',
         dependencies = {
             { 'folke/neoconf.nvim', config = true },
-            { 'folke/neodev.nvim', config = true },
         },
         opts = function(_, opts)
             opts.servers.lua_ls = {}
@@ -23,5 +22,22 @@ return {
                 lua = { 'stylua' },
             },
         },
+    },
+    { 'Bilal2453/luvit-meta', lazy = true },
+    {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        opts = {
+            library = {
+                -- vim.uv typings from Bilal2453/luvit-meta
+                'luvit-meta/library',
+            },
+        },
+    },
+    {
+        'hrsh7th/nvim-cmp',
+        opts = function(_, opts)
+            table.insert(opts.sources, { name = 'lazydev', group_index = 0 })
+        end,
     },
 }
