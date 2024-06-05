@@ -8,9 +8,6 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
-        dependencies = {
-            { 'folke/neoconf.nvim', config = true },
-        },
         opts = function(_, opts)
             opts.servers.lua_ls = {}
         end,
