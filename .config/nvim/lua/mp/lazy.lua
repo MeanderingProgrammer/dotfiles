@@ -16,7 +16,14 @@ require('lazy').setup({
         { import = 'mp.plugins' },
         { import = 'mp.plugins.lang' },
     },
-    ---@diagnostic disable-next-line: assign-type-mismatch
-    dev = { path = '~/dev/repos/personal' },
+    dev = {
+        path = function(plugin)
+            local plugin_directory = '~/dev/repos/personal/'
+            if not vim.startswith(plugin[1], 'MeanderingProgrammer') then
+                plugin_directory = '~/dev/repos/open-source/nvim-plugins/'
+            end
+            return plugin_directory .. plugin.name
+        end,
+    },
     change_detection = { notify = false },
 })
