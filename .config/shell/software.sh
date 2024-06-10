@@ -96,6 +96,9 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 # SSH
 [[ -z $SSH_AUTH_SOCK ]] && eval "$(ssh-agent -s)"
 
+# fzf
+eval $(fzf --zsh)
+
 # ---- PATH ---- #
 
 # Add shell config bin folder
