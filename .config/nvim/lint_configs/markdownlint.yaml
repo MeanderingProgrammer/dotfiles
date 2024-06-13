@@ -4,6 +4,7 @@ heading-increment: false
 single-title: false
 no-bare-urls: false
 no-inline-html: false
+no-duplicate-heading: false
 blanks-around-lists: false
 ul-style: false
 ul-indent: false
