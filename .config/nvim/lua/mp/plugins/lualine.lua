@@ -4,22 +4,17 @@ return {
     config = function()
         local function buf_lsp_info()
             local bufnr = vim.api.nvim_get_current_buf()
-            local clients = vim.lsp.get_clients({ bufnr = bufnr })
-            local parts = {
-                string.format('(%d)', bufnr),
-                vim.iter(clients)
-                    :map(function(client)
-                        return client.name
-                    end)
-                    :join(' '),
-            }
-            return vim.fn.join(parts, ' ')
+            return vim.iter(vim.lsp.get_clients({ bufnr = bufnr }))
+                :map(function(client)
+                    return client.name
+                end)
+                :join(' ')
         end
         local filename_section = { 'filename', path = 1 }
         require('lualine').setup({
             sections = {
                 lualine_c = { filename_section },
-                lualine_x = { buf_lsp_info, 'filetype' },
+                lualine_x = { '%n', buf_lsp_info, 'filetype' },
             },
             inactive_sections = {
                 lualine_c = { filename_section },

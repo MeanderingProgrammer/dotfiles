@@ -60,12 +60,6 @@ return {
                             end,
                             'LSP List Folders',
                         },
-                        i = {
-                            function()
-                                vim.print(vim.lsp.get_clients({ bufnr = event.buf }))
-                            end,
-                            'LSP Client Info',
-                        },
                     },
                 }, { buffer = event.buf })
 
