@@ -24,7 +24,7 @@ return {
                 if disabled_name then
                     return nil
                 end
-                return { lsp_fallback = true }
+                return { lsp_format = 'fallback' }
             end,
         })
     end,
