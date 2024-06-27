@@ -17,7 +17,7 @@ return {
                 ---@return string[]
                 function()
                     local directory = '~/dev/repos/personal'
-                    local find_command = string.format('find %s -type d -name ".git"', directory)
+                    local find_command = string.format('find %s -type d -name ".git" -maxdepth 2', directory)
                     local cleanded_command = find_command .. ' | sort | xargs dirname | sed "s|$HOME|~|g"'
                     local git_directories = vim.fn.system(cleanded_command)
                     return vim.split(vim.trim(git_directories), '\n', { plain = true })
