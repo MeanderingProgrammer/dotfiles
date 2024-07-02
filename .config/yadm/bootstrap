@@ -1,19 +1,19 @@
 #!/bin/bash
 
-bootstrap_homebrew() {
-    brew bundle --no-lock --file ~/.config/homebrew/Brewfile
+bootstrap_dir=$(dirname $0)
+
+bootstrap_deps() {
+    brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
     brew pin tmux
     brew update
     brew upgrade
-}
 
-bootstrap_apt() {
     system_type=$(uname -s)
     wsl_sys32_path="/mnt/c/Windows/System32"
     if [[ "${system_type}" == "Linux" ]]; then
         if [[ ! -d $wsl_sys32_path ]]; then
-            source $(dirname $0)/complex/wezterm.sh
-            source $(dirname $0)/complex/fonts.sh
+            source "${bootstrap_dir}/wezterm.sh"
+            source "${bootstrap_dir}/fonts.sh"
         fi
         sudo apt --yes update
         sudo apt --yes upgrade
@@ -60,11 +60,23 @@ bootstrap_libraries() {
 }
 
 bootstrap_repos() {
-    ansible-playbook -vv $(dirname $0)/setup-repos.yml
+    ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
 }
 
-bootstrap_homebrew
-bootstrap_apt
-bootstrap_asdf_tools
-bootstrap_libraries
-bootstrap_repos
+if [[ "${#}" -eq 0 ]]; then
+    bootstrap_deps
+    bootstrap_asdf_tools
+    bootstrap_libraries
+    bootstrap_repos
+elif [[ "${#}" -eq 1 ]]; then
+    if [[ "${1}" == "deps" ]]; then
+        bootstrap_deps
+    else
+        echo "Unknown command: ${1}"
+        echo "Commands: deps"
+        exit 1
+    fi
+else
+    echo "Usage: <command>?"
+    exit 1
+fi

@@ -20,14 +20,14 @@ alias gr="git rebase -i"
 alias gundo="git restore ."
 
 # Yadm
-alias yb="yadm bootstrap"
+alias yb="bash ~/.config/yadm/bootstrap"
 alias ys="yadm status"
 alias yl="yadm log"
 alias yp="yadm push"
 alias ypl="yadm pull"
 alias ya="yadm add -u"
 alias yc="yadm commit -m"
-alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/homebrew/ ~/.config/kitty/ ~/.config/lang/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/"
+alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
 
