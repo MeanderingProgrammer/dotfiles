@@ -11,5 +11,6 @@ return {
                 start_jumping = '<tab>',
             },
         })
+        require('mini.surround').setup({})
     end,
 }
