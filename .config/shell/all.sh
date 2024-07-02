@@ -1,12 +1,10 @@
 # ---- Common setup ---- #
-shell_home="${XDG_CONFIG_HOME}/shell"
-
-source "${shell_home}/aliases.sh"
-source "${shell_home}/software.sh"
+source "${XDG_CONFIG_HOME}/shell/aliases.sh"
+source "${XDG_CONFIG_HOME}/shell/software.sh"
 
 # ---- Computer specific setup ---- #
-custom_shell="${shell_home}/custom.sh"
+custom_shell="${XDG_CONFIG_HOME}/shell/custom.sh"
 [[ -f $custom_shell ]] && source "${custom_shell}"
 
 # ---- Only run if not already in TMUX ---- #
-[[ -z $TMUX ]] && source "${shell_home}/tmux.sh"
+[[ -z $TMUX ]] && source "${XDG_CONFIG_HOME}/shell/tmux.sh"
