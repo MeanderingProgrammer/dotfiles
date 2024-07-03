@@ -4,7 +4,6 @@ return {
         'nvim-lua/plenary.nvim',
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
         'debugloop/telescope-undo.nvim',
-        'pschmitt/telescope-yadm.nvim',
     },
     config = function()
         local find_command = { 'rg', '--files', '--hidden' }
@@ -29,7 +28,6 @@ return {
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')
-        telescope.load_extension('yadm_files')
 
         local builtin = require('telescope.builtin')
         require('which-key').register({
