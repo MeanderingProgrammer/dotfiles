@@ -20,34 +20,33 @@ return {
                 },
             },
             pickers = {
-                find_files = {
-                    find_command = find_command,
-                },
+                find_files = { find_command = find_command },
+                lsp_definitions = { jump_type = 'never' },
+                lsp_references = { jump_type = 'never' },
+                lsp_implementations = { jump_type = 'never' },
             },
         })
 
         telescope.load_extension('fzf')
         telescope.load_extension('undo')
 
+        ---@param lhs string
+        ---@param rhs string|function
+        ---@param desc string
+        local function map(lhs, rhs, desc)
+            vim.keymap.set('n', lhs, rhs, { desc = desc })
+        end
         local builtin = require('telescope.builtin')
-        require('which-key').register({
-            ['<leader>'] = {
-                ['<leader>'] = { builtin.buffers, 'Find Existing Buffers' },
-                ['?'] = { builtin.oldfiles, 'Find Recently Opened Files' },
-            },
-            ['<leader>t'] = {
-                name = 'telescope',
-                f = { builtin.find_files, 'Find Files' },
-                g = { builtin.git_files, 'Git Files' },
-                y = { '<cmd>Telescope yadm_files<cr>', 'YADM files' },
-                s = { builtin.live_grep, 'Grep Files' },
-                u = { '<cmd>Telescope undo<cr>', 'Undo Tree' },
-                d = { builtin.diagnostics, 'Diagnostics' },
-                w = { builtin.grep_string, 'Current Word' },
-                t = { builtin.help_tags, 'Help Tags' },
-                k = { builtin.keymaps, 'Keymaps' },
-                h = { builtin.highlights, 'Highlights' },
-            },
-        })
+        map('<leader><leader>', builtin.buffers, 'Find Existing Buffers')
+        map('<leader>?', builtin.oldfiles, 'Find Recently Opened Files')
+        map('<leader>tf', builtin.find_files, 'Find Files')
+        map('<leader>tg', builtin.git_files, 'Git Files')
+        map('<leader>ts', builtin.live_grep, 'Grep Files')
+        map('<leader>tu', '<cmd>Telescope undo<cr>', 'Undo Tree')
+        map('<leader>td', builtin.diagnostics, 'Diagnostics')
+        map('<leader>tw', builtin.grep_string, 'Current Word')
+        map('<leader>tt', builtin.help_tags, 'Help Tags')
+        map('<leader>tk', builtin.keymaps, 'Keymaps')
+        map('<leader>th', builtin.highlights, 'Highlights')
     end,
 }

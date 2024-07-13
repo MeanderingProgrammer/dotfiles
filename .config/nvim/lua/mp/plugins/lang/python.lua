@@ -44,14 +44,15 @@ return {
                 filter = { final_release = true },
             })
 
-            require('which-key').register({
-                ['<leader>r'] = {
-                    name = 'requirements',
-                    u = { requirements.upgrade, 'Upgrade' },
-                    U = { requirements.upgrade_all, 'Upgrade All' },
-                    d = { requirements.show_description, 'Show Description' },
-                },
-            })
+            ---@param lhs string
+            ---@param rhs function
+            ---@param desc string
+            local function map(lhs, rhs, desc)
+                vim.keymap.set('n', lhs, rhs, { desc = desc })
+            end
+            map('<leader>rd', requirements.show_description, 'Show Description')
+            map('<leader>ru', requirements.upgrade, 'Upgrade')
+            map('<leader>rU', requirements.upgrade_all, 'Upgrade All')
         end,
     },
     {

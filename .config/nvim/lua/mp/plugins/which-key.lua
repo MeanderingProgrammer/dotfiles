@@ -3,8 +3,7 @@ return {
     event = 'VeryLazy',
     config = function()
         local wk = require('which-key')
-        -- gc & gcc have the same prefix so overlap according to which-key,
-        -- this is not really a problem
+        -- gc & gcc have the same prefix so overlap according to which-key, this is not really a problem
         wk.setup({
             plugins = {
                 presets = {
@@ -14,13 +13,18 @@ return {
                     nav = false,
                 },
             },
-            ignore_missing = true,
         })
-        wk.register({
-            ['<leader>'] = {
-                name = 'leader',
-                ww = { wk.show, 'Show WhichKey' },
-            },
+        wk.add({
+            { '<leader>', group = 'leader' },
+            { '<leader>c', group = 'crates' },
+            { '<leader>g', group = 'goto' },
+            { '<leader>h', group = 'harpoon' },
+            { '<leader>r', group = 'requirements' },
+            { '<leader>s', group = 'session' },
+            { '<leader>t', group = 'telescope' },
+            { '<leader>w', group = 'workspaces' },
+            { '<leader>x', group = 'trouble' },
+            { '<leader>ww', wk.show, desc = 'Show WhichKey' },
         })
     end,
 }

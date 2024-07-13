@@ -14,54 +14,28 @@ return {
             group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
             desc = 'LSP actions',
             callback = function(event)
+                ---@param lhs string
+                ---@param rhs function
+                ---@param desc string
+                local function map(lhs, rhs, desc)
+                    vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP ' .. desc })
+                end
                 local builtin = require('telescope.builtin')
-                require('which-key').register({
-                    g = {
-                        name = 'goto',
-                        d = {
-                            function()
-                                builtin.lsp_definitions({ jump_type = 'never' })
-                            end,
-                            'LSP Definitions',
-                        },
-                        r = {
-                            function()
-                                builtin.lsp_references({ jump_type = 'never' })
-                            end,
-                            'LSP References',
-                        },
-                        i = {
-                            function()
-                                builtin.lsp_implementations({ jump_type = 'never' })
-                            end,
-                            'LSP Implementations',
-                        },
-                        s = { builtin.lsp_document_symbols, 'LSP Document Symbols' },
-                    },
-                    ['<leader>'] = {
-                        ['k'] = { vim.lsp.buf.hover, 'LSP Hover Information' },
-                        ['<C-k>'] = { vim.lsp.buf.signature_help, 'LSP Signature Help' },
-                        ['<C-a>'] = { vim.lsp.buf.code_action, 'LSP Code Actions' },
-                        ['<C-r>'] = { vim.lsp.buf.rename, 'LSP Rename' },
-                        ['<C-h>'] = {
-                            function()
-                                local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
-                                vim.lsp.inlay_hint.enable(not enabled, { bufnr = event.buf })
-                            end,
-                            'LSP Toggle Inlay Hints',
-                        },
-                    },
-                    ['<leader>w'] = {
-                        name = 'workspaces',
-                        s = { builtin.lsp_dynamic_workspace_symbols, 'LSP Symbols' },
-                        f = {
-                            function()
-                                vim.print(vim.lsp.buf.list_workspace_folders())
-                            end,
-                            'LSP List Folders',
-                        },
-                    },
-                }, { buffer = event.buf })
+                map('gd', builtin.lsp_definitions, 'Definitions')
+                map('gr', builtin.lsp_references, 'References')
+                map('gi', builtin.lsp_implementations, 'Implementations')
+                map('gs', builtin.lsp_document_symbols, 'Document Symbols')
+                map('<leader>k', vim.lsp.buf.hover, 'Hover Information')
+                map('<leader><C-k>', vim.lsp.buf.signature_help, 'Signature Help')
+                map('<leader><C-a>', vim.lsp.buf.code_action, 'Code Actions')
+                map('<leader><C-r>', vim.lsp.buf.rename, 'Rename')
+                map('<leader><C-h>', function()
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                end, 'LSP Toggle Inlay Hints')
+                map('<leader>ws', builtin.lsp_dynamic_workspace_symbols, 'Symbols')
+                map('<leader>wf', function()
+                    vim.print(vim.lsp.buf.list_workspace_folders())
+                end, 'List Folders')
 
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then

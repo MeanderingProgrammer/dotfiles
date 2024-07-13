@@ -24,10 +24,6 @@ return {
             float = { padding = 10 },
         })
 
-        require('which-key').register({
-            ['<leader>'] = {
-                o = { oil.toggle_float, 'Oil Toggle' },
-            },
-        })
+        vim.keymap.set('n', '<leader>o', oil.toggle_float, { desc = 'Oil Toggle' })
     end,
 }

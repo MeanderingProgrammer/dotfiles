@@ -1,40 +1,45 @@
-local opts = { noremap = true, silent = true }
+---@param modes string|string[]
+---@param lhs string
+---@param rhs string|function
+local function map(modes, lhs, rhs)
+    vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
+end
 
 -- Move lines up / down
-vim.keymap.set('n', '<A-j>', '<cmd>m .+1<cr>==', opts)
-vim.keymap.set('n', '<A-k>', '<cmd>m .-2<cr>==', opts)
-vim.keymap.set('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', opts)
-vim.keymap.set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', opts)
+map('n', '<A-j>', '<cmd>m .+1<cr>==')
+map('n', '<A-k>', '<cmd>m .-2<cr>==')
+map('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi')
+map('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi')
 
 -- Move split panes left / right
-vim.keymap.set('n', '<A-h>', '<C-w>H', opts)
-vim.keymap.set('n', '<A-l>', '<C-w>L', opts)
+map('n', '<A-h>', '<C-w>H')
+map('n', '<A-l>', '<C-w>L')
 
 -- Move between panes
-vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
-vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
-vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
-vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+map('n', '<C-h>', '<C-w>h')
+map('n', '<C-j>', '<C-w>j')
+map('n', '<C-k>', '<C-w>k')
+map('n', '<C-l>', '<C-w>l')
 
 -- Moving by half page
-vim.keymap.set('n', '<C-d>', '<C-d>zz', opts)
-vim.keymap.set('n', '<C-u>', '<C-u>zz', opts)
+map('n', '<C-d>', '<C-d>zz')
+map('n', '<C-u>', '<C-u>zz')
 
 -- Searching
-vim.keymap.set('n', 'n', 'nzz', opts)
-vim.keymap.set('n', 'N', 'Nzz', opts)
-vim.keymap.set('n', '<cr>', ':noh<cr><cr>', opts)
+map('n', 'n', 'nzz')
+map('n', 'N', 'Nzz')
+map('n', '<cr>', ':noh<cr><cr>')
 
 -- Diagnostics
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+map('n', '<leader>d', vim.diagnostic.open_float)
 
 -- Execute current line
-vim.keymap.set('n', '<leader>bb', function()
+map('n', '<leader>bb', function()
     vim.cmd(':! ' .. vim.fn.getline('.'))
-end, opts)
+end)
 
 -- Copy hex value of current character to clipboard
-vim.keymap.set('n', '<leader>ff', function()
+map('n', '<leader>ff', function()
     local output = vim.api.nvim_exec2('ascii', { output = true }).output
     local encodings = vim.split(output, ',', { plain = true })
     if #encodings > 1 then
@@ -44,10 +49,10 @@ vim.keymap.set('n', '<leader>ff', function()
         vim.print(result)
         vim.fn.setreg('+', result)
     end
-end, opts)
+end)
 
 -- Remove ability to fallback to arrows
-vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', opts)
-vim.keymap.set({ 'n', 'v', 'i' }, '<Down>', '<Nop>', opts)
-vim.keymap.set({ 'n', 'v', 'i' }, '<Left>', '<Nop>', opts)
-vim.keymap.set({ 'n', 'v', 'i' }, '<Right>', '<Nop>', opts)
+map({ 'n', 'v', 'i' }, '<Up>', '<Nop>')
+map({ 'n', 'v', 'i' }, '<Down>', '<Nop>')
+map({ 'n', 'v', 'i' }, '<Left>', '<Nop>')
+map({ 'n', 'v', 'i' }, '<Right>', '<Nop>')

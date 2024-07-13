@@ -6,56 +6,27 @@ return {
         'nvim-telescope/telescope.nvim',
     },
     config = function()
-        require('harpoon-core').setup({
-            default_action = 'vs',
-        })
+        require('harpoon-core').setup({ default_action = 'vs' })
         require('telescope').load_extension('harpoon-core')
 
+        ---@param lhs string
+        ---@param rhs string|function
+        ---@param desc string
+        local function map(lhs, rhs, desc)
+            vim.keymap.set('n', lhs, rhs, { desc = desc })
+        end
         local mark = require('harpoon-core.mark')
         local ui = require('harpoon-core.ui')
-
-        require('which-key').register({
-            ['<leader>'] = {
-                ['1'] = {
-                    function()
-                        ui.nav_file(1)
-                    end,
-                    'Harpoon Open file 1',
-                },
-                ['2'] = {
-                    function()
-                        ui.nav_file(2)
-                    end,
-                    'Harpoon Open file 2',
-                },
-                ['3'] = {
-                    function()
-                        ui.nav_file(3)
-                    end,
-                    'Harpoon Open file 3',
-                },
-                ['4'] = {
-                    function()
-                        ui.nav_file(4)
-                    end,
-                    'Harpoon Open file 4',
-                },
-                ['5'] = {
-                    function()
-                        ui.nav_file(5)
-                    end,
-                    'Harpoon Open file 5',
-                },
-            },
-            ['<leader>h'] = {
-                name = 'harpoon',
-                a = { mark.add_file, 'Add current file' },
-                r = { mark.rm_file, 'Remove current file' },
-                u = { ui.toggle_quick_menu, 'Toggle UI' },
-                t = { '<cmd>Telescope harpoon-core marks<cr>', 'Telescope menu' },
-                n = { ui.nav_next, 'Next file' },
-                p = { ui.nav_prev, 'Previous file' },
-            },
-        })
+        for i = 1, 5 do
+            map(string.format('<leader>%d', i), function()
+                ui.nav_file(i)
+            end, string.format('Harpoon open file %d', i))
+        end
+        map('<leader>ha', mark.add_file, 'Add current file')
+        map('<leader>hr', mark.rm_file, 'Remove current file')
+        map('<leader>hu', ui.toggle_quick_menu, 'Toggle UI')
+        map('<leader>hn', ui.nav_next, 'Next file')
+        map('<leader>hp', ui.nav_prev, 'Previous file')
+        map('<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', 'Telescope menu')
     end,
 }

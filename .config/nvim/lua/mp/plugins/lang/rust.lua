@@ -28,16 +28,17 @@ return {
                 },
             })
 
-            require('which-key').register({
-                ['<leader>c'] = {
-                    name = 'crates',
-                    t = { crates.toggle, 'Toggle UI' },
-                    v = { crates.show_versions_popup, 'Show Version Popup' },
-                    d = { crates.show_dependencies_popup, 'Show Dependency Popup' },
-                    u = { crates.upgrade_crate, 'Upgrade' },
-                    U = { crates.upgrade_all_crates, 'Upgrade All' },
-                },
-            })
+            ---@param lhs string
+            ---@param rhs function
+            ---@param desc string
+            local function map(lhs, rhs, desc)
+                vim.keymap.set('n', lhs, rhs, { desc = desc })
+            end
+            map('<leader>ct', crates.toggle, 'Toggle UI')
+            map('<leader>cv', crates.show_versions_popup, 'Show Version Popup')
+            map('<leader>cd', crates.show_dependencies_popup, 'Show Dependency Popup')
+            map('<leader>cu', crates.upgrade_crate, 'Upgrade')
+            map('<leader>cU', crates.upgrade_all_crates, 'Upgrade All')
         end,
     },
     {
