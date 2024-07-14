@@ -13,6 +13,9 @@ return {
                     nav = false,
                 },
             },
+            filter = function(mapping)
+                return mapping.desc ~= nil and mapping.desc ~= ''
+            end,
         })
         wk.add({
             { '<leader>', group = 'leader' },
