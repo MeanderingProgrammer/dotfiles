@@ -26,6 +26,20 @@ return {
         },
     },
     {
+        '3rd/image.nvim',
+        enabled = vim.fn.has('mac') == 1,
+        config = function()
+            ---@diagnostic disable-next-line: missing-fields
+            require('image').setup({
+                integrations = {
+                    markdown = {
+                        only_render_image_at_cursor = true,
+                    },
+                },
+            })
+        end,
+    },
+    {
         'MeanderingProgrammer/markdown.nvim',
         dev = true,
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
