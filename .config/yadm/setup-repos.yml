@@ -4,7 +4,6 @@
     documents: '{{ lookup("env", "HOME") }}/Documents'
     personal: '{{ lookup("env", "HOME") }}/dev/repos/personal'
     open_source: '{{ lookup("env", "HOME") }}/dev/repos/open-source'
-    plugins: '{{ lookup("env", "HOME") }}/dev/repos/open-source/nvim-plugins'
 
   tasks:
   - name: 'Clone documents repos'
@@ -47,11 +46,3 @@
       dest: '{{ open_source }}/{{ item.name }}'
     loop:
       - { user: 'kdheepak', name: 'panvimdoc' }
-
-  - name: 'Clone nvim plugin repos'
-    git:
-      repo: 'git@github.com:{{ item.user }}/{{ item.name }}.git'
-      dest: '{{ plugins }}/{{ item.name }}'
-    loop:
-      - { user: 'Saecki', name: 'crates.nvim' }
-      - { user: 'ThePrimeagen', name: 'harpoon' }
