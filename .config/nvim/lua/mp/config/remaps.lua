@@ -40,15 +40,20 @@ end)
 
 -- Copy hex value of current character to clipboard
 map('n', '<leader>ff', function()
-    local output = vim.api.nvim_exec2('ascii', { output = true }).output
-    local encodings = vim.split(output, ',', { plain = true })
-    if #encodings > 1 then
-        local hex_info = vim.trim(encodings[#encodings - 1])
-        local hex_code = vim.trim(vim.split(hex_info, ' ', { plain = true })[2])
-        local result = vim.fn.trim(hex_code, '0', 1)
-        vim.print(result)
-        vim.fn.setreg('+', result)
-    end
+    local encodings = vim.api.nvim_exec2('ascii', { output = true }).output
+    local hex_code = vim.iter(vim.split(encodings, ',', { plain = true }))
+        :map(function(encoding)
+            return vim.split(encoding, ' ', { plain = true, trimempty = true })
+        end)
+        :filter(function(encoding)
+            return vim.tbl_contains(encoding, 'Hex')
+        end)
+        :map(function(encoding)
+            return vim.fn.trim(encoding[#encoding], '0', 1)
+        end)
+        :next()
+    vim.print(hex_code)
+    vim.fn.setreg('+', hex_code)
 end)
 
 -- Remove ability to fallback to arrows
