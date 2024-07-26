@@ -27,7 +27,7 @@ return {
     },
     {
         '3rd/image.nvim',
-        enabled = vim.fn.has('mac') == 1,
+        enabled = false,
         config = function()
             ---@diagnostic disable-next-line: missing-fields
             require('image').setup({
