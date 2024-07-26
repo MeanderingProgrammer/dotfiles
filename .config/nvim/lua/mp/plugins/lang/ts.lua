@@ -30,7 +30,7 @@ return {
 
             -- Due to prettierd not picking up changes
             -- https://github.com/fsouza/prettierd/issues/719
-            vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+            vim.api.nvim_create_autocmd('BufWritePost', {
                 group = vim.api.nvim_create_augroup('RestartPrettierd', { clear = true }),
                 pattern = '*prettier*',
                 callback = function()

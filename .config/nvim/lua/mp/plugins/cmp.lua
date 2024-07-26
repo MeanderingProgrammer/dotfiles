@@ -27,6 +27,7 @@ return {
             mapping = cmp.mapping.preset.insert({
                 ['<cr>'] = cmp.mapping.confirm({ select = true }),
                 ['<C-space>'] = cmp.mapping.complete(),
+                ['<C-e>'] = cmp.mapping.abort(),
                 ['<C-n>'] = cmp.mapping.select_next_item(),
                 ['<C-p>'] = cmp.mapping.select_prev_item(),
                 ['<C-d>'] = cmp.mapping.scroll_docs(4),

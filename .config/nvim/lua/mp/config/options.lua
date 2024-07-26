@@ -59,3 +59,11 @@ vim.opt.clipboard = 'unnamedplus'
 for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
     vim.g['loaded_' .. provider .. '_provider'] = 0
 end
+
+-- Disable comment continuation, needs to be autocmd to override ftplugin
+vim.api.nvim_create_autocmd('BufEnter', {
+    group = vim.api.nvim_create_augroup('CommentOpt', { clear = true }),
+    callback = function()
+        vim.opt.formatoptions:remove({ 'r', 'o' })
+    end,
+})
