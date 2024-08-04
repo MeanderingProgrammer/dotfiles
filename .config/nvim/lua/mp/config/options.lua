@@ -13,6 +13,7 @@ vim.opt.cursorline = true
 -- Line number settings
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.statuscolumn = '%s%=%{v:relnum?v:relnum:v:lnum} '
 
 -- Mode is already in status line plugin
 vim.opt.showmode = false
