@@ -40,7 +40,7 @@ return {
         end,
     },
     {
-        'MeanderingProgrammer/markdown.nvim',
+        'MeanderingProgrammer/render-markdown.nvim',
         dev = true,
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
         config = function()
