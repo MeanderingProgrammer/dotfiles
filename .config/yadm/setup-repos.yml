@@ -26,9 +26,9 @@
       - debug-it
       - harpoon-core.nvim
       - learning
-      - markdown.nvim
       - pass-yank
       - py-requirements.nvim
+      - render-markdown.nvim
       - resume
       - small-apps
 
