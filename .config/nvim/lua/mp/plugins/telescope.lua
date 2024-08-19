@@ -37,9 +37,9 @@ return {
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
         local builtin = require('telescope.builtin')
-        map('<leader><leader>', builtin.buffers, 'Find Existing Buffers')
+        map('<leader><leader>', builtin.find_files, 'Find Files')
         map('<leader>?', builtin.oldfiles, 'Find Recently Opened Files')
-        map('<leader>tf', builtin.find_files, 'Find Files')
+        map('<leader>tb', builtin.buffers, 'Find Existing Buffers')
         map('<leader>tg', builtin.git_files, 'Git Files')
         map('<leader>ts', builtin.live_grep, 'Grep Files')
         map('<leader>tu', '<cmd>Telescope undo<cr>', 'Undo Tree')
