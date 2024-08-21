@@ -44,7 +44,10 @@ return {
         dev = true,
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
         config = function()
-            require('render-markdown').setup({})
+            vim.treesitter.language.register('markdown', 'gitcommit')
+            require('render-markdown').setup({
+                file_types = { 'markdown', 'gitcommit' },
+            })
         end,
     },
 }
