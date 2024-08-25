@@ -1,33 +1,31 @@
 # ---- Environment Specific ---- #
 
 system_type=$(uname -s)
-services=()
-if [[ "${system_type}" == "Darwin" ]]; then
-    # Setup Homebrew
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    # Add services only if we're not running in TMUX
-    # This speeds up starting shells as brew services call takes ~1 second
-    if [[ -z $TMUX ]]; then
+
+if [[ -z $HOMEBREW_PREFIX ]]; then
+    services=()
+    if [[ "${system_type}" == "Darwin" ]]; then
+        brew_path="/opt/homebrew/bin/brew"
+        # Add services
         services+=("ollama")
+    elif [[ "${system_type}" == "Linux" ]]; then
+        brew_path="/home/linuxbrew/.linuxbrew/bin/brew"
+        # Building python with asdf: https://github.com/pyenv/pyenv/pull/2906
+        export PYTHON_BUILD_USE_HOMEBREW=1
+    else
+        echo "Unhandled system type ${system_type}, stopping setup"
+        return
     fi
-elif [[ "${system_type}" == "Linux" ]]; then
     # Setup Homebrew
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    # Building python with asdf: https://github.com/pyenv/pyenv/pull/2906
-    export PYTHON_BUILD_USE_HOMEBREW=1
-else
-    echo "Unhandled system type ${system_type}, stopping setup"
-    return
+    [[ -x $brew_path ]] && eval "$($brew_path shellenv)"
+    # Start Homebrew Services
+    for service in "${services[@]}"; do
+        is_running=$(brew services list | grep "$service.*started")
+        if [[ -z "$is_running" ]]; then
+            brew services start $service
+        fi
+    done
 fi
-
-# ---- Start Homebrew Services ---- #
-
-for service in "${services[@]}"; do
-    is_running=$(brew services list | grep "$service.*started")
-    if [[ -z "$is_running" ]]; then
-        brew services start $service
-    fi
-done
 
 # ---- Language Home Cleanup ---- #
 
@@ -52,7 +50,7 @@ export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
 # ASDF
 export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
 export ASDF_FORCE_PREPEND="yes"
-asdf_src="$(brew --prefix asdf)/libexec/asdf.sh"
+asdf_src="${HOMEBREW_PREFIX}/opt/asdf/libexec/asdf.sh"
 [[ -f $asdf_src ]] && source "${asdf_src}"
 
 # Java
@@ -68,7 +66,7 @@ c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
 # Lua
-eval $(luarocks path --bin)
+[[ -x "$(command -v luarocks)" ]] && eval $(luarocks path --bin)
 
 # ---- Software Home Cleanup ---- #
 
@@ -100,7 +98,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 [[ -z $SSH_AUTH_SOCK ]] && eval "$(ssh-agent -s)"
 
 # fzf
-eval $(fzf --zsh)
+[[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
 
 # ---- PATH ---- #
 
@@ -124,7 +122,7 @@ zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 
 # Add completion directories
 FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
-FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
+[[ -x "$(command -v rustc)" ]] && FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 
 # man zshcompsys
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
@@ -134,13 +132,15 @@ completions_home="${XDG_DATA_HOME}/completions"
 [[ ! -d $completions_home ]] && mkdir -p $completions_home
 
 register_click_completion() {
-    completion_file="${completions_home}/${1}-complete.zsh"
-    # Only re-generate completions outside of TMUX
-    if [[ ! -f $completion_file || -z $TMUX ]]; then
-        click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-        eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+    if [[ -x "$(command -v python)" ]]; then
+        completion_file="${completions_home}/${1}-complete.zsh"
+        # Only re-generate completions outside of TMUX
+        if [[ ! -f $completion_file || -z $TMUX ]]; then
+            click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+            eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+        fi
+        source "${completion_file}"
     fi
-    source "${completion_file}"
 }
 
 # Add click scripts
@@ -150,13 +150,13 @@ register_click_completion "llm"
 register_click_completion "pr"
 
 # ---- Plugins ---- #
-zsh_suggest="zsh-autosuggestions"
-zsh_suggest_init="$HOMEBREW_PREFIX/share/$zsh_suggest/$zsh_suggest.zsh"
-[[ -f $zsh_suggest_init ]] && source "${zsh_suggest_init}"
+load_zsh_plugin() {
+    plugin_init="$HOMEBREW_PREFIX/share/${1}/${1}.zsh"
+    [[ -f $plugin_init ]] && source "${plugin_init}"
+}
 
-zsh_highlight="zsh-syntax-highlighting"
-zsh_highlight_init="$HOMEBREW_PREFIX/share/$zsh_highlight/$zsh_highlight.zsh"
-[[ -f $zsh_highlight_init ]] && source "${zsh_highlight_init}"
+load_zsh_plugin "zsh-autosuggestions"
+load_zsh_plugin "zsh-syntax-highlighting"
 
 # ---- Editor with Aliases ---- #
 

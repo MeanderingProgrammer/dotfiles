@@ -3,14 +3,15 @@
 bootstrap_dir=$(dirname $0)
 
 bootstrap_deps() {
-    brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
-    brew pin tmux
-    brew update
-    brew upgrade
+    if [[ -x "$(command -v brew)" ]]; then
+        brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
+        brew pin tmux
+        brew update
+        brew upgrade
+    fi
 
-    system_type=$(uname -s)
-    wsl_sys32_path="/mnt/c/Windows/System32"
-    if [[ "${system_type}" == "Linux" ]]; then
+    if [[ "$(uname -s)" == "Linux" && "$(uname -o)" != "Android" ]]; then
+        wsl_sys32_path="/mnt/c/Windows/System32"
         if [[ ! -d $wsl_sys32_path ]]; then
             source "${bootstrap_dir}/wezterm.sh"
             source "${bootstrap_dir}/fonts.sh"
@@ -21,6 +22,9 @@ bootstrap_deps() {
 }
 
 bootstrap_asdf_tools() {
+    if [[ ! -x "$(command -v asdf)" ]]; then
+        return
+    fi
     while read -r line; do
         plugin=$(echo "${line}" | cut -d' ' -f1)
         asdf plugin add "${plugin}"
@@ -29,6 +33,10 @@ bootstrap_asdf_tools() {
 }
 
 bootstrap_libraries() {
+    if [[ ! -x "$(command -v asdf)" ]]; then
+        return
+    fi
+
     bootstrap_python() {
         pip install --upgrade pip
         pip install -r ~/.config/lang/python/requirements.txt
@@ -60,7 +68,9 @@ bootstrap_libraries() {
 }
 
 bootstrap_repos() {
-    ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
+    if [[ -x "$(command -v ansible-playbook)" ]]; then
+        ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
+    fi
 }
 
 if [[ "${#}" -eq 0 ]]; then

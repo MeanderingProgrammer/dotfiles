@@ -1,3 +1,8 @@
+# ---- Skip if tmux is not installed ---- #
+if [[ ! -x "$(command -v tmux)" ]]; then
+    return
+fi
+
 # ---- Skip if some terminal is already attached ---- #
 attached_sessions=$(tmux ls 2> /dev/null | grep attached)
 if [[ ${#attached_sessions} != 0 ]]; then
