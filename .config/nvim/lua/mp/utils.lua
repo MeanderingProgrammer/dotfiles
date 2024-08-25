@@ -1,5 +1,8 @@
 local M = {}
 
+---@type boolean
+M.is_termux = vim.uv.os_uname().release:find('android') ~= nil
+
 ---@param file string
 ---@return string
 function M.lint_config(file)

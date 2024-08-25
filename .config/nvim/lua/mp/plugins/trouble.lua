@@ -1,5 +1,6 @@
 return {
     'folke/trouble.nvim',
+    enabled = not require('mp.utils').is_termux,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         local mode_config = {
