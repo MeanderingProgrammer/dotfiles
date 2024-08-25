@@ -4,6 +4,7 @@ return {
     config = function()
         local hidden_files = { '.DS_Store' }
         vim.list_extend(hidden_files, require('mp.utils').hidden_directories())
+        local padding = require('mp.utils').is_termux and 2 or 8
 
         local oil = require('oil')
         oil.setup({
@@ -21,7 +22,7 @@ return {
                     return vim.tbl_contains(hidden_files, name)
                 end,
             },
-            float = { padding = 10 },
+            float = { padding = padding },
         })
 
         vim.keymap.set('n', '<leader>o', oil.toggle_float, { desc = 'Oil Toggle' })
