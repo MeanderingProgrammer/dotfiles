@@ -4,7 +4,7 @@ return {
     config = function()
         local hidden_files = { '.DS_Store' }
         vim.list_extend(hidden_files, require('mp.utils').hidden_directories())
-        local padding = require('mp.utils').is_termux and 2 or 8
+        local padding = require('mp.utils').is_android and 2 or 8
 
         local oil = require('oil')
         oil.setup({

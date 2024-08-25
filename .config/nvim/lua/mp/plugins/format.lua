@@ -1,6 +1,6 @@
 return {
     'stevearc/conform.nvim',
-    enabled = not require('mp.utils').is_termux,
+    enabled = not require('mp.utils').is_android,
     dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
     opts = {
         formatters_by_ft = {},

@@ -1,6 +1,6 @@
 return {
     'neovim/nvim-lspconfig',
-    enabled = not require('mp.utils').is_termux,
+    enabled = not require('mp.utils').is_android,
     dependencies = {
         'nvim-telescope/telescope.nvim',
         'hrsh7th/cmp-nvim-lsp',

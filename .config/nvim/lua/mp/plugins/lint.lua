@@ -1,6 +1,6 @@
 return {
     'mfussenegger/nvim-lint',
-    enabled = not require('mp.utils').is_termux,
+    enabled = not require('mp.utils').is_android,
     dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
     opts = {
         linters_by_ft = {},

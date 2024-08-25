@@ -1,7 +1,8 @@
+---@class lua.mp.Utils
 local M = {}
 
 ---@type boolean
-M.is_termux = vim.uv.os_uname().release:find('android') ~= nil
+M.is_android = vim.uv.os_uname().release:find('android') ~= nil
 
 ---@param file string
 ---@return string
