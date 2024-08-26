@@ -132,15 +132,16 @@ completions_home="${XDG_DATA_HOME}/completions"
 [[ ! -d $completions_home ]] && mkdir -p $completions_home
 
 register_click_completion() {
-    if [[ -x "$(command -v python)" ]]; then
-        completion_file="${completions_home}/${1}-complete.zsh"
-        # Only re-generate completions outside of TMUX
-        if [[ ! -f $completion_file || -z $TMUX ]]; then
-            click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-            eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
-        fi
-        source "${completion_file}"
+    if [[ ! -x "$(command -v python)" ]]; then
+        return
     fi
+    completion_file="${completions_home}/${1}-complete.zsh"
+    # Only re-generate completions outside of TMUX
+    if [[ ! -f $completion_file || -z $TMUX ]]; then
+        click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+        eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+    fi
+    source "${completion_file}"
 }
 
 # Add click scripts

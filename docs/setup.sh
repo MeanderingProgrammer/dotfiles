@@ -6,12 +6,35 @@ if [[ "${#}" -ne 1 ]]; then
 fi
 
 system_type=$(uname -s)
-echo "System type: ${system_type}"
+system_os=$(uname -o)
+echo "System: ${system_type}-${system_os}"
 
 install_deps() {
     echo "Installing dependencies"
     if [[ "${system_type}" == "Darwin" ]]; then
         echo "  None"
+    elif [[ "${system_os}" == "Android" ]]; then
+        echo "  Starting"
+        pkg install --yes \
+          bat \
+          clang \
+          curl \
+          fd \
+          git \
+          git-delta \
+          golang \
+          jq \
+          just \
+          lazygit \
+          make \
+          neovim \
+          nodejs \
+          python \
+          ripgrep \
+          rust \
+          wget \
+          yadm \
+          zsh
     elif [[ "${system_type}" == "Linux" ]]; then
         echo "  Starting"
         sudo apt --yes install \
@@ -37,7 +60,8 @@ install_deps() {
           wget \
           wl-clipboard \
           xz-utils \
-          zlib1g-dev
+          zlib1g-dev \
+          zsh
     else
         echo "  Error: unhandled system type"
         exit 1
@@ -45,17 +69,14 @@ install_deps() {
 }
 
 change_shell() {
-    echo "Changing shell to Zsh"
+    echo "Changing shell to zsh"
     shell_type=$(basename "$SHELL")
     if [[ "${shell_type}" == "zsh" ]]; then
-        echo "  Already using zsh"
+        echo "  Skipping: already done"
     elif [[ "${shell_type}" == "bash" ]]; then
         if [[ "${system_type}" == "Linux" ]]; then
-            echo "  Installing"
-            sudo apt --yes install zsh
-            echo "  Changing"
             chsh -s $(which zsh)
-            echo "  SUCCESS RESTART TERMINAL"
+            echo "  Success: restart terminal"
         else
             echo "  Error: unhandled system type"
             exit 1
@@ -68,7 +89,11 @@ change_shell() {
 
 evaluate_homebrew() {
     echo "Evaluating homebrew"
-    if [[ -z $(command -v brew) ]]; then
+    if [[ -x "$(command -v brew)" ]]; then
+        echo "  Skipping: already done"
+    elif [[ "${system_os}" == "Android" ]]; then
+        echo "  Skipping: android"
+    else
         if [[ "${system_type}" == "Darwin" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         elif [[ "${system_type}" == "Linux" ]]; then
@@ -77,19 +102,19 @@ evaluate_homebrew() {
             echo "  Error: unhandled system type"
             exit 1
         fi
-        echo "  Done"
-    else
-        echo "  Already evaluated"
+        echo "  Success"
     fi
 }
 
 install_homebrew() {
     echo "Installing homebrew"
-    if [[ -z $(command -v brew) ]]; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo "  Done"
+    if [[ -x "$(command -v brew)" ]]; then
+        echo "  Skipping: already done"
+    elif [[ "${system_os}" == "Android" ]]; then
+        echo "  Skipping: android"
     else
-        echo "  Already installed"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo "  Success"
     fi
     evaluate_homebrew
 }
@@ -97,50 +122,48 @@ install_homebrew() {
 brew_install() {
     evaluate_homebrew
     echo "Installing ${1} with homebrew"
-    brew list ${1}
-    # $? is a special value that stores the exit status of the last executed command
-    if [[ $? == 0 ]]; then
-        echo "  Already installed"
+    if [[ "${system_os}" == "Android" ]]; then
+        echo "  Skipping: android"
     else
         brew install ${1}
-        echo "  Done"
+        echo "  Success"
     fi
 }
 
-known_hosts_file="$HOME/.ssh/known_hosts"
+known_hosts="$HOME/.ssh/known_hosts"
 
 initialize_known_hosts() {
-    echo "Creating empty file: ${known_hosts_file}"
-    if [[ -f $known_hosts_file ]]; then
-        echo "  Already exists"
+    echo "Creating empty file: ${known_hosts}"
+    if [[ -f $known_hosts ]]; then
+        echo "  Skipping: already done"
     else
-        ssh_directory=$(dirname ${known_hosts_file})
+        ssh_directory=$(dirname ${known_hosts})
         mkdir -p ${ssh_directory}
-        touch ${known_hosts_file}
-        echo "  Done"
+        touch ${known_hosts}
+        echo "  Success"
     fi
 }
 
 setup_ssh() {
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    echo "Adding ${1} hosts to: ${known_hosts_file}"
-    hosts=$(cat ${known_hosts_file} | grep ${1})
+    echo "Adding ${1} hosts to: ${known_hosts}"
+    hosts=$(cat ${known_hosts} | grep ${1})
     if [[ -z "${hosts}" ]]; then
-        ssh-keyscan ${1} >> ${known_hosts_file}
-        echo "  Done"
+        ssh-keyscan ${1} >> ${known_hosts}
+        echo "  Success"
     else
-        echo "  Already added"
+        echo "  Skipping: already done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
     ssh_file="$HOME/.ssh/${2}"
     echo "Generating SSH key: ${ssh_file}"
     if [[ -f $ssh_file ]]; then
-        echo "  Already exists"
+        echo "  Skipping: already done"
     else
         ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
-        echo "  Done"
+        echo "  Success"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
@@ -174,17 +197,17 @@ install_yadm() {
     echo "Cloning dotfiles repo"
     yadm_directory="$HOME/.config/yadm"
     if [[ -d $yadm_directory ]]; then
-        echo "  Already cloned"
+        echo "  Skipping: already done"
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
-        echo "  Done"
+        echo "  Success"
     fi
 }
 
 cleanup_script() {
     echo "Deleting setup.sh"
     rm -rf "setup.sh"
-    echo "  Done"
+    echo "  Success"
 }
 
 case ${1} in
