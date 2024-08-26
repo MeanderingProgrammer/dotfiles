@@ -12,7 +12,7 @@ return {
     config = function(_, opts)
         -- Remove unsupported android language servers
         if require('mp.utils').is_android then
-            local supported_servers = { 'rust_analyzer' }
+            local supported_servers = { 'bashls', 'gopls', 'pyright' }
             for server_name in pairs(opts.servers) do
                 if not vim.tbl_contains(supported_servers, server_name) then
                     opts.servers[server_name] = nil
