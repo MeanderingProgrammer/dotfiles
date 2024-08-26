@@ -10,7 +10,10 @@ bootstrap_deps() {
         brew upgrade
     fi
 
-    if [[ "$(uname -s)" == "Linux" && "$(uname -o)" != "Android" ]]; then
+    if [[ "$(uname -o)" == "Android" ]]; then
+        pkg update --yes
+        pkg upgrade --yes
+    elif [[ "$(uname -s)" == "Linux" ]]; then
         wsl_sys32_path="/mnt/c/Windows/System32"
         if [[ ! -d $wsl_sys32_path ]]; then
             source "${bootstrap_dir}/wezterm.sh"
