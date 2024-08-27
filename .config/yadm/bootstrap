@@ -36,21 +36,26 @@ bootstrap_asdf_tools() {
 }
 
 bootstrap_libraries() {
-    if [[ ! -x "$(command -v asdf)" ]]; then
-        return
-    fi
-
     bootstrap_python() {
+        if [[ ! -x "$(command -v pip)" ]]; then
+            return
+        fi
         pip install --upgrade pip
         pip install -r ~/.config/lang/python/requirements.txt
     }
 
     bootstrap_rust() {
+        if [[ ! -x "$(command -v cargo)" ]]; then
+            return
+        fi
         cargo install aoc-cli
-        asdf reshim rust
+        [[ -x "$(command -v asdf)" ]] && asdf reshim rust
     }
 
     bootstrap_node() {
+        if [[ ! -x "$(command -v npm)" ]]; then
+            return
+        fi
         npm install -g npm
         npm install -g pnpm
         npm install -g yarn
@@ -58,6 +63,9 @@ bootstrap_libraries() {
     }
 
     bootstrap_ocaml() {
+        if [[ ! -x "$(command -v opam)" ]]; then
+            return
+        fi
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         opam init --no
         opam update
@@ -71,25 +79,42 @@ bootstrap_libraries() {
 }
 
 bootstrap_repos() {
-    if [[ -x "$(command -v ansible-playbook)" ]]; then
-        ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
+    if [[ ! -x "$(command -v ansible-playbook)" ]]; then
+        return
     fi
+    ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
 }
 
-if [[ "${#}" -eq 0 ]]; then
-    bootstrap_deps
-    bootstrap_asdf_tools
-    bootstrap_libraries
-    bootstrap_repos
-elif [[ "${#}" -eq 1 ]]; then
-    if [[ "${1}" == "deps" ]]; then
+case "${#}" in
+    0)
         bootstrap_deps
-    else
-        echo "Unknown command: ${1}"
-        echo "Commands: deps"
+        bootstrap_asdf_tools
+        bootstrap_libraries
+        bootstrap_repos
+        ;;
+    1)
+        case ${1} in
+            "deps")
+                bootstrap_deps
+                ;;
+            "asdf")
+                bootstrap_asdf_tools
+                ;;
+            "libs")
+                bootstrap_libraries
+                ;;
+            "repos")
+                bootstrap_repos
+                ;;
+            *)
+                echo "Unknown command: ${1}"
+                echo "Commands: deps, asdf, libs, repos"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        echo "Usage: <command>?"
         exit 1
-    fi
-else
-    echo "Usage: <command>?"
-    exit 1
-fi
+        ;;
+esac

@@ -211,27 +211,27 @@ cleanup_script() {
 }
 
 case ${1} in
-  "deps")
-    install_deps
-    ;;
-  "shell")
-    change_shell
-    ;; 
-  "brew")
-    install_homebrew
-    ;;
-  "git")
-    install_git
-    ;;
-  "yadm")
-    install_yadm
-    ;;
-  "clean")
-    cleanup_script
-    ;;
-  *)
-    echo "Unknown command: ${1}"
-    echo "Commands: deps, shell, brew, git, yadm, clean"
-    exit 1
-    ;;
+    "deps")
+        install_deps
+        ;;
+    "shell")
+        change_shell
+        ;;
+    "brew")
+        install_homebrew
+        ;;
+    "git")
+        install_git
+        ;;
+    "yadm")
+        install_yadm
+        ;;
+    "clean")
+        cleanup_script
+        ;;
+    *)
+        echo "Unknown command: ${1}"
+        echo "Commands: deps, shell, brew, git, yadm, clean"
+        exit 1
+        ;;
 esac
