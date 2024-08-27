@@ -10,16 +10,6 @@ return {
         servers = {},
     },
     config = function(_, opts)
-        -- Remove unsupported android language servers
-        if require('mp.utils').is_android then
-            local supported_servers = { 'bashls', 'gopls', 'pyright' }
-            for server_name in pairs(opts.servers) do
-                if not vim.tbl_contains(supported_servers, server_name) then
-                    opts.servers[server_name] = nil
-                end
-            end
-        end
-
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
             desc = 'LSP actions',
@@ -61,9 +51,18 @@ return {
             end,
         })
 
+        -- Remove unsupported android language servers
+        if require('mp.utils').is_android then
+            local supported_servers = { 'bashls', 'gopls', 'pyright' }
+            for server_name in pairs(opts.servers) do
+                if not vim.tbl_contains(supported_servers, server_name) then
+                    opts.servers[server_name] = nil
+                end
+            end
+        end
+
         local capabilities = vim.tbl_deep_extend(
             'force',
-            {},
             vim.lsp.protocol.make_client_capabilities(),
             require('cmp_nvim_lsp').default_capabilities()
         )

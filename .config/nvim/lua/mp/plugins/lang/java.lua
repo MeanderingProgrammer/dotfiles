@@ -37,11 +37,10 @@ return {
 
                 jdtls.extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 
-                local ok_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
                 local capabilities = vim.tbl_deep_extend(
                     'force',
                     vim.lsp.protocol.make_client_capabilities(),
-                    ok_cmp and cmp_lsp.default_capabilities() or {}
+                    require('cmp_nvim_lsp').default_capabilities()
                 )
 
                 -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
