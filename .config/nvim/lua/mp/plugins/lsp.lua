@@ -51,13 +51,14 @@ return {
             end,
         })
 
-        -- Remove unsupported android language servers
-        if require('mp.utils').is_android then
-            local supported_servers = { 'bashls', 'gopls', 'pyright' }
-            for server_name in pairs(opts.servers) do
-                if not vim.tbl_contains(supported_servers, server_name) then
-                    opts.servers[server_name] = nil
-                end
+        local mason_servers, system_servers = {}, {}
+        for name, server in pairs(opts.servers) do
+            if not require('mp.utils').is_android then
+                mason_servers[name] = server
+            elseif vim.tbl_contains({ 'bashls', 'gopls', 'pyright' }, name) then
+                mason_servers[name] = server
+            elseif vim.tbl_contains({ 'lua_ls', 'rust_analyzer' }, name) then
+                system_servers[name] = server
             end
         end
 
@@ -67,19 +68,28 @@ return {
             require('cmp_nvim_lsp').default_capabilities()
         )
 
+        ---@param servers table<string, any>
+        ---@param name string
+        local function setup_server(servers, name)
+            -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+            local server = servers[name]
+            if server then
+                server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+                require('lspconfig')[name].setup(server)
+            end
+        end
+
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = vim.tbl_keys(opts.servers),
+            ensure_installed = vim.tbl_keys(mason_servers),
             handlers = {
-                function(server_name)
-                    -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-                    local server = opts.servers[server_name]
-                    if server then
-                        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                        require('lspconfig')[server_name].setup(server)
-                    end
+                function(name)
+                    setup_server(mason_servers, name)
                 end,
             },
         })
+        for name in pairs(system_servers) do
+            setup_server(system_servers, name)
+        end
     end,
 }
