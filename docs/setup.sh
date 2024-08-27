@@ -12,31 +12,36 @@ echo "System: ${system_type}-${system_os}"
 install_deps() {
     echo "Installing dependencies"
     if [[ "${system_type}" == "Darwin" ]]; then
-        echo "  None"
+        echo "  Skipping: none"
     elif [[ "${system_os}" == "Android" ]]; then
-        echo "  Starting"
         pkg install --yes \
           bat \
           clang \
+          cmake \
           curl \
           fd \
           git \
           git-delta \
           golang \
+          gradle \
           jq \
           just \
           lazygit \
+          lua-language-server \
           make \
           neovim \
           nodejs \
+          openjdk \
           python \
           ripgrep \
           rust \
+          rust-analyzer \
+          stylua \
           wget \
           yadm \
           zsh
+        echo "  Success"
     elif [[ "${system_type}" == "Linux" ]]; then
-        echo "  Starting"
         sudo apt --yes install \
           bubblewrap \
           build-essential \
@@ -62,6 +67,7 @@ install_deps() {
           xz-utils \
           zlib1g-dev \
           zsh
+        echo "  Success"
     else
         echo "  Error: unhandled system type"
         exit 1
