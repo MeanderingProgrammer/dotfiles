@@ -66,6 +66,7 @@ bootstrap_libraries() {
         if [[ ! -x "$(command -v opam)" ]]; then
             return
         fi
+        [[ -x "$(command -v asdf)" ]] && asdf reshim opam
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         opam init --no
         opam update
