@@ -1,5 +1,4 @@
 # Programming Related
-brew "ansible"
 brew "asdf"
 brew "bat"
 brew "bison"

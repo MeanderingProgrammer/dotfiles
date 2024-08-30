@@ -80,10 +80,10 @@ bootstrap_libraries() {
 }
 
 bootstrap_repos() {
-    if [[ ! -x "$(command -v ansible-playbook)" ]]; then
+    if [[ ! -x "$(command -v python)" ]]; then
         return
     fi
-    ansible-playbook -vv "${bootstrap_dir}/setup-repos.yml"
+    python "${bootstrap_dir}/setup-repos.py"
 }
 
 case "${#}" in
