@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -10,10 +12,13 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.eslint = {}
-            opts.servers.svelte = {}
-            opts.servers.tailwindcss = {}
-            opts.servers.tsserver = {
+            if utils.is_android then
+                return
+            end
+            opts.mason.eslint = {}
+            opts.mason.svelte = {}
+            opts.mason.tailwindcss = {}
+            opts.mason.tsserver = {
                 settings = {
                     implicitProjectConfiguration = {
                         checkJs = true,
@@ -38,11 +43,14 @@ return {
                 end,
             })
         end,
-        opts = {
-            formatters = {
-                javascript = { 'prettierd' },
-                typescript = { 'prettierd' },
-            },
-        },
+        opts = function(_, opts)
+            if utils.is_android then
+                return
+            end
+            local formatters = { 'prettierd' }
+            vim.list_extend(opts.ensure_installed, formatters)
+            opts.formatters.javascript = formatters
+            opts.formatters.typescript = formatters
+        end,
     },
 }

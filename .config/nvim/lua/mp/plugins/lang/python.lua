@@ -9,7 +9,7 @@ return {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
             -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/pyright.lua
-            opts.servers.pyright = {
+            opts.mason.pyright = {
                 root_dir = function(fname)
                     local root_files = {
                         'pyproject.toml',
@@ -24,11 +24,11 @@ return {
     },
     {
         'williamboman/mason.nvim',
-        opts = {
-            formatters = {
-                python = { 'isort', 'black' },
-            },
-        },
+        opts = function(_, opts)
+            local formatters = { 'isort', 'black' }
+            vim.list_extend(opts.ensure_installed, formatters)
+            opts.formatters.python = formatters
+        end,
     },
     {
         'MeanderingProgrammer/py-requirements.nvim',

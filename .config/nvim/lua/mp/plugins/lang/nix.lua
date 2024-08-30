@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -8,8 +10,8 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if vim.fn.has('mac') == 1 then
-                opts.servers.nil_ls = {}
+            if utils.is_mac then
+                opts.mason.nil_ls = {}
             end
         end,
     },

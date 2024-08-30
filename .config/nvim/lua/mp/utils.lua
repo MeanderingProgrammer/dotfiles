@@ -2,6 +2,9 @@
 local M = {}
 
 ---@type boolean
+M.is_mac = vim.fn.has('mac') == 1
+
+---@type boolean
 M.is_android = vim.uv.os_uname().release:find('android') ~= nil
 
 ---@param file string

@@ -1,5 +1,3 @@
-local utils = require('mp.utils')
-
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -9,7 +7,8 @@ return {
         'williamboman/mason-lspconfig.nvim',
     },
     opts = {
-        servers = {},
+        mason = {},
+        system = {},
     },
     config = function(_, opts)
         vim.api.nvim_create_autocmd('LspAttach', {
@@ -53,17 +52,6 @@ return {
             end,
         })
 
-        local mason_servers, system_servers = {}, {}
-        for name, server in pairs(opts.servers) do
-            if not utils.is_android then
-                mason_servers[name] = server
-            elseif vim.tbl_contains({ 'bashls', 'gopls', 'pyright' }, name) then
-                mason_servers[name] = server
-            elseif vim.tbl_contains({ 'lua_ls', 'rust_analyzer' }, name) then
-                system_servers[name] = server
-            end
-        end
-
         local capabilities = vim.tbl_deep_extend(
             'force',
             vim.lsp.protocol.make_client_capabilities(),
@@ -82,15 +70,15 @@ return {
         end
 
         require('mason-lspconfig').setup({
-            ensure_installed = vim.tbl_keys(mason_servers),
+            ensure_installed = vim.tbl_keys(opts.mason),
             handlers = {
                 function(name)
-                    setup_server(mason_servers, name)
+                    setup_server(opts.mason, name)
                 end,
             },
         })
-        for name in pairs(system_servers) do
-            setup_server(system_servers, name)
+        for name in pairs(opts.system) do
+            setup_server(opts.system, name)
         end
     end,
 }

@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -8,7 +10,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.rust_analyzer = {
+            (utils.is_android and opts.system or opts.mason).rust_analyzer = {
                 settings = {
                     ['rust-analyzer'] = {
                         check = { command = 'clippy' },

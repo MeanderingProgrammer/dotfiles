@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -8,16 +10,18 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.lua_ls = {}
+            (utils.is_android and opts.system or opts.mason).lua_ls = {}
         end,
     },
     {
         'williamboman/mason.nvim',
-        opts = {
-            formatters = {
-                lua = { 'stylua' },
-            },
-        },
+        opts = function(_, opts)
+            local formatters = { 'stylua' }
+            if not utils.is_android then
+                vim.list_extend(opts.ensure_installed, formatters)
+            end
+            opts.formatters.lua = formatters
+        end,
     },
     { 'Bilal2453/luvit-meta', lazy = true },
     {

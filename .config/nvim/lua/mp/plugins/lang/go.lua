@@ -8,15 +8,15 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.gopls = {}
+            opts.mason.gopls = {}
         end,
     },
     {
         'williamboman/mason.nvim',
-        opts = {
-            formatters = {
-                go = { 'goimports', 'gofumpt' },
-            },
-        },
+        opts = function(_, opts)
+            local formatters = { 'goimports', 'gofumpt' }
+            vim.list_extend(opts.ensure_installed, formatters)
+            opts.formatters.go = formatters
+        end,
     },
 }

@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -8,8 +10,11 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.clangd = {}
-            opts.servers.csharp_ls = {}
+            if utils.is_android then
+                return
+            end
+            opts.mason.clangd = {}
+            opts.mason.csharp_ls = {}
         end,
     },
 }

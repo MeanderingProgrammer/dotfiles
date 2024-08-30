@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -8,15 +10,21 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.ocamllsp = {}
+            if utils.is_android then
+                return
+            end
+            opts.mason.ocamllsp = {}
         end,
     },
     {
         'williamboman/mason.nvim',
-        opts = {
-            formatters = {
-                ocaml = { 'ocamlformat' },
-            },
-        },
+        opts = function(_, opts)
+            if utils.is_android then
+                return
+            end
+            local formatters = { 'ocamlformat' }
+            vim.list_extend(opts.ensure_installed, formatters)
+            opts.formatters.ocaml = formatters
+        end,
     },
 }

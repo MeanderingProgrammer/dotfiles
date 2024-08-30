@@ -10,7 +10,10 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.jdtls = false
+            if utils.is_android then
+                return
+            end
+            opts.mason.jdtls = false
         end,
     },
     {
