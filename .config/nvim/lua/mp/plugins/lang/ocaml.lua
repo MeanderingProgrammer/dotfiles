@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'ocaml' })
-        end,
+        opts = {
+            languages = { 'ocaml' },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -12,9 +12,9 @@ return {
         end,
     },
     {
-        'stevearc/conform.nvim',
+        'williamboman/mason.nvim',
         opts = {
-            formatters_by_ft = {
+            formatters = {
                 ocaml = { 'ocamlformat' },
             },
         },

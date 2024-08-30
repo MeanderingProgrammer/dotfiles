@@ -3,9 +3,9 @@ local utils = require('mp.utils')
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'markdown', 'markdown_inline' })
-        end,
+        opts = {
+            languages = { 'markdown', 'markdown_inline' },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -14,12 +14,12 @@ return {
         end,
     },
     {
-        'mfussenegger/nvim-lint',
+        'williamboman/mason.nvim',
         opts = {
-            linters_by_ft = {
+            linters = {
                 markdown = { 'markdownlint' },
             },
-            linter_override = {
+            linter_overrides = {
                 markdownlint = function(linter)
                     local config = utils.lint_config('markdownlint.yaml')
                     linter.args = { '--config', config }

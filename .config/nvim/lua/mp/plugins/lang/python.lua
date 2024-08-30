@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'python', 'requirements' })
-        end,
+        opts = {
+            languages = { 'python', 'requirements' },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -23,9 +23,9 @@ return {
         end,
     },
     {
-        'stevearc/conform.nvim',
+        'williamboman/mason.nvim',
         opts = {
-            formatters_by_ft = {
+            formatters = {
                 python = { 'isort', 'black' },
             },
         },

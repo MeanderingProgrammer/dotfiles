@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'bash' })
-        end,
+        opts = {
+            languages = { 'bash' },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -14,9 +14,9 @@ return {
         end,
     },
     {
-        'mfussenegger/nvim-lint',
+        'williamboman/mason.nvim',
         opts = {
-            linters_by_ft = {
+            linters = {
                 bash = { 'shellcheck' },
                 sh = { 'shellcheck' },
                 zsh = { 'shellcheck' },

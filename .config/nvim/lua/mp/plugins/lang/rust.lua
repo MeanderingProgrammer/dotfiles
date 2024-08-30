@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'rust', 'toml' })
-        end,
+        opts = {
+            languages = { 'rust', 'toml' },
+        },
     },
     {
         'neovim/nvim-lspconfig',

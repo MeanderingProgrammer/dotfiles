@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'jq', 'json', 'json5', 'jsonc' })
-        end,
+        opts = {
+            languages = { 'jq', 'json', 'json5', 'jsonc' },
+        },
     },
     {
         'neovim/nvim-lspconfig',

@@ -5,6 +5,7 @@ return {
         'nvim-treesitter/nvim-treesitter-context',
         'nvim-treesitter/nvim-treesitter-textobjects',
     },
+    opts_extend = { 'languages' },
     opts = {
         languages = {},
     },

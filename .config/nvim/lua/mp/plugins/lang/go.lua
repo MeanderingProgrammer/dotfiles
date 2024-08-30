@@ -1,10 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'go' })
-            vim.list_extend(opts.languages, { 'gomod', 'gosum', 'gowork' })
-        end,
+        opts = {
+            languages = { 'go', 'gomod', 'gosum', 'gowork' },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -13,9 +12,9 @@ return {
         end,
     },
     {
-        'stevearc/conform.nvim',
+        'williamboman/mason.nvim',
         opts = {
-            formatters_by_ft = {
+            formatters = {
                 go = { 'goimports', 'gofumpt' },
             },
         },

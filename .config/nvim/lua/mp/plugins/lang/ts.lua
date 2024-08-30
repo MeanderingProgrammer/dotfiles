@@ -23,7 +23,7 @@ return {
         end,
     },
     {
-        'stevearc/conform.nvim',
+        'williamboman/mason.nvim',
         init = function()
             -- Avoid running when project does not use prettier
             vim.env.PRETTIERD_LOCAL_PRETTIER_ONLY = 1
@@ -39,7 +39,7 @@ return {
             })
         end,
         opts = {
-            formatters_by_ft = {
+            formatters = {
                 javascript = { 'prettierd' },
                 typescript = { 'prettierd' },
             },

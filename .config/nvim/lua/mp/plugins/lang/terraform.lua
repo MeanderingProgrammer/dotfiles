@@ -1,9 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, { 'terraform' })
-        end,
+        opts = {
+            languages = { 'terraform' },
+        },
     },
     {
         'neovim/nvim-lspconfig',

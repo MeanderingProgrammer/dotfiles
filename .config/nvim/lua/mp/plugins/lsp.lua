@@ -53,8 +53,16 @@ return {
             end,
         })
 
-        local filtered = utils.filter_packages(opts.servers)
-        local mason_servers, system_servers = filtered.mason, filtered.system
+        local mason_servers, system_servers = {}, {}
+        for name, server in pairs(opts.servers) do
+            if not utils.is_android then
+                mason_servers[name] = server
+            elseif vim.tbl_contains({ 'bashls', 'gopls', 'pyright' }, name) then
+                mason_servers[name] = server
+            elseif vim.tbl_contains({ 'lua_ls', 'rust_analyzer' }, name) then
+                system_servers[name] = server
+            end
+        end
 
         local capabilities = vim.tbl_deep_extend(
             'force',
@@ -73,7 +81,6 @@ return {
             end
         end
 
-        require('mason').setup({})
         require('mason-lspconfig').setup({
             ensure_installed = vim.tbl_keys(mason_servers),
             handlers = {
