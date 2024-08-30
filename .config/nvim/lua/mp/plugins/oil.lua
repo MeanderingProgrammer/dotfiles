@@ -1,10 +1,12 @@
+local utils = require('mp.utils')
+
 return {
     'stevearc/oil.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         local hidden_files = { '.DS_Store' }
-        vim.list_extend(hidden_files, require('mp.utils').hidden_directories())
-        local padding = require('mp.utils').is_android and 2 or 8
+        vim.list_extend(hidden_files, utils.hidden_directories())
+        local padding = utils.is_android and 2 or 8
 
         local oil = require('oil')
         oil.setup({

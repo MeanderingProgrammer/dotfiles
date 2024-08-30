@@ -1,6 +1,8 @@
+local utils = require('mp.utils')
+
 return {
     'folke/trouble.nvim',
-    enabled = not require('mp.utils').is_android,
+    enabled = not utils.is_android,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
         local mode_config = {

@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -13,7 +15,7 @@ return {
     },
     {
         'mfussenegger/nvim-jdtls',
-        enabled = not require('mp.utils').is_android,
+        enabled = not utils.is_android,
         config = function()
             local root_files = { '.git', 'gradlew', 'build.gradle', 'mvnw', 'pom.xml' }
 

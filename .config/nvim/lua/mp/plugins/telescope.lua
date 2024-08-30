@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     'nvim-telescope/telescope.nvim',
     dependencies = {
@@ -7,7 +9,7 @@ return {
     },
     config = function()
         local find_command = { 'rg', '--files', '--hidden' }
-        for _, directory in ipairs(require('mp.utils').hidden_directories()) do
+        for _, directory in ipairs(utils.hidden_directories()) do
             vim.list_extend(find_command, { '-g', string.format('!**/%s/*', directory) })
         end
 

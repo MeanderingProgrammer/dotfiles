@@ -10,6 +10,23 @@ function M.lint_config(file)
     return vim.fn.stdpath('config') .. '/lint_configs/' .. file
 end
 
+---@generic T
+---@param values table<string, T>
+---@return { mason: table<string, T>, system: table<string, T> }
+function M.filter_packages(values)
+    local mason, system = {}, {}
+    for name, value in pairs(values) do
+        if not M.is_android then
+            mason[name] = value
+        elseif vim.tbl_contains({ 'bashls', 'go', 'gopls', 'markdown', 'pyright', 'python' }, name) then
+            mason[name] = value
+        elseif vim.tbl_contains({ 'lua', 'lua_ls', 'rust_analyzer' }, name) then
+            system[name] = value
+        end
+    end
+    return { mason = mason, system = system }
+end
+
 ---@param config table<string, string[]>
 ---@return string[]
 function M.flat_values(config)
@@ -22,13 +39,6 @@ function M.flat_values(config)
         end
     end
     return result
-end
-
----@return boolean
-function M.challenge_mode()
-    local challenge_directories = { 'leetcode' }
-    local directory = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
-    return vim.tbl_contains(challenge_directories, directory)
 end
 
 ---@return string[]

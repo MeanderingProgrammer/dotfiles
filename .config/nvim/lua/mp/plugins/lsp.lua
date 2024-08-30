@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -51,16 +53,8 @@ return {
             end,
         })
 
-        local mason_servers, system_servers = {}, {}
-        for name, server in pairs(opts.servers) do
-            if not require('mp.utils').is_android then
-                mason_servers[name] = server
-            elseif vim.tbl_contains({ 'bashls', 'gopls', 'pyright' }, name) then
-                mason_servers[name] = server
-            elseif vim.tbl_contains({ 'lua_ls', 'rust_analyzer' }, name) then
-                system_servers[name] = server
-            end
-        end
+        local filtered = utils.filter_packages(opts.servers)
+        local mason_servers, system_servers = filtered.mason, filtered.system
 
         local capabilities = vim.tbl_deep_extend(
             'force',
