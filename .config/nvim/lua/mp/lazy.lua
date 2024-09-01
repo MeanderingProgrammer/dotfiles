@@ -12,11 +12,9 @@ require('lazy').setup({
     },
     dev = {
         path = function(plugin)
-            local plugin_directory = '~/dev/repos/personal/'
-            if plugin.url:find('MeanderingProgrammer', 1, true) == nil then
-                plugin_directory = '~/dev/repos/open-source/nvim-plugins/'
-            end
-            return plugin_directory .. plugin.name
+            local my_plugin = plugin.url:find('MeanderingProgrammer', 1, true) ~= nil
+            local directory = my_plugin and 'personal' or 'open-source/nvim-plugins'
+            return string.format('~/dev/repos/%s/%s', directory, plugin.name)
         end,
     },
     change_detection = { notify = false },

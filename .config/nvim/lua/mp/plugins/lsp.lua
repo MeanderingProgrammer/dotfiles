@@ -32,7 +32,7 @@ return {
                 map('<leader><C-r>', vim.lsp.buf.rename, 'Rename')
                 map('<leader><C-h>', function()
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-                end, 'LSP Toggle Inlay Hints')
+                end, 'Toggle Inlay Hints')
                 map('<leader>ws', builtin.lsp_dynamic_workspace_symbols, 'Symbols')
                 map('<leader>wf', function()
                     vim.print(vim.lsp.buf.list_workspace_folders())

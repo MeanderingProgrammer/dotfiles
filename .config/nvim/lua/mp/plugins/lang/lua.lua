@@ -23,6 +23,15 @@ return {
             opts.formatters.lua = formatters
         end,
     },
+    {
+        'nvim-neotest/neotest',
+        dependencies = { 'nvim-neotest/neotest-plenary' },
+        opts = function(_, opts)
+            vim.list_extend(opts.adapters, {
+                require('neotest-plenary'),
+            })
+        end,
+    },
     { 'Bilal2453/luvit-meta', lazy = true },
     {
         'folke/lazydev.nvim',
