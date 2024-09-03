@@ -1,8 +1,6 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'yaml' },
-        },
+        opts = { languages = { 'yaml' } },
     },
 }

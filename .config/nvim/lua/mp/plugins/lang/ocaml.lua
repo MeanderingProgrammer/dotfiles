@@ -3,9 +3,7 @@ local utils = require('mp.utils')
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'ocaml' },
-        },
+        opts = { languages = { 'ocaml' } },
     },
     {
         'neovim/nvim-lspconfig',
@@ -22,9 +20,8 @@ return {
             if utils.is_android then
                 return
             end
-            local formatters = { 'ocamlformat' }
-            vim.list_extend(opts.ensure_installed, formatters)
-            opts.formatters.ocaml = formatters
+            vim.list_extend(opts.ensure_installed, { 'ocamlformat' })
+            opts.formatters.ocaml = { 'ocamlformat' }
         end,
     },
 }

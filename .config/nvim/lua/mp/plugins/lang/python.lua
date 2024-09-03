@@ -8,35 +8,20 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            -- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/pyright.lua
-            opts.mason.pyright = {
-                root_dir = function(fname)
-                    local root_files = {
-                        'pyproject.toml',
-                        'requirements.txt',
-                        'pyrightconfig.json',
-                        '.git',
-                    }
-                    return require('lspconfig').util.root_pattern(unpack(root_files))(fname)
-                end,
-            }
+            opts.mason.pyright = {}
         end,
     },
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            local formatters = { 'isort', 'black' }
-            vim.list_extend(opts.ensure_installed, formatters)
-            opts.formatters.python = formatters
+            vim.list_extend(opts.ensure_installed, { 'isort', 'black' })
+            opts.formatters.python = { 'isort', 'black' }
         end,
     },
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter',
-            'hrsh7th/nvim-cmp',
-        },
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp' },
         config = function()
             local requirements = require('py-requirements')
             requirements.setup({

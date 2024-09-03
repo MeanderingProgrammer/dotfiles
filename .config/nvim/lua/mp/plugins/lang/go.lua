@@ -14,9 +14,8 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            local formatters = { 'goimports', 'gofumpt' }
-            vim.list_extend(opts.ensure_installed, formatters)
-            opts.formatters.go = formatters
+            vim.list_extend(opts.ensure_installed, { 'goimports', 'gofumpt' })
+            opts.formatters.go = { 'goimports', 'gofumpt' }
         end,
     },
 }

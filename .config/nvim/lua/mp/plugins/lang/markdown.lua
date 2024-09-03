@@ -19,9 +19,8 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            local linters = { 'markdownlint' }
-            vim.list_extend(opts.ensure_installed, linters)
-            opts.linters.markdown = linters
+            vim.list_extend(opts.ensure_installed, { 'markdownlint' })
+            opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
                 local config = utils.lint_config('markdownlint.yaml')
                 linter.args = { '--config', config }

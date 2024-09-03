@@ -3,9 +3,7 @@ local utils = require('mp.utils')
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'latex' },
-        },
+        opts = { languages = { 'latex' } },
     },
     {
         'neovim/nvim-lspconfig',

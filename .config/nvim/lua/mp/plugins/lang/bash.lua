@@ -3,9 +3,7 @@ local utils = require('mp.utils')
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'bash' },
-        },
+        opts = { languages = { 'bash' } },
     },
     {
         'neovim/nvim-lspconfig',
@@ -21,11 +19,10 @@ return {
             if utils.is_android then
                 return
             end
-            local linters = { 'shellcheck' }
-            vim.list_extend(opts.ensure_installed, linters)
-            opts.linters.bash = linters
-            opts.linters.sh = linters
-            opts.linters.zsh = linters
+            vim.list_extend(opts.ensure_installed, { 'shellcheck' })
+            opts.linters.bash = { 'shellcheck' }
+            opts.linters.sh = { 'shellcheck' }
+            opts.linters.zsh = { 'shellcheck' }
         end,
     },
 }

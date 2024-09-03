@@ -16,11 +16,10 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            local formatters = { 'stylua' }
             if not utils.is_android then
-                vim.list_extend(opts.ensure_installed, formatters)
+                vim.list_extend(opts.ensure_installed, { 'stylua' })
             end
-            opts.formatters.lua = formatters
+            opts.formatters.lua = { 'stylua' }
         end,
     },
     {

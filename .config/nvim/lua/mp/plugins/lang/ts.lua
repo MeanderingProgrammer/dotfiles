@@ -47,10 +47,9 @@ return {
             if utils.is_android then
                 return
             end
-            local formatters = { 'prettierd' }
-            vim.list_extend(opts.ensure_installed, formatters)
-            opts.formatters.javascript = formatters
-            opts.formatters.typescript = formatters
+            vim.list_extend(opts.ensure_installed, { 'prettierd' })
+            opts.formatters.javascript = { 'prettierd' }
+            opts.formatters.typescript = { 'prettierd' }
         end,
     },
 }
