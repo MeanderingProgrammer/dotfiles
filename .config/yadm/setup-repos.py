@@ -5,7 +5,6 @@ from functools import cache
 from pathlib import Path
 
 import git
-from termcolor import colored
 
 
 @dataclass(frozen=True)
@@ -73,13 +72,16 @@ class Stats:
     failed: list[str] = field(default_factory=list)
 
     def summary(self) -> None:
-        print(colored(f"Successes: {len(self.success)}", "green"))
+        self.print(f"Successes: {len(self.success)}", 32)
         for name in self.success:
-            print(colored(f"  - {name}", "green"))
+            self.print(f"  - {name}", 32)
 
-        print(colored(f"Failures: {len(self.failed)}", "red"))
+        self.print(f"Failures: {len(self.failed)}", 31)
         for name in self.failed:
-            print(colored(f"  - {name}", "red"))
+            self.print(f"  - {name}", 31)
+
+    def print(self, text: str, color: int) -> None:
+        print(f"\033[{color}m{text}\033[0m")
 
 
 @dataclass(frozen=True)
