@@ -21,6 +21,10 @@ return {
         require('conform').setup({
             formatters_by_ft = opts.formatters,
             format_after_save = function(bufnr)
+                local ft = vim.bo[bufnr].filetype
+                if vim.tbl_contains({ 'json' }, ft) then
+                    return nil
+                end
                 local name = vim.api.nvim_buf_get_name(bufnr)
                 local disabled_name = name:find('/open-source/', 1, true)
                 if disabled_name ~= nil then
