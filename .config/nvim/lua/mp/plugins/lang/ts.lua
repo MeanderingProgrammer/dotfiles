@@ -18,7 +18,7 @@ return {
             opts.mason.eslint = {}
             opts.mason.svelte = {}
             opts.mason.tailwindcss = {}
-            opts.mason.tsserver = {
+            opts.mason.ts_ls = {
                 settings = {
                     implicitProjectConfiguration = {
                         checkJs = true,
