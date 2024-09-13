@@ -1,18 +1,21 @@
-local utils = require('mp.utils')
-
 return {
     'folke/trouble.nvim',
-    enabled = not utils.is_android,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-        local mode_config = {
-            focus = false,
-            win = { position = 'bottom', size = 15 },
-        }
         require('trouble').setup({
             modes = {
-                lsp = mode_config,
-                symbols = mode_config,
+                lsp = {
+                    focus = false,
+                    win = { position = 'bottom', size = 15 },
+                },
+                symbols = {
+                    focus = false,
+                    win = { position = 'bottom', size = 15 },
+                },
+                diagnostics = {
+                    focus = true,
+                    win = { type = 'float' },
+                },
             },
         })
 
