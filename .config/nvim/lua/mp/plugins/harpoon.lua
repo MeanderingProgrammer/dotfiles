@@ -1,10 +1,7 @@
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
     dev = true,
-    dependencies = {
-        'nvim-lua/plenary.nvim',
-        'nvim-telescope/telescope.nvim',
-    },
+    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function()
         require('harpoon-core').setup({ default_action = 'vs' })
         require('telescope').load_extension('harpoon-core')
