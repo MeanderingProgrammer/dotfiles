@@ -18,7 +18,11 @@ return {
         telescope.setup({
             defaults = {
                 mappings = {
-                    i = { ['<cr>'] = actions.select_drop },
+                    i = {
+                        ['<cr>'] = actions.select_drop,
+                        ['<tab>'] = actions.move_selection_next,
+                        ['<S-tab>'] = actions.move_selection_previous,
+                    },
                 },
             },
             pickers = {
