@@ -19,6 +19,7 @@ return {
             defaults = {
                 mappings = {
                     i = {
+                        ['<C-c>'] = actions.close,
                         ['<cr>'] = actions.select_drop,
                         ['<tab>'] = actions.move_selection_next,
                         ['<S-tab>'] = actions.move_selection_previous,
@@ -44,12 +45,13 @@ return {
         end
         local builtin = require('telescope.builtin')
         map('<leader><leader>', builtin.find_files, 'Find Files')
+        map('<leader>ts', builtin.live_grep, 'Grep Files')
+        map('<leader>td', builtin.diagnostics, 'Diagnostics')
+        map('<leader>tr', builtin.resume, 'Resume')
         map('<leader>?', builtin.oldfiles, 'Find Recently Opened Files')
         map('<leader>tb', builtin.buffers, 'Find Existing Buffers')
         map('<leader>tg', builtin.git_files, 'Git Files')
-        map('<leader>ts', builtin.live_grep, 'Grep Files')
         map('<leader>tu', '<cmd>Telescope undo<cr>', 'Undo Tree')
-        map('<leader>td', builtin.diagnostics, 'Diagnostics')
         map('<leader>tw', builtin.grep_string, 'Current Word')
         map('<leader>tt', builtin.help_tags, 'Help Tags')
         map('<leader>tk', builtin.keymaps, 'Keymaps')

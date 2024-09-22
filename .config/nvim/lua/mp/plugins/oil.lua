@@ -12,6 +12,7 @@ return {
         oil.setup({
             keymaps = {
                 -- Use telescope keymaps
+                ['<C-c>'] = 'actions.close',
                 ['<C-v>'] = 'actions.select_vsplit',
                 ['<C-x>'] = 'actions.select_split',
                 -- Disable navigation keymaps
