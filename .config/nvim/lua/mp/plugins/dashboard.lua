@@ -2,14 +2,21 @@ return {
     'MeanderingProgrammer/dashboard.nvim',
     dev = true,
     event = 'VimEnter',
-    dependencies = {
-        { 'MaximilianLloyd/ascii.nvim', dependencies = { 'MunifTanjim/nui.nvim' } },
-        { 'Shatur/neovim-session-manager' },
-    },
+    dependencies = { 'Shatur/neovim-session-manager' },
     config = function()
-        local manager = require('session_manager')
         require('dashboard').setup({
-            header = require('ascii').art.text.neovim.sharp,
+            header = {
+                [[                                                                       ]],
+                [[                                                                     ]],
+                [[       ████ ██████           █████      ██                     ]],
+                [[      ███████████             █████                             ]],
+                [[      █████████ ███████████████████ ███   ███████████   ]],
+                [[     █████████  ███    █████████████ █████ ██████████████   ]],
+                [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
+                [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
+                [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+                [[                                                                       ]],
+            },
             directories = {
                 '~/.config',
                 '~/.config/nvim',
@@ -25,7 +32,7 @@ return {
             },
             footer = { 'version', 'startuptime' },
             on_load = function()
-                manager.load_current_dir_session()
+                require('session_manager').load_current_dir_session()
             end,
         })
     end,
