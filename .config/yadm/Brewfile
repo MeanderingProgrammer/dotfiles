@@ -41,7 +41,7 @@ brew "pass"
 brew "pkg-config"
 brew "xz"
 
-# Code / Text Editors
+# Editors
 brew "neovim"
 brew "vim"
 cask "intellij-idea-ce"
@@ -58,7 +58,6 @@ cask "private-internet-access"
 cask "rectangle"
 cask "vlc"
 
-# Playing Around
+# Other
 brew "mpv"
 brew "stockfish"
-cask "chessx"
