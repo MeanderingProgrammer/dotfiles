@@ -23,7 +23,7 @@ return {
             opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
                 local config = utils.lint_config('markdownlint.yaml')
-                linter.args = { '--config', config }
+                linter.args = vim.list_extend(linter.args or {}, { '--config', config })
             end
         end,
     },
