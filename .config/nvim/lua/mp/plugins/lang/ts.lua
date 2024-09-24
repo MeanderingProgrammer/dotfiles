@@ -17,7 +17,6 @@ return {
             end
             opts.mason.eslint = {}
             opts.mason.svelte = {}
-            opts.mason.tailwindcss = {}
             opts.mason.ts_ls = {
                 settings = {
                     implicitProjectConfiguration = {

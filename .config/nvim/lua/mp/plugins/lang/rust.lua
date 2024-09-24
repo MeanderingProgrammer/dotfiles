@@ -10,7 +10,8 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            (utils.is_android and opts.system or opts.mason).rust_analyzer = {
+            local servers = utils.is_android and opts.system or opts.mason
+            servers.rust_analyzer = {
                 settings = {
                     ['rust-analyzer'] = {
                         check = { command = 'clippy' },

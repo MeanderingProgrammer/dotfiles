@@ -10,7 +10,8 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            (utils.is_android and opts.system or opts.mason).lua_ls = {}
+            local servers = utils.is_android and opts.system or opts.mason
+            servers.lua_ls = {}
         end,
     },
     {
@@ -31,13 +32,12 @@ return {
             })
         end,
     },
-    { 'Bilal2453/luvit-meta', lazy = true },
+    { 'Bilal2453/luvit-meta', lazy = true }, -- vim.uv types
     {
         'folke/lazydev.nvim',
         ft = 'lua',
         opts = {
             library = {
-                -- vim.uv typings from Bilal2453/luvit-meta
                 'luvit-meta/library',
             },
         },
