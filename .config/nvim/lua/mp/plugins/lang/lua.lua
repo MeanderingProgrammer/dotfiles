@@ -11,7 +11,13 @@ return {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
             local servers = utils.is_android and opts.system or opts.mason
-            servers.lua_ls = {}
+            servers.lua_ls = {
+                settings = {
+                    Lua = {
+                        hint = { enable = true },
+                    },
+                },
+            }
         end,
     },
     {
