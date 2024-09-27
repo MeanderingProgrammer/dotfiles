@@ -59,5 +59,4 @@ cask "rectangle"
 cask "vlc"
 
 # Other
-brew "mpv"
 brew "stockfish"
