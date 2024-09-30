@@ -6,17 +6,15 @@ return {
         'hrsh7th/cmp-path',
     },
     opts = {
-        sources = {},
+        sources = {
+            { name = 'nvim_lsp' },
+            { name = 'buffer' },
+            { name = 'path' },
+        },
     },
     config = function(_, opts)
         local cmp = require('cmp')
         local compare = require('cmp.config.compare')
-
-        vim.list_extend(opts.sources, {
-            { name = 'nvim_lsp' },
-            { name = 'buffer' },
-            { name = 'path' },
-        })
 
         cmp.setup({
             sources = cmp.config.sources(opts.sources),
@@ -33,18 +31,14 @@ return {
                 ['<C-d>'] = cmp.mapping.scroll_docs(4),
                 ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                 ['<tab>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-                    elseif vim.snippet.active({ direction = 1 }) then
+                    if vim.snippet.active({ direction = 1 }) then
                         vim.snippet.jump(1)
                     else
                         fallback()
                     end
                 end, { 'i', 's' }),
                 ['<S-tab>'] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-                    elseif vim.snippet.active({ direction = -1 }) then
+                    if vim.snippet.active({ direction = -1 }) then
                         vim.snippet.jump(-1)
                     else
                         fallback()
