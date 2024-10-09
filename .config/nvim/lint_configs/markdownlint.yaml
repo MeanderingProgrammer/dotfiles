@@ -3,6 +3,7 @@ default: true
 blanks-around-lists: false
 code-block-style: false
 fenced-code-language: false
+first-line-h1: false
 heading-increment: false
 no-bare-urls: false
 no-duplicate-heading: false
