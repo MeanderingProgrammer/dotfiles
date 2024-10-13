@@ -17,6 +17,8 @@ return {
         local actions = require('telescope.actions')
         telescope.setup({
             defaults = {
+                layout_strategy = 'vertical',
+                layout_config = { preview_height = 0.4 },
                 mappings = {
                     i = {
                         ['<C-c>'] = actions.close,
@@ -29,8 +31,8 @@ return {
             pickers = {
                 find_files = { find_command = find_command },
                 lsp_definitions = { jump_type = 'never' },
-                lsp_references = { jump_type = 'never' },
                 lsp_implementations = { jump_type = 'never' },
+                lsp_references = { jump_type = 'never' },
             },
         })
 
