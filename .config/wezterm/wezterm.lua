@@ -2,6 +2,8 @@ local wezterm = require('wezterm')
 
 local config = wezterm.config_builder()
 
+config.color_scheme = 'tokyonight_night'
+
 config.font = wezterm.font('Monaspace Neon')
 config.font_size = 14.0
 
