@@ -1,18 +1,24 @@
 #!/bin/bash
 
-if [[ "${#}" -ne 1 ]]; then
-    echo "Usage: <command>"
-    exit 1
-fi
+set -euo pipefail
+
+FAIL=31
+SUCCESS=32
+SKIP=33
+TITLE=35
+INFO=36
+notify() {
+    echo -e "\033[0;${1}m${2}\033[0m"
+}
 
 system_type=$(uname -s)
 system_os=$(uname -o)
-echo "System: ${system_type}-${system_os}"
+notify $TITLE "System: ${system_type}-${system_os}"
 
-install_deps() {
-    echo "Installing dependencies"
+setup_deps() {
+    notify $TITLE "Installing dependencies"
     if [[ "${system_type}" == "Darwin" ]]; then
-        echo "  Skipping: none"
+        notify $SKIP "  Skipping: none"
     elif [[ "${system_os}" == "Android" ]]; then
         pkg install --yes \
           bat \
@@ -40,7 +46,7 @@ install_deps() {
           wget \
           yadm \
           zsh
-        echo "  Success"
+        notify $SUCCESS "  Success"
     elif [[ "${system_type}" == "Linux" ]]; then
         sudo apt --yes install \
           bubblewrap \
@@ -67,177 +73,185 @@ install_deps() {
           xz-utils \
           zlib1g-dev \
           zsh
-        echo "  Success"
+        notify $SUCCESS "  Success"
     else
-        echo "  Error: unhandled system type"
+        notify $FAIL "  Error: unhandled system type"
         exit 1
     fi
 }
 
-change_shell() {
-    echo "Changing shell to zsh"
+setup_shell() {
+    notify $TITLE "Changing shell to zsh"
     shell_type=$(basename "$SHELL")
     if [[ "${shell_type}" == "zsh" ]]; then
-        echo "  Skipping: already done"
+        notify $SKIP "  Skipping: already done"
     elif [[ "${shell_type}" == "bash" ]]; then
         if [[ "${system_type}" == "Linux" ]]; then
             chsh -s $(which zsh)
-            echo "  Success: restart terminal"
+            notify $SUCCESS "  Success: restart terminal"
         else
-            echo "  Error: unhandled system type"
+            notify $FAIL "  Error: unhandled system type"
             exit 1
         fi
     else
-        echo "  Error: unhandled shell type ${shell_type}"
+        notify $FAIL "  Error: unhandled shell type ${shell_type}"
         exit 1
     fi
 }
 
 evaluate_homebrew() {
-    echo "Evaluating homebrew"
+    notify $TITLE "Evaluating homebrew"
     if [[ -x "$(command -v brew)" ]]; then
-        echo "  Skipping: already done"
+        notify $SKIP "  Skipping: already done"
     elif [[ "${system_os}" == "Android" ]]; then
-        echo "  Skipping: android"
+        notify $SKIP "  Skipping: android"
     else
         if [[ "${system_type}" == "Darwin" ]]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         elif [[ "${system_type}" == "Linux" ]]; then
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         else
-            echo "  Error: unhandled system type"
+            notify $FAIL "  Error: unhandled system type"
             exit 1
         fi
-        echo "  Success"
+        notify $SUCCESS "  Success"
     fi
 }
 
-install_homebrew() {
-    echo "Installing homebrew"
+setup_homebrew() {
+    notify $TITLE "Installing homebrew"
     if [[ -x "$(command -v brew)" ]]; then
-        echo "  Skipping: already done"
+        notify $SKIP "  Skipping: already done"
     elif [[ "${system_os}" == "Android" ]]; then
-        echo "  Skipping: android"
+        notify $SKIP "  Skipping: android"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo "  Success"
+        notify $SUCCESS "  Success"
     fi
     evaluate_homebrew
 }
 
 brew_install() {
     evaluate_homebrew
-    echo "Installing ${1} with homebrew"
+    notify $TITLE "Installing ${1} with homebrew"
     if [[ "${system_os}" == "Android" ]]; then
-        echo "  Skipping: android"
+        notify $SKIP "  Skipping: android"
     else
         brew install ${1}
-        echo "  Success"
+        notify $SUCCESS "  Success"
     fi
 }
 
-known_hosts="$HOME/.ssh/known_hosts"
-
-initialize_known_hosts() {
-    echo "Creating empty file: ${known_hosts}"
-    if [[ -f $known_hosts ]]; then
-        echo "  Skipping: already done"
+setup_file() {
+    notify $TITLE "Creating empty file: ${1}"
+    if [[ -f ${1} ]]; then
+        notify $SKIP "  Skipping: already done"
     else
-        ssh_directory=$(dirname ${known_hosts})
-        mkdir -p ${ssh_directory}
-        touch ${known_hosts}
-        echo "  Success"
+        local directory
+        directory=$(dirname ${1})
+        mkdir -p ${directory}
+        touch ${1}
+        notify $SUCCESS "  Success"
     fi
 }
 
 setup_ssh() {
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    echo "Adding ${1} hosts to: ${known_hosts}"
-    hosts=$(cat ${known_hosts} | grep ${1})
+    notify $TITLE "Adding hosts: ${2}"
+    local hosts
+    hosts=$(cat ${1} | grep ${2})
     if [[ -z "${hosts}" ]]; then
-        ssh-keyscan ${1} >> ${known_hosts}
-        echo "  Success"
+        ssh-keyscan ${2} >> ${1}
+        notify $SUCCESS "  Success"
     else
-        echo "  Skipping: already done"
+        notify $SKIP "  Skipping: already done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-    ssh_file="$HOME/.ssh/${2}"
-    echo "Generating SSH key: ${ssh_file}"
-    if [[ -f $ssh_file ]]; then
-        echo "  Skipping: already done"
+    notify $TITLE "Generating SSH key: ${2}"
+    local ssh_file="$HOME/.ssh/${3}"
+    if [[ -f ${ssh_file} ]]; then
+        notify $SKIP "  Skipping: already done"
     else
         ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
-        echo "  Success"
+        notify $SUCCESS "  Success"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    echo "Command to copy to clipboard: ${1}"
+    notify $TITLE "Copy command: ${2}"
+    local copy_command
     if [[ "${system_type}" == "Darwin" ]]; then
-        echo "  cat ${ssh_file}.pub | pbcopy"
+        copy_command="pbcopy"
     elif [[ "${system_type}" == "Linux" ]]; then
-        echo "  cat ${ssh_file}.pub | wl-copy"
+        copy_command="wl-copy"
     else
-        echo "  Error: unhandled system type"
+        notify $FAIL "  Error: unhandled system type"
         exit 1
     fi
+    notify $INFO "  cat ${ssh_file}.pub | ${copy_command}"
 }
 
-install_git() {
+setup_git() {
     # https://formulae.brew.sh/formula/git
     brew_install "git"
 
     # Setup SSH keys for each git host
-    initialize_known_hosts
-    setup_ssh "github.com" "id_ed25519"
-    setup_ssh "gitlab.com" "id_ed25519_lab"
-    setup_ssh "bitbucket.org" "id_ed25519_bit"
+    local known_hosts="$HOME/.ssh/known_hosts"
+    setup_file ${known_hosts}
+    setup_ssh ${known_hosts} "github.com" "id_ed25519"
+    setup_ssh ${known_hosts} "gitlab.com" "id_ed25519_lab"
+    setup_ssh ${known_hosts} "bitbucket.org" "id_ed25519_bit"
 }
 
-install_yadm() {
+setup_yadm() {
     # https://formulae.brew.sh/formula/yadm
     brew_install "yadm"
 
     # https://yadm.io/docs/bootstrap
-    echo "Cloning dotfiles repo"
-    yadm_directory="$HOME/.config/yadm"
-    if [[ -d $yadm_directory ]]; then
-        echo "  Skipping: already done"
+    notify $TITLE "Cloning dotfiles repo"
+    local yadm_directory="$HOME/.config/yadm"
+    if [[ -d ${yadm_directory} ]]; then
+        notify $SKIP "  Skipping: already done"
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
-        echo "  Success"
+        notify $SUCCESS "  Success"
     fi
 }
 
-cleanup_script() {
-    echo "Deleting setup.sh"
+setup_clean() {
+    notify $TITLE "Deleting setup.sh"
     rm -rf "setup.sh"
-    echo "  Success"
+    notify $SUCCESS "  Success"
 }
+
+if [[ "${#}" -ne 1 ]]; then
+    notify $FAIL "Usage: <command>"
+    exit 1
+fi
 
 case ${1} in
     "deps")
-        install_deps
+        setup_deps
         ;;
     "shell")
-        change_shell
+        setup_shell
         ;;
     "brew")
-        install_homebrew
+        setup_homebrew
         ;;
     "git")
-        install_git
+        setup_git
         ;;
     "yadm")
-        install_yadm
+        setup_yadm
         ;;
     "clean")
-        cleanup_script
+        setup_clean
         ;;
     *)
-        echo "Unknown command: ${1}"
-        echo "Commands: deps, shell, brew, git, yadm, clean"
+        notify $FAIL "Unknown command: ${1}"
+        notify $FAIL "Commands: deps, shell, brew, git, yadm, clean"
         exit 1
         ;;
 esac

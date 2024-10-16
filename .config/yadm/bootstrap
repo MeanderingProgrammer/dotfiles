@@ -1,120 +1,186 @@
 #!/bin/bash
 
-bootstrap_dir=$(dirname $0)
+set -euo pipefail
 
-bootstrap_deps() {
-    if [[ -x "$(command -v brew)" ]]; then
-        brew bundle --no-lock --file "${bootstrap_dir}/Brewfile"
+FAIL=31
+SUCCESS=32
+SKIP=33
+TITLE=35
+notify() {
+    echo -e "\033[0;${1}m${2}\033[0m"
+}
+
+has_command() {
+    if [[ -x "$(command -v ${1})" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+system_type=$(uname -s)
+system_os=$(uname -o)
+notify $TITLE "System: ${system_type}-${system_os}"
+
+script_dir=$(dirname $0)
+
+do_deps() {
+    notify $TITLE "Updating dependencies"
+
+    if has_command "brew"; then
+        brew bundle --no-lock --file "${script_dir}/Brewfile"
         brew update
         brew upgrade
+        notify $SUCCESS "  Success: homebrew"
+    else
+        notify $SKIP "  Skipping: missing homebrew"
     fi
 
-    if [[ "$(uname -o)" == "Android" ]]; then
+    if [[ "$system_os" == "Android" ]]; then
         pkg update --yes
         pkg upgrade --yes
-    elif [[ "$(uname -s)" == "Linux" ]]; then
+        notify $SUCCESS "  Success: android pkg"
+    elif [[ "$system_type" == "Linux" ]]; then
         wsl_sys32_path="/mnt/c/Windows/System32"
         if [[ ! -d $wsl_sys32_path ]]; then
-            source "${bootstrap_dir}/wezterm.sh"
-            source "${bootstrap_dir}/fonts.sh"
+            source "${script_dir}/wezterm.sh"
+            source "${script_dir}/fonts.sh"
         fi
         sudo apt --yes update
         sudo apt --yes upgrade
+        notify $SUCCESS "  Success: linux apt"
+    else
+        notify $SKIP "  Skipping: not linux"
     fi
 }
 
-bootstrap_asdf_tools() {
-    if [[ ! -x "$(command -v asdf)" ]]; then
-        return
+do_asdf() {
+    notify $TITLE "Updating asdf"
+    if has_command "asdf"; then
+        while read -r line; do
+            plugin=$(echo "${line}" | cut -d' ' -f1)
+            asdf plugin add "${plugin}"
+        done < ~/.tool-versions
+        asdf install
+        notify $SUCCESS "  Success"
+    else
+        notify $SKIP "  Skipping: missing asdf"
     fi
-    while read -r line; do
-        plugin=$(echo "${line}" | cut -d' ' -f1)
-        asdf plugin add "${plugin}"
-    done < ~/.tool-versions
-    asdf install
 }
 
-bootstrap_libraries() {
-    bootstrap_python() {
-        if [[ ! -x "$(command -v pip)" ]]; then
-            return
+do_libs() {
+    do_python() {
+        notify $TITLE "  Updating python"
+        if has_command "pip"; then
+            if [[ "$system_os" != "Android" ]]; then
+                pip install --upgrade pip
+                pip install -r ~/.config/lang/python/requirements.txt
+            else
+                pip install click
+                pip install GitPython
+                pip install requests
+            fi
+            notify $SUCCESS "    Success"
+        else
+            notify $SKIP "    Skipping: missing pip"
         fi
-        pip install --upgrade pip
-        pip install -r ~/.config/lang/python/requirements.txt
     }
 
-    bootstrap_rust() {
-        if [[ ! -x "$(command -v cargo)" ]]; then
-            return
+    do_rust() {
+        notify $TITLE "  Updating rust"
+        if has_command "cargo"; then
+            if [[ "$system_os" != "Android" ]]; then
+                cargo install aoc-cli
+                if has_command "asdf"; then
+                    asdf reshim rust
+                fi
+                notify $SUCCESS "    Success"
+            else
+                notify $SKIP "    Skipping: android"
+            fi
+        else
+            notify $SKIP "    Skipping: missing cargo"
         fi
-        cargo install aoc-cli
-        [[ -x "$(command -v asdf)" ]] && asdf reshim rust
     }
 
-    bootstrap_node() {
-        if [[ ! -x "$(command -v npm)" ]]; then
-            return
+    do_node() {
+        notify $TITLE "  Updating node"
+        if has_command "npm"; then
+            if [[ "$system_os" != "Android" ]]; then
+                npm install -g npm
+            fi
+            npm install -g pnpm
+            npm install -g yarn
+            npm install -g neovim
+            notify $SUCCESS "    Success"
+        else
+            notify $SKIP "    Skipping: missing npm"
         fi
-        npm install -g npm
-        npm install -g pnpm
-        npm install -g yarn
-        npm install -g neovim
     }
 
-    bootstrap_ocaml() {
-        if [[ ! -x "$(command -v opam)" ]]; then
-            return
+    do_ocaml() {
+        notify $TITLE "  Updating ocaml"
+        if has_command "opam"; then
+            if has_command "asdf"; then
+                asdf reshim opam
+            fi
+            # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
+            opam init --no
+            opam update
+            opam upgrade --yes
+            notify $SUCCESS "    Success"
+        else
+            notify $SKIP "    Skipping: missing opam"
         fi
-        [[ -x "$(command -v asdf)" ]] && asdf reshim opam
-        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
-        opam init --no
-        opam update
-        opam upgrade --yes
     }
 
-    bootstrap_python
-    bootstrap_rust
-    bootstrap_node
-    bootstrap_ocaml
+    notify $TITLE "Updating libraries"
+    do_python
+    do_rust
+    do_node
+    do_ocaml
 }
 
-bootstrap_repos() {
-    if [[ ! -x "$(command -v python)" ]]; then
-        return
+do_repos() {
+    notify $TITLE "Updating repos"
+    if has_command "python"; then
+        python "${script_dir}/setup-repos.py"
+        notify $SUCCESS "  Success"
+    else
+        notify $SKIP "  Skipping: missing python"
     fi
-    python "${bootstrap_dir}/setup-repos.py"
 }
 
 case "${#}" in
     0)
-        bootstrap_deps
-        bootstrap_asdf_tools
-        bootstrap_libraries
-        bootstrap_repos
+        do_deps
+        do_asdf
+        do_libs
+        do_repos
         ;;
     1)
         case ${1} in
             "deps")
-                bootstrap_deps
+                do_deps
                 ;;
             "asdf")
-                bootstrap_asdf_tools
+                do_asdf
                 ;;
             "libs")
-                bootstrap_libraries
+                do_libs
                 ;;
             "repos")
-                bootstrap_repos
+                do_repos
                 ;;
             *)
-                echo "Unknown command: ${1}"
-                echo "Commands: deps, asdf, libs, repos"
+                notify $FAIL "Unknown command: ${1}"
+                notify $FAIL "Commands: deps, asdf, libs, repos"
                 exit 1
                 ;;
         esac
         ;;
     *)
-        echo "Usage: <command>?"
+        notify $FAIL "Usage: <command>?"
         exit 1
         ;;
 esac

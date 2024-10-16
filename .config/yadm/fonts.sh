@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 font_dir="$HOME/.local/share/fonts"
 [[ ! -d $font_dir ]] && mkdir -p $font_dir
 
