@@ -9,8 +9,8 @@ import requests
 
 @dataclass(frozen=True)
 class Ollama:
-    port: int
     model: str
+    port: int
 
     @property
     def endpoint(self) -> str:
@@ -40,7 +40,7 @@ class Ollama:
         print(response.json().get("response"))
 
 
-MODEL: Ollama = Ollama(port=11434, model="llama3")
+MODEL: Ollama = Ollama(model="llama3", port=11434)
 
 
 @click.group()
