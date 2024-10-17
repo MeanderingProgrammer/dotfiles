@@ -14,15 +14,39 @@ has_command() {
     if [[ -x "$(command -v ${1})" ]]; then
         return 0
     else
+        notify $SKIP "  Skipping: missing ${1}"
         return 1
     fi
 }
 
+script_dir=$(dirname $0)
 system_type=$(uname -s)
 system_os=$(uname -o)
-notify $TITLE "System: ${system_type}-${system_os}"
 
-script_dir=$(dirname $0)
+main() {
+    notify $TITLE "System: ${system_type}-${system_os}"
+    if [[ "${#}" == 0 ]]; then
+        do_deps
+        do_asdf
+        do_libs
+        do_repos
+    elif [[ "${#}" == 1 ]]; then
+        case ${1} in
+            "deps") do_deps ;;
+            "asdf") do_asdf ;;
+            "libs") do_libs ;;
+            "repos") do_repos ;;
+            *)
+                notify $FAIL "Unknown command: ${1}"
+                notify $FAIL "Commands: deps, asdf, libs, repos"
+                exit 1
+                ;;
+        esac
+    else
+        notify $FAIL "Usage: <command>?"
+        exit 1
+    fi
+}
 
 do_deps() {
     notify $TITLE "Updating dependencies"
@@ -31,9 +55,7 @@ do_deps() {
         brew bundle --no-lock --file "${script_dir}/Brewfile"
         brew update
         brew upgrade
-        notify $SUCCESS "  Success: homebrew"
-    else
-        notify $SKIP "  Skipping: missing homebrew"
+        notify $SUCCESS "  Success: brew"
     fi
 
     if [[ "$system_os" == "Android" ]]; then
@@ -41,7 +63,7 @@ do_deps() {
         pkg upgrade --yes
         notify $SUCCESS "  Success: android pkg"
     elif [[ "$system_type" == "Linux" ]]; then
-        wsl_sys32_path="/mnt/c/Windows/System32"
+        local wsl_sys32_path="/mnt/c/Windows/System32"
         if [[ ! -d $wsl_sys32_path ]]; then
             source "${script_dir}/wezterm.sh"
             source "${script_dir}/fonts.sh"
@@ -63,14 +85,12 @@ do_asdf() {
         done < ~/.tool-versions
         asdf install
         notify $SUCCESS "  Success"
-    else
-        notify $SKIP "  Skipping: missing asdf"
     fi
 }
 
 do_libs() {
     do_python() {
-        notify $TITLE "  Updating python"
+        notify $TITLE "Updating python"
         if has_command "pip"; then
             if [[ "$system_os" != "Android" ]]; then
                 pip install --upgrade pip
@@ -80,31 +100,25 @@ do_libs() {
                 pip install GitPython
                 pip install requests
             fi
-            notify $SUCCESS "    Success"
-        else
-            notify $SKIP "    Skipping: missing pip"
+            notify $SUCCESS "  Success"
         fi
     }
 
     do_rust() {
-        notify $TITLE "  Updating rust"
+        notify $TITLE "Updating rust"
         if has_command "cargo"; then
             if [[ "$system_os" != "Android" ]]; then
                 cargo install aoc-cli
-                if has_command "asdf"; then
-                    asdf reshim rust
-                fi
-                notify $SUCCESS "    Success"
+                has_command "asdf" && asdf reshim rust
+                notify $SUCCESS "  Success"
             else
-                notify $SKIP "    Skipping: android"
+                notify $SKIP "  Skipping: android"
             fi
-        else
-            notify $SKIP "    Skipping: missing cargo"
         fi
     }
 
     do_node() {
-        notify $TITLE "  Updating node"
+        notify $TITLE "Updating node"
         if has_command "npm"; then
             if [[ "$system_os" != "Android" ]]; then
                 npm install -g npm
@@ -112,25 +126,19 @@ do_libs() {
             npm install -g pnpm
             npm install -g yarn
             npm install -g neovim
-            notify $SUCCESS "    Success"
-        else
-            notify $SKIP "    Skipping: missing npm"
+            notify $SUCCESS "  Success"
         fi
     }
 
     do_ocaml() {
-        notify $TITLE "  Updating ocaml"
+        notify $TITLE "Updating ocaml"
         if has_command "opam"; then
-            if has_command "asdf"; then
-                asdf reshim opam
-            fi
+            has_command "asdf" && asdf reshim opam
             # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
             opam init --no
             opam update
             opam upgrade --yes
-            notify $SUCCESS "    Success"
-        else
-            notify $SKIP "    Skipping: missing opam"
+            notify $SUCCESS "  Success"
         fi
     }
 
@@ -146,41 +154,7 @@ do_repos() {
     if has_command "python"; then
         python "${script_dir}/setup-repos.py"
         notify $SUCCESS "  Success"
-    else
-        notify $SKIP "  Skipping: missing python"
     fi
 }
 
-case "${#}" in
-    0)
-        do_deps
-        do_asdf
-        do_libs
-        do_repos
-        ;;
-    1)
-        case ${1} in
-            "deps")
-                do_deps
-                ;;
-            "asdf")
-                do_asdf
-                ;;
-            "libs")
-                do_libs
-                ;;
-            "repos")
-                do_repos
-                ;;
-            *)
-                notify $FAIL "Unknown command: ${1}"
-                notify $FAIL "Commands: deps, asdf, libs, repos"
-                exit 1
-                ;;
-        esac
-        ;;
-    *)
-        notify $FAIL "Usage: <command>?"
-        exit 1
-        ;;
-esac
+main "$@"

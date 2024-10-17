@@ -13,9 +13,29 @@ notify() {
 
 system_type=$(uname -s)
 system_os=$(uname -o)
-notify $TITLE "System: ${system_type}-${system_os}"
 
-setup_deps() {
+main() {
+    notify $TITLE "System: ${system_type}-${system_os}"
+    if [[ "${#}" -ne 1 ]]; then
+        notify $FAIL "Usage: <command>"
+        exit 1
+    fi
+    case ${1} in
+        "deps") do_deps ;;
+        "shell") do_shell ;;
+        "brew") do_homebrew ;;
+        "git") do_git ;;
+        "yadm") do_yadm ;;
+        "clean") do_clean ;;
+        *)
+            notify $FAIL "Unknown command: ${1}"
+            notify $FAIL "Commands: deps, shell, brew, git, yadm, clean"
+            exit 1
+            ;;
+    esac
+}
+
+do_deps() {
     notify $TITLE "Installing dependencies"
     if [[ "${system_type}" == "Darwin" ]]; then
         notify $SKIP "  Skipping: none"
@@ -80,7 +100,7 @@ setup_deps() {
     fi
 }
 
-setup_shell() {
+do_shell() {
     notify $TITLE "Changing shell to zsh"
     shell_type=$(basename "$SHELL")
     if [[ "${shell_type}" == "zsh" ]]; then
@@ -97,6 +117,19 @@ setup_shell() {
         notify $FAIL "  Error: unhandled shell type ${shell_type}"
         exit 1
     fi
+}
+
+do_homebrew() {
+    notify $TITLE "Installing homebrew"
+    if [[ -x "$(command -v brew)" ]]; then
+        notify $SKIP "  Skipping: already done"
+    elif [[ "${system_os}" == "Android" ]]; then
+        notify $SKIP "  Skipping: android"
+    else
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        notify $SUCCESS "  Success"
+    fi
+    evaluate_homebrew
 }
 
 evaluate_homebrew() {
@@ -116,19 +149,6 @@ evaluate_homebrew() {
         fi
         notify $SUCCESS "  Success"
     fi
-}
-
-setup_homebrew() {
-    notify $TITLE "Installing homebrew"
-    if [[ -x "$(command -v brew)" ]]; then
-        notify $SKIP "  Skipping: already done"
-    elif [[ "${system_os}" == "Android" ]]; then
-        notify $SKIP "  Skipping: android"
-    else
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        notify $SUCCESS "  Success"
-    fi
-    evaluate_homebrew
 }
 
 brew_install() {
@@ -192,7 +212,7 @@ setup_ssh() {
     notify $INFO "  cat ${ssh_file}.pub | ${copy_command}"
 }
 
-setup_git() {
+do_git() {
     # https://formulae.brew.sh/formula/git
     brew_install "git"
 
@@ -204,7 +224,7 @@ setup_git() {
     setup_ssh ${known_hosts} "bitbucket.org" "id_ed25519_bit"
 }
 
-setup_yadm() {
+do_yadm() {
     # https://formulae.brew.sh/formula/yadm
     brew_install "yadm"
 
@@ -219,39 +239,10 @@ setup_yadm() {
     fi
 }
 
-setup_clean() {
+do_clean() {
     notify $TITLE "Deleting setup.sh"
     rm -rf "setup.sh"
     notify $SUCCESS "  Success"
 }
 
-if [[ "${#}" -ne 1 ]]; then
-    notify $FAIL "Usage: <command>"
-    exit 1
-fi
-
-case ${1} in
-    "deps")
-        setup_deps
-        ;;
-    "shell")
-        setup_shell
-        ;;
-    "brew")
-        setup_homebrew
-        ;;
-    "git")
-        setup_git
-        ;;
-    "yadm")
-        setup_yadm
-        ;;
-    "clean")
-        setup_clean
-        ;;
-    *)
-        notify $FAIL "Unknown command: ${1}"
-        notify $FAIL "Commands: deps, shell, brew, git, yadm, clean"
-        exit 1
-        ;;
-esac
+main "$@"
