@@ -6,10 +6,18 @@ return {
         opts = { languages = { 'nix' } },
     },
     {
+        'williamboman/mason.nvim',
+        opts = function(_, opts)
+            if utils.is_mac then
+                table.insert(opts.install, 'nil')
+            end
+        end,
+    },
+    {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
             if utils.is_mac then
-                opts.mason.nil_ls = {}
+                opts.servers.nil_ls = {}
             end
         end,
     },

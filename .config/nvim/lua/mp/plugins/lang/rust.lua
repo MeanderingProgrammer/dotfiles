@@ -8,10 +8,17 @@ return {
         },
     },
     {
+        'williamboman/mason.nvim',
+        opts = function(_, opts)
+            if not utils.is_android then
+                table.insert(opts.install, 'rust-analyzer')
+            end
+        end,
+    },
+    {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            local servers = utils.is_android and opts.system or opts.mason
-            servers.rust_analyzer = {
+            opts.servers.rust_analyzer = {
                 settings = {
                     ['rust-analyzer'] = {
                         check = { command = 'clippy' },

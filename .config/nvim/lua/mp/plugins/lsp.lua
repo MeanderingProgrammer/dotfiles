@@ -4,11 +4,9 @@ return {
         'nvim-telescope/telescope.nvim',
         'hrsh7th/cmp-nvim-lsp',
         'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
     },
     opts = {
-        mason = {},
-        system = {},
+        servers = {},
     },
     config = function(_, opts)
         vim.api.nvim_create_autocmd('LspAttach', {
@@ -58,27 +56,12 @@ return {
             require('cmp_nvim_lsp').default_capabilities()
         )
 
-        ---@param servers table<string, any>
-        ---@param name string
-        local function setup_server(servers, name)
-            -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-            local server = servers[name]
+        -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+        for name, server in pairs(opts.servers) do
             if server then
                 server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
                 require('lspconfig')[name].setup(server)
             end
-        end
-
-        require('mason-lspconfig').setup({
-            ensure_installed = vim.tbl_keys(opts.mason),
-            handlers = {
-                function(name)
-                    setup_server(opts.mason, name)
-                end,
-            },
-        })
-        for name in pairs(opts.system) do
-            setup_server(opts.system, name)
         end
     end,
 }

@@ -29,16 +29,18 @@ main() {
         do_deps
         do_asdf
         do_libs
+        do_nvim
         do_repos
     elif [[ "${#}" == 1 ]]; then
         case ${1} in
             "deps") do_deps ;;
             "asdf") do_asdf ;;
             "libs") do_libs ;;
+            "nvim") do_nvim ;;
             "repos") do_repos ;;
             *)
                 notify $FAIL "Unknown command: ${1}"
-                notify $FAIL "Commands: deps, asdf, libs, repos"
+                notify $FAIL "Commands: deps, asdf, libs, nvim, repos"
                 exit 1
                 ;;
         esac
@@ -147,6 +149,16 @@ do_libs() {
     do_rust
     do_node
     do_ocaml
+}
+
+do_nvim() {
+    notify $TITLE "Updating neovim"
+    if has_command "nvim"; then
+        nvim --headless "+Lazy! update" +qa
+        nvim --headless "+TSUpdateSync" +qa
+        nvim --headless "+MasonToolsUpdateSync" +qa
+        notify $SUCCESS "  Success"
+    fi
 }
 
 do_repos() {

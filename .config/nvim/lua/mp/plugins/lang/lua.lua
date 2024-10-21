@@ -8,25 +8,25 @@ return {
         },
     },
     {
+        'williamboman/mason.nvim',
+        opts = function(_, opts)
+            if not utils.is_android then
+                table.insert(opts.install, 'lua-language-server')
+                table.insert(opts.install, 'stylua')
+            end
+            opts.formatters.lua = { 'stylua' }
+        end,
+    },
+    {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            local servers = utils.is_android and opts.system or opts.mason
-            servers.lua_ls = {
+            opts.servers.lua_ls = {
                 settings = {
                     Lua = {
                         hint = { enable = true },
                     },
                 },
             }
-        end,
-    },
-    {
-        'williamboman/mason.nvim',
-        opts = function(_, opts)
-            if not utils.is_android then
-                vim.list_extend(opts.ensure_installed, { 'stylua' })
-            end
-            opts.formatters.lua = { 'stylua' }
         end,
     },
     {

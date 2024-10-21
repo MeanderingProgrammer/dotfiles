@@ -6,22 +6,21 @@ return {
         opts = { languages = { 'ocaml' } },
     },
     {
-        'neovim/nvim-lspconfig',
+        'williamboman/mason.nvim',
         opts = function(_, opts)
-            if utils.is_android then
-                return
+            if not utils.is_android then
+                table.insert(opts.install, 'ocaml-lsp')
+                table.insert(opts.install, 'ocamlformat')
+                opts.formatters.ocaml = { 'ocamlformat' }
             end
-            opts.mason.ocamllsp = {}
         end,
     },
     {
-        'williamboman/mason.nvim',
+        'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if utils.is_android then
-                return
+            if not utils.is_android then
+                opts.servers.ocamllsp = {}
             end
-            vim.list_extend(opts.ensure_installed, { 'ocamlformat' })
-            opts.formatters.ocaml = { 'ocamlformat' }
         end,
     },
 }

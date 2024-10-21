@@ -6,23 +6,23 @@ return {
         opts = { languages = { 'bash' } },
     },
     {
-        'neovim/nvim-lspconfig',
+        'williamboman/mason.nvim',
         opts = function(_, opts)
-            opts.mason.bashls = {
-                filetypes = { 'sh', 'zsh' },
-            }
+            table.insert(opts.install, 'bash-language-server')
+            if not utils.is_android then
+                table.insert(opts.install, 'shellcheck')
+                opts.linters.bash = { 'shellcheck' }
+                opts.linters.sh = { 'shellcheck' }
+                opts.linters.zsh = { 'shellcheck' }
+            end
         end,
     },
     {
-        'williamboman/mason.nvim',
+        'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if utils.is_android then
-                return
-            end
-            vim.list_extend(opts.ensure_installed, { 'shellcheck' })
-            opts.linters.bash = { 'shellcheck' }
-            opts.linters.sh = { 'shellcheck' }
-            opts.linters.zsh = { 'shellcheck' }
+            opts.servers.bashls = {
+                filetypes = { 'sh', 'zsh' },
+            }
         end,
     },
 }

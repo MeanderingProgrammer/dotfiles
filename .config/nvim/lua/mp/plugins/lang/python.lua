@@ -6,16 +6,17 @@ return {
         },
     },
     {
-        'neovim/nvim-lspconfig',
+        'williamboman/mason.nvim',
         opts = function(_, opts)
-            opts.mason.pyright = {}
+            table.insert(opts.install, 'pyright')
+            vim.list_extend(opts.install, { 'isort', 'black' })
+            opts.formatters.python = { 'isort', 'black' }
         end,
     },
     {
-        'williamboman/mason.nvim',
+        'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'isort', 'black' })
-            opts.formatters.python = { 'isort', 'black' }
+            opts.servers.pyright = {}
         end,
     },
     {

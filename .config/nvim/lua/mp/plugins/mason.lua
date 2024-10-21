@@ -6,7 +6,7 @@ return {
         'WhoIsSethDaniel/mason-tool-installer.nvim',
     },
     opts = {
-        ensure_installed = {},
+        install = {},
         formatters = {},
         linters = {},
         linter_overrides = {},
@@ -15,7 +15,7 @@ return {
         require('mason').setup({})
 
         require('mason-tool-installer').setup({
-            ensure_installed = opts.ensure_installed,
+            ensure_installed = opts.install,
         })
 
         require('conform').setup({

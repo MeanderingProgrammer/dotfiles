@@ -8,22 +8,24 @@ return {
         },
     },
     {
-        'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if utils.is_android then
-                return
-            end
-            opts.mason.marksman = {}
-        end,
-    },
-    {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'markdownlint' })
+            if not utils.is_android then
+                table.insert(opts.install, 'marksman')
+            end
+            table.insert(opts.install, 'markdownlint')
             opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
                 local config = utils.lint_config('markdownlint.yaml')
                 linter.args = vim.list_extend(linter.args or {}, { '--config', config })
+            end
+        end,
+    },
+    {
+        'neovim/nvim-lspconfig',
+        opts = function(_, opts)
+            if not utils.is_android then
+                opts.servers.marksman = {}
             end
         end,
     },

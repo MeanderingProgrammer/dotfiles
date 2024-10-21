@@ -6,16 +6,17 @@ return {
         },
     },
     {
-        'neovim/nvim-lspconfig',
+        'williamboman/mason.nvim',
         opts = function(_, opts)
-            opts.mason.gopls = {}
+            table.insert(opts.install, 'gopls')
+            vim.list_extend(opts.install, { 'goimports', 'gofumpt' })
+            opts.formatters.go = { 'goimports', 'gofumpt' }
         end,
     },
     {
-        'williamboman/mason.nvim',
+        'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            vim.list_extend(opts.ensure_installed, { 'goimports', 'gofumpt' })
-            opts.formatters.go = { 'goimports', 'gofumpt' }
+            opts.servers.gopls = {}
         end,
     },
 }

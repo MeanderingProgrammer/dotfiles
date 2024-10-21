@@ -10,23 +10,6 @@ return {
         end,
     },
     {
-        'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if utils.is_android then
-                return
-            end
-            opts.mason.eslint = {}
-            opts.mason.svelte = {}
-            opts.mason.ts_ls = {
-                settings = {
-                    implicitProjectConfiguration = {
-                        checkJs = true,
-                    },
-                },
-            }
-        end,
-    },
-    {
         'williamboman/mason.nvim',
         init = function()
             -- Avoid running when project does not use prettier
@@ -43,12 +26,30 @@ return {
             })
         end,
         opts = function(_, opts)
-            if utils.is_android then
-                return
+            if not utils.is_android then
+                table.insert(opts.install, 'eslint-lsp')
+                table.insert(opts.install, 'svelte-language-server')
+                table.insert(opts.install, 'typescript-language-server')
+                table.insert(opts.install, 'prettierd')
+                opts.formatters.javascript = { 'prettierd' }
+                opts.formatters.typescript = { 'prettierd' }
             end
-            vim.list_extend(opts.ensure_installed, { 'prettierd' })
-            opts.formatters.javascript = { 'prettierd' }
-            opts.formatters.typescript = { 'prettierd' }
+        end,
+    },
+    {
+        'neovim/nvim-lspconfig',
+        opts = function(_, opts)
+            if not utils.is_android then
+                opts.servers.eslint = {}
+                opts.servers.svelte = {}
+                opts.servers.ts_ls = {
+                    settings = {
+                        implicitProjectConfiguration = {
+                            checkJs = true,
+                        },
+                    },
+                }
+            end
         end,
     },
 }
