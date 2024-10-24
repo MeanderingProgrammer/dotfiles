@@ -56,6 +56,9 @@ vim.opt.sidescrolloff = 8
 -- Use system clipboard
 vim.opt.clipboard = 'unnamedplus'
 
+-- Spell checking
+vim.opt.spell = true
+
 -- Disable default providers
 for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
     vim.g['loaded_' .. provider .. '_provider'] = 0
