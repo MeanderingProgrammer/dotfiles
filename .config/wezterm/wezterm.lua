@@ -4,16 +4,11 @@ local config = wezterm.config_builder()
 
 config.color_scheme = 'tokyonight_night'
 
-config.font = wezterm.font('Monaspace Neon')
 config.font_size = 14.0
+config.font = wezterm.font('Monaspace Neon')
+config.harfbuzz_features = { 'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09' }
 
 config.audible_bell = 'Disabled'
-
-local harfbuzz_features = { 'calt', 'liga' }
-for i = 1, 9 do
-    table.insert(harfbuzz_features, string.format('ss0%d', i))
-end
-config.harfbuzz_features = harfbuzz_features
 
 config.enable_tab_bar = false
 wezterm.on('format-window-title', function()
