@@ -11,6 +11,7 @@ config.harfbuzz_features = { 'calt', 'liga', 'ss01', 'ss02', 'ss03', 'ss04', 'ss
 config.audible_bell = 'Disabled'
 
 config.max_fps = 120
+config.front_end = 'WebGpu'
 
 config.enable_tab_bar = false
 wezterm.on('format-window-title', function()
