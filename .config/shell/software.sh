@@ -65,9 +65,6 @@ opam_init="${OPAMROOT}/opam-init/init.zsh"
 c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
 [[ -f $c_sharp_init ]] && source "${c_sharp_init}"
 
-# Lua
-[[ -x "$(command -v luarocks)" ]] && eval $(luarocks path --bin)
-
 # ---- Software Home Cleanup ---- #
 
 # AWS
