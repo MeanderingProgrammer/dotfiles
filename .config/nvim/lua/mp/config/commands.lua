@@ -24,6 +24,39 @@ vim.api.nvim_create_user_command('MySortSpell', function()
     vim.cmd('bd')
 end, {})
 
+-- Attempt to format current line to multiple lines of width 80
+vim.api.nvim_create_user_command('MyFormatLine', function()
+    local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+
+    local current_line = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
+    local words = vim.split(current_line, ' ', { plain = true })
+
+    local offset = 0
+    for _, list_pattern in ipairs({ '%-', '%d+%.' }) do
+        list_pattern = '^%s*' .. list_pattern .. '%s*'
+        local match = current_line:match(list_pattern)
+        offset = math.max(offset, match ~= nil and #match or 0)
+    end
+
+    local lines = { '' }
+    for _, word in ipairs(words) do
+        lines[#lines] = lines[#lines] .. word .. ' '
+        if #lines[#lines] > 80 then
+            table.insert(lines, string.rep(' ', offset))
+        end
+    end
+
+    local result = {}
+    for _, line in ipairs(lines) do
+        line = line:sub(1, #line - 1)
+        if #line > 0 then
+            table.insert(result, line)
+        end
+    end
+
+    vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
+end, {})
+
 -- Show LSP configuration in a floating window
 vim.api.nvim_create_user_command('MyLspConfig', function()
     local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
