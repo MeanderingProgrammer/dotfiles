@@ -29,7 +29,6 @@ return {
     },
     {
         'Saecki/crates.nvim',
-        dependencies = { 'hrsh7th/nvim-cmp' },
         config = function()
             local crates = require('crates')
             crates.setup({
@@ -52,9 +51,11 @@ return {
         end,
     },
     {
-        'hrsh7th/nvim-cmp',
-        opts = function(_, opts)
-            table.insert(opts.sources, { name = 'crates' })
-        end,
+        'saghen/blink.cmp',
+        opts = {
+            providers = {
+                crates = { name = 'crates', module = 'blink.compat.source', score_offset = 10 },
+            },
+        },
     },
 }

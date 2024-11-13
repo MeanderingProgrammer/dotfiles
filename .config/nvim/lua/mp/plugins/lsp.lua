@@ -2,7 +2,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
         'nvim-telescope/telescope.nvim',
-        'hrsh7th/cmp-nvim-lsp',
+        'saghen/blink.cmp',
         'williamboman/mason.nvim',
     },
     opts = {
@@ -50,16 +50,10 @@ return {
             end,
         })
 
-        local capabilities = vim.tbl_deep_extend(
-            'force',
-            vim.lsp.protocol.make_client_capabilities(),
-            require('cmp_nvim_lsp').default_capabilities()
-        )
-
         -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         for name, server in pairs(opts.servers) do
             if server then
-                server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+                server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
                 require('lspconfig')[name].setup(server)
             end
         end

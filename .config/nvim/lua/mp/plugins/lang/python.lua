@@ -22,7 +22,7 @@ return {
     {
         'MeanderingProgrammer/py-requirements.nvim',
         dev = true,
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'hrsh7th/nvim-cmp' },
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
         config = function()
             local requirements = require('py-requirements')
             requirements.setup({
@@ -42,9 +42,12 @@ return {
         end,
     },
     {
-        'hrsh7th/nvim-cmp',
-        opts = function(_, opts)
-            table.insert(opts.sources, { name = 'py-requirements' })
-        end,
+        'saghen/blink.cmp',
+        opts = {
+            providers = {
+                buffer = { fallback_for = { 'pypi' } },
+                pypi = { name = 'Pypi', module = 'py-requirements.integrations.blink' },
+            },
+        },
     },
 }
