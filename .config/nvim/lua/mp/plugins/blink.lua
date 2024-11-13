@@ -13,7 +13,20 @@ return {
         },
         config = function(_, opts)
             require('blink.cmp').setup({
-                keymap = 'enter',
+                keymap = {
+                    ['<cr>'] = { 'accept', 'fallback' },
+                    ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+                    ['<C-e>'] = { 'hide', 'fallback' },
+                    ['<C-n>'] = { 'select_next', 'fallback' },
+                    ['<C-p>'] = { 'select_prev', 'fallback' },
+                    ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
+                    ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+                    ['<tab>'] = { 'snippet_forward', 'fallback' },
+                    ['<S-tab>'] = { 'snippet_backward', 'fallback' },
+                },
+                accept = {
+                    auto_brackets = { enabled = true },
+                },
                 sources = {
                     completion = {
                         enabled_providers = vim.tbl_keys(opts.providers),
@@ -24,7 +37,7 @@ return {
                     autocomplete = {
                         max_height = 20,
                         border = 'rounded',
-                        selection = 'manual',
+                        selection = 'auto_insert',
                     },
                     documentation = {
                         max_height = 40,

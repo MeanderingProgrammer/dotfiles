@@ -45,8 +45,7 @@ return {
         'saghen/blink.cmp',
         opts = {
             providers = {
-                buffer = { fallback_for = { 'pypi' } },
-                pypi = { name = 'Pypi', module = 'py-requirements.integrations.blink' },
+                pypi = { name = 'Pypi', module = 'py-requirements.integrations.blink', score_offset = 10 },
             },
         },
     },
