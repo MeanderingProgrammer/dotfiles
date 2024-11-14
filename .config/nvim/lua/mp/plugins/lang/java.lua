@@ -88,7 +88,7 @@ return {
                     },
                 }
 
-                local capabilities = require('blink.cmp').get_lsp_capabilities()
+                local capabilities = utils.capabilities()
 
                 local extended_capabilities = jdtls.extendedClientCapabilities
                 extended_capabilities.resolveAdditionalTextEditsSupport = true

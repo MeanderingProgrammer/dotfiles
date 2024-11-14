@@ -42,10 +42,22 @@ return {
         end,
     },
     {
+        'hrsh7th/nvim-cmp',
+        optional = true,
+        opts = function(_, opts)
+            table.insert(opts.sources, { name = 'py-requirements' })
+        end,
+    },
+    {
         'saghen/blink.cmp',
+        optional = true,
         opts = {
             providers = {
-                pypi = { name = 'Pypi', module = 'py-requirements.integrations.blink', score_offset = 10 },
+                pypi = {
+                    name = 'Pypi',
+                    module = 'py-requirements.integrations.blink',
+                    score_offset = 10,
+                },
             },
         },
     },

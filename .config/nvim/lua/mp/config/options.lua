@@ -6,6 +6,9 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Completion plugin, true = nvim-cmp, false = blink.cmp
+vim.g.cmp = true
+
 -- Color settings
 vim.opt.termguicolors = true
 vim.opt.cursorline = true

@@ -1,9 +1,12 @@
+local utils = require('mp.utils')
+
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
         'nvim-telescope/telescope.nvim',
-        'saghen/blink.cmp',
         'williamboman/mason.nvim',
+        { 'hrsh7th/cmp-nvim-lsp', optional = true },
+        { 'saghen/blink.cmp', optional = true },
     },
     opts = {
         servers = {},
@@ -53,7 +56,7 @@ return {
         -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         for name, server in pairs(opts.servers) do
             if server then
-                server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities)
+                server.capabilities = utils.capabilities(server.capabilities)
                 require('lspconfig')[name].setup(server)
             end
         end

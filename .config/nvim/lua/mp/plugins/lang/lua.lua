@@ -49,11 +49,22 @@ return {
         },
     },
     {
+        'hrsh7th/nvim-cmp',
+        optional = true,
+        opts = function(_, opts)
+            table.insert(opts.sources, { name = 'lazydev', group_index = 0 })
+        end,
+    },
+    {
         'saghen/blink.cmp',
+        optional = true,
         opts = {
             providers = {
                 lsp = { fallback_for = { 'lazydev' } },
-                lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+                lazydev = {
+                    name = 'LazyDev',
+                    module = 'lazydev.integrations.blink',
+                },
             },
         },
     },

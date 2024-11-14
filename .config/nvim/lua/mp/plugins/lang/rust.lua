@@ -51,10 +51,22 @@ return {
         end,
     },
     {
+        'hrsh7th/nvim-cmp',
+        optional = true,
+        opts = function(_, opts)
+            table.insert(opts.sources, { name = 'crates' })
+        end,
+    },
+    {
         'saghen/blink.cmp',
+        optional = true,
         opts = {
             providers = {
-                crates = { name = 'crates', module = 'blink.compat.source', score_offset = 10 },
+                crates = {
+                    name = 'crates',
+                    module = 'blink.compat.source',
+                    score_offset = 10,
+                },
             },
         },
     },
