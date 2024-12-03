@@ -55,9 +55,3 @@ map('n', '<leader>ff', function()
     vim.print(hex_code)
     vim.fn.setreg('+', hex_code)
 end)
-
--- Remove ability to fallback to arrows
-map({ 'n', 'v', 'i' }, '<Up>', '<Nop>')
-map({ 'n', 'v', 'i' }, '<Down>', '<Nop>')
-map({ 'n', 'v', 'i' }, '<Left>', '<Nop>')
-map({ 'n', 'v', 'i' }, '<Right>', '<Nop>')
