@@ -30,10 +30,11 @@ end
 
 ---@return string[]
 function M.hidden_directories()
-    local directories = { '.git', '.idea', '.obsidian' }
-    vim.list_extend(directories, { '.gradle', '_build', 'target', 'node_modules' })
-    vim.list_extend(directories, { '__pycache__', '.pytest_cache', '.mypy_cache' })
-    return directories
+    local result = { '.git', '.idea', '.obsidian' }
+    vim.list_extend(result, { '.gradle', '.settings', '_build', 'target' })
+    vim.list_extend(result, { 'node_modules', 'zig-out', '.zig-cache' })
+    vim.list_extend(result, { '__pycache__', '.pytest_cache', '.mypy_cache' })
+    return result
 end
 
 return M

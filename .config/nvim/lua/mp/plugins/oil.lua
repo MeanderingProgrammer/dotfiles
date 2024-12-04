@@ -4,9 +4,8 @@ return {
     'stevearc/oil.nvim',
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
-        local hidden_files = { '.DS_Store' }
-        vim.list_extend(hidden_files, utils.hidden_directories())
-        local padding = utils.is_android and 2 or 8
+        local hidden = { '.DS_Store', '.project', '.classpath', '.factorypath' }
+        vim.list_extend(hidden, utils.hidden_directories())
 
         local oil = require('oil')
         oil.setup({
@@ -22,10 +21,12 @@ return {
             view_options = {
                 show_hidden = true,
                 is_always_hidden = function(name)
-                    return vim.tbl_contains(hidden_files, name)
+                    return vim.tbl_contains(hidden, name)
                 end,
             },
-            float = { padding = padding },
+            float = {
+                padding = utils.is_android and 2 or 8,
+            },
         })
 
         vim.keymap.set('n', '<leader>o', oil.toggle_float, { desc = 'Oil Toggle' })
