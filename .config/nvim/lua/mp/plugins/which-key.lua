@@ -24,9 +24,9 @@ return {
             { '<leader>h', group = 'harpoon' },
             { '<leader>r', group = 'requirements' },
             { '<leader>s', group = 'session' },
-            { '<leader>t', group = 'telescope' },
+            { '<leader>f', group = 'fzf' },
             { '<leader>w', group = 'workspaces' },
-            { '<leader>x', group = 'trouble' },
+            { '<leader>t', group = 'trouble' },
             { '<leader>ww', wk.show, desc = 'Show WhichKey' },
         })
     end,

@@ -1,10 +1,10 @@
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
     dev = true,
-    dependencies = { 'nvim-telescope/telescope.nvim' },
     config = function()
-        require('harpoon-core').setup({ default_action = 'vs' })
-        require('telescope').load_extension('harpoon-core')
+        require('harpoon-core').setup({
+            default_action = 'vs',
+        })
 
         ---@param lhs string
         ---@param rhs string|function
@@ -24,6 +24,5 @@ return {
         map('<leader>hu', ui.toggle_quick_menu, 'Toggle UI')
         map('<leader>hn', ui.nav_next, 'Next file')
         map('<leader>hp', ui.nav_prev, 'Previous file')
-        map('<leader>ht', '<cmd>Telescope harpoon-core marks<cr>', 'Telescope menu')
     end,
 }

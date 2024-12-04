@@ -3,7 +3,7 @@ local utils = require('mp.utils')
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
-        'nvim-telescope/telescope.nvim',
+        'ibhagwan/fzf-lua',
         'williamboman/mason.nvim',
         { 'hrsh7th/cmp-nvim-lsp', optional = true },
         { 'saghen/blink.cmp', optional = true },
@@ -15,38 +15,38 @@ return {
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
             desc = 'LSP actions',
-            callback = function(event)
+            callback = function(args)
                 ---@param lhs string
                 ---@param rhs function
                 ---@param desc string
                 local function map(lhs, rhs, desc)
-                    vim.keymap.set('n', lhs, rhs, { buffer = event.buf, desc = 'LSP ' .. desc })
+                    vim.keymap.set('n', lhs, rhs, { buffer = args.buf, desc = 'LSP ' .. desc })
                 end
-                local builtin = require('telescope.builtin')
-                map('gd', builtin.lsp_definitions, 'Definitions')
-                map('gr', builtin.lsp_references, 'References')
-                map('gi', builtin.lsp_implementations, 'Implementations')
-                map('gs', builtin.lsp_document_symbols, 'Document Symbols')
+                local fzf = require('fzf-lua')
+                map('gd', fzf.lsp_definitions, 'Definitions')
+                map('gr', fzf.lsp_references, 'References')
+                map('gi', fzf.lsp_implementations, 'Implementations')
+                map('gs', fzf.lsp_document_symbols, 'Document Symbols')
+                map('<leader>ws', fzf.lsp_workspace_symbols, 'Symbols')
                 map('K', vim.lsp.buf.hover, 'Hover Information')
                 map('<leader>k', vim.lsp.buf.signature_help, 'Signature Help')
                 map('<leader><C-a>', vim.lsp.buf.code_action, 'Code Actions')
                 map('<leader><C-r>', vim.lsp.buf.rename, 'Rename')
                 map('<leader><C-h>', function()
-                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }))
                 end, 'Toggle Inlay Hints')
-                map('<leader>ws', builtin.lsp_dynamic_workspace_symbols, 'Symbols')
                 map('<leader>wf', function()
                     vim.print(vim.lsp.buf.list_workspace_folders())
                 end, 'List Folders')
 
-                local client = vim.lsp.get_client_by_id(event.data.client_id)
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then
                     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-                        buffer = event.buf,
+                        buffer = args.buf,
                         callback = vim.lsp.buf.document_highlight,
                     })
                     vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-                        buffer = event.buf,
+                        buffer = args.buf,
                         callback = vim.lsp.buf.clear_references,
                     })
                 end

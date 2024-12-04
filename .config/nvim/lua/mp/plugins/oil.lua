@@ -11,7 +11,7 @@ return {
         local oil = require('oil')
         oil.setup({
             keymaps = {
-                -- Use telescope keymaps
+                -- Use finder keymaps
                 ['<C-c>'] = 'actions.close',
                 ['<C-v>'] = 'actions.select_vsplit',
                 ['<C-x>'] = 'actions.select_split',
