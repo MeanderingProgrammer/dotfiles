@@ -1,9 +1,16 @@
 [user]
     name = MeanderingProgrammer
     email = meanderingprogrammer@gmail.com
+    signingkey = ~/.ssh/id_ed25519.pub
 [core]
     autocrlf = input
     commentChar = ";"
     pager = delta
+[commit]
+    gpgsign = true
+[tag]
+    gpgsign = true
+[gpg]
+    format = ssh
 [delta]
     side-by-side = true
