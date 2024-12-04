@@ -1,6 +1,6 @@
 return {
     'folke/trouble.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         require('trouble').setup({
             modes = {

@@ -2,7 +2,7 @@ local utils = require('mp.utils')
 
 return {
     'stevearc/oil.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         local hidden_files = { '.DS_Store' }
         vim.list_extend(hidden_files, utils.hidden_directories())
