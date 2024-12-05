@@ -46,6 +46,7 @@ do_deps() {
           cmake \
           curl \
           fd \
+          fzf \
           git \
           git-delta \
           golang \
