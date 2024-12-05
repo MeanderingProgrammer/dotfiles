@@ -52,7 +52,7 @@ class Repo:
 
     @staticmethod
     def update_submodules(repo: git.Repo) -> None:
-        repo.git.submodule("update", "--init", "--recursive")
+        repo.git.submodule("update", "--init", "--recursive", "--remote", "--rebase")
 
     @staticmethod
     def run(path: Path, command: str) -> None:
