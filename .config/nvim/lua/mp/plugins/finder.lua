@@ -23,6 +23,9 @@ return {
                 file_icons = 'mini',
                 formatter = 'path.filename_first',
             },
+            lsp = {
+                includeDeclaration = false,
+            },
         })
 
         ---@param lhs string

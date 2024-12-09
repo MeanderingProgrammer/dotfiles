@@ -54,4 +54,23 @@ return {
             })
         end,
     },
+    {
+        'hrsh7th/nvim-cmp',
+        optional = true,
+        opts = function(_, opts)
+            table.insert(opts.sources, { name = 'render-markdown' })
+        end,
+    },
+    {
+        'saghen/blink.cmp',
+        optional = true,
+        opts = {
+            providers = {
+                markdown = {
+                    name = 'RenderMarkdown',
+                    module = 'render-markdown.integ.blink',
+                },
+            },
+        },
+    },
 }
