@@ -9,8 +9,11 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             table.insert(opts.install, 'pyright')
-            vim.list_extend(opts.install, { 'isort', 'black' })
-            opts.formatters.python = { 'isort', 'black' }
+            vim.list_extend(opts.install, { 'black', 'isort' })
+            opts.formatters.python = { 'black', 'isort' }
+            opts.formatter_overrides.isort = {
+                prepend_args = { '--profile', 'black' },
+            }
         end,
     },
     {

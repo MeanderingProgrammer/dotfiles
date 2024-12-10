@@ -3,7 +3,7 @@ return {
     event = 'VeryLazy',
     config = function()
         local wk = require('which-key')
-        -- gc & gcc have the same prefix so overlap according to which-key, this is not really a problem
+        ---@diagnostic disable-next-line: missing-fields
         wk.setup({
             plugins = {
                 presets = {
@@ -25,9 +25,8 @@ return {
             { '<leader>r', group = 'requirements' },
             { '<leader>s', group = 'session' },
             { '<leader>f', group = 'fzf' },
-            { '<leader>w', group = 'workspaces' },
+            { '<leader>w', group = 'workspace' },
             { '<leader>t', group = 'trouble' },
-            { '<leader>ww', wk.show, desc = 'Show WhichKey' },
         })
     end,
 }

@@ -27,7 +27,7 @@ return {
                 map('gr', fzf.lsp_references, 'References')
                 map('gi', fzf.lsp_implementations, 'Implementations')
                 map('gs', fzf.lsp_document_symbols, 'Document Symbols')
-                map('<leader>ws', fzf.lsp_workspace_symbols, 'Symbols')
+                map('gS', fzf.lsp_workspace_symbols, 'Workspace Symbols')
                 map('K', vim.lsp.buf.hover, 'Hover Information')
                 map('<leader>k', vim.lsp.buf.signature_help, 'Signature Help')
                 map('<leader><C-a>', vim.lsp.buf.code_action, 'Code Actions')
@@ -35,9 +35,9 @@ return {
                 map('<leader><C-h>', function()
                     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }))
                 end, 'Toggle Inlay Hints')
-                map('<leader>wf', function()
+                map('<leader>ws', function()
                     vim.print(vim.lsp.buf.list_workspace_folders())
-                end, 'List Folders')
+                end, 'Folders')
 
                 local client = vim.lsp.get_client_by_id(args.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then

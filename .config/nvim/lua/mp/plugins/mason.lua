@@ -8,6 +8,7 @@ return {
     opts = {
         install = {},
         formatters = {},
+        formatter_overrides = {},
         linters = {},
         linter_overrides = {},
     },
@@ -18,7 +19,8 @@ return {
             ensure_installed = opts.install,
         })
 
-        require('conform').setup({
+        local conform = require('conform')
+        conform.setup({
             formatters_by_ft = opts.formatters,
             format_after_save = function(bufnr)
                 local ft = vim.bo[bufnr].filetype
@@ -33,6 +35,9 @@ return {
                 return { lsp_format = 'fallback' }
             end,
         })
+        for name, override in pairs(opts.formatter_overrides) do
+            conform.formatters[name] = override
+        end
 
         local lint = require('lint')
         lint.linters_by_ft = opts.linters
