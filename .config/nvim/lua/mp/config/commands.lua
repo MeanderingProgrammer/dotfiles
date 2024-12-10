@@ -121,3 +121,12 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
         vim.keymap.set('n', key, ':q<cr>', { buffer = buf, noremap = true, silent = true })
     end
 end, {})
+
+vim.api.nvim_create_user_command('AdventData', function(opts)
+    local file = vim.api.nvim_buf_get_name(0)
+    local name = vim.fn.fnamemodify(file, ':.')
+    local parts = vim.split(name, '/', { plain = true, trimempty = true })
+    local input = #opts.fargs == 0 and 'data' or 'sample'
+    local input_file = string.format('data/%s/%s/%s.txt', parts[1], parts[2], input)
+    vim.cmd.vsplit(input_file)
+end, { nargs = '?' })
