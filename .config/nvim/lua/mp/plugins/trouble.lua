@@ -2,6 +2,7 @@ return {
     'folke/trouble.nvim',
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
+        ---@diagnostic disable-next-line: missing-fields
         require('trouble').setup({
             modes = {
                 lsp = {
