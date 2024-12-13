@@ -60,10 +60,10 @@ return {
         optional = true,
         opts = {
             providers = {
-                lsp = { fallback_for = { 'lazydev' } },
                 lazydev = {
                     name = 'LazyDev',
                     module = 'lazydev.integrations.blink',
+                    fallbacks = { 'lsp' },
                 },
             },
         },

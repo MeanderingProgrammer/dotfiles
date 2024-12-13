@@ -59,6 +59,7 @@ return {
                 pypi = {
                     name = 'Pypi',
                     module = 'py-requirements.integrations.blink',
+                    fallbacks = { 'lsp' },
                     score_offset = 10,
                 },
             },

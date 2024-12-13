@@ -108,9 +108,7 @@ return {
                     auto_brackets = { enabled = true },
                 },
                 sources = {
-                    completion = {
-                        enabled_providers = vim.tbl_keys(opts.providers),
-                    },
+                    default = vim.tbl_keys(opts.providers),
                     providers = opts.providers,
                 },
                 windows = {

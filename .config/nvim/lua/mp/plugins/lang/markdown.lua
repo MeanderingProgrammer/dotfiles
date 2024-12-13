@@ -69,6 +69,7 @@ return {
                 markdown = {
                     name = 'RenderMarkdown',
                     module = 'render-markdown.integ.blink',
+                    fallbacks = { 'lsp' },
                 },
             },
         },
