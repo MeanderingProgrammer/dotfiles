@@ -9,6 +9,9 @@ vim.g.loaded_netrwPlugin = 1
 -- Completion plugin, true = nvim-cmp, false = blink.cmp
 vim.g.cmp = true
 
+-- Disable python ftplugin keymaps
+vim.g.no_python_maps = true
+
 -- Color settings
 vim.opt.termguicolors = true
 vim.opt.cursorline = true
