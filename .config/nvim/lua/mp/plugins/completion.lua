@@ -104,24 +104,28 @@ return {
                     ['<tab>'] = { 'snippet_forward', 'fallback' },
                     ['<S-tab>'] = { 'snippet_backward', 'fallback' },
                 },
-                accept = {
-                    auto_brackets = { enabled = true },
+                completion = {
+                    accept = {
+                        auto_brackets = { enabled = true },
+                    },
+                    list = {
+                        selection = 'auto_insert',
+                    },
+                    menu = {
+                        max_height = 20,
+                        border = 'rounded',
+                    },
+                    documentation = {
+                        auto_show = true,
+                        window = {
+                            max_height = 40,
+                            border = 'rounded',
+                        },
+                    },
                 },
                 sources = {
                     default = vim.tbl_keys(opts.providers),
                     providers = opts.providers,
-                },
-                windows = {
-                    autocomplete = {
-                        max_height = 20,
-                        border = 'rounded',
-                        selection = 'auto_insert',
-                    },
-                    documentation = {
-                        max_height = 40,
-                        border = 'rounded',
-                        auto_show = true,
-                    },
                 },
             })
         end,
