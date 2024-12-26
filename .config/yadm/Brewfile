@@ -22,6 +22,7 @@ brew "zsh-syntax-highlighting"
 
 # Terminals
 cask "alacritty"
+cask "ghostty"
 cask "kitty"
 cask "wezterm"
 
