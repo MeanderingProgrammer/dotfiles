@@ -1,9 +1,8 @@
-# ---- Environment Specific ---- #
-
-system_type=$(uname -s)
+# ---- Homebrew ---- #
 
 if [[ -z $HOMEBREW_PREFIX ]]; then
     services=()
+    system_type=$(uname -s)
     if [[ "${system_type}" == "Darwin" ]]; then
         brew_path="/opt/homebrew/bin/brew"
         # Add services
@@ -100,16 +99,22 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 # fzf
 [[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
 
-# ---- PATH ---- #
+# ---- Path ---- #
 
-# Add shell config bin folder
-export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
+prepend_path() {
+    [[ -d $1 ]] && export PATH="${1}:$PATH"
+}
 
-# Add user bin folder
-user_bin="${HOME}/bin"
-[[ -d $user_bin ]] && export PATH="${user_bin}:$PATH"
+# Shared bin folder
+prepend_path "${XDG_CONFIG_HOME}/shell/bin"
 
-# Add System32 if it exists (WSL)
+# User bin folder
+prepend_path "${HOME}/bin"
+
+# Prioritize Homebrew
+prepend_path "${HOMEBREW_PREFIX}/bin"
+
+# System32 (WSL)
 sys32_path="/mnt/c/Windows/System32"
 if [[ -d $sys32_path ]]; then
     export PATH="$PATH:${sys32_path}"
