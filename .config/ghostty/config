@@ -18,3 +18,5 @@ font-feature = ss09
 title = Ghostty
 
 background-opacity = 0.9
+
+auto-update = off
