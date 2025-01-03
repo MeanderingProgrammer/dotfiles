@@ -26,6 +26,28 @@ if [[ -z $HOMEBREW_PREFIX ]]; then
     done
 fi
 
+# ---- Path ---- #
+
+prepend_path() {
+    [[ -d $1 ]] && export PATH="${1}:$PATH"
+}
+
+# Shared bin folder
+prepend_path "${XDG_CONFIG_HOME}/shell/bin"
+
+# User bin folder
+prepend_path "${HOME}/bin"
+
+# Prioritize Homebrew
+prepend_path "${HOMEBREW_PREFIX}/bin"
+
+# System32 (WSL)
+sys32_path="/mnt/c/Windows/System32"
+if [[ -d $sys32_path ]]; then
+    export PATH="$PATH:${sys32_path}"
+    export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
+fi
+
 # ---- Language Home Cleanup ---- #
 
 # Gradle
@@ -98,28 +120,6 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
 # fzf
 [[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
-
-# ---- Path ---- #
-
-prepend_path() {
-    [[ -d $1 ]] && export PATH="${1}:$PATH"
-}
-
-# Shared bin folder
-prepend_path "${XDG_CONFIG_HOME}/shell/bin"
-
-# User bin folder
-prepend_path "${HOME}/bin"
-
-# Prioritize Homebrew
-prepend_path "${HOMEBREW_PREFIX}/bin"
-
-# System32 (WSL)
-sys32_path="/mnt/c/Windows/System32"
-if [[ -d $sys32_path ]]; then
-    export PATH="$PATH:${sys32_path}"
-    export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
-fi
 
 # ---- Completions ---- #
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
