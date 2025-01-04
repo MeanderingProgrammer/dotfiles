@@ -2,6 +2,11 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- OS information
+vim.g.mac = vim.fn.has('mac') == 1
+vim.g.linux = vim.fn.has('linux') == 1 or vim.fn.has('wsl') == 1
+vim.g.android = vim.fn.has('android') == 1
+
 -- Disable netrw
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

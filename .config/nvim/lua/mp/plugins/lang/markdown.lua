@@ -10,7 +10,7 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 table.insert(opts.install, 'marksman')
             end
             table.insert(opts.install, 'markdownlint')
@@ -24,7 +24,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 opts.servers.marksman = {}
             end
         end,

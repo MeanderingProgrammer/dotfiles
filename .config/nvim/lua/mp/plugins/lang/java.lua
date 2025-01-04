@@ -8,7 +8,7 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 table.insert(opts.install, 'jdtls')
             end
         end,
@@ -16,19 +16,19 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 opts.servers.jdtls = false
             end
         end,
     },
     {
         'mfussenegger/nvim-jdtls',
-        enabled = not utils.is_android,
+        enabled = not vim.g.android,
         config = function()
             local platform = nil
-            if vim.fn.has('mac') == 1 then
+            if vim.g.mac then
                 platform = 'mac'
-            elseif vim.fn.has('unix') == 1 or vim.fn.has('wsl') == 1 then
+            elseif vim.g.linux then
                 platform = 'linux'
             else
                 vim.print('Java not supported on system')

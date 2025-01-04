@@ -1,12 +1,6 @@
 ---@class lua.mp.Utils
 local M = {}
 
----@type boolean
-M.is_mac = vim.fn.has('mac') == 1
-
----@type boolean
-M.is_android = vim.uv.os_uname().release:find('android') ~= nil
-
 ---@param override? lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
 function M.capabilities(override)

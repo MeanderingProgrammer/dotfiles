@@ -1,5 +1,3 @@
-local utils = require('mp.utils')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -26,7 +24,7 @@ return {
             })
         end,
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 table.insert(opts.install, 'eslint-lsp')
                 table.insert(opts.install, 'svelte-language-server')
                 table.insert(opts.install, 'typescript-language-server')
@@ -39,7 +37,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            if not utils.is_android then
+            if not vim.g.android then
                 opts.servers.eslint = {}
                 opts.servers.svelte = {}
                 opts.servers.ts_ls = {

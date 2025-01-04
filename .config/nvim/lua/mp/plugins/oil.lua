@@ -25,7 +25,7 @@ return {
                 end,
             },
             float = {
-                padding = utils.is_android and 2 or 8,
+                padding = vim.g.android and 2 or 8,
             },
         })
 
