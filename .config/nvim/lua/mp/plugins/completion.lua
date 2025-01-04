@@ -108,9 +108,7 @@ return {
                     accept = {
                         auto_brackets = { enabled = true },
                     },
-                    list = {
-                        selection = 'auto_insert',
-                    },
+                    ghost_text = { enabled = true },
                     menu = {
                         max_height = 20,
                         border = 'rounded',
