@@ -35,15 +35,3 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
 | `./setup.sh clean` | Deletes the setup script              |
-
-# Optional
-
-## Install Nix
-
-[Doc](https://nixos.org/)
-
-Uses [Determinate Installer](https://github.com/DeterminateSystems/nix-installer)
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```

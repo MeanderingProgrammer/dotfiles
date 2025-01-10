@@ -17,7 +17,6 @@ return {
         },
         config = function(_, opts)
             local cmp = require('cmp')
-            local compare = require('cmp.config.compare')
             cmp.setup({
                 sources = cmp.config.sources(opts.sources),
                 window = {
@@ -47,21 +46,6 @@ return {
                         end
                     end, { 'i', 's' }),
                 }),
-                sorting = {
-                    priority_weight = 2,
-                    comparators = {
-                        -- Default + sort_text: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
-                        compare.exact,
-                        compare.score,
-                        compare.sort_text,
-                        compare.offset,
-                        compare.recently_used,
-                        compare.locality,
-                        compare.kind,
-                        compare.length,
-                        compare.order,
-                    },
-                },
                 snippet = {
                     expand = function(args)
                         vim.snippet.expand(args.body)
