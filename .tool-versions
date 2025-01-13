@@ -9,7 +9,7 @@ julia 1.9.4
 kotlin 1.9.20
 lua 5.1
 nodejs 20.18.0
-opam 2.1.5
+opam 2.3.0
 perl 5.38.2
 poetry 1.8.3
 python 3.13.0
