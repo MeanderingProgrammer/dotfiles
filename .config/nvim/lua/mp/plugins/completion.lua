@@ -89,10 +89,16 @@ return {
                     ['<S-tab>'] = { 'snippet_backward', 'fallback' },
                 },
                 completion = {
-                    accept = {
-                        auto_brackets = { enabled = true },
+                    list = {
+                        selection = {
+                            preselect = function(ctx)
+                                return ctx.mode ~= 'cmdline'
+                            end,
+                            auto_insert = function(ctx)
+                                return ctx.mode ~= 'cmdline'
+                            end,
+                        },
                     },
-                    ghost_text = { enabled = true },
                     menu = {
                         max_height = 20,
                         border = 'rounded',
@@ -104,6 +110,7 @@ return {
                             border = 'rounded',
                         },
                     },
+                    ghost_text = { enabled = true },
                 },
                 sources = {
                     default = vim.tbl_keys(opts.providers),
