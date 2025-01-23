@@ -29,17 +29,20 @@ fi
 # ---- Path ---- #
 
 prepend_path() {
-    [[ -d $1 ]] && export PATH="${1}:$PATH"
+    # Ensure 2 arguments are provided and neither is empty
+    [[ "${#}" == 2 && -n $1 && -n $2 ]] || return
+    path_value="${1}/${2}"
+    [[ -d $path_value ]] && export PATH="${path_value}:$PATH"
 }
 
 # Shared bin folder
-prepend_path "${XDG_CONFIG_HOME}/shell/bin"
+prepend_path "$XDG_CONFIG_HOME" "shell/bin"
 
 # User bin folder
-prepend_path "${HOME}/bin"
+prepend_path "$HOME" "bin"
 
 # Prioritize Homebrew
-prepend_path "${HOMEBREW_PREFIX}/bin"
+prepend_path "$HOMEBREW_PREFIX" "bin"
 
 # System32 (WSL)
 sys32_path="/mnt/c/Windows/System32"
