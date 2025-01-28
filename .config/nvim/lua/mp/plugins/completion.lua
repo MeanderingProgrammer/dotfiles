@@ -89,6 +89,9 @@ return {
                     ['<S-tab>'] = { 'snippet_backward', 'fallback' },
                 },
                 completion = {
+                    trigger = {
+                        show_on_blocked_trigger_characters = {},
+                    },
                     list = {
                         selection = {
                             preselect = function(ctx)
