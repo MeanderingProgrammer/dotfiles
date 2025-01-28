@@ -4,6 +4,9 @@ return {
     config = function()
         ---@diagnostic disable-next-line: missing-fields
         require('trouble').setup({
+            keys = {
+                ['<cr>'] = 'jump_close',
+            },
             modes = {
                 lsp = {
                     focus = false,
