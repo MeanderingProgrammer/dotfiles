@@ -40,7 +40,7 @@ class Ollama:
         print(response.json().get("response"))
 
 
-MODEL: Ollama = Ollama(model="llama3", port=11434)
+MODEL: Ollama = Ollama(model="deepseek-r1", port=11434)
 
 
 @click.group()
@@ -74,7 +74,7 @@ def cr(file: Path) -> None:
 @click.argument("file", type=Path)
 def rewrite(language: str, file: Path) -> None:
     """
-    Rewrite the input file to specified langauge
+    Rewrite the input file to specified language
     """
     assert file.is_file(), "Input must be a valid file"
     MODEL.run([f"Can you rewrite the folowing to {language}:", file.read_text()])
