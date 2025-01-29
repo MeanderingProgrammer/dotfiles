@@ -14,7 +14,7 @@ perl 5.38.2
 poetry 1.8.3
 python 3.13.0
 ruby 3.2.2
-rust 1.81.0
+rust 1.84.0
 scala 3.4.1
 terraform 1.8.3
 zig 0.13.0
