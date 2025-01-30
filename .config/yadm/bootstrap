@@ -27,20 +27,20 @@ main() {
     notify $TITLE "System: ${system_type}-${system_os}"
     if [[ "${#}" == 0 ]]; then
         do_deps
-        do_asdf
+        do_mise
         do_libs
         do_nvim
         do_repos
     elif [[ "${#}" == 1 ]]; then
         case ${1} in
             "deps") do_deps ;;
-            "asdf") do_asdf ;;
+            "mise") do_mise ;;
             "libs") do_libs ;;
             "nvim") do_nvim ;;
             "repos") do_repos ;;
             *)
                 notify $FAIL "Unknown command: ${1}"
-                notify $FAIL "Commands: deps, asdf, libs, nvim, repos"
+                notify $FAIL "Commands: deps, mise, libs, nvim, repos"
                 exit 1
                 ;;
         esac
@@ -78,14 +78,10 @@ do_deps() {
     fi
 }
 
-do_asdf() {
-    notify $TITLE "Updating asdf"
-    if has_command "asdf"; then
-        while read -r line; do
-            plugin=$(echo "${line}" | cut -d' ' -f1)
-            asdf plugin add "${plugin}"
-        done < ~/.tool-versions
-        asdf install
+do_mise() {
+    notify $TITLE "Updating mise"
+    if has_command "mise"; then
+        mise install
         notify $SUCCESS "  Success"
     fi
 }
@@ -111,7 +107,6 @@ do_libs() {
         if has_command "cargo"; then
             if [[ "$system_os" != "Android" ]]; then
                 cargo install aoc-cli
-                has_command "asdf" && asdf reshim rust
                 notify $SUCCESS "  Success"
             else
                 notify $SKIP "  Skipping: android"
@@ -135,7 +130,6 @@ do_libs() {
     do_ocaml() {
         notify $TITLE "Updating ocaml"
         if has_command "opam"; then
-            has_command "asdf" && asdf reshim opam
             # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
             opam init --no
             opam update

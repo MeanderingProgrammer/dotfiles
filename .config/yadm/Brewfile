@@ -1,5 +1,4 @@
 # Programming Related
-brew "asdf"
 brew "bat"
 brew "bison"
 brew "curl"
@@ -11,6 +10,7 @@ brew "jq"
 brew "just"
 brew "lazygit"
 brew "libsodium"
+brew "mise"
 brew "pandoc"
 brew "ripgrep"
 brew "tlrc"

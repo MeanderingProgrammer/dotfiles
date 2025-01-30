@@ -9,8 +9,6 @@ if [[ -z $HOMEBREW_PREFIX ]]; then
         services+=("ollama")
     elif [[ "${system_type}" == "Linux" ]]; then
         brew_path="/home/linuxbrew/.linuxbrew/bin/brew"
-        # Building python with asdf: https://github.com/pyenv/pyenv/pull/2906
-        export PYTHON_BUILD_USE_HOMEBREW=1
     else
         echo "Unhandled system type ${system_type}, stopping setup"
         return
@@ -51,16 +49,14 @@ if [[ -d $sys32_path ]]; then
     export PATH="$PATH:${sys32_path}/WindowsPowerShell/v1.0"
 fi
 
-# ---- Language Home Cleanup ---- #
+# ---- Home Cleanup ---- #
 
-# Gradle
-export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
+# Rust
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
 
-# Opam
-export OPAMROOT="${XDG_DATA_HOME}/opam"
-
-# C#
-export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
+# Go
+export GOPATH="${XDG_DATA_HOME}/go"
 
 # Python
 export PYTHON_HISTORY="${XDG_DATA_HOME}/python_history"
@@ -69,30 +65,17 @@ export PYTHON_HISTORY="${XDG_DATA_HOME}/python_history"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
 
-# Julia
-export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
-
-# ---- Language Setup ---- #
-
-# ASDF
-export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_FORCE_PREPEND="yes"
-asdf_src="${HOMEBREW_PREFIX}/opt/asdf/libexec/asdf.sh"
-[[ -f $asdf_src ]] && source "${asdf_src}"
-
-# Java
-java_init="${ASDF_DATA_DIR}/plugins/java/set-java-home.zsh"
-[[ -f $java_init ]] && source "${java_init}"
-
 # Opam
-opam_init="${OPAMROOT}/opam-init/init.zsh"
-[[ -f $opam_init ]] && source "${opam_init}"
+export OPAMROOT="${XDG_DATA_HOME}/opam"
+
+# Gradle
+export GRADLE_USER_HOME="${XDG_DATA_HOME}/gradle"
 
 # C#
-c_sharp_init="${ASDF_DATA_DIR}/plugins/dotnet-core/set-dotnet-home.zsh"
-[[ -f $c_sharp_init ]] && source "${c_sharp_init}"
+export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
 
-# ---- Software Home Cleanup ---- #
+# Julia
+export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
 
 # AWS
 export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
@@ -106,12 +89,17 @@ export LESSHISTFILE="${XDG_STATE_HOME}/lesshst"
 # Password Store
 export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 
-# Ansible
-export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
-export ANSIBLE_REMOTE_TEMP="${ANSIBLE_HOME}/tmp"
-
 # Matplotlib
 export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
+
+# ---- Language Setup ---- #
+
+# Mise
+[[ -x "$(command -v mise)" ]] && eval "$(mise activate zsh)"
+
+# Opam
+opam_init="${OPAMROOT}/opam-init/init.zsh"
+[[ -f $opam_init ]] && source "${opam_init}"
 
 # ---- Software Setup ---- #
 
@@ -122,7 +110,7 @@ export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 [[ -z $SSH_AUTH_SOCK ]] && eval "$(ssh-agent -s)"
 
 # fzf
-[[ -x "$(command -v fzf)" ]] && eval $(fzf --zsh)
+[[ -x "$(command -v fzf)" ]] && eval "$(fzf --zsh)"
 
 # ---- Completions ---- #
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
