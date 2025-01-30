@@ -4,6 +4,7 @@ alias update-sys="yadm pull && yadm bootstrap"
 alias ll="ls -latrh"
 alias workspace="cd ~/dev/repos/personal"
 alias notes="cd ~/Documents/notes"
+alias wget="wget --hsts-file=${XDG_CACHE_HOME}/wget-hsts"
 
 # Git
 alias gs="git status -uall"
