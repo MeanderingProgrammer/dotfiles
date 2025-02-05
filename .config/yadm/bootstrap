@@ -131,6 +131,7 @@ do_libs() {
         notify $TITLE "Updating ocaml"
         if has_command "opam"; then
             # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
+            # https://github.com/ocaml/opam/issues/5968
             opam init --no
             opam update
             opam upgrade --yes

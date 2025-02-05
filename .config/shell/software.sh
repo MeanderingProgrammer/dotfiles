@@ -158,7 +158,7 @@ load_zsh_plugin "zsh-syntax-highlighting"
 # ---- Editor with Aliases ---- #
 
 # Change default editor
-export VISUAL="nvim"
+export VISUAL="$(which nvim)"
 export EDITOR="$VISUAL"
 
 # Aliases common editor commands
