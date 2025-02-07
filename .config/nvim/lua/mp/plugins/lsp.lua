@@ -19,8 +19,9 @@ return {
                 ---@param lhs string
                 ---@param rhs function
                 ---@param desc string
-                local function map(lhs, rhs, desc)
-                    vim.keymap.set('n', lhs, rhs, { buffer = args.buf, desc = 'LSP ' .. desc })
+                ---@param mode? string
+                local function map(lhs, rhs, desc, mode)
+                    vim.keymap.set(mode or 'n', lhs, rhs, { buffer = args.buf, desc = 'LSP ' .. desc })
                 end
                 local fzf = require('fzf-lua')
                 map('gd', fzf.lsp_definitions, 'Definitions')
@@ -30,6 +31,7 @@ return {
                 map('gS', fzf.lsp_workspace_symbols, 'Workspace Symbols')
                 map('K', vim.lsp.buf.hover, 'Hover Information')
                 map('<leader>k', vim.lsp.buf.signature_help, 'Signature Help')
+                map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help', 'i')
                 map('<leader><C-a>', vim.lsp.buf.code_action, 'Code Actions')
                 map('<leader><C-r>', vim.lsp.buf.rename, 'Rename')
                 map('<leader><C-h>', function()
