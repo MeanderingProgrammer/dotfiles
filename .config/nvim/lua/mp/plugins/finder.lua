@@ -24,6 +24,7 @@ return {
                 formatter = 'path.filename_first',
             },
             lsp = {
+                jump1 = false,
                 includeDeclaration = false,
             },
         })
