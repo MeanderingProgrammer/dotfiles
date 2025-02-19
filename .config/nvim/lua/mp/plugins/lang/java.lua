@@ -38,7 +38,7 @@ return {
             local function jdtls_setup()
                 local jdtls = require('jdtls')
 
-                local jdtls_path = require('mason-registry').get_package('jdtls'):get_install_path()
+                local jdtls_path = vim.fn.expand('$MASON/packages/jdtls')
 
                 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
