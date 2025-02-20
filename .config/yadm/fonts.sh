@@ -7,7 +7,7 @@ font_dir="$HOME/.local/share/fonts"
 
 font_names=(
     "HackNerdFont-Regular.ttf"
-    "MonaspaceNeon-Regular.otf"
+    "MonaspaceNeonFrozen-Regular.ttf"
     "segoeui.ttf"
 )
 for font_name in "${font_names[@]}"; do

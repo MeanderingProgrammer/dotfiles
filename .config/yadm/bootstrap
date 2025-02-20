@@ -65,8 +65,8 @@ do_deps() {
         pkg upgrade --yes
         notify $SUCCESS "  Success: android pkg"
     elif [[ "$system_type" == "Linux" ]]; then
-        local wsl_sys32_path="/mnt/c/Windows/System32"
-        if [[ ! -d $wsl_sys32_path ]]; then
+        local sys32_path="/mnt/c/Windows/System32"
+        if [[ ! -d $sys32_path ]]; then
             source "${script_dir}/wezterm.sh"
             source "${script_dir}/fonts.sh"
         fi
