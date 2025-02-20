@@ -12,7 +12,7 @@ font_names=(
 )
 for font_name in "${font_names[@]}"; do
     if [[ ! -f "${font_dir}/${font_name}" ]]; then
-        cp "$(dirname $0)/${font_name}" "${font_dir}"
+        cp "$(dirname $0)/fonts/${font_name}" "${font_dir}"
         fc-cache -f
     fi
 done
