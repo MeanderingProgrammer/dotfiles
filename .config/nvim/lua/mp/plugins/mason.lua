@@ -19,20 +19,32 @@ return {
             ensure_installed = opts.install,
         })
 
+        ---@param bufnr integer
+        ---@return boolean
+        local skip_format = function(bufnr)
+            local filetype = vim.bo[bufnr].filetype
+            if vim.tbl_contains({ 'json' }, filetype) then
+                return true
+            end
+            local path = vim.api.nvim_buf_get_name(bufnr)
+            for _, folder in ipairs({ 'open-source' }) do
+                folder = string.format('/%s/', folder)
+                if path:find(folder, 1, true) ~= nil then
+                    return true
+                end
+            end
+            return false
+        end
+
         local conform = require('conform')
         conform.setup({
             formatters_by_ft = opts.formatters,
             format_after_save = function(bufnr)
-                local ft = vim.bo[bufnr].filetype
-                if vim.tbl_contains({ 'json' }, ft) then
+                if skip_format(bufnr) then
                     return nil
+                else
+                    return { lsp_format = 'fallback' }
                 end
-                local name = vim.api.nvim_buf_get_name(bufnr)
-                local disabled_name = name:find('/open-source/', 1, true)
-                if disabled_name ~= nil then
-                    return nil
-                end
-                return { lsp_format = 'fallback' }
             end,
         })
         for name, override in pairs(opts.formatter_overrides) do
@@ -45,8 +57,7 @@ return {
             lint.linters[name] = override(lint.linters[name])
         end
 
-        local events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
-        vim.api.nvim_create_autocmd(events, {
+        vim.api.nvim_create_autocmd({ 'BufRead', 'BufWritePost', 'InsertLeave' }, {
             group = vim.api.nvim_create_augroup('NvimLint', { clear = true }),
             callback = function()
                 lint.try_lint()
