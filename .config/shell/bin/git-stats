@@ -1,0 +1,168 @@
+#!/usr/bin/env python
+
+import os
+from dataclasses import dataclass
+from datetime import date, datetime, timedelta
+from pathlib import Path
+from typing import Self
+
+import requests
+from pydantic import AliasChoices, BaseModel, Field, field_serializer
+
+
+@dataclass(frozen=True)
+class Stat(BaseModel):
+    timestamp: date
+    count: int
+    uniques: int
+
+    @field_serializer("timestamp")
+    def serialize_timestamp(self, timestamp: date, _info) -> str:
+        return timestamp.strftime("%Y-%m-%d")
+
+
+@dataclass(frozen=True)
+class Traffic(BaseModel):
+    count: int
+    uniques: int
+    stats: list[Stat] = Field(validation_alias=AliasChoices("clones", "views"))
+
+
+@dataclass(frozen=True)
+class GithubApi:
+    owner: str
+    token: str
+    site: str = "https://api.github.com"
+
+    def traffic(self, endpoint: str, repo: str) -> Traffic:
+        # https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
+        url = f"{self.site}/repos/{self.owner}/{repo}/traffic/{endpoint}"
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"token {self.token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        response = requests.get(url, headers=headers)
+        assert response.status_code == 200, "auth token is likely expired"
+        return Traffic.model_validate(response.json())
+
+
+@dataclass(frozen=True)
+class Repo(BaseModel):
+    name: str
+    clones: list[Stat]
+    views: list[Stat]
+
+    def join(self, new: Self) -> None:
+        assert self.name == new.name
+        Repo.combine(self.clones, new.clones)
+        Repo.combine(self.views, new.views)
+
+    @staticmethod
+    def combine(current: list[Stat], new: list[Stat]) -> None:
+        seen: dict[date, Stat] = dict()
+        for stat in current:
+            seen[stat.timestamp] = stat
+        for stat in new:
+            existing = seen.get(stat.timestamp)
+            if existing is None:
+                current.append(stat)
+            else:
+                Repo.nothing_new(existing.count, stat.count)
+                Repo.nothing_new(existing.uniques, stat.uniques)
+
+    @staticmethod
+    def nothing_new(current: int, new: int) -> None:
+        assert current >= new, f"Expect no more data, found {current} -> {new}"
+
+
+@dataclass(frozen=True)
+class Repos(BaseModel):
+    repos: list[Repo]
+
+    def get(self, name: str) -> Repo | None:
+        for repo in self.repos:
+            if repo.name == name:
+                return repo
+        return None
+
+    def add(self, repo: Repo) -> None:
+        self.repos.append(repo)
+
+
+@dataclass(frozen=True)
+class TrafficCache:
+    file: Path
+    latest: date
+
+    def read(self) -> Repos:
+        if not self.file.exists():
+            return Repos(repos=[])
+        else:
+            return Repos.model_validate_json(self.file.read_text())
+
+    def write(self, repos: Repos) -> None:
+        self.file.write_text(repos.model_dump_json())
+
+    def add(self, repo: Repo) -> None:
+        repo = Repo(
+            name=repo.name,
+            clones=self.filter(repo.clones),
+            views=self.filter(repo.views),
+        )
+
+        repos = self.read()
+        current = repos.get(repo.name)
+        if current is None:
+            print(f"New   : {repo.name}")
+            clones, views = 0, 0
+            repos.add(repo)
+            current = repo
+        else:
+            print(f"Exists: {repo.name}")
+            clones, views = len(current.clones), len(current.views)
+            current.join(repo)
+        print(f"Clones: {clones} -> {len(current.clones)}")
+        print(f"Views : {views} -> {len(current.views)}")
+        self.write(repos)
+
+    def filter(self, stats: list[Stat]) -> list[Stat]:
+        return [stat for stat in stats if stat.timestamp <= self.latest]
+
+
+def main() -> None:
+    # Useful scripts to get info out:
+    # cat "${XDG_DATA_HOME}/git-traffic.json" | jq -r '.repos[]|[.clones[]|.count]|add'
+    # cat "${XDG_DATA_HOME}/git-traffic.json" | jq -r '.repos[]|[.clones[]|.uniques]|add'
+
+    api = GithubApi(
+        owner="MeanderingProgrammer",
+        token=env("GITHUB_TOKEN"),
+    )
+    cache = TrafficCache(
+        file=Path(env("XDG_DATA_HOME")).joinpath("git-traffic.json"),
+        latest=(datetime.now() - timedelta(days=2)).date(),
+    )
+    repos: list[str] = [
+        "render-markdown.nvim",
+    ]
+
+    for repo in repos:
+        clones = api.traffic("clones", repo)
+        views = api.traffic("views", repo)
+        repo = Repo(
+            name=repo,
+            clones=clones.stats,
+            views=views.stats,
+        )
+        cache.add(repo)
+
+
+def env(name: str) -> str:
+    value = os.getenv(name)
+    assert value is not None, f"{name} not set"
+    return value
+
+
+if __name__ == "__main__":
+    main()
