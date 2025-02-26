@@ -197,4 +197,6 @@ bindkey -M viins "\e/" vi-search-fix
 bindkey "^?" backward-delete-char
 # Prefix based search
 bindkey "^[[A" history-search-backward
+bindkey "^[OA" history-search-backward
 bindkey "^[[B" history-search-forward
+bindkey "^[OB" history-search-forward
