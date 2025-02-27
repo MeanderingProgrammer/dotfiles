@@ -1,25 +1,21 @@
+# ---- Skip if already in tmux ---- #
+[[ -z $TMUX ]] || return
+
 # ---- Skip if tmux is not installed ---- #
-if [[ ! -x "$(command -v tmux)" ]]; then
-    return
-fi
+[[ -x "$(command -v tmux)" ]] || return
 
 # ---- Skip if some terminal is already attached ---- #
 attached_sessions=$(tmux ls 2> /dev/null | grep attached)
-if [[ ${#attached_sessions} != 0 ]]; then
-    return
-fi
+[[ -z $attached_sessions ]] || return
 
 start_new_session() {
-    if [[ "$#" -ne 2 ]]; then
-        echo "Usage $0: session_name command_name"
-        return
-    fi
-    # Only create a new session if one isn't currently running
+    # Ensure 2 arguments are provided and neither is empty
+    [[ "${#}" == 2 && -n $1 && -n $2 ]] || return
+    # Skip if a session with the same name is already running
     existing_session=$(tmux ls 2> /dev/null | grep "$1")
-    if [[ ${#existing_session} == 0 ]]; then
-        tmux new -d -s "$1"
-        tmux send-keys -t "$1" "$2" ENTER
-    fi
+    [[ -z $existing_session ]] || return
+    tmux new -d -s "$1"
+    tmux send-keys -t "$1" "$2" ENTER
 }
 
 start_new_session "main" "workspace"
