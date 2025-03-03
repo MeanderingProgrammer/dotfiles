@@ -19,3 +19,17 @@ rust = "1.85.0"
 scala = "3.6.3"
 terraform = "1.10.5"
 zig = "0.13.0"
+
+[vars]
+nvim_root = '~/dev/repos/open-source/tools/neovim'
+
+[tasks.nvim-clean]
+dir = "{{vars.nvim_root}}"
+run = ["make distclean", "make clean"]
+
+[tasks.nvim-build]
+dir = "{{vars.nvim_root}}"
+run = ["make CMAKE_BUILD_TYPE=Release"]
+
+[tasks.nvim-run]
+run = ["VIMRUNTIME={{vars.nvim_root}}/runtime {{vars.nvim_root}}/build/bin/nvim"]
