@@ -48,10 +48,20 @@ return {
         dev = true,
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
         config = function()
-            require('render-markdown').setup({
+            local markdown = require('render-markdown')
+            markdown.setup({
                 file_types = { 'markdown', 'gitcommit' },
                 html = { enabled = false },
             })
+
+            ---@param lhs string
+            ---@param rhs function
+            ---@param desc string
+            local function map(lhs, rhs, desc)
+                vim.keymap.set('n', lhs, rhs, { desc = desc })
+            end
+            map('<leader>md', markdown.debug, 'Debug')
+            map('<leader>mt', markdown.toggle, 'Toggle')
         end,
     },
     {
