@@ -19,7 +19,15 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = function(_, opts)
-            opts.servers.pyright = {}
+            opts.servers.pyright = {
+                settings = {
+                    python = {
+                        analysis = {
+                            diagnosticMode = 'workspace',
+                        },
+                    },
+                },
+            }
         end,
     },
     {
