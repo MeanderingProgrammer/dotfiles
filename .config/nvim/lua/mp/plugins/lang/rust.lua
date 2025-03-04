@@ -30,8 +30,11 @@ return {
         config = function()
             local crates = require('crates')
             crates.setup({
-                completion = {
-                    cmp = { enabled = true },
+                lsp = {
+                    enabled = true,
+                    actions = true,
+                    completion = true,
+                    hover = true,
                 },
             })
 
@@ -47,25 +50,5 @@ return {
             map('<leader>cu', crates.upgrade_crate, 'Upgrade')
             map('<leader>cU', crates.upgrade_all_crates, 'Upgrade All')
         end,
-    },
-    {
-        'hrsh7th/nvim-cmp',
-        optional = true,
-        opts = function(_, opts)
-            table.insert(opts.sources, { name = 'crates' })
-        end,
-    },
-    {
-        'saghen/blink.cmp',
-        optional = true,
-        opts = {
-            providers = {
-                crates = {
-                    name = 'crates',
-                    module = 'blink.compat.source',
-                    score_offset = 10,
-                },
-            },
-        },
     },
 }

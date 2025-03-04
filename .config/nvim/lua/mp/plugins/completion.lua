@@ -65,7 +65,6 @@ return {
     {
         'saghen/blink.cmp',
         enabled = not vim.g.cmp,
-        dependencies = { 'saghen/blink.compat' },
         version = 'v0.*',
         opts = {
             providers = {
