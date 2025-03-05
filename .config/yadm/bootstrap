@@ -54,7 +54,7 @@ do_deps() {
     notify $TITLE "Updating dependencies"
 
     if has_command "brew"; then
-        brew bundle --no-lock --file "${script_dir}/Brewfile"
+        brew bundle --file "${script_dir}/Brewfile"
         brew update
         brew upgrade
         notify $SUCCESS "  Success: brew"
