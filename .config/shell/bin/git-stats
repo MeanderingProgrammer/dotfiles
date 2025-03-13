@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
+import argparse
 import os
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
+from enum import StrEnum, auto
 from pathlib import Path
 from typing import Self
 
 import requests
 from pydantic import AliasChoices, BaseModel, Field, field_serializer
+
+
+class Statistic(StrEnum):
+    CLONES = auto()
+    VIEWS = auto()
 
 
 @dataclass(frozen=True)
@@ -34,9 +41,9 @@ class GithubApi:
     token: str
     site: str = "https://api.github.com"
 
-    def traffic(self, endpoint: str, repo: str) -> Traffic:
+    def traffic(self, endpoint: str, name: str) -> Traffic:
         # https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
-        url = f"{self.site}/repos/{self.owner}/{repo}/traffic/{endpoint}"
+        url = f"{self.site}/repos/{self.owner}/{name}/traffic/{endpoint}"
         headers = {
             "Accept": "application/vnd.github+json",
             "Authorization": f"token {self.token}",
@@ -57,6 +64,12 @@ class Repo(BaseModel):
         assert self.name == new.name
         Repo.combine(self.clones, new.clones)
         Repo.combine(self.views, new.views)
+
+    def get(self, statistic: Statistic) -> list[Stat]:
+        if statistic == Statistic.CLONES:
+            return self.clones
+        elif statistic == Statistic.VIEWS:
+            return self.views
 
     @staticmethod
     def combine(current: list[Stat], new: list[Stat]) -> None:
@@ -130,11 +143,7 @@ class TrafficCache:
         return [stat for stat in stats if stat.timestamp <= self.latest]
 
 
-def main() -> None:
-    # Useful scripts to get info out:
-    # cat "${XDG_DATA_HOME}/git-traffic.json" | jq -r '.repos[]|[.clones[]|.count]|add'
-    # cat "${XDG_DATA_HOME}/git-traffic.json" | jq -r '.repos[]|[.clones[]|.uniques]|add'
-
+def main(statistic: Statistic | None) -> None:
     api = GithubApi(
         owner="MeanderingProgrammer",
         token=env("GITHUB_TOKEN"),
@@ -146,16 +155,18 @@ def main() -> None:
     repos: list[str] = [
         "render-markdown.nvim",
     ]
-
-    for repo in repos:
-        clones = api.traffic("clones", repo)
-        views = api.traffic("views", repo)
-        repo = Repo(
-            name=repo,
-            clones=clones.stats,
-            views=views.stats,
-        )
-        cache.add(repo)
+    for name in repos:
+        if statistic is None:
+            clones = api.traffic("clones", name)
+            views = api.traffic("views", name)
+            repo = Repo(name=name, clones=clones.stats, views=views.stats)
+            cache.add(repo)
+        else:
+            repo = cache.read().get(name)
+            assert repo is not None
+            stats = repo.get(statistic)
+            for stat in stats:
+                print(f"{stat.timestamp} | {stat.count}")
 
 
 def env(name: str) -> str:
@@ -165,4 +176,16 @@ def env(name: str) -> str:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Github repo statistics",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "-s",
+        "--statistic",
+        type=Statistic,
+        choices=Statistic,
+        help="Statistic to print",
+    )
+    args = parser.parse_args()
+    main(args.statistic)
