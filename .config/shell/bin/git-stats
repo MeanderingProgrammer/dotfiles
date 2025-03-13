@@ -157,9 +157,11 @@ def main(statistic: Statistic | None) -> None:
     ]
     for name in repos:
         if statistic is None:
-            clones = api.traffic("clones", name)
-            views = api.traffic("views", name)
-            repo = Repo(name=name, clones=clones.stats, views=views.stats)
+            repo = Repo(
+                name=name,
+                clones=api.traffic("clones", name).stats,
+                views=api.traffic("views", name).stats,
+            )
             cache.add(repo)
         else:
             repo = cache.read().get(name)
