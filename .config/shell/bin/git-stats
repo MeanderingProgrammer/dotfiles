@@ -4,17 +4,11 @@ import argparse
 import os
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
-from enum import StrEnum, auto
 from pathlib import Path
 from typing import Self
 
 import requests
 from pydantic import AliasChoices, BaseModel, Field, field_serializer
-
-
-class Statistic(StrEnum):
-    CLONES = auto()
-    VIEWS = auto()
 
 
 @dataclass(frozen=True)
@@ -65,11 +59,21 @@ class Repo(BaseModel):
         Repo.combine(self.clones, new.clones)
         Repo.combine(self.views, new.views)
 
-    def get(self, statistic: Statistic) -> list[Stat]:
-        if statistic == Statistic.CLONES:
-            return self.clones
-        elif statistic == Statistic.VIEWS:
-            return self.views
+    def pretty_print(self) -> None:
+        assert len(self.clones) == len(self.views)
+        print(self.separator("┌", "┬", "┐"))
+        print("│ Date       │ Clones │ Views │")
+        print(self.separator("├", "┼", "┤"))
+        for clone, view in zip(self.clones, self.views):
+            assert clone.timestamp == view.timestamp
+            assert clone.count < 100_000 and view.count < 10_000
+            print(f"│ {clone.timestamp} │ {clone.count:<6,} │ {view.count:<5,} │")
+        print(self.separator("└", "┴", "┘"))
+
+    def separator(self, left: str, center: str, right: str) -> str:
+        widths: list[int] = [10, 6, 5]
+        sections: list[str] = ["─" * (width + 2) for width in widths]
+        return left + center.join(sections) + right
 
     @staticmethod
     def combine(current: list[Stat], new: list[Stat]) -> None:
@@ -143,7 +147,7 @@ class TrafficCache:
         return [stat for stat in stats if stat.timestamp <= self.latest]
 
 
-def main(statistic: Statistic | None) -> None:
+def main(print: bool) -> None:
     api = GithubApi(
         owner="MeanderingProgrammer",
         token=env("GITHUB_TOKEN"),
@@ -156,19 +160,17 @@ def main(statistic: Statistic | None) -> None:
         "render-markdown.nvim",
     ]
     for name in repos:
-        if statistic is None:
+        if print:
+            repo = cache.read().get(name)
+            assert repo is not None
+            repo.pretty_print()
+        else:
             repo = Repo(
                 name=name,
                 clones=api.traffic("clones", name).stats,
                 views=api.traffic("views", name).stats,
             )
             cache.add(repo)
-        else:
-            repo = cache.read().get(name)
-            assert repo is not None
-            stats = repo.get(statistic)
-            for stat in stats:
-                print(f"{stat.timestamp} | {stat.count}")
 
 
 def env(name: str) -> str:
@@ -183,11 +185,10 @@ if __name__ == "__main__":
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "-s",
-        "--statistic",
-        type=Statistic,
-        choices=Statistic,
-        help="Statistic to print",
+        "-p",
+        "--print",
+        action="store_true",
+        help="Print statistic instead of updating",
     )
     args = parser.parse_args()
-    main(args.statistic)
+    main(args.print)
