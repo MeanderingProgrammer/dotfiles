@@ -29,18 +29,18 @@ main() {
         do_deps
         do_mise
         do_libs
-        do_nvim
         do_repos
+        do_nvim
     elif [[ "${#}" == 1 ]]; then
         case ${1} in
             "deps") do_deps ;;
             "mise") do_mise ;;
             "libs") do_libs ;;
-            "nvim") do_nvim ;;
             "repos") do_repos ;;
+            "nvim") do_nvim ;;
             *)
                 notify $FAIL "Unknown command: ${1}"
-                notify $FAIL "Commands: deps, mise, libs, nvim, repos"
+                notify $FAIL "Commands: deps, mise, libs, repos, nvim"
                 exit 1
                 ;;
         esac
@@ -146,20 +146,20 @@ do_libs() {
     do_ocaml
 }
 
+do_repos() {
+    notify $TITLE "Updating repos"
+    if has_command "python"; then
+        python "${script_dir}/setup-repos.py"
+        notify $SUCCESS "  Success"
+    fi
+}
+
 do_nvim() {
     notify $TITLE "Updating neovim"
     if has_command "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
         nvim --headless "+MasonToolsUpdateSync" +qa
-        notify $SUCCESS "  Success"
-    fi
-}
-
-do_repos() {
-    notify $TITLE "Updating repos"
-    if has_command "python"; then
-        python "${script_dir}/setup-repos.py"
         notify $SUCCESS "  Success"
     fi
 }
