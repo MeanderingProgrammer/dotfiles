@@ -60,15 +60,34 @@ class Repo(BaseModel):
         Repo.combine(self.views, new.views)
 
     def pretty_print(self) -> None:
+        table: list[str] = []
         assert len(self.clones) == len(self.views)
-        print(self.separator("┌", "┬", "┐"))
-        print("│ Date       │ Clones │ Views │")
-        print(self.separator("├", "┼", "┤"))
         for clone, view in zip(self.clones, self.views):
             assert clone.timestamp == view.timestamp
             assert clone.count < 100_000 and view.count < 10_000
-            print(f"│ {clone.timestamp} │ {clone.count:<6,} │ {view.count:<5,} │")
+
+            print(self.row(clone, True, 94, 100))
+            print(self.row(view, False, 91, 10))
+
+            parts: list[str] = [
+                str(clone.timestamp),
+                f"{clone.count:<6,}",
+                f"{view.count:<5,}",
+            ]
+            table.append("│ " + " │ ".join(parts) + " │")
+
+        print(self.separator("┌", "┬", "┐"))
+        print("│ Date       │ Clones │ Views │")
+        print(self.separator("├", "┼", "┤"))
+        print("\n".join(table))
         print(self.separator("└", "┴", "┘"))
+
+    def row(self, stat: Stat, first: bool, color: int, scale: int) -> str:
+        timestamp, count = str(stat.timestamp), stat.count
+        label = timestamp if first else " " * len(timestamp)
+        n = round(count / scale)
+        assert n < 160
+        return f"{label} \033[{color}m{'█' * n}\033[0m {count}"
 
     def separator(self, left: str, center: str, right: str) -> str:
         widths: list[int] = [10, 6, 5]
