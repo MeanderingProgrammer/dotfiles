@@ -28,6 +28,7 @@ return {
             { '<leader>s', group = 'session' },
             { '<leader>t', group = 'trouble' },
             { '<leader>w', group = 'workspace' },
+            { '<leader>y', group = 'yadm' },
         })
     end,
 }
