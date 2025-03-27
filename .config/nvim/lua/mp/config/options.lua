@@ -74,6 +74,9 @@ vim.opt.clipboard = 'unnamedplus'
 -- Spell checking
 vim.opt.spell = true
 
+-- Border style of floating windows
+vim.opt.winborder = 'rounded'
+
 -- Disable default providers
 for _, provider in ipairs({ 'python3', 'ruby', 'node', 'perl' }) do
     vim.g['loaded_' .. provider .. '_provider'] = 0
