@@ -1,7 +1,7 @@
 # General
 alias reload="source ~/.zshrc"
 alias update-sys="yadm pull && yadm bootstrap"
-alias ll="ls -latrh"
+alias ll="ls -latrh --color=auto"
 alias workspace="cd ~/dev/repos/personal"
 alias notes="cd ~/Documents/notes"
 alias wget="wget --hsts-file=${XDG_CACHE_HOME}/wget-hsts"
