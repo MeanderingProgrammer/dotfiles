@@ -1,20 +1,23 @@
 [[language]]
-name = "rust"
+name = "bash"
 
 [[language]]
 name = "go"
 
 [[language]]
-name = "python"
+name = "java"
+
+[[language]]
+name = "lua"
 
 [[language]]
 name = "ocaml"
 
 [[language]]
-name = "java"
+name = "python"
 
 [[language]]
-name = "bash"
+name = "rust"
 
 [[language]]
-name = "lua"
+name = "zig"
