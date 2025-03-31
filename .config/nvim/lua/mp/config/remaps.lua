@@ -5,6 +5,11 @@ local function map(modes, lhs, rhs)
     vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
 end
 
+---@see lsp-defaults
+for _, lhs in ipairs({ 'gra', 'gri', 'grn', 'grr' }) do
+    vim.keymap.del('n', lhs)
+end
+
 -- Move lines up / down
 map('n', '<A-j>', '<cmd>m .+1<cr>==')
 map('n', '<A-k>', '<cmd>m .-2<cr>==')
