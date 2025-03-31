@@ -35,9 +35,6 @@ map('n', 'n', 'nzz')
 map('n', 'N', 'Nzz')
 map('n', '<cr>', ':noh<cr><cr>')
 
--- Diagnostics
-map('n', '<leader>d', vim.diagnostic.open_float)
-
 -- Execute current line
 map('n', '<leader>bb', function()
     vim.cmd(':! ' .. vim.fn.getline('.'))
