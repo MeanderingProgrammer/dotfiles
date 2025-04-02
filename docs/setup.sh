@@ -26,10 +26,11 @@ main() {
         "brew") do_homebrew ;;
         "git") do_git ;;
         "yadm") do_yadm ;;
+        "limit") do_limit ;;
         "clean") do_clean ;;
         *)
             notify $FAIL "Unknown command: ${1}"
-            notify $FAIL "Commands: deps, shell, brew, git, yadm, clean"
+            notify $FAIL "Commands: deps, shell, brew, git, yadm, limit, clean"
             exit 1
             ;;
     esac
@@ -237,6 +238,20 @@ do_yadm() {
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
         notify $SUCCESS "  Success"
+    fi
+}
+
+do_limit() {
+    notify $TITLE "Increasing limits"
+    if [[ "${system_type}" == "Darwin" ]]; then
+        local limit_directory="/Library/LaunchDaemons"
+        local limit_file="limit.maxfiles.plist"
+        sudo cp "$HOME/docs/${limit_file}" "${limit_directory}"
+        sudo chown root:wheel "${limit_directory}/${limit_file}"
+        sudo launchctl load -w "${limit_directory}/${limit_file}"
+        notify $SUCCESS "  Success"
+    else
+        notify $SKIP "  Skipping: not Darwin"
     fi
 }
 

@@ -34,4 +34,5 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
 | `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
+| `./setup.sh limit` | Increases system limits               |
 | `./setup.sh clean` | Deletes the setup script              |
