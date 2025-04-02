@@ -129,6 +129,7 @@ def main() -> None:
             Repo(name="render-markdown.nvim"),
             Repo(name="resume"),
             Repo(name="small-apps"),
+            Repo(name="stashpad.nvim"),
         ],
     )
     repo_roots.append(personal_root)
