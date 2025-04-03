@@ -12,6 +12,8 @@ return {
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
         map('<leader>sb', stashpad.branch, 'Branch')
+        map('<leader>sd', stashpad.delete, 'Delete')
+        map('<leader>sf', stashpad.file, 'File')
         map('<leader>sg', stashpad.global, 'Global')
         map('<leader>st', stashpad.todo, 'Todo')
     end,
