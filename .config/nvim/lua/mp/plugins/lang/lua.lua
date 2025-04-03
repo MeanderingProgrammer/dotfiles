@@ -22,6 +22,7 @@ return {
                 settings = {
                     Lua = {
                         hint = { enable = true },
+                        runtime = { version = 'LuaJIT' },
                     },
                 },
             }
@@ -36,14 +37,11 @@ return {
             })
         end,
     },
-    { 'Bilal2453/luvit-meta', lazy = true }, -- vim.uv types
     {
         'folke/lazydev.nvim',
         ft = 'lua',
         opts = {
-            library = {
-                'luvit-meta/library',
-            },
+            library = { '${3rd}/luv/library' },
         },
     },
     {
