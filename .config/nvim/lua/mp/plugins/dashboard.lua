@@ -2,7 +2,6 @@ return {
     'MeanderingProgrammer/dashboard.nvim',
     dev = true,
     event = 'VimEnter',
-    dependencies = { 'Shatur/neovim-session-manager' },
     config = function()
         require('dashboard').setup({
             header = {
@@ -31,9 +30,6 @@ return {
                 end,
             },
             footer = { 'version', 'startuptime' },
-            on_load = function()
-                require('session_manager').load_current_dir_session()
-            end,
         })
     end,
 }

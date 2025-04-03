@@ -25,7 +25,7 @@ return {
             { '<leader>h', group = 'harpoon' },
             { '<leader>m', group = 'markdown' },
             { '<leader>r', group = 'requirements' },
-            { '<leader>s', group = 'session' },
+            { '<leader>s', group = 'stashpad' },
             { '<leader>t', group = 'trouble' },
             { '<leader>w', group = 'workspace' },
             { '<leader>y', group = 'yadm' },
