@@ -6,8 +6,6 @@ font_dir="$HOME/.local/share/fonts"
 [[ ! -d $font_dir ]] && mkdir -p $font_dir
 
 font_names=(
-    "HackNerdFont-Regular.ttf"
-    "MonaspaceNeonFrozen-Regular.ttf"
     "segoeui.ttf"
 )
 for font_name in "${font_names[@]}"; do
