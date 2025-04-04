@@ -9,8 +9,8 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'clangd')
-                table.insert(opts.install, 'csharp-language-server')
+                opts.install[#opts.install + 1] = 'clangd'
+                opts.install[#opts.install + 1] = 'csharp-language-server'
             end
         end,
     },

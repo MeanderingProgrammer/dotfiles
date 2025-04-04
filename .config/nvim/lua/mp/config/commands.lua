@@ -42,7 +42,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     for _, word in ipairs(words) do
         lines[#lines] = lines[#lines] .. word .. ' '
         if #lines[#lines] > 80 then
-            table.insert(lines, string.rep(' ', offset))
+            lines[#lines + 1] = string.rep(' ', offset)
         end
     end
 
@@ -50,7 +50,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     for _, line in ipairs(lines) do
         line = line:sub(1, #line - 1)
         if #line > 0 then
-            table.insert(result, line)
+            result[#result + 1] = line
         end
     end
 
@@ -86,16 +86,16 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
 
     local lines = {}
     for _, client in ipairs(clients) do
-        table.insert(lines, '{')
-        table.insert(lines, '  ' .. string.format('name = "%s",', client.name))
+        lines[#lines + 1] = '{'
+        lines[#lines + 1] = '  ' .. string.format('name = "%s",', client.name)
         local keys = vim.tbl_keys(client.config)
         table.sort(keys)
         for _, key in ipairs(keys) do
             for _, line in ipairs(process(key, client.config[key])) do
-                table.insert(lines, '  ' .. line)
+                lines[#lines + 1] = '  ' .. line
             end
         end
-        table.insert(lines, '}')
+        lines[#lines + 1] = '}'
     end
 
     local buf = vim.api.nvim_create_buf(false, true)

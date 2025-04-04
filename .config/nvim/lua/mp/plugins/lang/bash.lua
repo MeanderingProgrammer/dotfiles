@@ -6,9 +6,9 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            table.insert(opts.install, 'bash-language-server')
+            opts.install[#opts.install + 1] = 'bash-language-server'
             if not vim.g.android then
-                table.insert(opts.install, 'shellcheck')
+                opts.install[#opts.install + 1] = 'shellcheck'
                 opts.linters.bash = { 'shellcheck' }
                 opts.linters.sh = { 'shellcheck' }
                 opts.linters.zsh = { 'shellcheck' }

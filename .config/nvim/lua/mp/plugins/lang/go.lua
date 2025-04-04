@@ -8,7 +8,7 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            table.insert(opts.install, 'gopls')
+            opts.install[#opts.install + 1] = 'gopls'
             vim.list_extend(opts.install, { 'goimports', 'gofumpt' })
             opts.formatters.go = { 'goimports', 'gofumpt' }
         end,

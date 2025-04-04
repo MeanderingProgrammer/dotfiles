@@ -8,7 +8,7 @@ return {
     {
         'williamboman/mason.nvim',
         opts = function(_, opts)
-            table.insert(opts.install, 'pyright')
+            opts.install[#opts.install + 1] = 'pyright'
             vim.list_extend(opts.install, { 'black', 'isort' })
             opts.formatters.python = { 'black', 'isort' }
             opts.formatter_overrides.isort = {

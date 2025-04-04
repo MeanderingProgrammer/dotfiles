@@ -7,7 +7,7 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'texlab')
+                opts.install[#opts.install + 1] = 'texlab'
             end
         end,
     },

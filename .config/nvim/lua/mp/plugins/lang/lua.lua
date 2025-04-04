@@ -9,8 +9,8 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'lua-language-server')
-                table.insert(opts.install, 'stylua')
+                opts.install[#opts.install + 1] = 'lua-language-server'
+                opts.install[#opts.install + 1] = 'stylua'
             end
             opts.formatters.lua = { 'stylua' }
         end,
@@ -48,7 +48,7 @@ return {
         'hrsh7th/nvim-cmp',
         optional = true,
         opts = function(_, opts)
-            table.insert(opts.sources, { name = 'lazydev', group_index = 0 })
+            opts.sources[#opts.sources + 1] = { name = 'lazydev', group_index = 0 }
         end,
     },
     {

@@ -7,8 +7,8 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'ocaml-lsp')
-                table.insert(opts.install, 'ocamlformat')
+                opts.install[#opts.install + 1] = 'ocaml-lsp'
+                opts.install[#opts.install + 1] = 'ocamlformat'
                 opts.formatters.ocaml = { 'ocamlformat' }
             end
         end,

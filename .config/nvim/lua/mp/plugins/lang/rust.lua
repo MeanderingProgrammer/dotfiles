@@ -9,7 +9,7 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'rust-analyzer')
+                opts.install[#opts.install + 1] = 'rust-analyzer'
             end
         end,
     },

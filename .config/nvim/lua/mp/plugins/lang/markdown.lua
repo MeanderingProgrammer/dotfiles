@@ -11,9 +11,9 @@ return {
         'williamboman/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'marksman')
+                opts.install[#opts.install + 1] = 'marksman'
             end
-            table.insert(opts.install, 'markdownlint')
+            opts.install[#opts.install + 1] = 'markdownlint'
             opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
                 local config = utils.lint_config('markdownlint.yaml')

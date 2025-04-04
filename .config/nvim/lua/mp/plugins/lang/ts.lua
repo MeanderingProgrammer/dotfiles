@@ -25,10 +25,10 @@ return {
         end,
         opts = function(_, opts)
             if not vim.g.android then
-                table.insert(opts.install, 'eslint-lsp')
-                table.insert(opts.install, 'svelte-language-server')
-                table.insert(opts.install, 'typescript-language-server')
-                table.insert(opts.install, 'prettierd')
+                opts.install[#opts.install + 1] = 'eslint-lsp'
+                opts.install[#opts.install + 1] = 'svelte-language-server'
+                opts.install[#opts.install + 1] = 'typescript-language-server'
+                opts.install[#opts.install + 1] = 'prettierd'
                 opts.formatters.javascript = { 'prettierd' }
                 opts.formatters.typescript = { 'prettierd' }
             end
