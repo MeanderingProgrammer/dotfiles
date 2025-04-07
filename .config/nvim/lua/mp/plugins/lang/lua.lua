@@ -23,6 +23,21 @@ return {
                     Lua = {
                         hint = { enable = true },
                         runtime = { version = 'LuaJIT' },
+                        diagnostics = {
+                            ignoredFiles = 'Enable',
+                            groupFileStatus = {
+                                ambiguity = 'Any',
+                                await = 'Any',
+                                duplicate = 'Any',
+                                global = 'Any',
+                                luadoc = 'Any',
+                                redefined = 'Any',
+                                strict = 'Any',
+                                ['type-check'] = 'Any',
+                                unbalanced = 'Any',
+                                unused = 'Any',
+                            },
+                        },
                     },
                 },
             }
