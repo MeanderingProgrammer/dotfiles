@@ -29,6 +29,8 @@ return {
             },
         })
 
-        vim.keymap.set('n', '<leader>o', oil.toggle_float, { desc = 'Oil Toggle' })
+        vim.keymap.set('n', '<leader>o', oil.toggle_float, {
+            desc = 'Oil Toggle',
+        })
     end,
 }

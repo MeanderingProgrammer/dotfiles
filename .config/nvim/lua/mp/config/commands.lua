@@ -1,6 +1,6 @@
 -- Disable comment continuation, needs to be autocmd to override ftplugin
 vim.api.nvim_create_autocmd('BufEnter', {
-    group = vim.api.nvim_create_augroup('CommentOpt', { clear = true }),
+    group = vim.api.nvim_create_augroup('CommentOpt', {}),
     callback = function()
         vim.opt.formatoptions:remove({ 'r', 'o' })
     end,
@@ -59,9 +59,10 @@ end, {})
 
 -- Show LSP configuration in a floating window
 vim.api.nvim_create_user_command('MyLspConfig', function()
-    local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+    local current = vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.get_clients({ bufnr = current })
     if #clients == 0 then
-        vim.print('No LSPs found')
+        vim.print('No LSP found')
         return
     end
 
@@ -69,8 +70,9 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
     ---@param value any
     ---@return string[]
     local function process(key, value)
-        local bad_keys, bad_types = { 'capabilities', 'name' }, { 'function' }
-        if vim.tbl_contains(bad_keys, key) or vim.tbl_contains(bad_types, type(value)) then
+        local ignore_key = vim.tbl_contains({ 'capabilities', 'name' }, key)
+        local ignore_type = vim.tbl_contains({ 'function' }, type(value))
+        if ignore_key or ignore_type then
             return {}
         end
         if type(value) == 'table' then
@@ -81,7 +83,8 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
                 value = value[1]
             end
         end
-        return vim.split(string.format('%s = %s,', key, vim.inspect(value)), '\n', { plain = true })
+        local lines = string.format('%s = %s,', key, vim.inspect(value))
+        return vim.split(lines, '\n', { plain = true })
     end
 
     local lines = {}
@@ -112,14 +115,14 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
         col = math.floor((cols - width) / 2),
     })
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    local buf_options = { modifiable = false, filetype = 'lua', bufhidden = 'delete' }
-    for name, value in pairs(buf_options) do
-        vim.api.nvim_set_option_value(name, value, { buf = buf })
-    end
-    local escape_keys = { 'q', '<esc>' }
-    for _, key in ipairs(escape_keys) do
-        vim.keymap.set('n', key, ':q<cr>', { buffer = buf, noremap = true, silent = true })
-    end
+
+    vim.api.nvim_set_option_value('bufhidden', 'delete', { buf = buf })
+    vim.api.nvim_set_option_value('filetype', 'lua', { buf = buf })
+    vim.api.nvim_set_option_value('modifiable', false, { buf = buf })
+
+    local opts = { buffer = buf, noremap = true, silent = true }
+    vim.keymap.set('n', 'q', ':q<cr>', opts)
+    vim.keymap.set('n', '<esc>', ':q<cr>', opts)
 end, {})
 
 vim.api.nvim_create_user_command('AdventData', function(opts)
@@ -127,6 +130,6 @@ vim.api.nvim_create_user_command('AdventData', function(opts)
     local name = vim.fn.fnamemodify(file, ':.')
     local parts = vim.split(name, '/', { plain = true, trimempty = true })
     local input = #opts.fargs == 0 and 'data' or 'sample'
-    local input_file = string.format('data/%s/%s/%s.txt', parts[1], parts[2], input)
-    vim.cmd.vsplit(input_file)
+    local path = { 'data', parts[1], parts[2], string.format('%s.txt', input) }
+    vim.cmd.vsplit(table.concat(path, '/'))
 end, { nargs = '?' })

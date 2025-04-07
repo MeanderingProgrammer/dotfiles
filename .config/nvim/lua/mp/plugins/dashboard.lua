@@ -22,11 +22,21 @@ return {
                 '~/Documents/notes',
                 ---@return string[]
                 function()
-                    local directory = '~/dev/repos/personal'
-                    local find_command = string.format('find %s -type d -name ".git" -maxdepth 2', directory)
-                    local cleanded_command = find_command .. ' | sort | xargs dirname | sed "s|$HOME|~|g"'
-                    local git_directories = vim.fn.system(cleanded_command)
-                    return vim.split(vim.trim(git_directories), '\n', { plain = true })
+                    -- stylua: ignore
+                    local cmd = {
+                        'find', vim.fs.normalize('~/dev/repos/personal'),
+                        '-type', 'd', '-name', '.git', '-maxdepth', '2',
+                    }
+                    local result = vim.system(cmd, { text = true }):wait()
+                    local out = vim.trim(assert(result.stdout))
+                    local lines = vim.split(out, '\n', { plain = true })
+
+                    local dirs = {}
+                    for _, line in ipairs(lines) do
+                        dirs[#dirs + 1] = vim.fn.fnamemodify(line, ':~:h')
+                    end
+                    table.sort(dirs)
+                    return dirs
                 end,
             },
             footer = { 'version', 'startuptime' },

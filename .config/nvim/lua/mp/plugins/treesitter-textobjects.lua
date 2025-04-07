@@ -57,12 +57,12 @@ return {
 
         -- Repeat movement with ';' and ',' without breaking it for f / t
         local modes = { 'n', 'x', 'o' }
-        local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
-        vim.keymap.set(modes, ';', ts_repeat_move.repeat_last_move_next)
-        vim.keymap.set(modes, ',', ts_repeat_move.repeat_last_move_previous)
-        vim.keymap.set(modes, 'f', ts_repeat_move.builtin_f_expr, { expr = true })
-        vim.keymap.set(modes, 'F', ts_repeat_move.builtin_F_expr, { expr = true })
-        vim.keymap.set(modes, 't', ts_repeat_move.builtin_t_expr, { expr = true })
-        vim.keymap.set(modes, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
+        local ts_repeat = require('nvim-treesitter.textobjects.repeatable_move')
+        vim.keymap.set(modes, ';', ts_repeat.repeat_last_move_next)
+        vim.keymap.set(modes, ',', ts_repeat.repeat_last_move_previous)
+        vim.keymap.set(modes, 'f', ts_repeat.builtin_f_expr, { expr = true })
+        vim.keymap.set(modes, 'F', ts_repeat.builtin_F_expr, { expr = true })
+        vim.keymap.set(modes, 't', ts_repeat.builtin_t_expr, { expr = true })
+        vim.keymap.set(modes, 'T', ts_repeat.builtin_T_expr, { expr = true })
     end,
 }

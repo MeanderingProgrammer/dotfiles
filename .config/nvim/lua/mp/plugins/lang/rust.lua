@@ -45,8 +45,8 @@ return {
                 vim.keymap.set('n', lhs, rhs, { desc = desc })
             end
             map('<leader>ct', crates.toggle, 'Toggle UI')
-            map('<leader>cv', crates.show_versions_popup, 'Show Version Popup')
-            map('<leader>cd', crates.show_dependencies_popup, 'Show Dependency Popup')
+            map('<leader>cv', crates.show_versions_popup, 'Versions')
+            map('<leader>cd', crates.show_dependencies_popup, 'Dependencies')
             map('<leader>cu', crates.upgrade_crate, 'Upgrade')
             map('<leader>cU', crates.upgrade_all_crates, 'Upgrade All')
         end,

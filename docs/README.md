@@ -13,7 +13,7 @@ Using [yadm](https://yadm.io/) to store all my dotfiles
 
 # Setup
 
-## Install `curl` (Linux)
+## Linux - Install `curl`
 
 ```bash
 sudo apt install curl
@@ -36,3 +36,12 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
 | `./setup.sh limit` | Increases system limits               |
 | `./setup.sh clean` | Deletes the setup script              |
+
+# Settings
+
+## MacOS - Developer Tools
+
+System Settings -> Privacy & Security -> Developer Tools
+
+- Add terminal emulators to the list
+- Removes overhead when running executables

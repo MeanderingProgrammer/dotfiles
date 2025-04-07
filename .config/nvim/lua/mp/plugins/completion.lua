@@ -20,8 +20,12 @@ return {
             cmp.setup({
                 sources = cmp.config.sources(opts.sources),
                 window = {
-                    completion = cmp.config.window.bordered({ border = 'rounded' }),
-                    documentation = cmp.config.window.bordered({ border = 'rounded' }),
+                    completion = cmp.config.window.bordered({
+                        border = 'rounded',
+                    }),
+                    documentation = cmp.config.window.bordered({
+                        border = 'rounded',
+                    }),
                 },
                 mapping = cmp.mapping.preset.insert({
                     ['<cr>'] = cmp.mapping.confirm({ select = true }),
@@ -58,7 +62,10 @@ return {
             })
             cmp.setup.cmdline(':', {
                 mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }),
+                sources = cmp.config.sources(
+                    { { name = 'path' } },
+                    { { name = 'cmdline' } }
+                ),
             })
         end,
     },
@@ -78,7 +85,11 @@ return {
             require('blink.cmp').setup({
                 keymap = {
                     ['<cr>'] = { 'accept', 'fallback' },
-                    ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+                    ['<C-space>'] = {
+                        'show',
+                        'show_documentation',
+                        'hide_documentation',
+                    },
                     ['<C-e>'] = { 'hide', 'fallback' },
                     ['<C-n>'] = { 'select_next', 'fallback' },
                     ['<C-p>'] = { 'select_prev', 'fallback' },

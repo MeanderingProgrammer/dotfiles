@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from argparse import ArgumentParser
+import argparse
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from pathlib import Path
@@ -88,7 +88,9 @@ def read_lines(file: Path) -> list[bytes]:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Detect / Change line endings for files")
+    parser = argparse.ArgumentParser(
+        description="Detect / Change line endings for files"
+    )
     parser.add_argument("--fix", action="store_true")
     args = parser.parse_args()
     main(args.fix)

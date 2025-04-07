@@ -17,7 +17,8 @@ return {
             opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
                 local config = utils.lint_config('markdownlint.yaml')
-                linter.args = vim.list_extend(linter.args or {}, { '--config', config })
+                local args = { '--config', config }
+                linter.args = vim.list_extend(linter.args or {}, args)
             end
         end,
     },
@@ -46,7 +47,10 @@ return {
     {
         'MeanderingProgrammer/render-markdown.nvim',
         dev = true,
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter',
+            'echasnovski/mini.nvim',
+        },
         config = function()
             local markdown = require('render-markdown')
             markdown.setup({

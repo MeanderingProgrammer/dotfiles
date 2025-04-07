@@ -17,10 +17,6 @@ vim.g.cmp = true
 -- Disable python ftplugin keymaps
 vim.g.no_python_maps = true
 
--- Disable zig adding errors to loclist
--- Remove when release includes https://github.com/neovim/neovim/pull/28904
-vim.g.zig_fmt_parse_errors = 0
-
 -- Color settings
 vim.opt.termguicolors = true
 vim.opt.cursorline = true

@@ -63,7 +63,8 @@ return {
         'hrsh7th/nvim-cmp',
         optional = true,
         opts = function(_, opts)
-            opts.sources[#opts.sources + 1] = { name = 'lazydev', group_index = 0 }
+            local source = { name = 'lazydev', group_index = 0 }
+            opts.sources[#opts.sources + 1] = source
         end,
     },
     {

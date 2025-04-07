@@ -40,7 +40,7 @@ return {
 
                 local jdtls_path = vim.fn.expand('$MASON/packages/jdtls')
 
-                local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+                local project = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
                 -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
                 -- stylua: ignore
@@ -58,14 +58,16 @@ return {
                     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
                     '-jar', vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar'),
                     '-configuration', jdtls_path .. '/config_' .. platform,
-                    '-data', vim.fn.stdpath('cache') .. '/nvim-jdtls/' .. project_name,
+                    '-data', vim.fn.stdpath('cache') .. '/nvim-jdtls/' .. project,
                 }
 
                 -- https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line
                 local lsp_settings = {
                     java = {
                         eclipse = { downloadSources = true },
-                        configuration = { updateBuildConfiguration = 'interactive' },
+                        configuration = {
+                            updateBuildConfiguration = 'interactive',
+                        },
                         maven = { downloadSources = true },
                         implementationsCodeLens = { enabled = true },
                         referencesCodeLens = { enabled = true },
@@ -90,6 +92,14 @@ return {
 
                 local capabilities = utils.capabilities()
 
+                local markers = {
+                    '.git',
+                    'build.gradle',
+                    'gradlew',
+                    'mvnw',
+                    'pom.xml',
+                }
+
                 local extended_capabilities = jdtls.extendedClientCapabilities
                 extended_capabilities.resolveAdditionalTextEditsSupport = true
 
@@ -97,7 +107,7 @@ return {
                     cmd = cmd,
                     settings = lsp_settings,
                     capabilities = capabilities,
-                    root_dir = vim.fs.root(0, { '.git', 'gradlew', 'build.gradle', 'mvnw', 'pom.xml' }),
+                    root_dir = vim.fs.root(0, markers),
                     flags = { allow_incremental_sync = true },
                     init_options = {
                         bundles = {},
@@ -106,7 +116,7 @@ return {
                 })
             end
             vim.api.nvim_create_autocmd('FileType', {
-                group = vim.api.nvim_create_augroup('JavaCmds', { clear = true }),
+                group = vim.api.nvim_create_augroup('JavaCmds', {}),
                 pattern = { 'java' },
                 desc = 'Setup jdtls',
                 callback = jdtls_setup,

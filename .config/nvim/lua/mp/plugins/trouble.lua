@@ -23,15 +23,17 @@ return {
             },
         })
 
-        ---@param lhs string
-        ---@param rhs string
+        ---@param char string
+        ---@param args string
         ---@param desc string
-        local function map(lhs, rhs, desc)
+        local function map(char, args, desc)
+            local lhs = string.format('<leader>t%s', char)
+            local rhs = string.format('<cmd>Trouble %s<cr>', args)
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
-        map('<leader>tl', '<cmd>Trouble lsp toggle<cr>', 'LSP')
-        map('<leader>ts', '<cmd>Trouble symbols toggle<cr>', 'Symbols')
-        map('<leader>tx', '<cmd>Trouble diagnostics toggle<cr>', 'Diagnostics')
-        map('<leader>tX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', 'Buffer Diagnostics')
+        map('l', 'lsp toggle', 'LSP')
+        map('s', 'symbols toggle', 'Symbols')
+        map('x', 'diagnostics toggle', 'Diagnostics')
+        map('X', 'diagnostics toggle filter.buf=0', 'Buffer Diagnostics')
     end,
 }

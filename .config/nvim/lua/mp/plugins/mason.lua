@@ -57,8 +57,9 @@ return {
             lint.linters[name] = override(lint.linters[name])
         end
 
-        vim.api.nvim_create_autocmd({ 'BufRead', 'BufWritePost', 'InsertLeave' }, {
-            group = vim.api.nvim_create_augroup('NvimLint', { clear = true }),
+        local lint_events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
+        vim.api.nvim_create_autocmd(lint_events, {
+            group = vim.api.nvim_create_augroup('NvimLint', {}),
             callback = function()
                 lint.try_lint()
             end,

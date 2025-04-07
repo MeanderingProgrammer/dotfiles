@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
+import argparse
 import subprocess
-from argparse import ArgumentParser
 from pathlib import Path
 
 import pandas as pd
@@ -34,7 +34,7 @@ def run(directory: Path, command: list[str]) -> str:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Run git command in all subfolders")
+    parser = argparse.ArgumentParser(description="Run git command in all subfolders")
     parser.add_argument("command", nargs="+", help="Git command to run")
     args, unknown = parser.parse_known_args()
     main(args.command + unknown)

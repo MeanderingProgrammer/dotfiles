@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+
+import argparse
+import shutil
+from dataclasses import dataclass
+from enum import StrEnum, auto
+from pathlib import Path
+
+
+class Language(StrEnum):
+    LUA = auto()
+
+
+@dataclass(frozen=True)
+class Root:
+    path: Path
+    language: Language
+
+
+@dataclass(frozen=True)
+class Template:
+    data: Path
+
+    def copy(self, root: Root) -> None:
+        print(f"Copying: {root.language} template to {root.path}")
+        if not root.path.is_dir():
+            print(f"Skipping: not a directory")
+        else:
+            file = self.file(root.language)
+            src = self.data.joinpath(file)
+            assert src.is_file()
+            dst = root.path.joinpath(file)
+            verb = "Replacing" if dst.exists() else "Creating"
+            print(f"{verb}: {file}")
+            shutil.copy(src, dst)
+        print()
+
+    def file(self, language: Language) -> str:
+        if language == Language.LUA:
+            return ".stylua.toml"
+
+
+def main() -> None:
+    template = get_template()
+    for root in get_roots():
+        template.copy(root)
+
+
+def get_template() -> Template:
+    current = Path(__file__).resolve()
+    data = current.parent.joinpath("data")
+    assert data.is_dir()
+    return Template(data=data)
+
+
+def get_roots() -> list[Root]:
+    config = Path.home().joinpath(".config")
+    repos = Path.home().joinpath("dev/repos/personal")
+    return [
+        Root(config.joinpath("nvim"), Language.LUA),
+        Root(config.joinpath("wezterm"), Language.LUA),
+        Root(repos.joinpath("dashboard.nvim"), Language.LUA),
+        Root(repos.joinpath("harpoon-core.nvim"), Language.LUA),
+        Root(repos.joinpath("py-requirements.nvim"), Language.LUA),
+        Root(repos.joinpath("render-markdown.nvim"), Language.LUA),
+        Root(repos.joinpath("stashpad.nvim"), Language.LUA),
+    ]
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Copy common files to directories based on language"
+    )
+    parser.parse_args()
+    main()
