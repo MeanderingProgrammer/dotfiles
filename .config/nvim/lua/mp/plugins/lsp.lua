@@ -55,7 +55,7 @@ return {
             end,
         })
 
-        -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+        -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, server in pairs(opts.servers) do
             if server then
                 server.capabilities = utils.capabilities(server.capabilities)
