@@ -15,6 +15,9 @@ return {
         map('<leader>sd', stashpad.delete, 'Delete')
         map('<leader>sf', stashpad.file, 'File')
         map('<leader>sg', stashpad.global, 'Global')
+        map('<leader>so', function()
+            require('oil').toggle_float(stashpad.project())
+        end, 'Oil Toggle')
         map('<leader>st', stashpad.todo, 'Todo')
     end,
 }
