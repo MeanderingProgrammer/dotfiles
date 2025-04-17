@@ -102,25 +102,13 @@ return {
                     trigger = {
                         show_on_blocked_trigger_characters = {},
                     },
-                    list = {
-                        selection = {
-                            preselect = function(ctx)
-                                return ctx.mode ~= 'cmdline'
-                            end,
-                            auto_insert = function(ctx)
-                                return ctx.mode ~= 'cmdline'
-                            end,
-                        },
-                    },
                     menu = {
                         max_height = 20,
-                        border = 'rounded',
                     },
                     documentation = {
                         auto_show = true,
                         window = {
                             max_height = 40,
-                            border = 'rounded',
                         },
                     },
                     ghost_text = { enabled = true },
