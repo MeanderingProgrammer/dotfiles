@@ -7,6 +7,10 @@ font_dir="$HOME/.local/share/fonts"
 
 font_names=(
     "segoeui.ttf"
+    "segoeuib.ttf"
+    "segoeuil.ttf"
+    "segoeuisl.ttf"
+    "seguisb.ttf"
 )
 for font_name in "${font_names[@]}"; do
     if [[ ! -f "${font_dir}/${font_name}" ]]; then
