@@ -72,7 +72,7 @@ return {
     {
         'saghen/blink.cmp',
         enabled = not vim.g.cmp,
-        version = 'v0.*',
+        version = '1.*',
         opts = {
             providers = {
                 lsp = {},
