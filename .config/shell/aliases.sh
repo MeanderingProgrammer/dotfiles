@@ -1,12 +1,13 @@
-# General
+# general
 alias reload="source ~/.zshrc"
 alias update-sys="yadm pull && yadm bootstrap"
 alias ll="ls -latrh --color=auto"
 alias workspace="cd ~/dev/repos/personal"
 alias notes="cd ~/Documents/notes"
 alias wget="wget --hsts-file=${XDG_CACHE_HOME}/wget-hsts"
+alias exit-tmux="tmux kill-server"
 
-# Git
+# git
 alias gs="git status -uall"
 alias gl="git log"
 alias gp="git push"
@@ -20,7 +21,7 @@ alias gu="git branch -u main"
 alias gr="git rebase -i"
 alias gundo="git restore ."
 
-# Yadm
+# yadm
 alias yb="bash ~/.config/yadm/bootstrap"
 alias ys="yadm status"
 alias yl="yadm log"
@@ -31,14 +32,15 @@ alias yc="yadm commit -m"
 alias yac="yadm add ~/docs/ ~/.config/alacritty/ ~/.config/ghostty/ ~/.config/git/ ~/.config/helix/ ~/.config/kitty/ ~/.config/lang/ ~/.config/lazygit/ ~/.config/mise/ ~/.config/npm/ ~/.config/nvim/ ~/.config/shell/ ~/.config/shellcheckrc ~/.config/tmux/ ~/.config/vim/ ~/.config/wezterm/ ~/.config/yadm/"
 alias yls="yadm ls-files ~"
 alias yd="yadm diff"
+alias ydp="yadm diff HEAD"
 
-# Pass
+# pass
 alias pas="pass git status"
 alias pal="pass git log"
 alias pap="pass git push"
 alias papl="pass git pull"
 
-# Advent
+# advent
 alias a-build="./scripts/advent.py build"
 alias a-run="./scripts/advent.py run"
 alias a-gen="./scripts/advent.py generate"

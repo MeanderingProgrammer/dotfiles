@@ -13,7 +13,7 @@ import click
     is_flag=True,
     show_default=True,
     default=False,
-    help="Show differences against previous commit.",
+    help="show differences against previous commit",
 )
 @click.option(
     "-n",
@@ -21,7 +21,7 @@ import click
     is_flag=True,
     show_default=True,
     default=False,
-    help="Show file names that have changed.",
+    help="show file names that have changed",
 )
 @click.option(
     "-a",
@@ -29,7 +29,7 @@ import click
     is_flag=True,
     show_default=True,
     default=False,
-    help="Show lock files.",
+    help="include lock files",
 )
 @click.option(
     "-d",
@@ -37,35 +37,66 @@ import click
     is_flag=True,
     show_default=True,
     default=False,
-    help="Debug Mode.",
+    help="debug command",
 )
 @click.help_option("-h", "--help")
 def cli(previous: bool, name: bool, all: bool, debug: bool) -> None:
     """git diff"""
-    branch = "HEAD^" if previous else root_branch(["main", "master"])
-    options = "--name-only" if name else "--"
-    files = "" if all else f'. {exclude("lock.json")} {exclude("lock.yaml")}'
-    command = f"git diff {branch} {options} {files}"
+
+    # git diff [<options>] [<commit>..<commit>] [--] [<path>...]
+    cmd: list[str] = ["git", "diff"]
+
+    if name:
+        cmd.append("--name-only")
+
+    if previous:
+        cmd.append("HEAD^")
+    else:
+        root = get_root(["main", "master"])
+        current = get_current()
+        if root != current:
+            cmd.append(root)
+
+    if not all:
+        cmd.append("--")
+        cmd.append(".")
+        cmd.append(exclude("Cargo.lock"))
+        cmd.append(exclude("lock.json"))
+        cmd.append(exclude("lock.yaml"))
+
+    command = " ".join(cmd)
     if debug:
         print(command)
     else:
         os.system(command)
 
 
-def root_branch(roots: list[str]) -> str:
-    branches: list[str] = run("git branch")
-    branches: list[str] = [branch.split()[-1] for branch in branches]
-    result: list[str] = [root for root in roots if root in branches]
-    assert len(result) == 1, f"Expected 1 root branch {roots}, found {len(result)}"
+def get_root(markers: list[str]) -> str:
+    result: list[str] = []
+    for branch in run(["git", "branch"]):
+        # * main    -> main
+        #   main    -> main
+        # * feature -> feature
+        #   feature -> feature
+        branch = branch.strip().split()[-1]
+        if branch in markers:
+            result.append(branch)
+    assert len(result) == 1, f"expected 1 root {markers}, found {len(result)}"
     return result[0]
 
 
-def run(command: str) -> list[str]:
-    result = subprocess.run(command.split(), capture_output=True, text=True)
+def get_current() -> str:
+    result = run(["git", "branch", "--show-current"])
+    assert len(result) == 1, f"expected 1 current branch, found {len(result)}"
+    return result[0]
+
+
+def run(cmd: list[str]) -> list[str]:
+    result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
         return result.stdout.strip().splitlines()
     else:
-        raise Exception(f"{command} failed due to: {result.stderr.strip()}")
+        raise Exception(f"{cmd} failed due to: {result.stderr.strip()}")
 
 
 def exclude(suffix: str) -> str:
