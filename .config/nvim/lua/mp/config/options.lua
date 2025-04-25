@@ -11,6 +11,9 @@ vim.g.android = vim.fn.has('android') == 1
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Use an opaque or transparent colorscheme
+vim.g.opaque = true
+
 -- Completion plugin, true = nvim-cmp, false = blink.cmp
 vim.g.cmp = true
 
