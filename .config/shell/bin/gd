@@ -24,12 +24,12 @@ import click
     help="show file names that have changed",
 )
 @click.option(
-    "-a",
-    "--all",
+    "-e",
+    "--exclude",
     is_flag=True,
     show_default=True,
-    default=False,
-    help="include lock files",
+    default=True,
+    help="exclude lock files",
 )
 @click.option(
     "-d",
@@ -40,10 +40,10 @@ import click
     help="debug command",
 )
 @click.help_option("-h", "--help")
-def cli(previous: bool, name: bool, all: bool, debug: bool) -> None:
+def cli(previous: bool, name: bool, exclude: bool, debug: bool) -> None:
     """git diff"""
 
-    # git diff [<options>] <commit>..<commit> [--] [<path>...]
+    # git diff (<options>)? (<commit>)? (-- <path>...)?
     cmd: list[str] = ["git", "diff"]
 
     if name:
@@ -52,14 +52,17 @@ def cli(previous: bool, name: bool, all: bool, debug: bool) -> None:
     if previous:
         cmd.append("HEAD^")
     else:
-        cmd.append(get_root(["main", "master"]))
+        # include root branch if there are no changes
+        changes = run(["git", "status", "--porcelain"])
+        if len(changes) == 0:
+            cmd.append(get_root(["main", "master"]))
 
-    if not all:
+    if exclude:
         cmd.append("--")
         cmd.append(".")
-        cmd.append(exclude("Cargo.lock"))
-        cmd.append(exclude("lock.json"))
-        cmd.append(exclude("lock.yaml"))
+        excludes: list[str] = ["Cargo.lock", "lock.json", "lock.yaml"]
+        for file in excludes:
+            cmd.append(f'":(exclude)*{file}"')
 
     command = " ".join(cmd)
     if debug:
@@ -88,10 +91,6 @@ def run(cmd: list[str]) -> list[str]:
         return result.stdout.strip().splitlines()
     else:
         raise Exception(f"{cmd} failed due to: {result.stderr.strip()}")
-
-
-def exclude(suffix: str) -> str:
-    return f'":(exclude)*{suffix}"'
 
 
 if __name__ == "__main__":
