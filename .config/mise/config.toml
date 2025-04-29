@@ -25,7 +25,7 @@ NVIM_ROOT = """
 {% if cwd | basename == 'neovim' %}\
   {{cwd}}\
 {% else %}\
-  ~/dev/repos/open-source/tools/neovim\
+  ~/dev/repos/tools/neovim\
 {% endif %}\
 """
 
