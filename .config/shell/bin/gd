@@ -53,8 +53,9 @@ def cli(previous: bool, name: bool, exclude: bool, debug: bool) -> None:
         cmd.append("HEAD^")
     else:
         # include root branch if there are no changes
-        changes = run(["git", "status", "--porcelain"])
-        if len(changes) == 0:
+        statuses = run(["git", "status", "--short"])
+        unchanged = all([status[1] == " " for status in statuses])
+        if unchanged:
             cmd.append(get_root(["main", "master"]))
 
     if exclude:
@@ -88,7 +89,7 @@ def get_root(markers: list[str]) -> str:
 def run(cmd: list[str]) -> list[str]:
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:
-        return result.stdout.strip().splitlines()
+        return result.stdout.splitlines()
     else:
         raise Exception(f"{cmd} failed due to: {result.stderr.strip()}")
 
