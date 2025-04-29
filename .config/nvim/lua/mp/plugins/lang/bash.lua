@@ -8,7 +8,6 @@ return {
         opts = function(_, opts)
             opts.install[#opts.install + 1] = 'bash-language-server'
             if not vim.g.android then
-                opts.install[#opts.install + 1] = 'shellcheck'
                 opts.linters.bash = { 'shellcheck' }
                 opts.linters.sh = { 'shellcheck' }
                 opts.linters.zsh = { 'shellcheck' }

@@ -10,7 +10,7 @@ return {
         opts = function(_, opts)
             if not vim.g.android then
                 opts.install[#opts.install + 1] = 'lua-language-server'
-                opts.install[#opts.install + 1] = 'stylua'
+                opts.linters.lua = { 'selene' }
             end
             opts.formatters.lua = { 'stylua' }
         end,
