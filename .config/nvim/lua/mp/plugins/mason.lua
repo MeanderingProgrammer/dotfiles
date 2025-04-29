@@ -28,13 +28,10 @@ return {
                 return false
             end
             local path = vim.api.nvim_buf_get_name(buf)
-            for _, folder in ipairs({ 'open-source' }) do
-                folder = ('/%s/'):format(folder)
-                if path:find(folder, 1, true) ~= nil then
-                    return false
-                end
-            end
-            return true
+            -- outside of repos we should always format
+            -- inside of repos only format personal repos
+            local repo = vim.fs.relpath('~/dev/repos', path)
+            return repo == nil or vim.startswith(repo, 'personal')
         end
 
         local conform = require('conform')

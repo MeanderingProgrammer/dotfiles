@@ -12,10 +12,7 @@ return {
                 opts.install[#opts.install + 1] = 'lua-language-server'
                 opts.linters.lua = { 'selene' }
                 opts.linter_conditions.selene = function()
-                    local cwd = assert(vim.uv.cwd())
-                    local path = vim.fs.joinpath(cwd, 'selene.toml')
-                    local stat = vim.uv.fs_stat(path)
-                    return stat ~= nil
+                    return require('mp.utils').in_root({ 'selene.toml' })
                 end
             end
             opts.formatters.lua = { 'stylua' }

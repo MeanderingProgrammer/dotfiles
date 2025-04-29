@@ -19,13 +19,16 @@ require('lazy').setup({
     },
     dev = {
         path = function(plugin)
-            local directory = nil
-            if plugin.url:find('MeanderingProgrammer', 1, true) ~= nil then
-                directory = 'personal'
-            else
-                directory = 'open-source/nvim-plugins'
+            local utils = require('mp.utils')
+            local name = plugin.name
+            local directories = { 'personal', 'open-source', 'neovim-plugins' }
+            for _, directory in ipairs(directories) do
+                local path = vim.fs.joinpath('~/dev/repos', directory, name)
+                if utils.exists(path) then
+                    return path
+                end
             end
-            return string.format('~/dev/repos/%s/%s', directory, plugin.name)
+            error(('could not find: %s'):format(name))
         end,
     },
     change_detection = { notify = false },

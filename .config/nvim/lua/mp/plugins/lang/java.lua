@@ -1,5 +1,3 @@
-local utils = require('mp.utils')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -90,7 +88,7 @@ return {
                     },
                 }
 
-                local capabilities = utils.capabilities()
+                local capabilities = require('mp.utils').capabilities()
 
                 local markers = {
                     '.git',

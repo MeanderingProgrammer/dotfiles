@@ -1,5 +1,3 @@
-local utils = require('mp.utils')
-
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
     ---@param lhs string
@@ -63,6 +61,7 @@ return {
         })
 
         -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+        local utils = require('mp.utils')
         for name, server in pairs(opts.servers) do
             if server then
                 server.capabilities = utils.capabilities(server.capabilities)
