@@ -11,6 +11,7 @@ return {
         formatter_overrides = {},
         linters = {},
         linter_overrides = {},
+        linter_conditions = {},
     },
     config = function(_, opts)
         require('mason').setup({})
@@ -19,36 +20,50 @@ return {
             ensure_installed = opts.install,
         })
 
-        ---@param bufnr integer
+        ---@param buf integer
         ---@return boolean
-        local skip_format = function(bufnr)
-            local filetype = vim.bo[bufnr].filetype
+        local should_format = function(buf)
+            local filetype = vim.bo[buf].filetype
             if vim.tbl_contains({ 'json' }, filetype) then
-                return true
+                return false
             end
-            local path = vim.api.nvim_buf_get_name(bufnr)
+            local path = vim.api.nvim_buf_get_name(buf)
             for _, folder in ipairs({ 'open-source' }) do
-                folder = string.format('/%s/', folder)
+                folder = ('/%s/'):format(folder)
                 if path:find(folder, 1, true) ~= nil then
-                    return true
+                    return false
                 end
             end
-            return false
+            return true
         end
 
         local conform = require('conform')
         conform.setup({
             formatters_by_ft = opts.formatters,
-            format_after_save = function(bufnr)
-                if skip_format(bufnr) then
-                    return nil
-                else
+            format_after_save = function(buf)
+                if should_format(buf) then
                     return { lsp_format = 'fallback' }
+                else
+                    return nil
                 end
             end,
         })
         for name, override in pairs(opts.formatter_overrides) do
             conform.formatters[name] = override
+        end
+
+        ---@return string[]
+        local get_linters = function()
+            local filetype = vim.bo.filetype
+            local linters = opts.linters[filetype] or {}
+            local result = {}
+            for _, linter in ipairs(linters) do
+                local condition = opts.linter_conditions[linter]
+                if condition == nil or condition() then
+                    result[#result + 1] = linter
+                end
+            end
+            return result
         end
 
         local lint = require('lint')
@@ -61,7 +76,10 @@ return {
         vim.api.nvim_create_autocmd(lint_events, {
             group = vim.api.nvim_create_augroup('NvimLint', {}),
             callback = function()
-                lint.try_lint()
+                local linters = get_linters()
+                if #linters > 0 then
+                    lint.try_lint(linters)
+                end
             end,
         })
     end,

@@ -11,6 +11,12 @@ return {
             if not vim.g.android then
                 opts.install[#opts.install + 1] = 'lua-language-server'
                 opts.linters.lua = { 'selene' }
+                opts.linter_conditions.selene = function()
+                    local cwd = assert(vim.uv.cwd())
+                    local path = vim.fs.joinpath(cwd, 'selene.toml')
+                    local stat = vim.uv.fs_stat(path)
+                    return stat ~= nil
+                end
             end
             opts.formatters.lua = { 'stylua' }
         end,
