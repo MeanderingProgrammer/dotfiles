@@ -37,7 +37,7 @@ function M.in_root(files)
     local cwd = assert(vim.uv.cwd())
     for _, file in ipairs(files) do
         local path = vim.fs.joinpath(cwd, file)
-        result = result or (M.exists(path))
+        result = result or M.exists(path)
     end
     return result
 end

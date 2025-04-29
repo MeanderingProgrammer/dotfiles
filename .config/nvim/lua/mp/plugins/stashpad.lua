@@ -11,13 +11,13 @@ return {
         local function map(lhs, rhs, desc)
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
-        map('<leader>sb', stashpad.branch, 'Branch')
-        map('<leader>sd', stashpad.delete, 'Delete')
-        map('<leader>sf', stashpad.file, 'File')
-        map('<leader>sg', stashpad.global, 'Global')
+        map('<leader>sb', stashpad.branch, 'branch')
+        map('<leader>sd', stashpad.delete, 'delete')
+        map('<leader>sf', stashpad.file, 'file')
+        map('<leader>sg', stashpad.global, 'global')
         map('<leader>so', function()
             require('oil').toggle_float(stashpad.project())
-        end, 'Oil Toggle')
-        map('<leader>st', stashpad.todo, 'Todo')
+        end, 'oil toggle')
+        map('<leader>st', stashpad.todo, 'todo')
     end,
 }

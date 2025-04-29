@@ -14,14 +14,14 @@ return {
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
         for i = 1, 5 do
-            map(string.format('<leader>%d', i), function()
+            map(('<leader>%d'):format(i), function()
                 harpoon.nav_file(i)
-            end, string.format('Harpoon open file %d', i))
+            end, ('harpoon open file %d'):format(i))
         end
-        map('<leader>ha', harpoon.add_file, 'Add current file')
-        map('<leader>hr', harpoon.rm_file, 'Remove current file')
-        map('<leader>hu', harpoon.toggle_quick_menu, 'Toggle UI')
-        map('<leader>hn', harpoon.nav_next, 'Next file')
-        map('<leader>hp', harpoon.nav_prev, 'Previous file')
+        map('<leader>ha', harpoon.add_file, 'add current file')
+        map('<leader>hr', harpoon.rm_file, 'remove current file')
+        map('<leader>hu', harpoon.toggle_quick_menu, 'toggle UI')
+        map('<leader>hn', harpoon.nav_next, 'next file')
+        map('<leader>hp', harpoon.nav_prev, 'previous file')
     end,
 }

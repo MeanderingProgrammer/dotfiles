@@ -36,31 +36,31 @@ return {
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
 
-        map('<leader><leader>', fzf.files, 'Find Files')
-        map('<leader>fs', fzf.live_grep, 'Grep Files')
-        map('<leader>fd', fzf.diagnostics_workspace, 'Diagnostics')
-        map('<leader>fr', fzf.resume, 'Resume')
-        map('<leader>?', fzf.oldfiles, 'Find Recently Opened Files')
-        map('<leader>fb', fzf.buffers, 'Find Existing Buffers')
-        map('<leader>fg', fzf.git_files, 'Git Files')
-        map('<leader>fw', fzf.grep_cword, 'Current Word')
-        map('<leader>ft', fzf.helptags, 'Help Tags')
-        map('<leader>fk', fzf.keymaps, 'Keymaps')
-        map('<leader>fh', fzf.highlights, 'Highlights')
+        map('<leader><leader>', fzf.files, 'files')
+        map('<leader>fs', fzf.live_grep, 'grep')
+        map('<leader>fd', fzf.diagnostics_workspace, 'diagnostics')
+        map('<leader>fr', fzf.resume, 'resume')
+        map('<leader>?', fzf.oldfiles, 'recently opened files')
+        map('<leader>fb', fzf.buffers, 'existing buffers')
+        map('<leader>fg', fzf.git_files, 'git files')
+        map('<leader>fw', fzf.grep_cword, 'current word')
+        map('<leader>ft', fzf.helptags, 'help tags')
+        map('<leader>fk', fzf.keymaps, 'keymaps')
+        map('<leader>fh', fzf.highlights, 'highlights')
 
         local data_home = vim.env.XDG_DATA_HOME
-        vim.env.YADM_REPO = string.format('%s/yadm/repo.git', data_home)
+        vim.env.YADM_REPO = vim.fs.joinpath(data_home, 'yadm/repo.git')
         map('<leader>yf', function()
             fzf.git_files({
                 cwd = '~',
                 git_dir = vim.env.YADM_REPO,
             })
-        end, 'Yadm Files')
+        end, 'files')
         map('<leader>yg', function()
             fzf.live_grep({
                 cwd = '~',
                 cmd = 'git --git-dir=${YADM_REPO} grep -i --line-number --column --color=always',
             })
-        end, 'Yadm Grep')
+        end, 'grep')
     end,
 }

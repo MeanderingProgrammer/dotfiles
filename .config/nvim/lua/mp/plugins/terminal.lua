@@ -10,10 +10,10 @@ return {
         ---@param rhs function
         ---@param desc string
         local function map(mode, lhs, rhs, desc)
-            vim.keymap.set(mode, lhs, rhs, { desc = 'Fterm ' .. desc })
+            vim.keymap.set(mode, lhs, rhs, { desc = 'FTerm ' .. desc })
         end
-        map('n', '<A-i>', fterm.toggle, 'Toggle')
-        map('t', '<A-i>', fterm.exit, 'Exit')
-        map('t', '<esc>', fterm.toggle, 'Toggle')
+        map('n', '<A-i>', fterm.toggle, 'toggle')
+        map('t', '<A-i>', fterm.exit, 'exit')
+        map('t', '<esc>', fterm.toggle, 'toggle')
     end,
 }

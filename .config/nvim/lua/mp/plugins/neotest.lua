@@ -15,6 +15,6 @@ return {
 
         vim.keymap.set('n', '<leader>nr', function()
             neotest.run.run(vim.fn.expand('%'))
-        end, { desc = 'Neotest Run File' })
+        end, { desc = 'neotest run file' })
     end,
 }

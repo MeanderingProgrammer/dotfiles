@@ -42,7 +42,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     for _, word in ipairs(words) do
         lines[#lines] = lines[#lines] .. word .. ' '
         if #lines[#lines] > 80 then
-            lines[#lines + 1] = string.rep(' ', offset)
+            lines[#lines + 1] = (' '):rep(offset)
         end
     end
 
@@ -83,19 +83,19 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
                 value = value[1]
             end
         end
-        local lines = string.format('%s = %s,', key, vim.inspect(value))
+        local lines = ('%s = %s,'):format(key, vim.inspect(value))
         return vim.split(lines, '\n', { plain = true })
     end
 
     local lines = {}
     for _, client in ipairs(clients) do
         lines[#lines + 1] = '{'
-        lines[#lines + 1] = '  ' .. string.format('name = "%s",', client.name)
+        lines[#lines + 1] = ('  name = "%s",'):format(client.name)
         local keys = vim.tbl_keys(client.config)
         table.sort(keys)
         for _, key in ipairs(keys) do
             for _, line in ipairs(process(key, client.config[key])) do
-                lines[#lines + 1] = '  ' .. line
+                lines[#lines + 1] = ('  %s'):format(line)
             end
         end
         lines[#lines + 1] = '}'
@@ -129,7 +129,8 @@ vim.api.nvim_create_user_command('AdventData', function(opts)
     local file = vim.api.nvim_buf_get_name(0)
     local name = vim.fn.fnamemodify(file, ':.')
     local parts = vim.split(name, '/', { plain = true, trimempty = true })
+    local directory = vim.fs.joinpath('data', parts[1], parts[2])
     local input = #opts.fargs == 0 and 'data' or 'sample'
-    local path = { 'data', parts[1], parts[2], string.format('%s.txt', input) }
-    vim.cmd.vsplit(table.concat(path, '/'))
+    local path = vim.fs.joinpath(directory, ('%s.txt'):format(input))
+    vim.cmd.vsplit(path)
 end, { nargs = '?' })
