@@ -23,13 +23,13 @@ return {
         'mfussenegger/nvim-jdtls',
         enabled = not vim.g.android,
         config = function()
-            local platform = nil
+            local platform
             if vim.g.mac then
                 platform = 'mac'
             elseif vim.g.linux then
                 platform = 'linux'
             else
-                vim.print('Java not supported on system')
+                vim.print('java not supported on system')
                 return
             end
 

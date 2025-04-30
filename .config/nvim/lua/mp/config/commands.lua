@@ -35,7 +35,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     for _, list_pattern in ipairs({ '%-', '%d+%.' }) do
         list_pattern = '^%s*' .. list_pattern .. '%s*'
         local match = current_line:match(list_pattern)
-        offset = math.max(offset, match ~= nil and #match or 0)
+        offset = math.max(offset, match and #match or 0)
     end
 
     local lines = { '' }
@@ -79,7 +79,7 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
             local keys = vim.tbl_keys(value)
             if #keys == 0 then
                 return {}
-            elseif #keys == 1 and value[1] ~= nil then
+            elseif #keys == 1 and value[1] then
                 value = value[1]
             end
         end

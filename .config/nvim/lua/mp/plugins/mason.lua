@@ -31,7 +31,7 @@ return {
             -- outside of repos we should always format
             -- inside of repos only format personal repos
             local repo = vim.fs.relpath('~/dev/repos', path)
-            return repo == nil or vim.startswith(repo, 'personal')
+            return not repo or vim.startswith(repo, 'personal')
         end
 
         local conform = require('conform')
@@ -56,7 +56,7 @@ return {
             local result = {}
             for _, linter in ipairs(linters) do
                 local condition = opts.linter_conditions[linter]
-                if condition == nil or condition() then
+                if not condition or condition() then
                     result[#result + 1] = linter
                 end
             end
