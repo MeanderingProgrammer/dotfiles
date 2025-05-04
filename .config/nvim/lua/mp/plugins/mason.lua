@@ -20,34 +20,34 @@ return {
             ensure_installed = opts.install,
         })
 
+        local conform = require('conform')
+
         ---@param buf integer
-        ---@return boolean
-        local should_format = function(buf)
-            local filetype = vim.bo[buf].filetype
-            if vim.tbl_contains({ 'json' }, filetype) then
-                return false
+        ---@return conform.LspFormatOpts
+        local lsp_format = function(buf)
+            local clients = require('mp.util').lsp_names(buf)
+            if vim.tbl_contains(clients, 'jsonls') then
+                return 'never'
             end
-            local path = vim.api.nvim_buf_get_name(buf)
             -- outside of repos we should always format
             -- inside of repos only format personal repos
+            local path = vim.api.nvim_buf_get_name(buf)
             local repo = vim.fs.relpath('~/dev/repos', path)
-            return not repo or vim.startswith(repo, 'personal')
+            local format = not repo or vim.startswith(repo, 'personal')
+            return format and 'fallback' or 'never'
         end
 
-        local conform = require('conform')
         conform.setup({
             formatters_by_ft = opts.formatters,
             format_after_save = function(buf)
-                if should_format(buf) then
-                    return { lsp_format = 'fallback' }
-                else
-                    return nil
-                end
+                return { lsp_format = lsp_format(buf) }
             end,
         })
         for name, override in pairs(opts.formatter_overrides) do
             conform.formatters[name] = override
         end
+
+        local lint = require('lint')
 
         ---@return string[]
         local get_linters = function()
@@ -63,7 +63,6 @@ return {
             return result
         end
 
-        local lint = require('lint')
         lint.linters_by_ft = opts.linters
         for name, override in pairs(opts.linter_overrides) do
             lint.linters[name] = override(lint.linters[name])

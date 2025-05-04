@@ -12,7 +12,7 @@ return {
                 opts.install[#opts.install + 1] = 'lua-language-server'
                 opts.linters.lua = { 'selene' }
                 opts.linter_conditions.selene = function()
-                    return require('mp.utils').in_root({ 'selene.toml' })
+                    return require('mp.util').in_root({ 'selene.toml' })
                 end
             end
             opts.formatters.lua = { 'stylua' }

@@ -2,17 +2,12 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
+        ---@return string
         local function lsp_info()
-            if vim.api.nvim_win_get_width(0) > 100 then
-                local bufnr = vim.api.nvim_get_current_buf()
-                return vim.iter(vim.lsp.get_clients({ bufnr = bufnr }))
-                    :map(function(client)
-                        return client.name
-                    end)
-                    :join(' ')
-            else
+            if vim.api.nvim_win_get_width(0) < 100 then
                 return ''
             end
+            return table.concat(require('mp.util').lsp_names(0), ' ')
         end
         local filename = { 'filename', path = 1, shorting_target = 100 }
         require('lualine').setup({

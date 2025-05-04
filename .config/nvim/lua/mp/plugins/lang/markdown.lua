@@ -14,9 +14,10 @@ return {
             opts.install[#opts.install + 1] = 'markdownlint'
             opts.linters.markdown = { 'markdownlint' }
             opts.linter_overrides.markdownlint = function(linter)
-                local utils = require('mp.utils')
-                local config = utils.lint_config('markdownlint.yaml')
-                local args = { '--config', config }
+                local args = {
+                    '--config',
+                    require('mp.util').lint_config('markdownlint.yaml'),
+                }
                 linter.args = vim.list_extend(linter.args or {}, args)
             end
         end,

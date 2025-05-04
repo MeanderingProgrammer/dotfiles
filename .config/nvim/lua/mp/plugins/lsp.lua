@@ -60,11 +60,11 @@ return {
             callback = attach,
         })
 
-        -- Servers: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        local utils = require('mp.utils')
+        -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+        local util = require('mp.util')
         for name, server in pairs(opts.servers) do
             if server then
-                server.capabilities = utils.capabilities(server.capabilities)
+                server.capabilities = util.capabilities(server.capabilities)
                 require('lspconfig')[name].setup(server)
             end
         end

@@ -57,12 +57,13 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
 end, {})
 
--- Show LSP configuration in a floating window
+-- show LSP configuration in a floating window
 vim.api.nvim_create_user_command('MyLspConfig', function()
-    local current = vim.api.nvim_get_current_buf()
-    local clients = vim.lsp.get_clients({ bufnr = current })
+    local clients = vim.lsp.get_clients({
+        bufnr = vim.api.nvim_get_current_buf(),
+    })
     if #clients == 0 then
-        vim.print('No LSP found')
+        vim.print('no LSPs found')
         return
     end
 
@@ -70,16 +71,16 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
     ---@param value any
     ---@return string[]
     local function process(key, value)
-        local ignore_key = vim.tbl_contains({ 'capabilities', 'name' }, key)
-        local ignore_type = vim.tbl_contains({ 'function' }, type(value))
-        if ignore_key or ignore_type then
+        local ignore = vim.tbl_contains({ 'capabilities', 'name' }, key)
+            or vim.tbl_contains({ 'function' }, type(value))
+        if ignore then
             return {}
         end
         if type(value) == 'table' then
-            local keys = vim.tbl_keys(value)
-            if #keys == 0 then
+            local keys = vim.tbl_count(value)
+            if keys == 0 then
                 return {}
-            elseif #keys == 1 and value[1] then
+            elseif keys == 1 and value[1] then
                 value = value[1]
             end
         end
@@ -105,7 +106,7 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
     local rows, cols = vim.o.lines, vim.o.columns
     local height, width = math.floor(rows * 0.90), math.floor(cols * 0.75)
     vim.api.nvim_open_win(buf, true, {
-        title = ' LSP Configuration ',
+        title = ' LSP configuration ',
         title_pos = 'center',
         border = 'rounded',
         relative = 'editor',

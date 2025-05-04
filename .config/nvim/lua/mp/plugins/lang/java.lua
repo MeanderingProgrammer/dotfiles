@@ -88,7 +88,7 @@ return {
                     },
                 }
 
-                local capabilities = require('mp.utils').capabilities()
+                local capabilities = require('mp.util').capabilities()
 
                 local markers = {
                     '.git',

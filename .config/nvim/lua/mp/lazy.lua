@@ -19,12 +19,11 @@ require('lazy').setup({
     },
     dev = {
         path = function(plugin)
-            local utils = require('mp.utils')
             local name = plugin.name
             local directories = { 'personal', 'open-source', 'neovim-plugins' }
             for _, directory in ipairs(directories) do
                 local path = vim.fs.joinpath('~/dev/repos', directory, name)
-                if utils.exists(path) then
+                if require('mp.util').exists(path) then
                     return path
                 end
             end

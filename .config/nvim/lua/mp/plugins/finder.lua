@@ -2,8 +2,6 @@ return {
     'ibhagwan/fzf-lua',
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
-        -- TODO: should I use utils.hidden_directories() for files action
-
         local fzf = require('fzf-lua')
         local actions = require('fzf-lua.actions')
         fzf.setup({

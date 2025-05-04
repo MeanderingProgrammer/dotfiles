@@ -3,7 +3,7 @@ return {
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         local hidden = { '.DS_Store', '.project', '.classpath', '.factorypath' }
-        vim.list_extend(hidden, require('mp.utils').hidden_directories())
+        vim.list_extend(hidden, require('mp.util').hidden)
 
         local oil = require('oil')
         oil.setup({
