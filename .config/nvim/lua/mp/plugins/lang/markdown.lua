@@ -65,8 +65,8 @@ return {
             local function map(lhs, rhs, desc)
                 vim.keymap.set('n', lhs, rhs, { desc = desc })
             end
-            map('<leader>md', markdown.debug, 'Debug')
-            map('<leader>mt', markdown.toggle, 'Toggle')
+            map('<leader>md', markdown.debug, 'debug')
+            map('<leader>mt', markdown.toggle, 'toggle')
         end,
     },
 }

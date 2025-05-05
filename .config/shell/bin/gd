@@ -1,39 +1,64 @@
 #!/usr/bin/env python
 
+import enum
 import os
 import subprocess
 
 import click
 
 
+class Commit(enum.StrEnum):
+    HEAD = "h"
+    PREVIOUS = "p"
+    CURRENT = "c"
+    MAINLINE = "m"
+
+    def resolve(self) -> str:
+        match self:
+            case Commit.HEAD:
+                return "HEAD"
+            case Commit.PREVIOUS:
+                return "HEAD^"
+            case Commit.CURRENT:
+                return get_current()
+            case Commit.MAINLINE:
+                return get_mainline()
+
+    @staticmethod
+    def default() -> "Commit":
+        stats = run(["git", "status", "--short"])
+        modified = any([stat[1] != " " for stat in stats])
+        if modified:
+            return Commit.HEAD
+        elif len(stats) > 0:
+            return Commit.CURRENT
+        elif get_current() == get_mainline():
+            return Commit.PREVIOUS
+        else:
+            return Commit.MAINLINE
+
+
 @click.command()
 @click.option("-n", "--name", is_flag=True, default=False, help="show file names only")
-@click.option("-h", "--head", is_flag=True, default=False, help="from head")
-@click.option("-p", "--prev", is_flag=True, default=False, help="from previous commit")
-@click.option("-r", "--root", is_flag=True, default=False, help="from root branch")
+@click.option(
+    "-c",
+    "--commit",
+    type=click.Choice(list(Commit)),
+    default=Commit.default,
+    help="source commit",
+)
 @click.option("-e", "--exclude", is_flag=True, default=True, help="exclude lock files")
 @click.option("-d", "--debug", is_flag=True, default=False, help="debug command")
-def cli(
-    name: bool,
-    head: bool,
-    prev: bool,
-    root: bool,
-    exclude: bool,
-    debug: bool,
-) -> None:
+@click.help_option("-h", "--help")
+def cli(name: bool, commit: Commit, exclude: bool, debug: bool) -> None:
     """git diff (<options>)? (<commit>)? (-- <path>...)?"""
-
-    if sum([head, prev, root]) > 1:
-        raise click.UsageError("mutually exclusive: --head, --prev, --root")
 
     cmd: list[str] = ["git", "diff"]
 
     if name:
         cmd.append("--name-only")
 
-    commit = get_commit(head, prev, root)
-    if commit is not None:
-        cmd.append(commit)
+    cmd.append(commit.resolve())
 
     if exclude:
         cmd.append("--")
@@ -45,36 +70,23 @@ def cli(
     execute(debug, cmd)
 
 
-def get_commit(head: bool, prev: bool, root: bool) -> str | None:
-    if head:
-        return None
-    if prev:
-        return "HEAD^"
-    if root:
-        return get_default()
-
-    stats = run(["git", "status", "--short"])
-    modified = any([stat[1] != " " for stat in stats])
-    if modified:
-        return None
-
-    current = single(run(["git", "branch", "--show-current"]), "current branch")
-    default = get_default()
-    return "HEAD^" if current == default else default
+def get_current() -> str:
+    results = run(["git", "branch", "--show-current"])
+    return single(results, "current branch")
 
 
-def get_default() -> str:
-    result: list[str] = []
-    markers: list[str] = ["main", "master"]
+def get_mainline() -> str:
+    results: list[str] = []
+    options: list[str] = ["main", "master"]
     for branch in run(["git", "branch"]):
         # * main    -> main
         #   main    -> main
         # * feature -> feature
         #   feature -> feature
         branch = branch.strip().split()[-1]
-        if branch in markers:
-            result.append(branch)
-    return single(result, f"default {markers}")
+        if branch in options:
+            results.append(branch)
+    return single(results, f"mainline {options}")
 
 
 def run(cmd: list[str]) -> list[str]:
