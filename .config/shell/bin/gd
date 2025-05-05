@@ -20,9 +20,9 @@ class Commit(enum.StrEnum):
             case Commit.PREVIOUS:
                 return "HEAD^"
             case Commit.CURRENT:
-                return get_current()
+                return current()
             case Commit.MAINLINE:
-                return get_mainline()
+                return mainline()
 
     @staticmethod
     def default() -> "Commit":
@@ -32,7 +32,7 @@ class Commit(enum.StrEnum):
             return Commit.HEAD
         elif len(stats) > 0:
             return Commit.CURRENT
-        elif get_current() == get_mainline():
+        elif current() == mainline():
             return Commit.PREVIOUS
         else:
             return Commit.MAINLINE
@@ -70,12 +70,12 @@ def cli(name: bool, commit: Commit, exclude: bool, debug: bool) -> None:
     execute(debug, cmd)
 
 
-def get_current() -> str:
+def current() -> str:
     results = run(["git", "branch", "--show-current"])
     return single(results, "current branch")
 
 
-def get_mainline() -> str:
+def mainline() -> str:
     results: list[str] = []
     options: list[str] = ["main", "master"]
     for branch in run(["git", "branch"]):
