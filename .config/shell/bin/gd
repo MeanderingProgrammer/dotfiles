@@ -8,15 +8,15 @@ import click
 
 
 class Commit(enum.StrEnum):
-    HEAD = "h"
+    INDEX = "i"
     PREVIOUS = "p"
     CURRENT = "c"
     MAINLINE = "m"
 
-    def resolve(self) -> str:
+    def resolve(self) -> str | None:
         match self:
-            case Commit.HEAD:
-                return "HEAD"
+            case Commit.INDEX:
+                return None
             case Commit.PREVIOUS:
                 return "HEAD^"
             case Commit.CURRENT:
@@ -29,7 +29,7 @@ class Commit(enum.StrEnum):
         stats = run(["git", "status", "--short"])
         modified = any([stat[1] != " " for stat in stats])
         if modified:
-            return Commit.HEAD
+            return Commit.INDEX
         elif len(stats) > 0:
             return Commit.CURRENT
         elif current() == mainline():
@@ -58,7 +58,9 @@ def cli(name: bool, commit: Commit, exclude: bool, debug: bool) -> None:
     if name:
         cmd.append("--name-only")
 
-    cmd.append(commit.resolve())
+    value = commit.resolve()
+    if value is not None:
+        cmd.append(value)
 
     if exclude:
         cmd.append("--")
