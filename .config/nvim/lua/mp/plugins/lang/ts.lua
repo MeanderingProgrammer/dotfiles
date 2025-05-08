@@ -15,12 +15,12 @@ return {
         end,
     },
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         init = function()
-            -- Avoid running when project does not use prettier
+            -- avoid running when project does not use prettier
             vim.env.PRETTIERD_LOCAL_PRETTIER_ONLY = 1
 
-            -- Due to prettierd not picking up changes
+            -- due to prettierd not picking up changes
             -- https://github.com/fsouza/prettierd/issues/719
             vim.api.nvim_create_autocmd('BufWritePost', {
                 group = vim.api.nvim_create_augroup('RestartPrettierd', {}),

@@ -4,7 +4,7 @@ return {
         opts = { languages = { 'latex' } },
     },
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         opts = function(_, opts)
             if not vim.g.android then
                 opts.install[#opts.install + 1] = 'texlab'

@@ -1,5 +1,5 @@
 return {
-    'williamboman/mason.nvim',
+    'mason-org/mason.nvim',
     dependencies = {
         'mfussenegger/nvim-lint',
         'stevearc/conform.nvim',

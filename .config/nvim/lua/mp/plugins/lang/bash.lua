@@ -4,7 +4,7 @@ return {
         opts = { languages = { 'bash' } },
     },
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         opts = function(_, opts)
             opts.install[#opts.install + 1] = 'bash-language-server'
             if not vim.g.android then

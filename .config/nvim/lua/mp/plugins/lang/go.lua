@@ -6,7 +6,7 @@ return {
         },
     },
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         opts = function(_, opts)
             opts.install[#opts.install + 1] = 'gopls'
             vim.list_extend(opts.install, { 'goimports', 'gofumpt' })
