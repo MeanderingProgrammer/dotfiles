@@ -9,7 +9,7 @@ return {
                 not_current = false,
             },
             mappings = {
-                start_jumping = '<tab>',
+                start_jumping = '<Tab>',
             },
         })
         require('mini.surround').setup({})

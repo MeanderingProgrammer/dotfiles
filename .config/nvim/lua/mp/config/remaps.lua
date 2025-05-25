@@ -5,35 +5,30 @@ local function map(modes, lhs, rhs)
     vim.keymap.set(modes, lhs, rhs, { noremap = true, silent = true })
 end
 
----@see lsp-defaults
-for _, lhs in ipairs({ 'gra', 'gri', 'grn', 'grr' }) do
-    vim.keymap.del('n', lhs)
-end
-
--- Move lines up / down
-map('n', '<A-j>', '<cmd>m .+1<cr>==')
-map('n', '<A-k>', '<cmd>m .-2<cr>==')
-map('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi')
-map('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi')
-
--- Move split panes left / right
-map('n', '<A-h>', '<C-w>H')
-map('n', '<A-l>', '<C-w>L')
-
--- Move between panes
+-- move between panes
 map('n', '<C-h>', '<C-w>h')
 map('n', '<C-j>', '<C-w>j')
 map('n', '<C-k>', '<C-w>k')
 map('n', '<C-l>', '<C-w>l')
 
--- Moving by half page
+-- moving by half page
 map('n', '<C-d>', '<C-d>zz')
 map('n', '<C-u>', '<C-u>zz')
 
--- Searching
+-- searching
 map('n', 'n', 'nzz')
 map('n', 'N', 'Nzz')
-map('n', '<cr>', ':noh<cr><cr>')
+map('n', '<CR>', ':noh<CR><CR>')
+
+-- move split panes left / right
+map('n', '<A-h>', '<C-w>H')
+map('n', '<A-l>', '<C-w>L')
+
+-- move lines up / down
+map('n', '<A-j>', '<Cmd>m .+1<CR>==')
+map('n', '<A-k>', '<Cmd>m .-2<CR>==')
+map('i', '<A-j>', '<Esc><Cmd>m .+1<CR>==gi')
+map('i', '<A-k>', '<Esc><Cmd>m .-2<CR>==gi')
 
 -- Execute current line
 map('n', '<leader>bb', function()
@@ -57,3 +52,9 @@ map('n', '<leader>ff', function()
     vim.print(hex_code)
     vim.fn.setreg('+', hex_code)
 end)
+
+---@see lsp-defaults
+vim.keymap.del('n', 'gra')
+vim.keymap.del('n', 'gri')
+vim.keymap.del('n', 'grn')
+vim.keymap.del('n', 'grr')

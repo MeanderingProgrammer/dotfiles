@@ -1,9 +1,3 @@
----@param lhs string
----@param rhs function
-local function map(lhs, rhs)
-    vim.keymap.set('n', lhs, rhs, { noremap = true, silent = true })
-end
-
 local config = vim.diagnostic.config
 
 config({
@@ -18,10 +12,10 @@ config({
     virtual_text = { prefix = '●' },
 })
 
-map('<leader>d', function()
+vim.keymap.set('n', '<leader>d', function()
     if config().virtual_lines then
         config({ virtual_lines = false })
     else
         config({ virtual_lines = { current_line = true } })
     end
-end)
+end, { noremap = true, silent = true })

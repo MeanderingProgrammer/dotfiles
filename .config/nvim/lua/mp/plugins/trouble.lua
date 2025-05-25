@@ -5,7 +5,7 @@ return {
         ---@diagnostic disable-next-line: missing-fields
         require('trouble').setup({
             keys = {
-                ['<cr>'] = 'jump_close',
+                ['<CR>'] = 'jump_close',
             },
             modes = {
                 lsp = {
@@ -28,7 +28,7 @@ return {
         ---@param desc string
         local function map(char, command, desc)
             local lhs = ('<leader>t%s'):format(char)
-            local rhs = ('<cmd>%s<cr>'):format(command)
+            local rhs = ('<Cmd>%s<CR>'):format(command)
             vim.keymap.set('n', lhs, rhs, { desc = desc })
         end
         map('l', 'Trouble lsp toggle', 'lsp')

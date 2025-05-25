@@ -121,9 +121,9 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
     vim.api.nvim_set_option_value('filetype', 'lua', { buf = buf })
     vim.api.nvim_set_option_value('modifiable', false, { buf = buf })
 
-    local opts = { buffer = buf, noremap = true, silent = true }
-    vim.keymap.set('n', 'q', ':q<cr>', opts)
-    vim.keymap.set('n', '<esc>', ':q<cr>', opts)
+    local map = vim.keymap.set
+    map('n', 'q', ':q<CR>', { buffer = buf, noremap = true, silent = true })
+    map('n', '<Esc>', ':q<CR>', { buffer = buf, noremap = true, silent = true })
 end, {})
 
 vim.api.nvim_create_user_command('AdventData', function(opts)

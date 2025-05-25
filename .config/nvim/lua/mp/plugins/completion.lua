@@ -28,21 +28,21 @@ return {
                     }),
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ['<cr>'] = cmp.mapping.confirm({ select = true }),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-space>'] = cmp.mapping.complete(),
                     ['<C-e>'] = cmp.mapping.abort(),
                     ['<C-n>'] = cmp.mapping.select_next_item(),
                     ['<C-p>'] = cmp.mapping.select_prev_item(),
                     ['<C-d>'] = cmp.mapping.scroll_docs(4),
                     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                    ['<tab>'] = cmp.mapping(function(fallback)
+                    ['<Tab>'] = cmp.mapping(function(fallback)
                         if vim.snippet.active({ direction = 1 }) then
                             vim.snippet.jump(1)
                         else
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ['<S-tab>'] = cmp.mapping(function(fallback)
+                    ['<S-Tab>'] = cmp.mapping(function(fallback)
                         if vim.snippet.active({ direction = -1 }) then
                             vim.snippet.jump(-1)
                         else
@@ -82,36 +82,43 @@ return {
             },
         },
         config = function(_, opts)
+            local fb = 'fallback'
             require('blink.cmp').setup({
                 keymap = {
-                    ['<cr>'] = { 'accept', 'fallback' },
-                    ['<C-space>'] = {
-                        'show',
-                        'show_documentation',
-                        'hide_documentation',
-                    },
-                    ['<C-e>'] = { 'hide', 'fallback' },
-                    ['<C-n>'] = { 'select_next', 'fallback' },
-                    ['<C-p>'] = { 'select_prev', 'fallback' },
-                    ['<C-d>'] = { 'scroll_documentation_down', 'fallback' },
-                    ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
-                    ['<tab>'] = { 'snippet_forward', 'fallback' },
-                    ['<S-tab>'] = { 'snippet_backward', 'fallback' },
+                    ['<CR>'] = { 'accept', fb },
+                    ['<Tab>'] = { 'snippet_forward', 'select_next', fb },
+                    ['<S-Tab>'] = { 'snippet_backward', 'select_prev', fb },
+                    ['<C-d>'] = { 'scroll_documentation_down', fb },
+                    ['<C-u>'] = { 'scroll_documentation_up', fb },
+                    -- ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+                    -- ['<C-e>'] = { 'cancel', 'fallback' },
+                    -- ['<C-y>'] = { 'select_and_accept' },
+                    -- ['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+                    -- ['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+                    -- ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
                 },
                 completion = {
                     trigger = {
                         show_on_blocked_trigger_characters = {},
                     },
-                    menu = {
-                        max_height = 20,
-                    },
+                    menu = { max_height = 20 },
                     documentation = {
                         auto_show = true,
-                        window = {
-                            max_height = 40,
-                        },
+                        window = { max_height = 40 },
                     },
                     ghost_text = { enabled = true },
+                },
+                cmdline = {
+                    keymap = {
+                        -- ['<Tab>'] = { 'show_and_insert', 'select_next' },
+                        -- ['<S-Tab>'] = { 'show_and_insert', 'select_prev' },
+                        -- ['<C-space>'] = { 'show', 'fallback' },
+                        -- ['<C-e>'] = { 'cancel' },
+                        -- ['<C-y>'] = { 'select_and_accept' },
+                        -- ['<C-n>'] = { 'select_next', 'fallback' },
+                        -- ['<C-p>'] = { 'select_prev', 'fallback' },
+                    },
+                    completion = { menu = { auto_show = true } },
                 },
                 sources = {
                     default = vim.tbl_keys(opts.providers),

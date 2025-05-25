@@ -14,6 +14,6 @@ return {
         end
         map('n', '<A-i>', fterm.toggle, 'toggle')
         map('t', '<A-i>', fterm.exit, 'exit')
-        map('t', '<esc>', fterm.toggle, 'toggle')
+        map('t', '<Esc>', fterm.toggle, 'toggle')
     end,
 }

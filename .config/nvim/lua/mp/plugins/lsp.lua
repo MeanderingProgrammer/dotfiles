@@ -1,31 +1,31 @@
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
+    ---@param mode string
     ---@param lhs string
     ---@param rhs function
     ---@param desc string
-    ---@param mode? string
-    local function map(lhs, rhs, desc, mode)
-        vim.keymap.set(mode or 'n', lhs, rhs, {
+    local function map(mode, lhs, rhs, desc)
+        vim.keymap.set(mode, lhs, rhs, {
             buffer = args.buf,
             desc = 'LSP ' .. desc,
         })
     end
     local fzf = require('fzf-lua')
-    map('gd', fzf.lsp_definitions, 'definitions')
-    map('gr', fzf.lsp_references, 'references')
-    map('gi', fzf.lsp_implementations, 'implementations')
-    map('gs', fzf.lsp_document_symbols, 'document symbols')
-    map('K', vim.lsp.buf.hover, 'hover information')
-    map('<leader>k', vim.lsp.buf.signature_help, 'signature help')
-    map('<C-k>', vim.lsp.buf.signature_help, 'signature help', 'i')
-    map('<leader><C-a>', vim.lsp.buf.code_action, 'code actions')
-    map('<leader><C-r>', vim.lsp.buf.rename, 'rename')
-    map('<leader><C-h>', function()
+    map('n', 'gd', fzf.lsp_definitions, 'definitions')
+    map('n', 'gr', fzf.lsp_references, 'references')
+    map('n', 'gi', fzf.lsp_implementations, 'implementations')
+    map('n', 'gs', fzf.lsp_document_symbols, 'document symbols')
+    map('n', 'K', vim.lsp.buf.hover, 'hover information')
+    map('n', '<leader>k', vim.lsp.buf.signature_help, 'signature help')
+    map('i', '<C-k>', vim.lsp.buf.signature_help, 'signature help')
+    map('n', '<leader><C-a>', vim.lsp.buf.code_action, 'code actions')
+    map('n', '<leader><C-r>', vim.lsp.buf.rename, 'rename')
+    map('n', '<leader><C-h>', function()
         local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf })
         vim.lsp.inlay_hint.enable(not enabled)
     end, 'toggle inlay hints')
-    map('<leader>ws', fzf.lsp_workspace_symbols, 'workspace symbols')
-    map('<leader>wf', function()
+    map('n', '<leader>ws', fzf.lsp_workspace_symbols, 'workspace symbols')
+    map('n', '<leader>wf', function()
         vim.print(vim.lsp.buf.list_workspace_folders())
     end, 'workspace folders')
 
