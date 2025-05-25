@@ -118,7 +118,10 @@ return {
                         -- ['<C-n>'] = { 'select_next', 'fallback' },
                         -- ['<C-p>'] = { 'select_prev', 'fallback' },
                     },
-                    completion = { menu = { auto_show = true } },
+                    completion = {
+                        list = { selection = { preselect = false } },
+                        menu = { auto_show = true },
+                    },
                 },
                 sources = {
                     default = vim.tbl_keys(opts.providers),
