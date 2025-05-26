@@ -1,6 +1,7 @@
-# Programming Related
+# cli
 brew "bat"
 brew "bison"
+brew "cmake"
 brew "curl"
 brew "fd"
 brew "fzf"
@@ -13,42 +14,45 @@ brew "libsodium"
 brew "mise"
 brew "ninja"
 brew "pandoc"
+brew "pass"
+brew "postgresql@17"
 brew "pre-commit"
 brew "ripgrep"
 brew "selene"
 brew "shellcheck"
+brew "sqlite"
 brew "stylua"
 brew "tlrc"
 brew "tmux"
 brew "websocat"
 brew "wget"
 brew "yadm"
+
+# plugin
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
-# Terminals
+# util
+brew "cairo"
+brew "coreutils"
+brew "gpatch"
+brew "oath-toolkit"
+brew "pkg-config"
+brew "xz"
+
+# terminal
 cask "alacritty"
 cask "ghostty"
 cask "kitty"
 cask "wezterm"
 
-# Fonts
+# font
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace"
 cask "font-symbols-only-nerd-font"
 
-# General
-brew "cairo"
-brew "cmake"
-brew "coreutils"
-brew "gpatch"
-brew "oath-toolkit"
-brew "pass"
-brew "pkg-config"
-brew "xz"
-
-# Editors
+# editor
 brew "neovim"
 brew "vim"
 cask "intellij-idea-ce"
@@ -56,7 +60,7 @@ cask "mactex"
 cask "sublime-text"
 cask "visual-studio-code"
 
-# Productivity Apps
+# productivity
 cask "discord"
 cask "elgato-stream-deck"
 cask "google-chrome"
@@ -65,5 +69,5 @@ cask "private-internet-access"
 cask "rectangle"
 cask "vlc"
 
-# Other
+# other
 brew "stockfish"
