@@ -1,9 +1,9 @@
-# ---- Completions ---- #
+# ---- completions ---- #
 
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
 [[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
 
-# Add completion directories
+# add completion directories
 [[ -n $HOMEBREW_PREFIX ]] && FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
 [[ -x "$(command -v rustc)" ]] && FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
 
@@ -15,7 +15,7 @@ zsh_comp_home="${XDG_DATA_HOME}/completions"
 [[ ! -d $zsh_comp_home ]] && mkdir -p $zsh_comp_home
 
 check_python_env() {
-    # Check if the result is already cached
+    # check if the result is already cached
     if [[ -n $PYTHON_ENV ]]; then
         return $PYTHON_ENV
     fi
@@ -28,7 +28,7 @@ check_python_env() {
 
 click_completion() {
     local completion_file="${zsh_comp_home}/${1}-complete.zsh"
-    # Generate completions if they don't exist or we're outside of tmux
+    # generate completions if they don't exist or we're outside of tmux
     if [[ ! -f $completion_file || -z $TMUX ]]; then
         check_python_env || return
         local click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
@@ -37,7 +37,7 @@ click_completion() {
     source "${completion_file}"
 }
 
-# Add click scripts
+# add click scripts
 click_completion "gd"
 click_completion "git-remote"
 click_completion "llm"

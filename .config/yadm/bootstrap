@@ -6,6 +6,7 @@ FAIL=31
 SUCCESS=32
 SKIP=33
 TITLE=35
+
 notify() {
     echo -e "\033[0;${1}m${2}\033[0m"
 }
@@ -14,7 +15,7 @@ has_command() {
     if [[ -x "$(command -v ${1})" ]]; then
         return 0
     else
-        notify $SKIP "  Skipping: missing ${1}"
+        notify $SKIP "  skipping: missing ${1}"
         return 1
     fi
 }
@@ -23,8 +24,12 @@ script_dir=$(dirname $0)
 system_type=$(uname -s)
 system_os=$(uname -o)
 
+script_source() {
+    source "${script_dir}/${1}"
+}
+
 main() {
-    notify $TITLE "System: ${system_type}-${system_os}"
+    notify $TITLE "system: ${system_type}-${system_os}"
     if [[ "${#}" == 0 ]]; then
         do_deps
         do_mise
@@ -39,56 +44,56 @@ main() {
             "repos") do_repos ;;
             "nvim") do_nvim ;;
             *)
-                notify $FAIL "Unknown command: ${1}"
-                notify $FAIL "Commands: deps, mise, libs, repos, nvim"
+                notify $FAIL "unknown command: ${1}"
+                notify $FAIL "valid commands: deps, mise, libs, repos, nvim"
                 exit 1
                 ;;
         esac
     else
-        notify $FAIL "Usage: <command>?"
+        notify $FAIL "usage: <command>?"
         exit 1
     fi
 }
 
 do_deps() {
-    notify $TITLE "Updating dependencies"
+    notify $TITLE "updating dependencies"
 
     if has_command "brew"; then
         brew bundle --file "${script_dir}/Brewfile"
         brew update
         brew upgrade
-        notify $SUCCESS "  Success: brew"
+        notify $SUCCESS "  success: brew"
     fi
 
     if [[ "$system_os" == "Android" ]]; then
         pkg update --yes
         pkg upgrade --yes
-        notify $SUCCESS "  Success: android pkg"
+        notify $SUCCESS "  success: android pkg"
     elif [[ "$system_type" == "Linux" ]]; then
-        local sys32_path="/mnt/c/Windows/System32"
-        if [[ ! -d $sys32_path ]]; then
-            source "${script_dir}/wezterm.sh"
+        local system_32="/mnt/c/Windows/System32"
+        if [[ ! -d $system_32 ]]; then
+            script_source "wezterm.sh"
         fi
-        source "${script_dir}/fonts.sh"
+        script_source "fonts.sh"
         sudo apt --yes update
         sudo apt --yes upgrade
-        notify $SUCCESS "  Success: linux apt"
+        notify $SUCCESS "  success: linux apt"
     else
-        notify $SKIP "  Skipping: not linux"
+        notify $SKIP "  skipping: not linux"
     fi
 }
 
 do_mise() {
-    notify $TITLE "Updating mise"
+    notify $TITLE "updating mise"
     if has_command "mise"; then
         mise install
-        notify $SUCCESS "  Success"
+        notify $SUCCESS "  success"
     fi
 }
 
 do_libs() {
     do_python() {
-        notify $TITLE "Updating python"
+        notify $TITLE "updating python"
         if has_command "pip"; then
             if [[ "$system_os" != "Android" ]]; then
                 pip install --upgrade pip
@@ -98,24 +103,24 @@ do_libs() {
                 pip install GitPython
                 pip install requests
             fi
-            notify $SUCCESS "  Success"
+            notify $SUCCESS "  success"
         fi
     }
 
     do_rust() {
-        notify $TITLE "Updating rust"
+        notify $TITLE "updating rust"
         if has_command "cargo"; then
             if [[ "$system_os" != "Android" ]]; then
                 cargo install aoc-cli
-                notify $SUCCESS "  Success"
+                notify $SUCCESS "  success"
             else
-                notify $SKIP "  Skipping: android"
+                notify $SKIP "  skipping: android"
             fi
         fi
     }
 
     do_node() {
-        notify $TITLE "Updating node"
+        notify $TITLE "updating node"
         if has_command "npm"; then
             if [[ "$system_os" != "Android" ]]; then
                 npm install -g npm
@@ -123,23 +128,23 @@ do_libs() {
             npm install -g pnpm
             npm install -g yarn
             npm install -g neovim
-            notify $SUCCESS "  Success"
+            notify $SUCCESS "  success"
         fi
     }
 
     do_ocaml() {
-        notify $TITLE "Updating ocaml"
+        notify $TITLE "updating ocaml"
         if has_command "opam"; then
             # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
             # https://github.com/ocaml/opam/issues/5968
             opam init --no
             opam update
             opam upgrade --yes
-            notify $SUCCESS "  Success"
+            notify $SUCCESS "  success"
         fi
     }
 
-    notify $TITLE "Updating libraries"
+    notify $TITLE "updating libraries"
     do_python
     do_rust
     do_node
@@ -147,20 +152,20 @@ do_libs() {
 }
 
 do_repos() {
-    notify $TITLE "Updating repos"
+    notify $TITLE "updating repos"
     if has_command "python"; then
         python "${script_dir}/setup-repos.py"
-        notify $SUCCESS "  Success"
+        notify $SUCCESS "  success"
     fi
 }
 
 do_nvim() {
-    notify $TITLE "Updating neovim"
+    notify $TITLE "updating neovim"
     if has_command "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
         nvim --headless "+MasonToolsUpdateSync" +qa
-        notify $SUCCESS "  Success"
+        notify $SUCCESS "  success"
     fi
 }
 

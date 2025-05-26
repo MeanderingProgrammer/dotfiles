@@ -1,10 +1,10 @@
-# ---- Editor with Aliases ---- #
+# ---- editor with aliases ---- #
 
-# Change default editor
+# change default editor
 export VISUAL="$(which nvim)"
 export EDITOR="$VISUAL"
 
-# Aliases common editor commands
+# aliases common editor commands
 alias n='$VISUAL .'
 alias v='$VISUAL .'
 
@@ -20,6 +20,6 @@ vim() {
             echo "${1} is neither a file nor a directory"
         fi
     else
-        echo "Usage: <path>?"
+        echo "usage: <path>?"
     fi
 }

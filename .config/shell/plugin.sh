@@ -1,4 +1,4 @@
-# ---- Plugins ---- #
+# ---- plugins ---- #
 
 load_zsh_plugin() {
     local plugin_init="$HOMEBREW_PREFIX/share/${1}/${1}.zsh"

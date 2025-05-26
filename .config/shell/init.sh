@@ -1,4 +1,4 @@
-# ---- Source all configurations ---- #
+# ---- source all configurations ---- #
 
 run_source() {
     local source_file="${XDG_CONFIG_HOME}/shell/${1}"

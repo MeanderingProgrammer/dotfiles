@@ -1,5 +1,5 @@
-# ---- Disable global compinit on Ubuntu ---- #
+# ---- disable global compinit on ubuntu ---- #
 skip_global_compinit=1
 
-# ---- Disable apple terminal sessions ---- #
+# ---- disable apple terminal sessions ---- #
 SHELL_SESSIONS_DISABLE=1
