@@ -1,15 +1,3 @@
----@param buf integer
----@return boolean
-local function highlight(buf)
-    local filetype = vim.bo[buf].filetype
-    local language = vim.treesitter.language.get_lang(filetype)
-    if not language then
-        return false
-    end
-    local files = vim.treesitter.query.get_files(language, 'highlights')
-    return #files > 0
-end
-
 return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -35,16 +23,6 @@ return {
                     scope_incremental = false,
                 },
             },
-        })
-
-        vim.api.nvim_create_autocmd('FileType', {
-            group = vim.api.nvim_create_augroup('user.treesitter', {}),
-            callback = function(args)
-                local buf = args.buf
-                if highlight(buf) then
-                    vim.treesitter.start(buf)
-                end
-            end,
         })
     end,
 }

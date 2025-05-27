@@ -64,6 +64,7 @@ def get_roots() -> list[Root]:
         Root(repos.joinpath("py-requirements.nvim"), Language.LUA),
         Root(repos.joinpath("render-markdown.nvim"), Language.LUA),
         Root(repos.joinpath("stashpad.nvim"), Language.LUA),
+        Root(repos.joinpath("treesitter-modules.nvim"), Language.LUA),
     ]
 
 

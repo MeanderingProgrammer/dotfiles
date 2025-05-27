@@ -115,6 +115,8 @@ def main() -> None:
             Repo(name="resume"),
             Repo(name="small-apps"),
             Repo(name="stashpad.nvim"),
+            Repo(name="treesitter-modules.nvim"),
+            Repo(name="yadm-rs"),
         ],
     )
     tools = RepoRoot(
