@@ -1,7 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'python', 'requirements' } },
+        opts = {
+            languages = { 'python', 'requirements' },
+        },
     },
     {
         'mason-org/mason.nvim',

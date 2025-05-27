@@ -1,3 +1,5 @@
+local util = require('mp.util')
+
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
     ---@param mode string
@@ -59,7 +61,6 @@ return {
         })
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        local util = require('mp.util')
         for name, server in pairs(opts) do
             server.capabilities = util.capabilities(server.capabilities)
             require('lspconfig')[name].setup(server)

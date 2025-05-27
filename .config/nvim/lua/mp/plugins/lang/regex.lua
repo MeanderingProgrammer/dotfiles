@@ -1,6 +1,8 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'regex' } },
+        opts = {
+            languages = { 'regex' },
+        },
     },
 }

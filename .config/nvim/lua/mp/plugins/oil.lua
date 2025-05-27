@@ -1,9 +1,11 @@
+local util = require('mp.util')
+
 return {
     'stevearc/oil.nvim',
     dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         local hidden = { '.DS_Store', '.project', '.classpath', '.factorypath' }
-        vim.list_extend(hidden, require('mp.util').hidden)
+        vim.list_extend(hidden, util.hidden)
 
         local oil = require('oil')
         oil.setup({
@@ -23,7 +25,7 @@ return {
                 end,
             },
             float = {
-                padding = require('mp.util').pc(8, 2),
+                padding = util.pc(8, 2),
             },
         })
 

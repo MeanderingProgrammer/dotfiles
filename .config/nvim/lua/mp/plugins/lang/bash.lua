@@ -1,16 +1,20 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'bash' } },
+        opts = {
+            languages = { 'bash' },
+        },
     },
     {
         'mason-org/mason.nvim',
         opts = {
             install = { 'bash-language-server' },
             linters = {
-                bash = require('mp.util').pc({ 'shellcheck' }),
-                sh = require('mp.util').pc({ 'shellcheck' }),
-                zsh = require('mp.util').pc({ 'shellcheck' }),
+                bash = util.pc({ 'shellcheck' }),
+                sh = util.pc({ 'shellcheck' }),
+                zsh = util.pc({ 'shellcheck' }),
             },
         },
     },

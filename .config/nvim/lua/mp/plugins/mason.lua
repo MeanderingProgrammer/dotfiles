@@ -1,3 +1,5 @@
+local util = require('mp.util')
+
 return {
     'mason-org/mason.nvim',
     dependencies = {
@@ -26,7 +28,7 @@ return {
         ---@param buf integer
         ---@return conform.LspFormatOpts
         local lsp_format = function(buf)
-            local clients = require('mp.util').lsp_names(buf)
+            local clients = util.lsp_names(buf)
             if vim.tbl_contains(clients, 'jsonls') then
                 return 'never'
             end

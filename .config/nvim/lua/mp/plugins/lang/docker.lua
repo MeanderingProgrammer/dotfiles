@@ -1,6 +1,8 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'dockerfile' } },
+        opts = {
+            languages = { 'dockerfile' },
+        },
     },
 }

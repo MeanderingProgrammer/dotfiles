@@ -1,12 +1,16 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'rust', 'toml' } },
+        opts = {
+            languages = { 'rust', 'toml' },
+        },
     },
     {
         'mason-org/mason.nvim',
         opts = {
-            install = require('mp.util').pc({ 'rust-analyzer' }),
+            install = util.pc({ 'rust-analyzer' }),
         },
     },
     {

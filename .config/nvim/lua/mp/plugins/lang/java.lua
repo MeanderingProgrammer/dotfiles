@@ -1,12 +1,16 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'java' } },
+        opts = {
+            languages = { 'java' },
+        },
     },
     {
         'mason-org/mason.nvim',
         opts = {
-            install = require('mp.util').pc({ 'jdtls' }),
+            install = util.pc({ 'jdtls' }),
         },
     },
     {
@@ -78,7 +82,7 @@ return {
                     },
                 }
 
-                local capabilities = require('mp.util').capabilities()
+                local capabilities = util.capabilities()
 
                 local markers = {
                     '.git',

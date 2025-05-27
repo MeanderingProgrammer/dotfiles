@@ -1,12 +1,16 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'markdown', 'markdown_inline' } },
+        opts = {
+            languages = { 'markdown', 'markdown_inline' },
+        },
     },
     {
         'mason-org/mason.nvim',
         opts = {
-            install = require('mp.util').pc(
+            install = util.pc(
                 { 'marksman', 'markdownlint' },
                 { 'markdownlint' }
             ),
@@ -17,7 +21,7 @@ return {
                 markdownlint = function(linter)
                     local args = {
                         '--config',
-                        require('mp.util').lint_config('markdownlint.yaml'),
+                        util.lint_config('markdownlint.yaml'),
                     }
                     linter.args = vim.list_extend(linter.args or {}, args)
                 end,
@@ -27,7 +31,7 @@ return {
     {
         'neovim/nvim-lspconfig',
         opts = {
-            marksman = require('mp.util').pc({}),
+            marksman = util.pc({}),
         },
     },
     {

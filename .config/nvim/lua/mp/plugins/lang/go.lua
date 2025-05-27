@@ -1,7 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'go', 'gomod', 'gosum', 'gowork' } },
+        opts = {
+            languages = { 'go', 'gomod', 'gosum', 'gowork' },
+        },
     },
     {
         'mason-org/mason.nvim',

@@ -1,3 +1,5 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -31,24 +33,24 @@ return {
             })
         end,
         opts = {
-            install = require('mp.util').pc({
+            install = util.pc({
                 'eslint-lsp',
                 'svelte-language-server',
                 'typescript-language-server',
                 'prettierd',
             }),
             formatters = {
-                javascript = require('mp.util').pc({ 'prettierd' }),
-                typescript = require('mp.util').pc({ 'prettierd' }),
+                javascript = util.pc({ 'prettierd' }),
+                typescript = util.pc({ 'prettierd' }),
             },
         },
     },
     {
         'neovim/nvim-lspconfig',
         opts = {
-            eslint = require('mp.util').pc({}),
-            svelte = require('mp.util').pc({}),
-            ts_ls = require('mp.util').pc({
+            eslint = util.pc({}),
+            svelte = util.pc({}),
+            ts_ls = util.pc({
                 settings = {
                     implicitProjectConfiguration = {
                         checkJs = true,

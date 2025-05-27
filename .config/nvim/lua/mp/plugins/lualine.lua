@@ -1,3 +1,5 @@
+local util = require('mp.util')
+
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -7,7 +9,7 @@ return {
             if vim.api.nvim_win_get_width(0) < 100 then
                 return ''
             end
-            return table.concat(require('mp.util').lsp_names(0), ' ')
+            return table.concat(util.lsp_names(0), ' ')
         end
         local filename = { 'filename', path = 1, shorting_target = 100 }
         require('lualine').setup({

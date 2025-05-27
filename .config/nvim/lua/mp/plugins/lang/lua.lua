@@ -1,21 +1,25 @@
+local util = require('mp.util')
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'lua', 'luadoc' } },
+        opts = {
+            languages = { 'lua', 'luadoc' },
+        },
     },
     {
         'mason-org/mason.nvim',
         opts = {
-            install = require('mp.util').pc({ 'lua-language-server' }),
+            install = util.pc({ 'lua-language-server' }),
             formatters = {
                 lua = { 'stylua' },
             },
             linters = {
-                lua = require('mp.util').pc({ 'selene' }),
+                lua = util.pc({ 'selene' }),
             },
             linter_conditions = {
-                selene = require('mp.util').pc(function()
-                    return require('mp.util').in_root({ 'selene.toml' })
+                selene = util.pc(function()
+                    return util.in_root({ 'selene.toml' })
                 end),
             },
         },
@@ -62,6 +66,9 @@ return {
         ft = 'lua',
         opts = {
             library = { '${3rd}/luv/library' },
+            enabled = function()
+                return not util.in_root({ '.luarc.json' })
+            end,
         },
     },
     {

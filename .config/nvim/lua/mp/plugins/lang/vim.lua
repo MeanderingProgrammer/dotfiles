@@ -1,6 +1,8 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = { languages = { 'query', 'vim', 'vimdoc' } },
+        opts = {
+            languages = { 'query', 'vim', 'vimdoc' },
+        },
     },
 }

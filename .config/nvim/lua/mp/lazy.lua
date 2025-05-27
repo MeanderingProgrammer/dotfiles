@@ -9,8 +9,11 @@ if not vim.uv.fs_stat(lazypath) then
         lazyrepo,
         lazypath,
     })
+    assert(vim.v.shell_error == 0, 'failed to clone lazy.nvim')
 end
 vim.opt.rtp:prepend(lazypath)
+
+local util = require('mp.util')
 
 require('lazy').setup({
     spec = {
@@ -23,7 +26,7 @@ require('lazy').setup({
             local directories = { 'personal', 'open-source', 'neovim-plugins' }
             for _, directory in ipairs(directories) do
                 local path = vim.fs.joinpath('~/dev/repos', directory, name)
-                if require('mp.util').exists(path) then
+                if util.exists(path) then
                     return path
                 end
             end
