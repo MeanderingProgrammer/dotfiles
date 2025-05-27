@@ -1,22 +1,21 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'go', 'gomod', 'gosum', 'gowork' },
-        },
+        opts = { languages = { 'go', 'gomod', 'gosum', 'gowork' } },
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            opts.install[#opts.install + 1] = 'gopls'
-            vim.list_extend(opts.install, { 'goimports', 'gofumpt' })
-            opts.formatters.go = { 'goimports', 'gofumpt' }
-        end,
+        opts = {
+            install = { 'gopls', 'goimports', 'gofumpt' },
+            formatters = {
+                go = { 'goimports', 'gofumpt' },
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            opts.servers.gopls = {}
-        end,
+        opts = {
+            gopls = {},
+        },
     },
 }

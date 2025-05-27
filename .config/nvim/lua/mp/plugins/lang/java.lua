@@ -5,19 +5,9 @@ return {
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'jdtls'
-            end
-        end,
-    },
-    {
-        'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.jdtls = false
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({ 'jdtls' }),
+        },
     },
     {
         'mfussenegger/nvim-jdtls',

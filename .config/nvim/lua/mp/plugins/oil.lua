@@ -23,7 +23,7 @@ return {
                 end,
             },
             float = {
-                padding = vim.g.android and 2 or 8,
+                padding = require('mp.util').pc(8, 2),
             },
         })
 

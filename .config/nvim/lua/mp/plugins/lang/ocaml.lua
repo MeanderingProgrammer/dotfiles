@@ -5,20 +5,20 @@ return {
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'ocaml-lsp'
-                opts.install[#opts.install + 1] = 'ocamlformat'
-                opts.formatters.ocaml = { 'ocamlformat' }
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({
+                'ocaml-lsp',
+                'ocamlformat',
+            }),
+            formatters = {
+                ocaml = require('mp.util').pc({ 'ocamlformat' }),
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.ocamllsp = {}
-            end
-        end,
+        opts = {
+            ocamllsp = require('mp.util').pc({}),
+        },
     },
 }

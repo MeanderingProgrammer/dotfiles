@@ -1,30 +1,26 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'rust', 'toml' },
-        },
+        opts = { languages = { 'rust', 'toml' } },
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'rust-analyzer'
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({ 'rust-analyzer' }),
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            opts.servers.rust_analyzer = {
+        opts = {
+            rust_analyzer = {
                 settings = {
                     ['rust-analyzer'] = {
                         check = { command = 'clippy' },
                         diagnostics = { disabled = { 'inactive-code' } },
                     },
                 },
-            }
-        end,
+            },
+        },
     },
     {
         'Saecki/crates.nvim',

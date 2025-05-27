@@ -13,6 +13,7 @@ return {
         linter_overrides = {},
         linter_conditions = {},
     },
+    opts_extend = { 'install' },
     config = function(_, opts)
         require('mason').setup({})
 

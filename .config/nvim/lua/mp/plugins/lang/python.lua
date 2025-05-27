@@ -1,25 +1,26 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'python', 'requirements' },
-        },
+        opts = { languages = { 'python', 'requirements' } },
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            opts.install[#opts.install + 1] = 'pyright'
-            vim.list_extend(opts.install, { 'black', 'isort' })
-            opts.formatters.python = { 'black', 'isort' }
-            opts.formatter_overrides.isort = {
-                prepend_args = { '--profile', 'black' },
-            }
-        end,
+        opts = {
+            install = { 'pyright', 'black', 'isort' },
+            formatters = {
+                python = { 'black', 'isort' },
+            },
+            formatter_overrides = {
+                isort = {
+                    prepend_args = { '--profile', 'black' },
+                },
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            opts.servers.pyright = {
+        opts = {
+            pyright = {
                 settings = {
                     python = {
                         analysis = {
@@ -27,8 +28,8 @@ return {
                         },
                     },
                 },
-            }
-        end,
+            },
+        },
     },
     {
         'MeanderingProgrammer/py-requirements.nvim',

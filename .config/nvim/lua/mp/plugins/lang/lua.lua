@@ -1,27 +1,29 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'lua', 'luadoc' },
-        },
+        opts = { languages = { 'lua', 'luadoc' } },
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'lua-language-server'
-                opts.linters.lua = { 'selene' }
-                opts.linter_conditions.selene = function()
+        opts = {
+            install = require('mp.util').pc({ 'lua-language-server' }),
+            formatters = {
+                lua = { 'stylua' },
+            },
+            linters = {
+                lua = require('mp.util').pc({ 'selene' }),
+            },
+            linter_conditions = {
+                selene = require('mp.util').pc(function()
                     return require('mp.util').in_root({ 'selene.toml' })
-                end
-            end
-            opts.formatters.lua = { 'stylua' }
-        end,
+                end),
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            opts.servers.lua_ls = {
+        opts = {
+            lua_ls = {
                 settings = {
                     Lua = {
                         hint = { enable = true },
@@ -43,8 +45,8 @@ return {
                         },
                     },
                 },
-            }
-        end,
+            },
+        },
     },
     {
         'nvim-neotest/neotest',

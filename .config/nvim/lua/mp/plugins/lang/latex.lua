@@ -5,18 +5,14 @@ return {
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'texlab'
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({ 'texlab' }),
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.texlab = {}
-            end
-        end,
+        opts = {
+            texlab = require('mp.util').pc({}),
+        },
     },
 }

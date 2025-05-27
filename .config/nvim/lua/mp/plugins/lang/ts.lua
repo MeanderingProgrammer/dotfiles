@@ -1,8 +1,8 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = function(_, opts)
-            vim.list_extend(opts.languages, {
+        opts = {
+            languages = {
                 'css',
                 'html',
                 'javascript',
@@ -11,8 +11,8 @@ return {
                 'svelte',
                 'typescript',
                 'vue',
-            })
-        end,
+            },
+        },
     },
     {
         'mason-org/mason.nvim',
@@ -30,31 +30,31 @@ return {
                 end,
             })
         end,
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'eslint-lsp'
-                opts.install[#opts.install + 1] = 'svelte-language-server'
-                opts.install[#opts.install + 1] = 'typescript-language-server'
-                opts.install[#opts.install + 1] = 'prettierd'
-                opts.formatters.javascript = { 'prettierd' }
-                opts.formatters.typescript = { 'prettierd' }
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({
+                'eslint-lsp',
+                'svelte-language-server',
+                'typescript-language-server',
+                'prettierd',
+            }),
+            formatters = {
+                javascript = require('mp.util').pc({ 'prettierd' }),
+                typescript = require('mp.util').pc({ 'prettierd' }),
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.eslint = {}
-                opts.servers.svelte = {}
-                opts.servers.ts_ls = {
-                    settings = {
-                        implicitProjectConfiguration = {
-                            checkJs = true,
-                        },
+        opts = {
+            eslint = require('mp.util').pc({}),
+            svelte = require('mp.util').pc({}),
+            ts_ls = require('mp.util').pc({
+                settings = {
+                    implicitProjectConfiguration = {
+                        checkJs = true,
                     },
-                }
-            end
-        end,
+                },
+            }),
+        },
     },
 }

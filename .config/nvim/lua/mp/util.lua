@@ -18,6 +18,13 @@ M.hidden = {
     'zig-out',
 }
 
+---@param default any
+---@param phone any
+---@return any
+function M.pc(default, phone)
+    return not vim.g.android and default or phone
+end
+
 ---@param file string
 ---@return string
 function M.lint_config(file)

@@ -5,18 +5,14 @@ return {
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'terraform-ls'
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc({ 'terraform-ls' }),
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.terraformls = {}
-            end
-        end,
+        opts = {
+            terraformls = require('mp.util').pc({}),
+        },
     },
 }

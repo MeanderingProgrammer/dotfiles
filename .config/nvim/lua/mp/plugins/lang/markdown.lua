@@ -1,34 +1,34 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        opts = {
-            languages = { 'markdown', 'markdown_inline' },
-        },
+        opts = { languages = { 'markdown', 'markdown_inline' } },
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.install[#opts.install + 1] = 'marksman'
-            end
-            opts.install[#opts.install + 1] = 'markdownlint'
-            opts.linters.markdown = { 'markdownlint' }
-            opts.linter_overrides.markdownlint = function(linter)
-                local args = {
-                    '--config',
-                    require('mp.util').lint_config('markdownlint.yaml'),
-                }
-                linter.args = vim.list_extend(linter.args or {}, args)
-            end
-        end,
+        opts = {
+            install = require('mp.util').pc(
+                { 'marksman', 'markdownlint' },
+                { 'markdownlint' }
+            ),
+            linters = {
+                markdown = { 'markdownlint' },
+            },
+            linter_overrides = {
+                markdownlint = function(linter)
+                    local args = {
+                        '--config',
+                        require('mp.util').lint_config('markdownlint.yaml'),
+                    }
+                    linter.args = vim.list_extend(linter.args or {}, args)
+                end,
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            if not vim.g.android then
-                opts.servers.marksman = {}
-            end
-        end,
+        opts = {
+            marksman = require('mp.util').pc({}),
+        },
     },
     {
         '3rd/image.nvim',

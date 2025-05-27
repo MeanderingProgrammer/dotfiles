@@ -5,21 +5,21 @@ return {
     },
     {
         'mason-org/mason.nvim',
-        opts = function(_, opts)
-            opts.install[#opts.install + 1] = 'bash-language-server'
-            if not vim.g.android then
-                opts.linters.bash = { 'shellcheck' }
-                opts.linters.sh = { 'shellcheck' }
-                opts.linters.zsh = { 'shellcheck' }
-            end
-        end,
+        opts = {
+            install = { 'bash-language-server' },
+            linters = {
+                bash = require('mp.util').pc({ 'shellcheck' }),
+                sh = require('mp.util').pc({ 'shellcheck' }),
+                zsh = require('mp.util').pc({ 'shellcheck' }),
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
-        opts = function(_, opts)
-            opts.servers.bashls = {
+        opts = {
+            bashls = {
                 filetypes = { 'sh', 'zsh' },
-            }
-        end,
+            },
+        },
     },
 }
