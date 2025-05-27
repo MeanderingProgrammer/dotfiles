@@ -104,7 +104,7 @@ return {
                 })
             end
             vim.api.nvim_create_autocmd('FileType', {
-                group = vim.api.nvim_create_augroup('JavaCmds', {}),
+                group = vim.api.nvim_create_augroup('user.jdtls', {}),
                 pattern = { 'java' },
                 desc = 'Setup jdtls',
                 callback = jdtls_setup,

@@ -53,7 +53,7 @@ return {
     opts = {},
     config = function(_, opts)
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+            group = vim.api.nvim_create_augroup('user.lsp', {}),
             desc = 'LSP actions',
             callback = attach,
         })

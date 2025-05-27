@@ -38,6 +38,7 @@ return {
         })
 
         vim.api.nvim_create_autocmd('FileType', {
+            group = vim.api.nvim_create_augroup('user.treesitter', {}),
             callback = function(args)
                 local buf = args.buf
                 if highlight(buf) then

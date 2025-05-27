@@ -23,7 +23,7 @@ return {
             -- due to prettierd not picking up changes
             -- https://github.com/fsouza/prettierd/issues/719
             vim.api.nvim_create_autocmd('BufWritePost', {
-                group = vim.api.nvim_create_augroup('RestartPrettierd', {}),
+                group = vim.api.nvim_create_augroup('user.prettierd', {}),
                 pattern = '*prettier*',
                 callback = function()
                     vim.fn.system('prettierd restart')
