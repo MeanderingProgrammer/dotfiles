@@ -22,18 +22,15 @@ return {
                 '~/Documents/notes',
                 ---@return string[]
                 function()
+                    local root = vim.fs.normalize('~/dev/repos/personal')
                     -- stylua: ignore
-                    local cmd = {
-                        'find', vim.fs.normalize('~/dev/repos/personal'),
-                        '-type', 'd', '-name', '.git', '-maxdepth', '2',
-                    }
+                    local cmd = { 'find', root, '-type', 'd', '-name', '.git', '-maxdepth', '2' }
                     local result = vim.system(cmd, { text = true }):wait()
                     local out = vim.trim(assert(result.stdout))
-                    local lines = vim.split(out, '\n', { plain = true })
-
+                    local paths = vim.split(out, '\n', { plain = true })
                     local dirs = {}
-                    for _, line in ipairs(lines) do
-                        dirs[#dirs + 1] = vim.fn.fnamemodify(line, ':~:h')
+                    for _, path in ipairs(paths) do
+                        dirs[#dirs + 1] = vim.fn.fnamemodify(path, ':~:h')
                     end
                     table.sort(dirs)
                     return dirs

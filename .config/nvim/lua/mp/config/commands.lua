@@ -1,4 +1,4 @@
--- Disable comment continuation, needs to be autocmd to override ftplugin
+-- disable comment continuation, needs to be autocmd to override ftplugin
 vim.api.nvim_create_autocmd('BufEnter', {
     group = vim.api.nvim_create_augroup('user.opt.comment', {}),
     callback = function()
@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
     end,
 })
 
--- Sort spell file after adding words
+-- sort spell file after adding words
 vim.api.nvim_create_user_command('MySortSpell', function()
     local file = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
     vim.cmd('edit ' .. file)
@@ -24,7 +24,7 @@ vim.api.nvim_create_user_command('MySortSpell', function()
     vim.cmd('bd')
 end, {})
 
--- Attempt to format current line to multiple lines of width 80
+-- split current line into multiple lines of width 80
 vim.api.nvim_create_user_command('MyFormatLine', function()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
 

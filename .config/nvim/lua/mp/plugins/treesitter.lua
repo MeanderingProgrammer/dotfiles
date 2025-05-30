@@ -40,7 +40,7 @@ return {
         ---@param rhs fun(name: string)
         ---@param name string
         local function keymap(mode, lhs, rhs, name)
-            vim.keymap.set(mode, lhs, function()
+            map(mode, lhs, function()
                 rhs(name)
             end)
         end

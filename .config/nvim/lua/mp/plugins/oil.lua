@@ -10,11 +10,11 @@ return {
         local oil = require('oil')
         oil.setup({
             keymaps = {
-                -- Use finder keymaps
+                -- use finder keymaps
                 ['<C-c>'] = 'actions.close',
                 ['<C-v>'] = 'actions.select_vsplit',
                 ['<C-x>'] = 'actions.select_split',
-                -- Disable navigation keymaps
+                -- disable navigation keymaps
                 ['<C-h>'] = false,
                 ['<C-l>'] = false,
             },

@@ -5,7 +5,7 @@ return {
         local fzf = require('fzf-lua')
         local actions = require('fzf-lua.actions')
         fzf.setup({
-            -- Note: most keymaps come from fzf: https://github.com/junegunn/fzf
+            -- most keymaps come from fzf: https://github.com/junegunn/fzf
             actions = {
                 files = {
                     ['enter'] = actions.file_switch_or_edit,
@@ -46,8 +46,7 @@ return {
         map('<leader>fk', fzf.keymaps, 'keymaps')
         map('<leader>fh', fzf.highlights, 'highlights')
 
-        local data_home = vim.env.XDG_DATA_HOME
-        vim.env.YADM_REPO = vim.fs.joinpath(data_home, 'yadm/repo.git')
+        vim.env.YADM_REPO = vim.env.XDG_DATA_HOME .. '/yadm/repo.git'
         map('<leader>yf', function()
             fzf.git_files({
                 cwd = '~',

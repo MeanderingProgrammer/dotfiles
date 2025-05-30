@@ -30,12 +30,12 @@ map('n', '<A-k>', '<Cmd>m .-2<CR>==')
 map('i', '<A-j>', '<Esc><Cmd>m .+1<CR>==gi')
 map('i', '<A-k>', '<Esc><Cmd>m .-2<CR>==gi')
 
--- Execute current line
+-- execute current line
 map('n', '<leader>bb', function()
     vim.cmd(':! ' .. vim.fn.getline('.'))
 end)
 
--- Copy hex value of current character to clipboard
+-- copy hex code of current character to clipboard
 map('n', '<leader>ff', function()
     local encodings = vim.api.nvim_exec2('ascii', { output = true }).output
     local hex_code = vim.iter(vim.split(encodings, ',', { plain = true }))
