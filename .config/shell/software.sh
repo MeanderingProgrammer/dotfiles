@@ -6,8 +6,7 @@ init_homebrew() {
     local system_type=$(uname -s)
     if [[ "${system_type}" == "Darwin" ]]; then
         brew_init="/opt/homebrew/bin/brew"
-        # add services
-        brew_services+=("ollama")
+        brew_services+=("ollama" "postgresql@17")
     elif [[ "${system_type}" == "Linux" ]]; then
         brew_init="/home/linuxbrew/.linuxbrew/bin/brew"
     else
@@ -16,8 +15,10 @@ init_homebrew() {
     # setup homebrew
     [[ -x $brew_init ]] && eval "$($brew_init shellenv)"
     # start services
+    [[ "${#brew_services[@]}" == 0 ]] && return
+    local services=$(brew services list)
     for service in "${brew_services[@]}"; do
-        local running=$(brew services list | grep "$service.*started")
+        local running=$(echo ${services} | grep "$service.*started")
         [[ -z $running ]] && brew services start $service
     done
 }
