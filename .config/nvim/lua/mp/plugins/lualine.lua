@@ -2,7 +2,7 @@ local util = require('mp.util')
 
 return {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         ---@return string
         local function lsp_info()
