@@ -1,6 +1,7 @@
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
     dev = true,
+    dependencies = { 'echasnovski/mini.nvim' },
     config = function()
         local harpoon = require('harpoon-core')
         harpoon.setup({
