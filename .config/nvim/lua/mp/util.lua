@@ -59,10 +59,9 @@ function M.lsp_names(buf)
     return result
 end
 
----@param override? lsp.ClientCapabilities
 ---@return lsp.ClientCapabilities
-function M.capabilities(override)
-    local result = vim.lsp.protocol.make_client_capabilities()
+function M.capabilities()
+    local result = {}
     local has_cmp, cmp = pcall(require, 'cmp_nvim_lsp')
     if has_cmp then
         local capabilities = cmp.default_capabilities()
@@ -73,7 +72,7 @@ function M.capabilities(override)
         local capabilities = blink.get_lsp_capabilities()
         result = vim.tbl_deep_extend('force', result, capabilities)
     end
-    return vim.tbl_deep_extend('force', result, override or {})
+    return result
 end
 
 return M

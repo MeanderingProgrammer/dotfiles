@@ -56,9 +56,11 @@ return {
     config = function(_, opts)
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, server in pairs(opts) do
-            server.capabilities = util.capabilities(server.capabilities)
-            require('lspconfig')[name].setup(server)
+            server.capabilities = util.capabilities()
+            vim.lsp.config(name, server)
+            vim.lsp.enable(name)
         end
+
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('user.lsp', {}),
             desc = 'LSP actions',
