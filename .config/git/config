@@ -2,6 +2,8 @@
     name = MeanderingProgrammer
     email = meanderingprogrammer@gmail.com
     signingkey = ~/.ssh/id_ed25519.pub
+[init]
+    defaultBranch = main
 [core]
     autocrlf = input
     commentChar = ";"
