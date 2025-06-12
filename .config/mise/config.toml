@@ -1,3 +1,15 @@
+[settings]
+disable_backends = [
+    "cargo",
+    "dotnet",
+    "gem",
+    "go",
+    "npm",
+    "pipx",
+    "spm",
+    "vfox",
+]
+
 [tools]
 "asdf:aws" = "2.18.3"
 bun = "1.2.1"
@@ -18,7 +30,7 @@ ruby = "3.2.2"
 rust = "1.85.0"
 scala = "3.6.3"
 terraform = "1.10.5"
-zig = "0.13.0"
+zig = "0.14.1"
 
 [env]
 NVIM_ROOT = """

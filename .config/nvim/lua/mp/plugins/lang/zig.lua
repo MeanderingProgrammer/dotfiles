@@ -10,7 +10,7 @@ return {
     {
         'mason-org/mason.nvim',
         opts = {
-            install = util.pc({ { 'zls', version = '0.13.0' } }),
+            install = util.pc({ 'zls' }),
         },
     },
     {
