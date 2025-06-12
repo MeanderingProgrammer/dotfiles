@@ -64,7 +64,6 @@ do_deps() {
           ripgrep \
           rust \
           rust-analyzer \
-          stylua \
           wget \
           yadm \
           zsh
