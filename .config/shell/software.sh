@@ -80,6 +80,9 @@ export SYSTEM_32="/mnt/c/Windows/System32"
 # prepend go bin
 export PATH="${GOBIN}:$PATH"
 
+# prepend mason bin
+export PATH="${XDG_DATA_HOME}/nvim/mason/bin:$PATH"
+
 # prepend shell bin
 export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
 

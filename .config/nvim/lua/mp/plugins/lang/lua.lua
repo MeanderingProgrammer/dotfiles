@@ -10,7 +10,7 @@ return {
     {
         'mason-org/mason.nvim',
         opts = {
-            install = util.pc({ 'lua-language-server' }),
+            install = util.pc({ 'lua-language-server', 'selene', 'stylua' }),
             formatters = {
                 lua = { 'stylua' },
             },
