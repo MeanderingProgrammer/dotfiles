@@ -8,20 +8,20 @@ import click
 
 
 class Commit(StrEnum):
-    INDEX = "i"
-    PREVIOUS = "p"
-    CURRENT = "c"
-    MAINLINE = "m"
+    I = "index"
+    P = "previous"
+    C = "current"
+    M = "mainline"
 
     def resolve(self) -> str | None:
         match self:
-            case Commit.INDEX:
+            case Commit.I:
                 return None
-            case Commit.PREVIOUS:
+            case Commit.P:
                 return "HEAD^"
-            case Commit.CURRENT:
+            case Commit.C:
                 return current()
-            case Commit.MAINLINE:
+            case Commit.M:
                 return mainline()
 
     @staticmethod
@@ -29,13 +29,13 @@ class Commit(StrEnum):
         stats = run(["git", "status", "--short"])
         modified = any([stat[1] != " " for stat in stats])
         if modified:
-            return Commit.INDEX
+            return Commit.I
         elif len(stats) > 0:
-            return Commit.CURRENT
+            return Commit.C
         elif current() == mainline():
-            return Commit.PREVIOUS
+            return Commit.P
         else:
-            return Commit.MAINLINE
+            return Commit.M
 
 
 @click.command()
@@ -43,7 +43,7 @@ class Commit(StrEnum):
 @click.option(
     "-c",
     "--commit",
-    type=click.Choice(list(Commit)),
+    type=click.Choice(Commit, case_sensitive=False),
     default=Commit.default,
     help="source commit",
 )
