@@ -12,7 +12,7 @@ disable_backends = [
 
 [tools]
 "asdf:aws" = "2.18.3"
-bun = "1.2.1"
+bun = "1.2.16"
 coursier = "2.1.24"
 dotnet = "9.0.102"
 go = "1.23.2"
