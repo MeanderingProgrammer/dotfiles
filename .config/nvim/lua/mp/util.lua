@@ -18,9 +18,10 @@ M.hidden = {
     'zig-out',
 }
 
----@param default any
----@param phone any
----@return any
+---@generic T
+---@param default? T
+---@param phone? T
+---@return T?
 function M.pc(default, phone)
     return not vim.g.android and default or phone
 end

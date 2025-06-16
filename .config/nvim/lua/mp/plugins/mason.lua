@@ -25,30 +25,36 @@ return {
 
         local conform = require('conform')
 
+        ---@type conform.FormatOpts
+        local format_opts = { lsp_format = 'fallback' }
+
         ---@param buf integer
-        ---@return conform.LspFormatOpts
-        local lsp_format = function(buf)
+        ---@return boolean
+        local should_format = function(buf)
             local clients = util.lsp_names(buf)
             if vim.tbl_contains(clients, 'jsonls') then
-                return 'never'
+                return false
             end
-            -- outside of repos we should always format
-            -- inside of repos only format personal repos
+            -- outside of repos we should always auto format
+            -- inside of repos only auto format personal repos
             local path = vim.api.nvim_buf_get_name(buf)
             local repo = vim.fs.relpath('~/dev/repos', path)
-            local format = not repo or vim.startswith(repo, 'personal')
-            return format and 'fallback' or 'never'
+            return not repo or vim.startswith(repo, 'personal')
         end
 
         conform.setup({
             formatters_by_ft = opts.formatters,
             format_after_save = function(buf)
-                return { lsp_format = lsp_format(buf) }
+                return should_format(buf) and format_opts or nil
             end,
         })
         for name, override in pairs(opts.formatter_overrides) do
             conform.formatters[name] = override
         end
+
+        vim.api.nvim_create_user_command('Format', function()
+            conform.format(format_opts)
+        end, {})
 
         local lint = require('lint')
 

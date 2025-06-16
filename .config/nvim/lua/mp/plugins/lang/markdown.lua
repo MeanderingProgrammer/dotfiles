@@ -11,7 +11,7 @@ return {
         'mason-org/mason.nvim',
         opts = {
             install = util.pc(
-                { 'marksman', 'markdownlint' },
+                { 'markdownlint', 'marksman' },
                 { 'markdownlint' }
             ),
             linters = {

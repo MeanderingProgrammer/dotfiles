@@ -1,6 +1,6 @@
 -- disable comment continuation, needs to be autocmd to override ftplugin
 vim.api.nvim_create_autocmd('BufEnter', {
-    group = vim.api.nvim_create_augroup('user.opt.comment', {}),
+    group = vim.api.nvim_create_augroup('user.options', {}),
     callback = function()
         vim.opt.formatoptions:remove({ 'r', 'o' })
     end,
@@ -74,9 +74,9 @@ local function open_float(title, filetype, lines)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
     ---@type vim.keymap.set.Opts
-    local opts = { buffer = buf, noremap = true, silent = true }
-    vim.keymap.set('n', 'q', ':q<CR>', opts)
-    vim.keymap.set('n', '<Esc>', ':q<CR>', opts)
+    local key_opts = { buffer = buf, noremap = true, silent = true }
+    vim.keymap.set('n', 'q', ':q<CR>', key_opts)
+    vim.keymap.set('n', '<Esc>', ':q<CR>', key_opts)
 
     local cols = vim.o.columns
     local rows = vim.api.nvim_win_get_height(0)
@@ -92,9 +92,11 @@ local function open_float(title, filetype, lines)
         title_pos = 'center',
     })
 
-    vim.api.nvim_set_option_value('bufhidden', 'delete', { buf = buf })
-    vim.api.nvim_set_option_value('filetype', filetype, { buf = buf })
-    vim.api.nvim_set_option_value('modifiable', false, { buf = buf })
+    ---@type vim.api.keyset.option
+    local buf_opts = { buf = buf }
+    vim.api.nvim_set_option_value('bufhidden', 'delete', buf_opts)
+    vim.api.nvim_set_option_value('filetype', filetype, buf_opts)
+    vim.api.nvim_set_option_value('modifiable', false, buf_opts)
 
     vim.api.nvim_create_autocmd('BufLeave', {
         buffer = buf,
