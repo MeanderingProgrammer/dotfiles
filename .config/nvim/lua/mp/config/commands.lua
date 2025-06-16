@@ -1,22 +1,19 @@
--- disable comment continuation, needs to be autocmd to override ftplugin
 vim.api.nvim_create_autocmd('BufEnter', {
     group = vim.api.nvim_create_augroup('user.options', {}),
+    desc = 'disable comment continuation, uses autocmd to override ftplugin',
     callback = function()
         vim.opt.formatoptions:remove({ 'r', 'o' })
     end,
 })
 
-vim.api.nvim_create_user_command('AdventData', function(opts)
+vim.api.nvim_create_user_command('AdventData', function()
     local file = vim.api.nvim_buf_get_name(0)
     local name = vim.fn.fnamemodify(file, ':.')
     local parts = vim.split(name, '/', { plain = true, trimempty = true })
-    local directory = vim.fs.joinpath('data', parts[1], parts[2])
-    local input = #opts.fargs == 0 and 'data' or 'sample'
-    local path = vim.fs.joinpath(directory, ('%s.txt'):format(input))
+    local path = vim.fs.joinpath('data', parts[1], parts[2], 'data.txt')
     vim.cmd.vsplit(path)
-end, { nargs = '?' })
+end, {})
 
--- sort spell file after adding words
 vim.api.nvim_create_user_command('MySortSpell', function()
     local file = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
     vim.cmd('edit ' .. file)
@@ -32,9 +29,8 @@ vim.api.nvim_create_user_command('MySortSpell', function()
     vim.cmd('w')
     vim.cmd('mkspell! %')
     vim.cmd('bd')
-end, {})
+end, { desc = 'sort spell file after adding words' })
 
--- split current line into multiple lines of width 80
 vim.api.nvim_create_user_command('MyFormatLine', function()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
 
@@ -64,7 +60,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
     end
 
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
-end, {})
+end, { desc = 'split current line into multiple lines of width 80' })
 
 ---@param title string
 ---@param filetype string
@@ -112,7 +108,6 @@ vim.api.nvim_create_user_command('MyMessages', function()
     open_float('Messages', 'msglog', lines)
 end, {})
 
--- show LSP configuration in a floating window
 vim.api.nvim_create_user_command('MyLspConfig', function()
     local buf = vim.api.nvim_get_current_buf()
     local clients = vim.lsp.get_clients({ bufnr = buf })
@@ -120,7 +115,6 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
         vim.print('no active LSP found')
         return
     end
-
     local lines = {}
     for _, client in ipairs(clients) do
         local config = { name = client.name }
@@ -136,4 +130,4 @@ vim.api.nvim_create_user_command('MyLspConfig', function()
     end
 
     open_float('LSP configuration', 'lua', lines)
-end, {})
+end, { desc = 'show LSP configuration in a floating window' })
