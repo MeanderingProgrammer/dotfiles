@@ -30,8 +30,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            marksman = util.pc({}),
+            marksman = { enabled = vim.g.pc },
         },
     },
     {

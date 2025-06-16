@@ -15,8 +15,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            terraformls = util.pc({}),
+            terraformls = { enabled = vim.g.pc },
         },
     },
 }

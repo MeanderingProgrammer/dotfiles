@@ -23,7 +23,7 @@ M.hidden = {
 ---@param phone? T
 ---@return T?
 function M.pc(default, phone)
-    return not vim.g.android and default or phone
+    return vim.g.pc and default or phone
 end
 
 ---@param file string

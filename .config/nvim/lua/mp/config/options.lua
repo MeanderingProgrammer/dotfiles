@@ -9,7 +9,10 @@ vim.g._ts_force_sync_parsing = true
 -- os information
 vim.g.mac = vim.fn.has('mac') == 1
 vim.g.linux = vim.fn.has('linux') == 1 or vim.fn.has('wsl') == 1
-vim.g.android = vim.fn.has('android') == 1
+
+-- device information
+vim.g.phone = vim.fn.has('android') == 1
+vim.g.pc = not vim.g.phone
 
 -- use an opaque or transparent colorscheme
 vim.g.opaque = true

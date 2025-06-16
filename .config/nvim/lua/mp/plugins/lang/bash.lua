@@ -20,8 +20,10 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
             bashls = {
+                enabled = true,
                 filetypes = { 'sh', 'zsh' },
             },
         },

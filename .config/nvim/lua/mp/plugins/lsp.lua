@@ -1,5 +1,12 @@
 local util = require('mp.util')
 
+---@alias mp.lsp.Config table<string, mp.lsp.Server>
+
+---@class mp.lsp.Server
+---@field enabled boolean
+---@field filetypes? string[]
+---@field settings? lsp.LSPObject
+
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
     ---@param mode string
@@ -52,13 +59,22 @@ return {
         { 'hrsh7th/cmp-nvim-lsp', optional = true },
         { 'saghen/blink.cmp', optional = true },
     },
+    ---@type mp.lsp.Config
     opts = {},
+    ---@param opts mp.lsp.Config
     config = function(_, opts)
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, server in pairs(opts) do
-            server.capabilities = util.capabilities()
-            vim.lsp.config(name, server)
-            vim.lsp.enable(name)
+            if server.enabled then
+                ---@type vim.lsp.Config
+                local config = {
+                    filetypes = server.filetypes,
+                    settings = server.settings,
+                    capabilities = util.capabilities(),
+                }
+                vim.lsp.config(name, config)
+                vim.lsp.enable(name)
+            end
         end
 
         vim.api.nvim_create_autocmd('LspAttach', {

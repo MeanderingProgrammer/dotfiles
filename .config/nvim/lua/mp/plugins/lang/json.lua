@@ -15,8 +15,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            jsonls = util.pc({}),
+            jsonls = { enabled = vim.g.pc },
         },
     },
 }

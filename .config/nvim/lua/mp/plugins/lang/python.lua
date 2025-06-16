@@ -21,8 +21,10 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
             pyright = {
+                enabled = true,
                 settings = {
                     python = {
                         analysis = {

@@ -15,8 +15,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            zls = util.pc({}),
+            zls = { enabled = vim.g.pc },
         },
     },
 }

@@ -15,8 +15,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            texlab = util.pc({}),
+            texlab = { enabled = vim.g.pc },
         },
     },
 }

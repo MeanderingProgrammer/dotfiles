@@ -18,8 +18,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            ocamllsp = util.pc({}),
+            ocamllsp = { enabled = vim.g.pc },
         },
     },
 }

@@ -47,16 +47,18 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            eslint = util.pc({}),
-            svelte = util.pc({}),
-            ts_ls = util.pc({
+            eslint = { enabled = vim.g.pc },
+            svelte = { enabled = vim.g.pc },
+            ts_ls = {
+                enabled = vim.g.pc,
                 settings = {
                     implicitProjectConfiguration = {
                         checkJs = true,
                     },
                 },
-            }),
+            },
         },
     },
 }

@@ -16,8 +16,9 @@ return {
     },
     {
         'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
         opts = {
-            gopls = {},
+            gopls = { enabled = true },
         },
     },
 }

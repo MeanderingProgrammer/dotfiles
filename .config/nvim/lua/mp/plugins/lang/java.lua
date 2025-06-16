@@ -15,7 +15,7 @@ return {
     },
     {
         'mfussenegger/nvim-jdtls',
-        enabled = not vim.g.android,
+        enabled = vim.g.pc,
         config = function()
             local platform
             if vim.g.mac then

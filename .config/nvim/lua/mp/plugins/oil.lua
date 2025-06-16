@@ -25,7 +25,7 @@ return {
                 end,
             },
             float = {
-                padding = util.pc(8, 2),
+                padding = (vim.o.columns < 100 or vim.o.lines < 40) and 2 or 8,
             },
         })
 
