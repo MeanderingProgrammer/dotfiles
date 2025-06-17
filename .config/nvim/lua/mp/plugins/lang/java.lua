@@ -10,12 +10,11 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            jdtls = { install = vim.g.computer },
+            jdtls = { install = true },
         },
     },
     {
         'mfussenegger/nvim-jdtls',
-        enabled = vim.g.computer,
         config = function()
             local platform
             if vim.g.mac then

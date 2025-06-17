@@ -10,8 +10,8 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['bash-language-server'] = { install = true },
-            shellcheck = { install = vim.g.computer },
+            ['bash-language-server'] = { install = vim.g.has.npm },
+            shellcheck = { install = true },
         },
     },
     {

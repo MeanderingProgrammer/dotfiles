@@ -10,8 +10,8 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['ocaml-lsp'] = { install = vim.g.computer },
-            ocamlformat = { install = vim.g.computer },
+            ['ocaml-lsp'] = { install = vim.g.has.opam },
+            ocamlformat = { install = vim.g.has.opam },
         },
     },
     {

@@ -11,9 +11,9 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            pyright = { install = true },
-            black = { install = true },
-            isort = { install = true },
+            pyright = { install = vim.g.has.npm },
+            black = { install = vim.g.has.pip },
+            isort = { install = vim.g.has.pip },
         },
     },
     {

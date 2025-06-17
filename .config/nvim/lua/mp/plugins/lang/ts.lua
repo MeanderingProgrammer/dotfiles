@@ -31,10 +31,10 @@ return {
         end,
         ---@type mp.mason.Config
         opts = {
-            ['eslint-lsp'] = { install = vim.g.computer },
-            ['svelte-language-server'] = { install = vim.g.computer },
-            ['typescript-language-server'] = { install = vim.g.computer },
-            prettierd = { install = vim.g.computer },
+            ['eslint-lsp'] = { install = vim.g.has.npm },
+            ['svelte-language-server'] = { install = vim.g.has.npm },
+            ['typescript-language-server'] = { install = vim.g.has.npm },
+            prettierd = { install = vim.g.has.npm },
         },
     },
     {

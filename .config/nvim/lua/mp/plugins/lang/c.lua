@@ -15,7 +15,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             clangd = { install = vim.g.computer },
-            ['csharp-language-server'] = { install = vim.g.computer },
+            ['csharp-language-server'] = { install = vim.g.has.dotnet },
         },
     },
     {

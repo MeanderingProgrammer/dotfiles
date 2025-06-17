@@ -24,7 +24,7 @@ end
 function M.by_ft(tools)
     local result = {} ---@type table<string, string[]>
     for name, tool in pairs(tools) do
-        if M.executable(name) then
+        if vim.fn.executable(name) == 1 then
             for _, filetype in ipairs(tool.filetypes) do
                 local active = result[filetype] or {}
                 if #active == 0 then
@@ -36,12 +36,6 @@ function M.by_ft(tools)
         end
     end
     return result
-end
-
----@param cmd string
----@return boolean
-function M.executable(cmd)
-    return vim.fn.executable(cmd) == 1
 end
 
 return M

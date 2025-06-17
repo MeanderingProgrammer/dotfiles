@@ -59,7 +59,7 @@ return {
             config.capabilities = require('mp.util').lsp.capabilities()
             vim.lsp.config(name, config)
             local cmd = vim.lsp.config[name].cmd[1]
-            if require('mp.util').tool.executable(cmd) then
+            if vim.fn.executable(cmd) == 1 then
                 vim.lsp.enable(name)
             end
         end

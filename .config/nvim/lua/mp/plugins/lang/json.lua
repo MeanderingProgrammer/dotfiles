@@ -13,7 +13,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['json-lsp'] = { install = vim.g.computer },
+            ['json-lsp'] = { install = vim.g.has.npm },
         },
     },
     {

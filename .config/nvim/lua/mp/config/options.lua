@@ -14,6 +14,15 @@ vim.g.linux = vim.fn.has('linux') == 1 or vim.fn.has('wsl') == 1
 vim.g.phone = vim.fn.has('android') == 1
 vim.g.computer = not vim.g.phone
 
+-- dependency information
+vim.g.has = {
+    dotnet = vim.fn.executable('dotnet') == 1,
+    go = vim.fn.executable('go') == 1,
+    npm = vim.fn.executable('npm') == 1,
+    opam = vim.fn.executable('opam') == 1,
+    pip = vim.fn.executable('pip') == 1,
+}
+
 -- use an opaque or transparent colorscheme
 vim.g.opaque = true
 
