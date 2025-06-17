@@ -9,6 +9,9 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # data that is not
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"       # non-essential cached data
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # non-essential runtime and other data
 
+# ---- locale ---- #
+export LANG="${LANG:-en_US.UTF-8}"
+
 # ---- history configuration ---- #
 zsh_state_home="${XDG_STATE_HOME}/zsh"
 [[ ! -d $zsh_state_home ]] && mkdir -p $zsh_state_home
