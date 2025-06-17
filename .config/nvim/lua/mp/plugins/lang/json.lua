@@ -1,8 +1,12 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'jq', 'json', 'json5', 'jsonc' },
+            jq = { install = true },
+            json = { install = true },
+            json5 = { install = true },
+            jsonc = { install = true },
         },
     },
     {

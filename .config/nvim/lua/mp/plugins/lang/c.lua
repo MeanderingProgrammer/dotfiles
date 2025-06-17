@@ -1,8 +1,13 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'c', 'c_sharp', 'cmake', 'cpp', 'make' },
+            c = { install = true },
+            c_sharp = { install = true },
+            cmake = { install = true },
+            cpp = { install = true },
+            make = { install = true },
         },
     },
     {

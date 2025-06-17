@@ -1,8 +1,10 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'rust', 'toml' },
+            rust = { install = true },
+            toml = { install = true },
         },
     },
     {

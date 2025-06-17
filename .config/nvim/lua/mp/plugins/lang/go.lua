@@ -1,8 +1,12 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'go', 'gomod', 'gosum', 'gowork' },
+            go = { install = true },
+            gomod = { install = true },
+            gosum = { install = true },
+            gowork = { install = true },
         },
     },
     {

@@ -1,6 +1,6 @@
 ---@alias mp.conform.Config table<string, mp.conform.Tool>
 
----@class mp.conform.Tool: mp.Tool
+---@class mp.conform.Tool: mp.filetype.Tool
 ---@field override? conform.FormatterConfigOverride
 
 return {

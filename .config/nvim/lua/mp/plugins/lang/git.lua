@@ -1,8 +1,11 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'diff', 'gitcommit', 'gitignore' },
+            diff = { install = true },
+            gitcommit = { install = true },
+            gitignore = { install = true },
         },
     },
 }

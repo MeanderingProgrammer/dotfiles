@@ -1,10 +1,25 @@
----@class mp.Tool
+---@class mp.install.Tool
+---@field install boolean
+
+---@class mp.filetype.Tool
 ---@field filetypes string[]
 
 ---@class mp.util.Tool
 local M = {}
 
----@param tools table<string, mp.Tool>
+---@param tools table<string, mp.install.Tool>
+---@return string[]
+function M.install(tools)
+    local result = {} ---@type string[]
+    for name, tool in pairs(tools) do
+        if tool.install then
+            result[#result + 1] = name
+        end
+    end
+    return result
+end
+
+---@param tools table<string, mp.filetype.Tool>
 ---@return table<string, string[]>
 function M.by_ft(tools)
     local result = {} ---@type table<string, string[]>

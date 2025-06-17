@@ -1,8 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'ocaml' },
+            ocaml = { install = true },
         },
     },
     {

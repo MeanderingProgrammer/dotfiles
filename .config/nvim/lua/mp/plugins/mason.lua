@@ -1,7 +1,6 @@
 ---@alias mp.mason.Config table<string, mp.mason.Tool>
 
----@class mp.mason.Tool
----@field install boolean
+---@class mp.mason.Tool: mp.install.Tool
 
 return {
     'mason-org/mason.nvim',
@@ -12,12 +11,7 @@ return {
     config = function(_, opts)
         require('mason').setup({})
 
-        local install = {} ---@type string[]
-        for name, tool in pairs(opts) do
-            if tool.install then
-                install[#install + 1] = name
-            end
-        end
+        local install = require('mp.util').tool.install(opts)
 
         require('mason-tool-installer').setup({
             ensure_installed = install,

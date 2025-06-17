@@ -1,17 +1,16 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = {
-                'css',
-                'html',
-                'javascript',
-                'jsdoc',
-                'scss',
-                'svelte',
-                'typescript',
-                'vue',
-            },
+            css = { install = true },
+            html = { install = true },
+            javascript = { install = true },
+            jsdoc = { install = true },
+            scss = { install = true },
+            svelte = { install = true },
+            typescript = { install = true },
+            vue = { install = true },
         },
     },
     {

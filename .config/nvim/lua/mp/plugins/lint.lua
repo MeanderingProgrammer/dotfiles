@@ -1,6 +1,6 @@
 ---@alias mp.lint.Config table<string, mp.lint.Tool>
 
----@class mp.lint.Tool: mp.Tool
+---@class mp.lint.Tool: mp.filetype.Tool
 ---@field override? fun(linter: lint.Linter)
 ---@field condition? fun(): boolean
 

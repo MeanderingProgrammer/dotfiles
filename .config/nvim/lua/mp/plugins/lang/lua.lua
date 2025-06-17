@@ -1,8 +1,10 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'lua', 'luadoc' },
+            lua = { install = true },
+            luadoc = { install = true },
         },
     },
     {

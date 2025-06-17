@@ -1,8 +1,11 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'query', 'vim', 'vimdoc' },
+            query = { install = true },
+            vim = { install = true },
+            vimdoc = { install = true },
         },
     },
 }

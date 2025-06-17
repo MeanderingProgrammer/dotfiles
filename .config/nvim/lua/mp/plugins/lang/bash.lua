@@ -1,8 +1,9 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'bash' },
+            bash = { install = true },
         },
     },
     {

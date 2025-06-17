@@ -1,8 +1,10 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'markdown', 'markdown_inline' },
+            markdown = { install = true },
+            markdown_inline = { install = true },
         },
     },
     {

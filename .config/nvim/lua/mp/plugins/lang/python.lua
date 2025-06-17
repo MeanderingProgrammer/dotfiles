@@ -1,8 +1,10 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
+        ---@type mp.ts.Config
         opts = {
-            languages = { 'python', 'requirements' },
+            python = { install = true },
+            requirements = { install = true },
         },
     },
     {
