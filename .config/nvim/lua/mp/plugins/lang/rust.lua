@@ -17,7 +17,6 @@ return {
         ---@type mp.lsp.Config
         opts = {
             rust_analyzer = {
-                enabled = true,
                 settings = {
                     ['rust-analyzer'] = {
                         check = { command = 'clippy' },

@@ -18,7 +18,6 @@ return {
         ---@type mp.lsp.Config
         opts = {
             bashls = {
-                enabled = true,
                 filetypes = { 'bash', 'sh', 'zsh' },
             },
         },

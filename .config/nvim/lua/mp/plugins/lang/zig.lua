@@ -16,7 +16,7 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            zls = { enabled = vim.g.computer },
+            zls = {},
         },
     },
 }

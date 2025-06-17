@@ -21,7 +21,6 @@ return {
         ---@type mp.lsp.Config
         opts = {
             lua_ls = {
-                enabled = true,
                 settings = {
                     Lua = {
                         hint = { enable = true },

@@ -16,7 +16,7 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            terraformls = { enabled = vim.g.computer },
+            terraformls = {},
         },
     },
 }

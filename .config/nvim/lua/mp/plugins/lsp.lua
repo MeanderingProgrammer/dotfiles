@@ -1,11 +1,6 @@
 local util = require('mp.util')
 
----@alias mp.lsp.Config table<string, mp.lsp.Server>
-
----@class mp.lsp.Server
----@field enabled boolean
----@field filetypes? string[]
----@field settings? lsp.LSPObject
+---@alias mp.lsp.Config table<string, vim.lsp.Config>
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
@@ -62,15 +57,11 @@ return {
     ---@param opts mp.lsp.Config
     config = function(_, opts)
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        for name, server in pairs(opts) do
-            if server.enabled then
-                ---@type vim.lsp.Config
-                local config = {
-                    filetypes = server.filetypes,
-                    settings = server.settings,
-                    capabilities = util.capabilities(),
-                }
-                vim.lsp.config(name, config)
+        for name, config in pairs(opts) do
+            config.capabilities = util.capabilities()
+            vim.lsp.config(name, config)
+            local cmd = vim.lsp.config[name].cmd[1]
+            if vim.fn.executable(cmd) == 1 then
                 vim.lsp.enable(name)
             end
         end

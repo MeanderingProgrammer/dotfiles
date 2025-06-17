@@ -17,7 +17,7 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            ocamllsp = { enabled = vim.g.computer },
+            ocamllsp = {},
         },
     },
     {

@@ -17,8 +17,8 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            clangd = { enabled = vim.g.computer },
-            csharp_ls = { enabled = vim.g.computer },
+            clangd = {},
+            csharp_ls = {},
         },
     },
 }
