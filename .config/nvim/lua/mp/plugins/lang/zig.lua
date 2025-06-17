@@ -17,7 +17,12 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            zls = {},
+            zls = {
+                settings = {
+                    warn_style = true,
+                    skip_std_references = true,
+                },
+            },
         },
     },
 }
