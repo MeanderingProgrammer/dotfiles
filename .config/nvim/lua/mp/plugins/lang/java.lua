@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -84,7 +82,7 @@ return {
                             },
                         },
                     },
-                    capabilities = util.capabilities(),
+                    capabilities = require('mp.util').lsp.capabilities(),
                     root_dir = vim.fs.root(0, {
                         '.git',
                         'build.gradle',

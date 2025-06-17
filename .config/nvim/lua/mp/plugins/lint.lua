@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 ---@alias mp.lint.Config table<string, mp.lint.Tool>
 
 ---@class mp.lint.Tool: mp.Tool
@@ -15,7 +13,7 @@ return {
     config = function(_, opts)
         local lint = require('lint')
 
-        local by_ft = util.by_ft(opts)
+        local by_ft = require('mp.util').tool.by_ft(opts)
 
         ---@return string[]
         local get_linters = function()

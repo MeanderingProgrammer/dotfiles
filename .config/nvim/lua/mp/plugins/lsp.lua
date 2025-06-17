@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 ---@alias mp.lsp.Config table<string, vim.lsp.Config>
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
@@ -58,10 +56,10 @@ return {
     config = function(_, opts)
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(opts) do
-            config.capabilities = util.capabilities()
+            config.capabilities = require('mp.util').lsp.capabilities()
             vim.lsp.config(name, config)
             local cmd = vim.lsp.config[name].cmd[1]
-            if vim.fn.executable(cmd) == 1 then
+            if require('mp.util').tool.executable(cmd) then
                 vim.lsp.enable(name)
             end
         end

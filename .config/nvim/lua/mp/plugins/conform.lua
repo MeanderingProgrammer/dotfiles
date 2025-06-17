@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 ---@alias mp.conform.Config table<string, mp.conform.Tool>
 
 ---@class mp.conform.Tool: mp.Tool
@@ -14,7 +12,7 @@ return {
     config = function(_, opts)
         local conform = require('conform')
 
-        local by_ft = util.by_ft(opts)
+        local by_ft = require('mp.util').tool.by_ft(opts)
 
         ---@type conform.FormatOpts
         local format = { lsp_format = 'fallback' }
@@ -22,7 +20,7 @@ return {
         ---@param buf integer
         ---@return boolean
         local auto_format = function(buf)
-            local clients = util.lsp_names(buf)
+            local clients = require('mp.util').lsp.names(buf)
             if vim.tbl_contains(clients, 'jsonls') then
                 return false
             end

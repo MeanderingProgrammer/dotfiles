@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -59,7 +57,7 @@ return {
             selene = {
                 filetypes = { 'lua' },
                 condition = function()
-                    return util.in_root({ 'selene.toml' })
+                    return require('mp.util').path.in_root({ 'selene.toml' })
                 end,
             },
         },
@@ -79,7 +77,7 @@ return {
         opts = {
             library = { '${3rd}/luv/library' },
             enabled = function()
-                return not util.in_root({ '.luarc.json' })
+                return not require('mp.util').path.in_root({ '.luarc.json' })
             end,
         },
     },

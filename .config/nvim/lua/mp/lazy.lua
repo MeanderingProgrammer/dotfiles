@@ -13,8 +13,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local util = require('mp.util')
-
 require('lazy').setup({
     spec = {
         { import = 'mp.plugins' },
@@ -26,7 +24,7 @@ require('lazy').setup({
             local directories = { 'personal', 'open-source', 'neovim-plugins' }
             for _, directory in ipairs(directories) do
                 local path = vim.fs.joinpath('~/dev/repos', directory, name)
-                if util.exists(path) then
+                if require('mp.util').path.exists(path) then
                     return path
                 end
             end

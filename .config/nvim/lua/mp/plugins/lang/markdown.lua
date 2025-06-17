@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -31,7 +29,7 @@ return {
                 override = function(linter)
                     local args = {
                         '--config',
-                        util.lint_config('markdownlint.yaml'),
+                        require('mp.util').path.lint('markdownlint.yaml'),
                     }
                     linter.args = vim.list_extend(linter.args or {}, args)
                 end,
