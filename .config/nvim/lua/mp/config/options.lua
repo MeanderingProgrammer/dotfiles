@@ -11,8 +11,7 @@ vim.g.mac = vim.fn.has('mac') == 1
 vim.g.linux = vim.fn.has('linux') == 1 or vim.fn.has('wsl') == 1
 
 -- device information
-vim.g.phone = vim.fn.has('android') == 1
-vim.g.computer = not vim.g.phone
+vim.g.computer = vim.fn.has('android') == 0
 
 -- dependency information
 vim.g.has = {

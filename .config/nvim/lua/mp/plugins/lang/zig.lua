@@ -10,7 +10,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            zls = { install = true },
+            zls = { install = vim.g.computer },
         },
     },
     {

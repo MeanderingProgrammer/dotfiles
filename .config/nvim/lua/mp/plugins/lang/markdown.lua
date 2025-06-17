@@ -12,7 +12,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             markdownlint = { install = vim.g.has.npm },
-            marksman = { install = true },
+            marksman = { install = vim.g.computer },
         },
     },
     {
