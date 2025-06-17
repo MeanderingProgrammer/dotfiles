@@ -15,9 +15,14 @@ name = "ocaml"
 
 [[language]]
 name = "python"
+language-servers = [ "pyright" ]
 
 [[language]]
 name = "rust"
 
 [[language]]
 name = "zig"
+
+[language-server.zls.config]
+warn_style = true
+skip_std_references = true
