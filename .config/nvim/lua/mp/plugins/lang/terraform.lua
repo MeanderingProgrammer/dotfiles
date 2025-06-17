@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -9,15 +7,16 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc({ 'terraform-ls' }),
+            ['terraform-ls'] = { install = vim.g.computer },
         },
     },
     {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            terraformls = { enabled = vim.g.pc },
+            terraformls = { enabled = vim.g.computer },
         },
     },
 }

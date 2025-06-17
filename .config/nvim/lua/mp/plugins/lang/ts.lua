@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -32,33 +30,35 @@ return {
                 end,
             })
         end,
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc({
-                'eslint-lsp',
-                'svelte-language-server',
-                'typescript-language-server',
-                'prettierd',
-            }),
-            formatters = {
-                javascript = util.pc({ 'prettierd' }),
-                typescript = util.pc({ 'prettierd' }),
-            },
+            ['eslint-lsp'] = { install = vim.g.computer },
+            ['svelte-language-server'] = { install = vim.g.computer },
+            ['typescript-language-server'] = { install = vim.g.computer },
+            prettierd = { install = vim.g.computer },
         },
     },
     {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            eslint = { enabled = vim.g.pc },
-            svelte = { enabled = vim.g.pc },
+            eslint = { enabled = vim.g.computer },
+            svelte = { enabled = vim.g.computer },
             ts_ls = {
-                enabled = vim.g.pc,
+                enabled = vim.g.computer,
                 settings = {
                     implicitProjectConfiguration = {
                         checkJs = true,
                     },
                 },
             },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            prettierd = { filetypes = { 'javascript', 'typescript' } },
         },
     },
 }

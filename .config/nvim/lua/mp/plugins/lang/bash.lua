@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -9,13 +7,10 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = { 'bash-language-server' },
-            linters = {
-                bash = util.pc({ 'shellcheck' }),
-                sh = util.pc({ 'shellcheck' }),
-                zsh = util.pc({ 'shellcheck' }),
-            },
+            ['bash-language-server'] = { install = true },
+            shellcheck = { install = vim.g.computer },
         },
     },
     {
@@ -24,8 +19,15 @@ return {
         opts = {
             bashls = {
                 enabled = true,
-                filetypes = { 'sh', 'zsh' },
+                filetypes = { 'bash', 'sh', 'zsh' },
             },
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        ---@type mp.lint.Config
+        opts = {
+            shellcheck = { filetypes = { 'bash', 'sh', 'zsh' } },
         },
     },
 }

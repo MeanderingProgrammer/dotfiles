@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -9,18 +7,24 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc({ 'ocaml-lsp', 'ocamlformat' }),
-            formatters = {
-                ocaml = util.pc({ 'ocamlformat' }),
-            },
+            ['ocaml-lsp'] = { install = vim.g.computer },
+            ocamlformat = { install = vim.g.computer },
         },
     },
     {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            ocamllsp = { enabled = vim.g.pc },
+            ocamllsp = { enabled = vim.g.computer },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            ocamlformat = { filetypes = { 'ocaml' } },
         },
     },
 }

@@ -12,7 +12,7 @@ vim.g.linux = vim.fn.has('linux') == 1 or vim.fn.has('wsl') == 1
 
 -- device information
 vim.g.phone = vim.fn.has('android') == 1
-vim.g.pc = not vim.g.phone
+vim.g.computer = not vim.g.phone
 
 -- use an opaque or transparent colorscheme
 vim.g.opaque = true

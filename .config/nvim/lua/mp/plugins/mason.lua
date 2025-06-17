@@ -1,91 +1,26 @@
-local util = require('mp.util')
+---@alias mp.mason.Config table<string, mp.mason.Tool>
+
+---@class mp.mason.Tool
+---@field install boolean
 
 return {
     'mason-org/mason.nvim',
-    dependencies = {
-        'mfussenegger/nvim-lint',
-        'stevearc/conform.nvim',
-        'WhoIsSethDaniel/mason-tool-installer.nvim',
-    },
-    opts = {
-        install = {},
-        formatters = {},
-        formatter_overrides = {},
-        linters = {},
-        linter_overrides = {},
-        linter_conditions = {},
-    },
-    opts_extend = { 'install' },
+    dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+    ---@type mp.mason.Config
+    opts = {},
+    ---@param opts mp.mason.Config
     config = function(_, opts)
         require('mason').setup({})
 
+        local install = {} ---@type string[]
+        for name, tool in pairs(opts) do
+            if tool.install then
+                install[#install + 1] = name
+            end
+        end
+
         require('mason-tool-installer').setup({
-            ensure_installed = opts.install,
-        })
-
-        local conform = require('conform')
-
-        ---@type conform.FormatOpts
-        local format_opts = { lsp_format = 'fallback' }
-
-        ---@param buf integer
-        ---@return boolean
-        local should_format = function(buf)
-            local clients = util.lsp_names(buf)
-            if vim.tbl_contains(clients, 'jsonls') then
-                return false
-            end
-            -- outside of repos we should always auto format
-            -- inside of repos only auto format personal repos
-            local path = vim.api.nvim_buf_get_name(buf)
-            local repo = vim.fs.relpath('~/dev/repos', path)
-            return not repo or vim.startswith(repo, 'personal')
-        end
-
-        conform.setup({
-            formatters_by_ft = opts.formatters,
-            format_after_save = function(buf)
-                return should_format(buf) and format_opts or nil
-            end,
-        })
-        for name, override in pairs(opts.formatter_overrides) do
-            conform.formatters[name] = override
-        end
-
-        vim.api.nvim_create_user_command('Format', function()
-            conform.format(format_opts)
-        end, {})
-
-        local lint = require('lint')
-
-        ---@return string[]
-        local get_linters = function()
-            local filetype = vim.bo.filetype
-            local linters = opts.linters[filetype] or {}
-            local result = {}
-            for _, linter in ipairs(linters) do
-                local condition = opts.linter_conditions[linter]
-                if not condition or condition() then
-                    result[#result + 1] = linter
-                end
-            end
-            return result
-        end
-
-        lint.linters_by_ft = opts.linters
-        for name, override in pairs(opts.linter_overrides) do
-            lint.linters[name] = override(lint.linters[name])
-        end
-
-        local lint_events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
-        vim.api.nvim_create_autocmd(lint_events, {
-            group = vim.api.nvim_create_augroup('user.lint', {}),
-            callback = function()
-                local linters = get_linters()
-                if #linters > 0 then
-                    lint.try_lint(linters)
-                end
-            end,
+            ensure_installed = install,
         })
     end,
 }

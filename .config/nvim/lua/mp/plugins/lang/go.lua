@@ -7,11 +7,11 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = { 'gopls', 'goimports', 'gofumpt' },
-            formatters = {
-                go = { 'goimports', 'gofumpt' },
-            },
+            gopls = { install = true },
+            goimports = { install = true },
+            gofumpt = { install = true },
         },
     },
     {
@@ -19,6 +19,14 @@ return {
         ---@type mp.lsp.Config
         opts = {
             gopls = { enabled = true },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            goimports = { filetypes = { 'go' } },
+            gofumpt = { filetypes = { 'go' } },
         },
     },
 }

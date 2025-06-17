@@ -54,10 +54,8 @@ end
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
-        'ibhagwan/fzf-lua',
         'mason-org/mason.nvim',
         { 'hrsh7th/cmp-nvim-lsp', optional = true },
-        { 'saghen/blink.cmp', optional = true },
     },
     ---@type mp.lsp.Config
     opts = {},

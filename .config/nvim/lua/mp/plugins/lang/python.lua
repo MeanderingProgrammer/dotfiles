@@ -7,16 +7,11 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = { 'pyright', 'black', 'isort' },
-            formatters = {
-                python = { 'black', 'isort' },
-            },
-            formatter_overrides = {
-                isort = {
-                    prepend_args = { '--profile', 'black' },
-                },
-            },
+            pyright = { install = true },
+            black = { install = true },
+            isort = { install = true },
         },
     },
     {
@@ -31,6 +26,19 @@ return {
                             diagnosticMode = 'workspace',
                         },
                     },
+                },
+            },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            black = { filetypes = { 'python' } },
+            isort = {
+                filetypes = { 'python' },
+                override = {
+                    prepend_args = { '--profile', 'black' },
                 },
             },
         },

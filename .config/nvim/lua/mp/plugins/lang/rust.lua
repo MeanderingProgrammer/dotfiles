@@ -1,5 +1,3 @@
-local util = require('mp.util')
-
 return {
     {
         'nvim-treesitter/nvim-treesitter',
@@ -9,8 +7,9 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc({ 'rust-analyzer' }),
+            ['rust-analyzer'] = { install = vim.g.computer },
         },
     },
     {

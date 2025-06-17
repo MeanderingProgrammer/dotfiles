@@ -9,19 +9,11 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc({ 'lua-language-server', 'selene', 'stylua' }),
-            formatters = {
-                lua = { 'stylua' },
-            },
-            linters = {
-                lua = util.pc({ 'selene' }),
-            },
-            linter_conditions = {
-                selene = util.pc(function()
-                    return util.in_root({ 'selene.toml' })
-                end),
-            },
+            ['lua-language-server'] = { install = vim.g.computer },
+            selene = { install = vim.g.computer },
+            stylua = { install = vim.g.computer },
         },
     },
     {
@@ -51,6 +43,25 @@ return {
                         },
                     },
                 },
+            },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            stylua = { filetypes = { 'lua' } },
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        ---@type mp.lint.Config
+        opts = {
+            selene = {
+                filetypes = { 'lua' },
+                condition = function()
+                    return util.in_root({ 'selene.toml' })
+                end,
             },
         },
     },

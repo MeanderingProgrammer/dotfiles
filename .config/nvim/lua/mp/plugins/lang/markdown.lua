@@ -9,16 +9,26 @@ return {
     },
     {
         'mason-org/mason.nvim',
+        ---@type mp.mason.Config
         opts = {
-            install = util.pc(
-                { 'markdownlint', 'marksman' },
-                { 'markdownlint' }
-            ),
-            linters = {
-                markdown = { 'markdownlint' },
-            },
-            linter_overrides = {
-                markdownlint = function(linter)
+            markdownlint = { install = true },
+            marksman = { install = vim.g.computer },
+        },
+    },
+    {
+        'neovim/nvim-lspconfig',
+        ---@type mp.lsp.Config
+        opts = {
+            marksman = { enabled = vim.g.computer },
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        ---@type mp.lint.Config
+        opts = {
+            markdownlint = {
+                filetypes = { 'markdown' },
+                override = function(linter)
                     local args = {
                         '--config',
                         util.lint_config('markdownlint.yaml'),
@@ -26,13 +36,6 @@ return {
                     linter.args = vim.list_extend(linter.args or {}, args)
                 end,
             },
-        },
-    },
-    {
-        'neovim/nvim-lspconfig',
-        ---@type mp.lsp.Config
-        opts = {
-            marksman = { enabled = vim.g.pc },
         },
     },
     {

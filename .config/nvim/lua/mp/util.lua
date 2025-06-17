@@ -1,3 +1,6 @@
+---@class mp.Tool
+---@field filetypes string[]
+
 ---@class mp.Util
 local M = {}
 
@@ -18,12 +21,23 @@ M.hidden = {
     'zig-out',
 }
 
----@generic T
----@param default? T
----@param phone? T
----@return T?
-function M.pc(default, phone)
-    return vim.g.pc and default or phone
+---@param tools table<string, mp.Tool>
+---@return table<string, string[]>
+function M.by_ft(tools)
+    local result = {} ---@type table<string, string[]>
+    for name, tool in pairs(tools) do
+        if vim.fn.executable(name) == 1 then
+            for _, filetype in ipairs(tool.filetypes) do
+                local active = result[filetype] or {}
+                if #active == 0 then
+                    result[filetype] = active
+                end
+                active[#active + 1] = name
+                table.sort(active)
+            end
+        end
+    end
+    return result
 end
 
 ---@param file string
@@ -60,20 +74,14 @@ function M.lsp_names(buf)
     return result
 end
 
----@return lsp.ClientCapabilities
+---@return lsp.ClientCapabilities?
 function M.capabilities()
-    local result = {}
-    local has_cmp, cmp = pcall(require, 'cmp_nvim_lsp')
-    if has_cmp then
-        local capabilities = cmp.default_capabilities()
-        result = vim.tbl_deep_extend('force', result, capabilities)
+    local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+    if ok and cmp then
+        return cmp.default_capabilities()
+    else
+        return nil
     end
-    local has_blink, blink = pcall(require, 'blink.cmp')
-    if has_blink then
-        local capabilities = blink.get_lsp_capabilities()
-        result = vim.tbl_deep_extend('force', result, capabilities)
-    end
-    return result
 end
 
 return M
