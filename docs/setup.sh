@@ -66,6 +66,7 @@ do_deps() {
           rust-analyzer \
           stylua \
           wget \
+          xz-utils \
           yadm \
           zsh
         notify $SUCCESS "  Success"
