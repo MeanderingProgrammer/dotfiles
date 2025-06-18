@@ -10,6 +10,11 @@ from pathlib import Path
 class Language(StrEnum):
     LUA = auto()
 
+    def file(self) -> str:
+        match self:
+            case Language.LUA:
+                return ".stylua.toml"
+
 
 @dataclass(frozen=True)
 class Root:
@@ -24,9 +29,9 @@ class Template:
     def copy(self, root: Root) -> None:
         print(f"Copying: {root.language} template to {root.path}")
         if not root.path.is_dir():
-            print(f"Skipping: not a directory")
+            print("Skipping: not a directory")
         else:
-            file = self.file(root.language)
+            file = root.language.file()
             src = self.data.joinpath(file)
             assert src.is_file()
             dst = root.path.joinpath(file)
@@ -34,10 +39,6 @@ class Template:
             print(f"{verb}: {file}")
             shutil.copy(src, dst)
         print()
-
-    def file(self, language: Language) -> str:
-        if language == Language.LUA:
-            return ".stylua.toml"
 
 
 def main() -> None:

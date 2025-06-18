@@ -94,7 +94,7 @@ def mainline() -> str:
         if branch in scores:
             branches.append(branch)
     # return the mainline branch with the highest score
-    assert len(branches) > 0, f"expected at least one mainline branch"
+    assert len(branches) > 0, "expected at least one mainline branch"
     branches.sort(key=lambda branch: scores[branch])
     return branches.pop()
 
