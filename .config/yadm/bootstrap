@@ -125,9 +125,10 @@ do_libs() {
             if [[ "$system_os" != "Android" ]]; then
                 npm install -g npm
             fi
+            npm install -g aws-cdk
+            npm install -g neovim
             npm install -g pnpm
             npm install -g yarn
-            npm install -g neovim
             notify $SUCCESS "  success"
         fi
     }
