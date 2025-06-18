@@ -1,6 +1,4 @@
-local config = vim.diagnostic.config
-
-config({
+vim.diagnostic.config({
     signs = {
         text = {
             [vim.diagnostic.severity.ERROR] = '',
@@ -9,13 +7,16 @@ config({
             [vim.diagnostic.severity.HINT] = '',
         },
     },
-    virtual_text = { prefix = '●' },
+    virtual_text = {
+        source = 'if_many',
+        prefix = '●',
+    },
+    float = {
+        source = 'if_many',
+        header = '',
+    },
 })
 
-vim.keymap.set('n', '<leader>d', function()
-    if config().virtual_lines then
-        config({ virtual_lines = false })
-    else
-        config({ virtual_lines = { current_line = true } })
-    end
-end, { noremap = true, silent = true })
+---@type vim.keymap.set.Opts
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)

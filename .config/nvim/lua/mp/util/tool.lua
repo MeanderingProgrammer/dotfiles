@@ -2,6 +2,7 @@
 ---@field install boolean
 
 ---@class mp.filetype.Tool
+---@field cmd? string
 ---@field filetypes string[]
 
 ---@class mp.util.Tool
@@ -24,7 +25,8 @@ end
 function M.by_ft(tools)
     local result = {} ---@type table<string, string[]>
     for name, tool in pairs(tools) do
-        if vim.fn.executable(name) == 1 then
+        local cmd = tool.cmd or name
+        if vim.fn.executable(cmd) == 1 then
             for _, filetype in ipairs(tool.filetypes) do
                 local active = result[filetype] or {}
                 if #active == 0 then

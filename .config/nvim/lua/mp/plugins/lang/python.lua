@@ -12,8 +12,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             pyright = { install = vim.g.has.npm },
-            black = { install = vim.g.has.pip },
-            isort = { install = vim.g.has.pip },
+            ruff = { install = vim.g.has.pip },
         },
     },
     {
@@ -35,13 +34,16 @@ return {
         'stevearc/conform.nvim',
         ---@type mp.conform.Config
         opts = {
-            black = { filetypes = { 'python' } },
-            isort = {
-                filetypes = { 'python' },
-                override = {
-                    prepend_args = { '--profile', 'black' },
-                },
-            },
+            ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },
+            ruff_format = { cmd = 'ruff', filetypes = { 'python' } },
+            ruff_organize_imports = { cmd = 'ruff', filetypes = { 'python' } },
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        ---@type mp.lint.Config
+        opts = {
+            ruff = { filetypes = { 'python' } },
         },
     },
     {
