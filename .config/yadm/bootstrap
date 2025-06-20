@@ -20,13 +20,9 @@ has_command() {
     fi
 }
 
-script_dir=$(dirname $0)
+lib_dir="$(dirname $0)/lib"
 system_type=$(uname -s)
 system_os=$(uname -o)
-
-script_source() {
-    source "${script_dir}/${1}"
-}
 
 main() {
     notify $TITLE "system: ${system_type}-${system_os}"
@@ -59,7 +55,7 @@ do_deps() {
     notify $TITLE "updating dependencies"
 
     if has_command "brew"; then
-        brew bundle --file "${script_dir}/Brewfile"
+        brew bundle --file "${lib_dir}/Brewfile"
         brew update
         brew upgrade
         notify $SUCCESS "  success: brew"
@@ -72,9 +68,8 @@ do_deps() {
     elif [[ "$system_type" == "Linux" ]]; then
         local system_32="/mnt/c/Windows/System32"
         if [[ ! -d $system_32 ]]; then
-            script_source "wezterm.sh"
+            source "${lib_dir}/wezterm.sh"
         fi
-        script_source "fonts.sh"
         sudo apt --yes update
         sudo apt --yes upgrade
         notify $SUCCESS "  success: linux apt"
@@ -97,7 +92,7 @@ do_libs() {
         if has_command "pip"; then
             if [[ "$system_os" != "Android" ]]; then
                 pip install --upgrade pip
-                pip install -r ~/.config/lang/python/requirements.txt
+                pip install -r "${lib_dir}/requirements.txt"
             else
                 pip install click
                 pip install GitPython
@@ -155,7 +150,7 @@ do_libs() {
 do_repos() {
     notify $TITLE "updating repos"
     if has_command "python"; then
-        python "${script_dir}/setup-repos.py"
+        python "${lib_dir}/repos.py"
         notify $SUCCESS "  success"
     fi
 }

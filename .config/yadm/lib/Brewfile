@@ -1,6 +1,5 @@
 # cli
 brew "bat"
-brew "bison"
 brew "cmake"
 brew "colima"
 brew "curl"
@@ -12,7 +11,6 @@ brew "git-delta"
 brew "jq"
 brew "just"
 brew "lazygit"
-brew "libsodium"
 brew "mise"
 brew "ninja"
 brew "pandoc"
@@ -27,17 +25,19 @@ brew "websocat"
 brew "wget"
 brew "yadm"
 
-# plugin
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
-
 # util
+brew "bison"
 brew "cairo"
 brew "coreutils"
 brew "gpatch"
+brew "libsodium"
 brew "oath-toolkit"
 brew "pkg-config"
 brew "xz"
+
+# plugin
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
 
 # terminal
 cask "alacritty"
