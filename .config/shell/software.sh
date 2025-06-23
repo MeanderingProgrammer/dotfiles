@@ -30,8 +30,11 @@ init_homebrew() {
 # aws
 export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
 
-# C#
+# c sharp
 export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
+
+# docker
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
 
 # go
 export GOPATH="${XDG_DATA_HOME}/go"
@@ -70,6 +73,9 @@ export PSQL_HISTORY="${XDG_STATE_HOME}/psql_history"
 
 # python
 export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
+
+# ruby
+export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}/bundle"
 
 # rust
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
