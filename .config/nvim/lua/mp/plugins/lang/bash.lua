@@ -11,7 +11,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             ['bash-language-server'] = { install = vim.g.has.npm },
-            shellcheck = { install = vim.g.computer },
+            ['shellcheck'] = { install = vim.g.computer },
         },
     },
     {

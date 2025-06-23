@@ -13,9 +13,9 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            gopls = { install = vim.g.has.go },
-            goimports = { install = vim.g.has.go },
-            gofumpt = { install = vim.g.has.go },
+            ['gopls'] = { install = vim.g.has.go },
+            ['goimports'] = { install = vim.g.has.go },
+            ['gofumpt'] = { install = vim.g.has.go },
         },
     },
     {

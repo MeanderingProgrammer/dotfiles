@@ -18,6 +18,14 @@ name = "python"
 language-servers = [ "pyright" ]
 
 [[language]]
+name = "ruby"
+language-servers = [ "ruby-lsp" ]
+
+# TODO: remove after https://github.com/helix-editor/helix/pull/12511
+[language-server.ruby-lsp]
+command = "ruby-lsp"
+
+[[language]]
 name = "rust"
 
 [[language]]

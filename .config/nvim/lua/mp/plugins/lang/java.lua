@@ -10,7 +10,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            jdtls = { install = true },
+            ['jdtls'] = { install = true },
         },
     },
     {

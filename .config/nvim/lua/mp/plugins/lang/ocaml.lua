@@ -11,7 +11,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             ['ocaml-lsp'] = { install = vim.g.has.opam },
-            ocamlformat = { install = vim.g.has.opam },
+            ['ocamlformat'] = { install = vim.g.has.opam },
         },
     },
     {

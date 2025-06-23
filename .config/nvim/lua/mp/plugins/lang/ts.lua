@@ -34,7 +34,7 @@ return {
             ['eslint-lsp'] = { install = vim.g.has.npm },
             ['svelte-language-server'] = { install = vim.g.has.npm },
             ['typescript-language-server'] = { install = vim.g.has.npm },
-            prettierd = { install = vim.g.has.npm },
+            ['prettierd'] = { install = vim.g.has.npm },
         },
     },
     {

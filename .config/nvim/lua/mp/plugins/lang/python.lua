@@ -11,8 +11,8 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            pyright = { install = vim.g.has.npm },
-            ruff = { install = vim.g.has.pip },
+            ['pyright'] = { install = vim.g.has.npm },
+            ['ruff'] = { install = vim.g.has.pip },
         },
     },
     {

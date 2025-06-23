@@ -15,8 +15,7 @@ return {
 
         local by_ft = require('mp.util').tool.by_ft(opts)
 
-        ---@return string[]
-        local get_linters = function()
+        local run_lint = function()
             local result = {} ---@type string[]
             local linters = by_ft[vim.bo.filetype] or {}
             for _, linter in ipairs(linters) do
@@ -25,7 +24,9 @@ return {
                     result[#result + 1] = linter
                 end
             end
-            return result
+            if #result > 0 then
+                lint.try_lint(result)
+            end
         end
 
         lint.linters_by_ft = by_ft
@@ -40,12 +41,9 @@ return {
         local lint_events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
         vim.api.nvim_create_autocmd(lint_events, {
             group = vim.api.nvim_create_augroup('user.lint', {}),
-            callback = function()
-                local linters = get_linters()
-                if #linters > 0 then
-                    lint.try_lint(linters)
-                end
-            end,
+            callback = run_lint,
         })
+
+        vim.api.nvim_create_user_command('Lint', run_lint, {})
     end,
 }

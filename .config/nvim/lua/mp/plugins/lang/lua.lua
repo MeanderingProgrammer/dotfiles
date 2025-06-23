@@ -12,8 +12,8 @@ return {
         ---@type mp.mason.Config
         opts = {
             ['lua-language-server'] = { install = vim.g.computer },
-            selene = { install = vim.g.computer },
-            stylua = { install = vim.g.computer },
+            ['selene'] = { install = vim.g.computer },
+            ['stylua'] = { install = vim.g.computer },
         },
     },
     {

@@ -16,6 +16,7 @@ vim.g.computer = vim.fn.has('android') == 0
 -- dependency information
 vim.g.has = {
     dotnet = vim.fn.executable('dotnet') == 1,
+    gem = vim.fn.executable('gem') == 1,
     go = vim.fn.executable('go') == 1,
     npm = vim.fn.executable('npm') == 1,
     opam = vim.fn.executable('opam') == 1,

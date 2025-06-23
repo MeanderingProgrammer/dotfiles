@@ -11,8 +11,8 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            markdownlint = { install = vim.g.has.npm },
-            marksman = { install = vim.g.computer },
+            ['markdownlint'] = { install = vim.g.has.npm },
+            ['marksman'] = { install = vim.g.computer },
         },
     },
     {
