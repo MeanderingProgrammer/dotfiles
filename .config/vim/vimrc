@@ -1,36 +1,39 @@
-" Turn off bell noises
+" no bell
 set belloff=all
 
-" Enable syntax highlighting
+" disable viminfo
+set viminfofile=NONE
+
+" enable syntax highlighting
 syntax on
 
-" Line number settings
+" line number
 set number
 set relativenumber
 
-" Search settings
+" search
 set ignorecase
 set smartcase
 
-" Set wait time for detecting changes
+" wait time for detecting changes
 set updatetime=250
 
-" Split to right side by default
+" split to right / below by default
 set splitright
 set splitbelow
 
-" Indentation settings
+" indentation
 set smartindent
 
-" Tab / Space settings
+" tab / space
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
 
-" Keep some context in view
+" keep context in view
 set scrolloff=8
 set sidescrolloff=8
 
-" Use system clipboard
+" use system clipboard
 set clipboard=unnamedplus

@@ -54,7 +54,7 @@ export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
 
 # node
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
-export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
+export NODE_REPL_HISTORY="${XDG_STATE_HOME}/node_repl_history"
 
 # opam
 export OPAMROOT="${XDG_DATA_HOME}/opam"
@@ -65,8 +65,11 @@ opam_init="${OPAMROOT}/opam-init/init.zsh"
 export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 
+# postgresql
+export PSQL_HISTORY="${XDG_STATE_HOME}/psql_history"
+
 # python
-export PYTHON_HISTORY="${XDG_DATA_HOME}/python_history"
+export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
 
 # rust
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
