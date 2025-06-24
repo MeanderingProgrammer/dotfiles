@@ -45,11 +45,11 @@ class Schema:
             print(self.row(result))
         print(self.delim("└", "┴", "┘"))
 
-    def delim(self, l: str, c: str, r: str) -> str:
+    def delim(self, left: str, center: str, right: str) -> str:
         parts: list[str] = []
         for column in self.columns:
             parts.append("─" * (column.width + 2))
-        return l + c.join(parts) + r
+        return left + center.join(parts) + right
 
     def title(self) -> str:
         result: Result = dict()

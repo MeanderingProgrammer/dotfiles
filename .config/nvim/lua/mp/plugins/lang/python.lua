@@ -11,7 +11,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['pyright'] = { install = vim.g.has.npm },
+            ['basedpyright'] = { install = vim.g.has.pip },
             ['ruff'] = { install = vim.g.has.pip },
         },
     },
@@ -19,11 +19,17 @@ return {
         'neovim/nvim-lspconfig',
         ---@type mp.lsp.Config
         opts = {
-            pyright = {
+            basedpyright = {
                 settings = {
-                    python = {
+                    basedpyright = {
                         analysis = {
                             diagnosticMode = 'workspace',
+                            diagnosticSeverityOverrides = {
+                                reportAny = false,
+                                reportExplicitAny = false,
+                                reportMissingTypeStubs = false,
+                                reportUnusedCallResult = false,
+                            },
                         },
                     },
                 },

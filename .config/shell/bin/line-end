@@ -4,7 +4,6 @@ import argparse
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from pathlib import Path
-from typing import Optional
 
 
 @dataclass(frozen=True)
@@ -59,7 +58,7 @@ def main(fix: bool) -> None:
             fix_file(file)
 
 
-def get_line_ending(file: Path) -> Optional[LineEnding]:
+def get_line_ending(file: Path) -> LineEnding | None:
     lines = read_lines(file)
     if len(lines) <= 1:
         return None
