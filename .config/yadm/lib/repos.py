@@ -113,6 +113,7 @@ def main() -> None:
             Repo(name="py-requirements.nvim"),
             Repo(name="render-markdown.nvim"),
             Repo(name="resume"),
+            Repo(name="scripts"),
             Repo(name="small-apps"),
             Repo(name="stashpad.nvim"),
             Repo(name="treesitter-modules.nvim"),
