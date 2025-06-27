@@ -11,8 +11,11 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['basedpyright'] = { install = vim.g.has.pip },
-            ['ruff'] = { install = vim.g.has.pip },
+            ['basedpyright'] = { install = vim.g.pc and vim.g.has.pip },
+            ['ruff'] = { install = vim.g.pc and vim.g.has.pip },
+            ['pyright'] = { install = not vim.g.pc and vim.g.has.npm },
+            ['black'] = { install = not vim.g.pc and vim.g.has.pip },
+            ['isort'] = { install = not vim.g.pc and vim.g.has.pip },
         },
     },
     {
@@ -34,6 +37,15 @@ return {
                     },
                 },
             },
+            pyright = {
+                settings = {
+                    python = {
+                        analysis = {
+                            diagnosticMode = 'workspace',
+                        },
+                    },
+                },
+            },
         },
     },
     {
@@ -43,6 +55,11 @@ return {
             ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },
             ruff_format = { cmd = 'ruff', filetypes = { 'python' } },
             ruff_organize_imports = { cmd = 'ruff', filetypes = { 'python' } },
+            black = { filetypes = { 'python' } },
+            isort = {
+                filetypes = { 'python' },
+                override = { prepend_args = { '--profile', 'black' } },
+            },
         },
     },
     {

@@ -10,7 +10,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['terraform-ls'] = { install = vim.g.computer },
+            ['terraform-ls'] = { install = vim.g.pc },
         },
     },
     {

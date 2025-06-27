@@ -10,7 +10,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['texlab'] = { install = vim.g.computer },
+            ['texlab'] = { install = vim.g.pc },
         },
     },
     {

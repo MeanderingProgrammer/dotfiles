@@ -11,7 +11,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['rust-analyzer'] = { install = vim.g.computer },
+            ['rust-analyzer'] = { install = vim.g.pc },
         },
     },
     {
