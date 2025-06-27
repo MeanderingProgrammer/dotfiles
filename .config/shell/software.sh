@@ -112,6 +112,8 @@ fi
 
 # ---- init ---- #
 
+[[ $(ulimit -n) -lt 8192 ]] && ulimit -n 8192
+
 # fzf
 [[ -x "$(command -v fzf)" ]] && eval "$(fzf --zsh)"
 
