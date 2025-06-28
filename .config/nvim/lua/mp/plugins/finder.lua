@@ -46,18 +46,13 @@ return {
         map('<leader>fk', fzf.keymaps, 'keymaps')
         map('<leader>fh', fzf.highlights, 'highlights')
 
-        vim.env.YADM_REPO = vim.env.XDG_DATA_HOME .. '/yadm/repo.git'
+        local yadm = vim.env.XDG_DATA_HOME .. '/yadm/repo.git'
         map('<leader>yf', function()
-            fzf.git_files({
-                cwd = '~',
-                git_dir = vim.env.YADM_REPO,
-            })
+            fzf.git_files({ cwd = '~', git_dir = yadm })
         end, 'files')
         map('<leader>yg', function()
-            fzf.live_grep({
-                cwd = '~',
-                cmd = 'git --git-dir=${YADM_REPO} grep -i --line-number --column --color=always',
-            })
+            local cmd = ('git --git-dir=%s grep -i'):format(yadm)
+            fzf.live_grep({ cwd = '~', cmd = cmd })
         end, 'grep')
     end,
 }

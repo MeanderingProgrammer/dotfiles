@@ -14,5 +14,10 @@
     gpgsign = true
 [gpg]
     format = ssh
+[grep]
+    lineNumber = true
+    column = true
+[color]
+    grep = always
 [delta]
     side-by-side = true
