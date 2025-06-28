@@ -10,7 +10,7 @@ return {
         'mason-org/mason.nvim',
         ---@type mp.mason.Config
         opts = {
-            ['ruby-lsp'] = { install = vim.g.mac },
+            ['ruby-lsp'] = { install = vim.g.has.gem },
         },
     },
     {
