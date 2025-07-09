@@ -1,6 +1,3 @@
-# lazy.nvim lock file
+local.lua
 lazy-lock.json
-# machine specific untracked
-custom.lua
-# compiled spell file
 *.spl
