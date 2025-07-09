@@ -21,10 +21,11 @@ setopt append_history
 setopt inc_append_history
 setopt share_history
 
-# ---- run main shell setup ---- #
+# ---- source all shell configurations ---- #
 init_shell() {
-    local source_file="${XDG_CONFIG_HOME}/zsh/init.sh"
-    source "${source_file}"
+    for source_file in "${XDG_CONFIG_HOME}"/zsh/*.sh; do
+        source "${source_file}"
+    done
 }
 
 if [[ -x "$(command -v gdate)" ]]; then
