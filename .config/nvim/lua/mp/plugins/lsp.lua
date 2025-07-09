@@ -46,17 +46,13 @@ end
 
 return {
     'neovim/nvim-lspconfig',
-    dependencies = {
-        'mason-org/mason.nvim',
-        { 'hrsh7th/cmp-nvim-lsp', optional = true },
-    },
+    dependencies = { 'mason-org/mason.nvim' },
     ---@type mp.lsp.Config
     opts = {},
     ---@param opts mp.lsp.Config
     config = function(_, opts)
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(opts) do
-            config.capabilities = require('mp.util').lsp.capabilities()
             vim.lsp.config(name, config)
             local cmd = vim.lsp.config[name].cmd[1]
             if vim.fn.executable(cmd) == 1 then

@@ -11,13 +11,4 @@ function M.names(buf)
     return result
 end
 
----@return lsp.ClientCapabilities?
-function M.capabilities()
-    local ok, cmp = pcall(require, 'cmp_nvim_lsp')
-    if ok and cmp then
-        return cmp.default_capabilities()
-    end
-    return nil
-end
-
 return M

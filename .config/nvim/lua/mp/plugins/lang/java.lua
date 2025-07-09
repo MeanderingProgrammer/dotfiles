@@ -82,7 +82,6 @@ return {
                             },
                         },
                     },
-                    capabilities = require('mp.util').lsp.capabilities(),
                     root_dir = vim.fs.root(0, {
                         '.git',
                         'build.gradle',

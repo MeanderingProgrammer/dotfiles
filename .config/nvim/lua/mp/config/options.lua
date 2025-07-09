@@ -26,9 +26,6 @@ vim.g.has = {
 -- use an opaque or transparent colorscheme
 vim.g.opaque = true
 
--- completion plugin, true = nvim-cmp, false = blink.cmp
-vim.g.cmp = true
-
 -- disable python ftplugin keymaps
 vim.g.no_python_maps = true
 
