@@ -7,6 +7,7 @@ return {
             path = {},
             snippets = {},
             buffer = {},
+            omni = {},
         },
     },
     config = function(_, opts)
