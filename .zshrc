@@ -23,7 +23,7 @@ setopt share_history
 
 # ---- run main shell setup ---- #
 init_shell() {
-    local source_file="${XDG_CONFIG_HOME}/shell/init.sh"
+    local source_file="${XDG_CONFIG_HOME}/zsh/init.sh"
     source "${source_file}"
 }
 

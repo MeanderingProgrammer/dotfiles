@@ -92,8 +92,8 @@ export PATH="${GOBIN}:$PATH"
 # prepend mason bin
 export PATH="${XDG_DATA_HOME}/nvim/mason/bin:$PATH"
 
-# prepend shell bin
-export PATH="${XDG_CONFIG_HOME}/shell/bin:$PATH"
+# prepend config bin
+export PATH="${XDG_CONFIG_HOME}/bin:$PATH"
 
 # prepend user bin
 export PATH="${HOME}/bin:$PATH"

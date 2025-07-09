@@ -1,7 +1,7 @@
 # ---- source all configurations ---- #
 
 run_source() {
-    local source_file="${XDG_CONFIG_HOME}/shell/${1}"
+    local source_file="${XDG_CONFIG_HOME}/zsh/${1}"
     [[ -f $source_file ]] && source "${source_file}"
 }
 
