@@ -12,6 +12,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             ['rust-analyzer'] = { install = vim.g.pc },
+            ['taplo'] = { install = vim.g.pc },
         },
     },
     {
@@ -26,6 +27,13 @@ return {
                     },
                 },
             },
+        },
+    },
+    {
+        'stevearc/conform.nvim',
+        ---@type mp.conform.Config
+        opts = {
+            taplo = { filetypes = { 'toml' } },
         },
     },
     {

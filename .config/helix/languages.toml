@@ -15,7 +15,7 @@ name = "ocaml"
 
 [[language]]
 name = "python"
-language-servers = [ "basedpyright" ]
+language-servers = ["basedpyright"]
 
 [language-server.basedpyright.config.basedpyright.analysis]
 diagnosticMode = "workspace"
@@ -28,7 +28,7 @@ reportUnusedCallResult = false
 
 [[language]]
 name = "ruby"
-language-servers = [ "ruby-lsp" ]
+language-servers = ["ruby-lsp"]
 
 # TODO: remove after https://github.com/helix-editor/helix/pull/12511
 [language-server.ruby-lsp]

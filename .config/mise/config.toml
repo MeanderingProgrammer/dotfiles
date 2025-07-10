@@ -1,13 +1,13 @@
 [settings]
 disable_backends = [
-    "cargo",
-    "dotnet",
-    "gem",
-    "go",
-    "npm",
-    "pipx",
-    "spm",
-    "vfox",
+  "cargo",
+  "dotnet",
+  "gem",
+  "go",
+  "npm",
+  "pipx",
+  "spm",
+  "vfox",
 ]
 
 [tools]
