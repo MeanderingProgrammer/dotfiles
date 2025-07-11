@@ -49,6 +49,16 @@ class GithubApi:
 
 
 @dataclass(frozen=True)
+class Entry:
+    timestamp: date
+    clones: int
+    views: int
+
+    def __post_init__(self) -> None:
+        assert self.clones < 100_000 and self.views < 10_000
+
+
+@dataclass(frozen=True)
 class Repo(BaseModel):
     name: str
     clones: list[Stat]
@@ -59,40 +69,50 @@ class Repo(BaseModel):
         Repo.combine(self.clones, new.clones)
         Repo.combine(self.views, new.views)
 
-    def pretty_print(self) -> None:
-        table: list[str] = []
+    def unique(self) -> list[Entry]:
+        result: list[Entry] = []
         assert len(self.clones) == len(self.views)
         for clone, view in zip(self.clones, self.views):
             assert clone.timestamp == view.timestamp
-            assert clone.uniques < 100_000 and view.uniques < 10_000
+            entry = Entry(
+                timestamp=clone.timestamp,
+                clones=clone.uniques,
+                views=view.uniques,
+            )
+            result.append(entry)
+        return result
 
-            print(self.row(clone, True, 94, 100))
-            print(self.row(view, False, 91, 10))
-
-            parts: list[str] = [
-                str(clone.timestamp),
-                f"{clone.uniques:<6,}",
-                f"{view.uniques:<5,}",
-            ]
-            table.append("│ " + " │ ".join(parts) + " │")
-
-        print(self.separator("┌", "┬", "┐"))
+    def table(self) -> None:
+        print(Repo.separator("┌", "┬", "┐"))
         print("│ Date       │ Clones │ Views │")
-        print(self.separator("├", "┼", "┤"))
-        print("\n".join(table))
-        print(self.separator("└", "┴", "┘"))
+        print(Repo.separator("├", "┼", "┤"))
+        for entry in self.unique():
+            parts: list[str] = [
+                str(entry.timestamp),
+                f"{entry.clones:<6,}",
+                f"{entry.views:<5,}",
+            ]
+            print("│ " + " │ ".join(parts) + " │")
+        print(Repo.separator("└", "┴", "┘"))
 
-    def row(self, stat: Stat, first: bool, color: int, scale: int) -> str:
-        timestamp, amount = str(stat.timestamp), stat.uniques
-        label = timestamp if first else " " * len(timestamp)
-        n = round(amount / scale)
-        assert n < 160
-        return f"{label} \033[{color}m{'█' * n}\033[0m {amount}"
+    def graph(self) -> None:
+        for entry in self.unique():
+            label = str(entry.timestamp)
+            print(f"{label} {Repo.bar(entry.clones, 100, 94)}")
+            filler = " " * len(label)
+            print(f"{filler} {Repo.bar(entry.views, 10, 91)}")
 
-    def separator(self, left: str, center: str, right: str) -> str:
+    @staticmethod
+    def separator(left: str, center: str, right: str) -> str:
         widths: list[int] = [10, 6, 5]
         sections: list[str] = ["─" * (width + 2) for width in widths]
         return left + center.join(sections) + right
+
+    @staticmethod
+    def bar(amount: int, scale: int, color: int) -> str:
+        n = round(amount / scale)
+        assert n < 160
+        return f"\033[{color}m{'█' * n}\033[0m {amount}"
 
     @staticmethod
     def combine(current: list[Stat], new: list[Stat]) -> None:
@@ -166,7 +186,7 @@ class TrafficCache:
         return [stat for stat in stats if stat.timestamp <= self.latest]
 
 
-def main(print: bool) -> None:
+def main(table: bool, graph: bool) -> None:
     api = GithubApi(
         owner="MeanderingProgrammer",
         token=env("GITHUB_TOKEN"),
@@ -179,10 +199,14 @@ def main(print: bool) -> None:
         "render-markdown.nvim",
     ]
     for name in repos:
-        if print:
+        if table:
             repo = cache.read().get(name)
             assert repo is not None
-            repo.pretty_print()
+            repo.table()
+        elif graph:
+            repo = cache.read().get(name)
+            assert repo is not None
+            repo.graph()
         else:
             repo = Repo(
                 name=name,
@@ -203,11 +227,7 @@ if __name__ == "__main__":
         description="Github repo statistics",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument(
-        "-p",
-        "--print",
-        action="store_true",
-        help="Print statistic instead of updating",
-    )
+    parser.add_argument("-t", "--table", action="store_true", help="Output table")
+    parser.add_argument("-g", "--graph", action="store_true", help="Output graph")
     args = parser.parse_args()
-    main(args.print)
+    main(args.table, args.graph)
