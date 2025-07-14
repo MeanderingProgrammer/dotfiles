@@ -17,8 +17,12 @@ class Stat(BaseModel):
     count: int
     uniques: int
 
+    def __le__(self, other: Self) -> bool:
+        assert self.timestamp == other.timestamp
+        return self.count <= other.count and self.uniques <= other.uniques
+
     @field_serializer("timestamp")
-    def serialize_timestamp(self, timestamp: date, _info) -> str:
+    def serialize_timestamp(self, timestamp: date) -> str:
         return timestamp.strftime("%Y-%m-%d")
 
 
@@ -31,13 +35,13 @@ class Traffic(BaseModel):
 
 @dataclass(frozen=True)
 class GithubApi:
+    endpoint: str
     owner: str
     token: str
-    site: str = "https://api.github.com"
 
-    def traffic(self, endpoint: str, name: str) -> Traffic:
+    def traffic(self, name: str, kind: str) -> list[Stat]:
         # https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
-        url = f"{self.site}/repos/{self.owner}/{name}/traffic/{endpoint}"
+        url = f"{self.endpoint}/repos/{self.owner}/{name}/traffic/{kind}"
         headers = {
             "Accept": "application/vnd.github+json",
             "Authorization": f"token {self.token}",
@@ -45,7 +49,8 @@ class GithubApi:
         }
         response = requests.get(url, headers=headers)
         assert response.status_code == 200, "auth token is likely expired"
-        return Traffic.model_validate(response.json())
+        traffic = Traffic.model_validate(response.json())
+        return traffic.stats
 
 
 @dataclass(frozen=True)
@@ -103,6 +108,18 @@ class Repo(BaseModel):
             print(f"{filler} {Repo.bar(entry.views, 10, 91)}")
 
     @staticmethod
+    def combine(current: list[Stat], new: list[Stat]) -> None:
+        seen: dict[date, Stat] = dict()
+        for stat in current:
+            seen[stat.timestamp] = stat
+        for stat in new:
+            existing = seen.get(stat.timestamp)
+            if existing is None:
+                current.append(stat)
+            else:
+                assert stat <= existing, f"unexpected change: {existing} -> {stat}"
+
+    @staticmethod
     def separator(left: str, center: str, right: str) -> str:
         widths: list[int] = [10, 6, 5]
         sections: list[str] = ["─" * (width + 2) for width in widths]
@@ -113,23 +130,6 @@ class Repo(BaseModel):
         n = round(amount / scale)
         assert n < 160
         return f"\033[{color}m{'█' * n}\033[0m {amount}"
-
-    @staticmethod
-    def combine(current: list[Stat], new: list[Stat]) -> None:
-        seen: dict[date, Stat] = dict()
-        for stat in current:
-            seen[stat.timestamp] = stat
-        for stat in new:
-            existing = seen.get(stat.timestamp)
-            if existing is None:
-                current.append(stat)
-            else:
-                Repo.nothing_new(existing.count, stat.count)
-                Repo.nothing_new(existing.uniques, stat.uniques)
-
-    @staticmethod
-    def nothing_new(current: int, new: int) -> None:
-        assert current >= new, f"Expect no more data, found {current} -> {new}"
 
 
 @dataclass(frozen=True)
@@ -152,10 +152,10 @@ class TrafficCache:
     latest: date
 
     def read(self) -> Repos:
-        if not self.file.exists():
-            return Repos(repos=[])
-        else:
+        if self.file.exists():
             return Repos.model_validate_json(self.file.read_text())
+        else:
+            return Repos(repos=[])
 
     def write(self, repos: Repos) -> None:
         self.file.write_text(repos.model_dump_json())
@@ -170,16 +170,16 @@ class TrafficCache:
         repos = self.read()
         current = repos.get(repo.name)
         if current is None:
-            print(f"New   : {repo.name}")
+            print(f"new   : {repo.name}")
             clones, views = 0, 0
             repos.add(repo)
             current = repo
         else:
-            print(f"Exists: {repo.name}")
+            print(f"exists: {repo.name}")
             clones, views = len(current.clones), len(current.views)
             current.join(repo)
-        print(f"Clones: {clones} -> {len(current.clones)}")
-        print(f"Views : {views} -> {len(current.views)}")
+        print(f"clones: {clones} -> {len(current.clones)}")
+        print(f"views : {views} -> {len(current.views)}")
         self.write(repos)
 
     def filter(self, stats: list[Stat]) -> list[Stat]:
@@ -188,6 +188,7 @@ class TrafficCache:
 
 def main(table: bool, graph: bool) -> None:
     api = GithubApi(
+        endpoint="https://api.github.com",
         owner="MeanderingProgrammer",
         token=env("GITHUB_TOKEN"),
     )
@@ -210,24 +211,25 @@ def main(table: bool, graph: bool) -> None:
         else:
             repo = Repo(
                 name=name,
-                clones=api.traffic("clones", name).stats,
-                views=api.traffic("views", name).stats,
+                clones=api.traffic(name, "clones"),
+                views=api.traffic(name, "views"),
             )
             cache.add(repo)
 
 
 def env(name: str) -> str:
     value = os.getenv(name)
-    assert value is not None, f"{name} not set"
+    assert value is not None, f"undefined: {name}"
     return value
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Github repo statistics",
+        description="GitHub repo statistics",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("-t", "--table", action="store_true", help="Output table")
-    parser.add_argument("-g", "--graph", action="store_true", help="Output graph")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-t", "--table", action="store_true", help="Output table")
+    group.add_argument("-g", "--graph", action="store_true", help="Output graph")
     args = parser.parse_args()
     main(args.table, args.graph)
