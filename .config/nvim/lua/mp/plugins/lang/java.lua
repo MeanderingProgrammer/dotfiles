@@ -4,6 +4,7 @@ return {
         ---@type mp.ts.Config
         opts = {
             java = { install = true },
+            javadoc = { install = true },
         },
     },
     {
