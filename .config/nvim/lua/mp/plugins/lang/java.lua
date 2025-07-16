@@ -46,11 +46,11 @@ return {
                         '-Declipse.product=org.eclipse.jdt.ls.core.product',
                         '-Dlog.protocol=true',
                         '-Dlog.level=ALL',
-                        '-Xms2g',
-                        '-javaagent:' .. jdtls_path .. '/lombok.jar',
+                        '-Xmx2g',
                         '--add-modules=ALL-SYSTEM',
                         '--add-opens', 'java.base/java.util=ALL-UNNAMED',
                         '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+                        '-javaagent:' .. jdtls_path .. '/lombok.jar',
                         '-jar', vim.fn.glob(jdtls_path .. '/plugins/org.eclipse.equinox.launcher_*.jar'),
                         '-configuration', jdtls_path .. '/config_' .. platform,
                         '-data', vim.fn.stdpath('cache') .. '/nvim-jdtls/' .. project,
@@ -59,14 +59,10 @@ return {
                     settings = {
                         java = {
                             eclipse = { downloadSources = true },
-                            configuration = {
-                                updateBuildConfiguration = 'interactive',
-                            },
                             maven = { downloadSources = true },
                             implementationsCodeLens = { enabled = true },
                             referencesCodeLens = { enabled = true },
                             signatureHelp = { enabled = true },
-                            format = { enabled = true },
                             saveActions = { organizeImports = true },
                             sources = {
                                 organizeImports = {
@@ -86,9 +82,10 @@ return {
                     root_dir = vim.fs.root(0, {
                         '.git',
                         'build.gradle',
+                        'build.gradle.kts',
                         'gradlew',
-                        'mvnw',
                         'pom.xml',
+                        'mvnw',
                     }),
                     flags = { allow_incremental_sync = true },
                     init_options = {
