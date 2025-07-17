@@ -13,10 +13,7 @@ reportUnusedCallResult = false
 
 [language-server.jdtls]
 command = "bash"
-args = [
-  "-c",
-  "jdtls --jvm-arg=-javaagent:${MASON_HOME}/packages/jdtls/lombok.jar",
-]
+args = ["-c", "jdtls --jvm-arg=-javaagent:${MASON_HOME}/share/jdtls/lombok.jar"]
 
 [language-server.zls.config]
 warn_style = true
