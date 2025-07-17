@@ -49,7 +49,7 @@ local function dap_program()
         local result = vim.system(cmd, { cwd = build.cwd, text = true }):wait()
         local output = result.stdout
         if not output then
-            return output
+            return nil
         end
 
         local executables = {} ---@type string[]
