@@ -21,7 +21,6 @@ return {
             { '<leader>', group = 'leader' },
             { '<leader>c', group = 'crates' },
             { '<leader>f', group = 'fzf' },
-            { '<leader>g', group = 'goto' },
             { '<leader>h', group = 'harpoon' },
             { '<leader>m', group = 'markdown' },
             { '<leader>r', group = 'requirements' },

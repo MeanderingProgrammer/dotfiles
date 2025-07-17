@@ -35,16 +35,17 @@ return {
         end
 
         map('<leader><leader>', fzf.files, 'files')
-        map('<leader>fs', fzf.live_grep, 'grep')
-        map('<leader>fd', fzf.diagnostics_workspace, 'diagnostics')
-        map('<leader>fr', fzf.resume, 'resume')
-        map('<leader>?', fzf.oldfiles, 'recently opened files')
+        map('<leader>?', fzf.oldfiles, 'opened files')
+        map('<leader>g', fzf.live_grep, 'grep')
         map('<leader>fb', fzf.buffers, 'existing buffers')
-        map('<leader>fg', fzf.git_files, 'git files')
-        map('<leader>fw', fzf.grep_cword, 'current word')
-        map('<leader>ft', fzf.helptags, 'help tags')
-        map('<leader>fk', fzf.keymaps, 'keymaps')
+        map('<leader>fd', fzf.diagnostics_workspace, 'workspace diagnostics')
+        map('<leader>fD', fzf.diagnostics_document, 'document diagnostics')
+        map('<leader>ff', fzf.git_files, 'git files')
         map('<leader>fh', fzf.highlights, 'highlights')
+        map('<leader>fk', fzf.keymaps, 'keymaps')
+        map('<leader>fr', fzf.resume, 'resume')
+        map('<leader>ft', fzf.helptags, 'help tags')
+        map('<leader>fw', fzf.grep_cword, 'current word')
 
         local yadm = vim.env.XDG_DATA_HOME .. '/yadm/repo.git'
         map('<leader>yf', function()
