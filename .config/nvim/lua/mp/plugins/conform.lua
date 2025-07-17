@@ -14,27 +14,37 @@ return {
 
         local by_ft = require('mp.util').tool.by_ft(opts)
 
-        ---@type conform.FormatOpts
-        local format = { lsp_format = 'fallback' }
+        local enabled = true
 
         ---@param buf integer
         ---@return boolean
-        local auto_format = function(buf)
+        local should_format = function(buf)
+            if not enabled then
+                return false
+            end
             local clients = require('mp.util').lsp.names(buf)
             if vim.tbl_contains(clients, 'jsonls') then
                 return false
             end
-            -- outside of repos we should always auto format
-            -- inside of repos only auto format personal repos
             local path = vim.api.nvim_buf_get_name(buf)
             local repo = vim.fs.relpath('~/dev/repos', path)
-            return not repo or vim.startswith(repo, 'personal')
+            if not repo then
+                -- outside of repos format
+                return true
+            else
+                -- inside of repos format in specific roots
+                local root = vim.split(repo, '/', { plain = true })[1]
+                return vim.tbl_contains({ 'personal' }, root)
+            end
         end
+
+        ---@type conform.FormatOpts
+        local format_opts = { lsp_format = 'fallback' }
 
         conform.setup({
             formatters_by_ft = by_ft,
             format_after_save = function(buf)
-                return auto_format(buf) and format or nil
+                return should_format(buf) and format_opts or nil
             end,
         })
         for name, tool in pairs(opts) do
@@ -44,7 +54,11 @@ return {
         end
 
         vim.api.nvim_create_user_command('Format', function()
-            conform.format(format)
+            conform.format(format_opts)
         end, {})
+
+        vim.keymap.set('n', '<leader>F', function()
+            enabled = not enabled
+        end, { desc = 'format toggle' })
     end,
 }

@@ -1,19 +1,4 @@
 [[language]]
-name = "bash"
-
-[[language]]
-name = "go"
-
-[[language]]
-name = "java"
-
-[[language]]
-name = "lua"
-
-[[language]]
-name = "ocaml"
-
-[[language]]
 name = "python"
 language-servers = ["basedpyright"]
 
@@ -26,15 +11,12 @@ reportExplicitAny = false
 reportMissingTypeStubs = false
 reportUnusedCallResult = false
 
-[[language]]
-name = "ruby"
-language-servers = ["ruby-lsp"]
-
-[[language]]
-name = "rust"
-
-[[language]]
-name = "zig"
+[language-server.jdtls]
+command = "bash"
+args = [
+  "-c",
+  "jdtls --jvm-arg=-javaagent:${MASON_HOME}/packages/jdtls/lombok.jar",
+]
 
 [language-server.zls.config]
 warn_style = true
