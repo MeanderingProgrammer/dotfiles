@@ -22,17 +22,30 @@ local function attach(args)
     map('i', '<C-k>', vim.lsp.buf.signature_help, 'signature help')
     map('n', '<leader><C-a>', vim.lsp.buf.code_action, 'code actions')
     map('n', '<leader><C-r>', vim.lsp.buf.rename, 'rename')
-    map('n', '<leader><C-h>', function()
-        local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf })
-        vim.lsp.inlay_hint.enable(not enabled)
-    end, 'toggle inlay hints')
     map('n', '<leader>ws', fzf.lsp_workspace_symbols, 'workspace symbols')
     map('n', '<leader>wf', function()
         vim.print(vim.lsp.buf.list_workspace_folders())
     end, 'workspace folders')
 
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client and client.server_capabilities.documentHighlightProvider then
+    ---@param method vim.lsp.protocol.Method
+    ---@return boolean
+    local function supports(method)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if not client then
+            return false
+        elseif vim.tbl_contains({ 'jdtls' }, client.name) then
+            return true
+        else
+            return client:supports_method(method, args.buf)
+        end
+    end
+    if supports('textDocument/inlayHint') then
+        map('n', '<leader><C-h>', function()
+            local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf })
+            vim.lsp.inlay_hint.enable(not enabled)
+        end, 'toggle inlay hints')
+    end
+    if supports('textDocument/documentHighlight') then
         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = args.buf,
             callback = vim.lsp.buf.document_highlight,
@@ -62,7 +75,7 @@ return {
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('user.lsp', {}),
-            desc = 'LSP actions',
+            desc = 'lsp setup',
             callback = attach,
         })
     end,
