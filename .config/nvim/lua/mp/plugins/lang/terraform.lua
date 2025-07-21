@@ -11,6 +11,7 @@ return {
         ---@type mp.mason.Config
         opts = {
             ['terraform-ls'] = { install = vim.g.pc },
+            ['tflint'] = { install = vim.g.pc },
         },
     },
     {
@@ -18,6 +19,13 @@ return {
         ---@type mp.lsp.Config
         opts = {
             terraformls = {},
+        },
+    },
+    {
+        'mfussenegger/nvim-lint',
+        ---@type mp.lint.Config
+        opts = {
+            tflint = { filetypes = { 'terraform' } },
         },
     },
 }
