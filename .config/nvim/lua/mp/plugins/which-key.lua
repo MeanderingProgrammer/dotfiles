@@ -23,6 +23,7 @@ return {
             { '<leader>f', group = 'fzf' },
             { '<leader>h', group = 'harpoon' },
             { '<leader>m', group = 'markdown' },
+            { '<leader>n', group = 'neotest' },
             { '<leader>r', group = 'requirements' },
             { '<leader>s', group = 'stashpad' },
             { '<leader>t', group = 'trouble' },

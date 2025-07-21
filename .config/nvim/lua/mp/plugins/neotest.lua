@@ -6,15 +6,26 @@ return {
         'nvim-neotest/nvim-nio',
         'nvim-treesitter/nvim-treesitter',
     },
+    keys = {
+        {
+            '<leader>nr',
+            function()
+                require('neotest').run.run(vim.fn.expand('%'))
+            end,
+            desc = 'run file',
+        },
+        {
+            '<leader>ns',
+            function()
+                require('neotest').summary.toggle()
+            end,
+            desc = 'toggle summary',
+        },
+    },
     opts = {
         adapters = {},
     },
     config = function(_, opts)
-        local neotest = require('neotest')
-        neotest.setup(opts)
-
-        vim.keymap.set('n', '<leader>nr', function()
-            neotest.run.run(vim.fn.expand('%'))
-        end, { desc = 'neotest run file' })
+        require('neotest').setup(opts)
     end,
 }
