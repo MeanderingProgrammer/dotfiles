@@ -7,8 +7,10 @@ return {
             html = { install = true },
             javascript = { install = true },
             jsdoc = { install = true },
+            jsx = { install = true },
             scss = { install = true },
             svelte = { install = true },
+            tsx = { install = true },
             typescript = { install = true },
             vue = { install = true },
         },
@@ -56,7 +58,15 @@ return {
         'stevearc/conform.nvim',
         ---@type mp.conform.Config
         opts = {
-            prettierd = { filetypes = { 'javascript', 'typescript' } },
+            prettierd = {
+                filetypes = {
+                    'javascript',
+                    'javascriptreact',
+                    'typescript',
+                    'typescriptreact',
+                    'vue',
+                },
+            },
         },
     },
 }
