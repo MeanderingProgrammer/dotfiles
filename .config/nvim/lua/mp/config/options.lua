@@ -35,7 +35,6 @@ vim.g.loaded_netrwPlugin = 1
 
 -- color
 vim.opt.termguicolors = true
-vim.opt.cursorline = true
 
 -- line number
 vim.opt.number = true
