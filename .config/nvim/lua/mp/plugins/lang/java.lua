@@ -87,9 +87,8 @@ return {
         'mfussenegger/nvim-jdtls',
         config = function()
             vim.api.nvim_create_autocmd('FileType', {
-                group = vim.api.nvim_create_augroup('user.jdtls', {}),
-                pattern = { 'java' },
-                desc = 'jdtls setup',
+                group = vim.api.nvim_create_augroup('my.jdtls', {}),
+                pattern = 'java',
                 callback = attach,
             })
         end,

@@ -1,6 +1,5 @@
 vim.api.nvim_create_autocmd('BufEnter', {
-    group = vim.api.nvim_create_augroup('user.options', {}),
-    desc = 'disable comment continuation, uses autocmd to override ftplugin',
+    group = vim.api.nvim_create_augroup('my.options', {}),
     callback = function()
         vim.opt.formatoptions:remove({ 'r', 'o' })
     end,

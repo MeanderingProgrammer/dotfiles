@@ -86,9 +86,9 @@ return {
             local function map(lhs, rhs, desc)
                 vim.keymap.set('n', lhs, rhs, { desc = desc })
             end
-            map('<leader>rd', requirements.show_description, 'Show Description')
-            map('<leader>ru', requirements.upgrade, 'Upgrade')
-            map('<leader>rU', requirements.upgrade_all, 'Upgrade All')
+            map('<leader>rd', requirements.show_description, 'show description')
+            map('<leader>ru', requirements.upgrade, 'upgrade')
+            map('<leader>rU', requirements.upgrade_all, 'upgrade all')
         end,
     },
 }

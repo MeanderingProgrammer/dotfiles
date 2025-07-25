@@ -38,9 +38,9 @@ return {
             end
         end
 
-        local lint_events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
-        vim.api.nvim_create_autocmd(lint_events, {
-            group = vim.api.nvim_create_augroup('user.lint', {}),
+        local event = { 'BufRead', 'BufWritePost', 'InsertLeave' }
+        vim.api.nvim_create_autocmd(event, {
+            group = vim.api.nvim_create_augroup('my.lint', {}),
             callback = run_lint,
         })
 

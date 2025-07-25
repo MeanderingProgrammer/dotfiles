@@ -163,11 +163,11 @@ return {
             local function map(lhs, rhs, desc)
                 vim.keymap.set('n', lhs, rhs, { desc = desc })
             end
-            map('<leader>ct', crates.toggle, 'Toggle UI')
-            map('<leader>cv', crates.show_versions_popup, 'Versions')
-            map('<leader>cd', crates.show_dependencies_popup, 'Dependencies')
-            map('<leader>cu', crates.upgrade_crate, 'Upgrade')
-            map('<leader>cU', crates.upgrade_all_crates, 'Upgrade All')
+            map('<leader>ct', crates.toggle, 'toggle')
+            map('<leader>cv', crates.show_versions_popup, 'versions')
+            map('<leader>cd', crates.show_dependencies_popup, 'dependencies')
+            map('<leader>cu', crates.upgrade_crate, 'upgrade')
+            map('<leader>cU', crates.upgrade_all_crates, 'upgrade all')
         end,
     },
 }

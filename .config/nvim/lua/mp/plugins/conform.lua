@@ -1,6 +1,7 @@
 ---@alias mp.conform.Config table<string, mp.conform.Tool>
 
 ---@class mp.conform.Tool: mp.filetype.Tool
+---@field init? fun()
 ---@field override? conform.FormatterConfigOverride
 
 return {
@@ -48,6 +49,9 @@ return {
             end,
         })
         for name, tool in pairs(opts) do
+            if tool.init then
+                tool.init()
+            end
             if tool.override then
                 conform.formatters[name] = tool.override
             end
