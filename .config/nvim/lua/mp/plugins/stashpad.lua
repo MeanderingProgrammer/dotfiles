@@ -18,6 +18,9 @@ return {
         map('<leader>so', function()
             require('oil').toggle_float(stashpad.project())
         end, 'oil toggle')
+        map('<leader>sp', function()
+            stashpad.global('personal')
+        end, 'personal')
         map('<leader>st', stashpad.todo, 'todo')
     end,
 }
