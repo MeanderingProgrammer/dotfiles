@@ -35,6 +35,7 @@ return {
         opts = {
             ['eslint-lsp'] = { install = vim.g.has.npm },
             ['svelte-language-server'] = { install = vim.g.has.npm },
+            ['tailwindcss-language-server'] = { install = vim.g.has.npm },
             ['typescript-language-server'] = { install = vim.g.has.npm },
             ['prettierd'] = { install = vim.g.has.npm },
         },
@@ -45,6 +46,7 @@ return {
         opts = {
             eslint = {},
             svelte = {},
+            tailwindcss = {},
             ts_ls = {
                 settings = {
                     implicitProjectConfiguration = {
