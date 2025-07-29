@@ -28,7 +28,7 @@ return {
                     local result = vim.system(cmd, { text = true }):wait()
                     local out = vim.trim(assert(result.stdout))
                     local paths = vim.split(out, '\n', { plain = true })
-                    local dirs = {}
+                    local dirs = {} ---@type string[]
                     for _, path in ipairs(paths) do
                         dirs[#dirs + 1] = vim.fn.fnamemodify(path, ':~:h')
                     end

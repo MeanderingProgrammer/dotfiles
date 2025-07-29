@@ -1,7 +1,7 @@
 local function attach()
     local jdtls = require('jdtls')
 
-    local jdtls_path = vim.env.MASON .. '/share/jdtls'
+    local jdtls_path = vim.fs.joinpath(vim.env.MASON, 'share', 'jdtls')
     local project = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 
     local capabilities = jdtls.extendedClientCapabilities

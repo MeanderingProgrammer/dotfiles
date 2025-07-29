@@ -6,6 +6,9 @@
 ---@field cwd string
 ---@field cmd string[]
 
+---@class mp.rust.Artifact
+---@field executable? string
+
 local function dap_program()
     local method = 'experimental/runnables'
     local client, items = require('mp.util').lsp.request(method, {
@@ -15,9 +18,9 @@ local function dap_program()
         return nil
     end
 
+    local runnables = items ---@type mp.rust.Runnable[]
     local builds = {} ---@type mp.rust.Build[]
-    for _, item in ipairs(items) do
-        local runnable = item ---@type mp.rust.Runnable
+    for _, runnable in ipairs(runnables) do
         if runnable.kind == 'cargo' then
             local args = runnable.args
             if args.cargoArgs[1] == 'run' then
@@ -55,6 +58,7 @@ local function dap_program()
         local executables = {} ---@type string[]
         local values = vim.split(output, '\n', { plain = true })
         for _, value in ipairs(values) do
+            ---@type boolean, mp.rust.Artifact?
             local ok, artifact = pcall(vim.fn.json_decode, value)
             if ok and artifact then
                 local executable = artifact.executable

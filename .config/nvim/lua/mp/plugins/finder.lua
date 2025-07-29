@@ -47,7 +47,7 @@ return {
         map('<leader>ft', fzf.helptags, 'help tags')
         map('<leader>fw', fzf.grep_cword, 'current word')
 
-        local yadm = vim.env.XDG_DATA_HOME .. '/yadm/repo.git'
+        local yadm = vim.fs.joinpath(vim.env.XDG_DATA_HOME, 'yadm', 'repo.git')
         map('<leader>yf', function()
             fzf.git_files({ cwd = '~', git_dir = yadm })
         end, 'files')

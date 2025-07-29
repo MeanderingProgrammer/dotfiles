@@ -19,6 +19,8 @@ require('lazy').setup({
         { import = 'mp.plugins.lang' },
     },
     dev = {
+        ---@param plugin LazyPlugin
+        ---@return string
         path = function(plugin)
             local name = plugin.name
             local directories = { 'personal', 'open-source', 'neovim-plugins' }

@@ -50,7 +50,7 @@ vim.api.nvim_create_user_command('MyFormatLine', function()
         end
     end
 
-    local result = {}
+    local result = {} ---@type string[]
     for _, line in ipairs(lines) do
         line = line:sub(1, #line - 1)
         if #line > 0 then
