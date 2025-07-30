@@ -1,3 +1,22 @@
+require('mp.lang.bash')
+require('mp.lang.c')
+require('mp.lang.git')
+require('mp.lang.go')
+require('mp.lang.java')
+require('mp.lang.json')
+require('mp.lang.latex')
+require('mp.lang.lua')
+require('mp.lang.markdown')
+require('mp.lang.ocaml')
+require('mp.lang.parser')
+require('mp.lang.python')
+require('mp.lang.ruby')
+require('mp.lang.rust')
+require('mp.lang.terraform')
+require('mp.lang.ts')
+require('mp.lang.vim')
+require('mp.lang.zig')
+
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.uv.fs_stat(lazypath) then
     local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -16,7 +35,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     spec = {
         { import = 'mp.plugins' },
-        { import = 'mp.plugins.lang' },
     },
     dev = {
         ---@param plugin LazyPlugin

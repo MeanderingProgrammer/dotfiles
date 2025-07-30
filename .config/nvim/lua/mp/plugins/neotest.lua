@@ -3,6 +3,7 @@ return {
     dependencies = {
         'antoinemadec/FixCursorHold.nvim',
         'nvim-lua/plenary.nvim',
+        'nvim-neotest/neotest-plenary',
         'nvim-neotest/nvim-nio',
         'nvim-treesitter/nvim-treesitter',
     },
@@ -22,10 +23,12 @@ return {
             desc = 'toggle summary',
         },
     },
-    opts = {
-        adapters = {},
-    },
-    config = function(_, opts)
-        require('neotest').setup(opts)
+    config = function()
+        ---@diagnostic disable-next-line: missing-fields
+        require('neotest').setup({
+            adapters = {
+                require('neotest-plenary'),
+            },
+        })
     end,
 }

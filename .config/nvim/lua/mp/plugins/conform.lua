@@ -1,19 +1,11 @@
----@alias mp.conform.Config table<string, mp.conform.Tool>
-
----@class mp.conform.Tool: mp.filetype.Tool
----@field init? fun()
----@field override? conform.FormatterConfigOverride
-
 return {
     'stevearc/conform.nvim',
     dependencies = { 'mason-org/mason.nvim' },
-    ---@type mp.conform.Config
-    opts = {},
-    ---@param opts mp.conform.Config
-    config = function(_, opts)
+    config = function()
         local conform = require('conform')
 
-        local by_ft = require('mp.util').tool.by_ft(opts)
+        local configs = require('mp.lang').formatters()
+        local by_ft = require('mp.lang').by_ft(configs)
 
         local enabled = true
 
@@ -48,12 +40,12 @@ return {
                 return should_format(buf) and format_opts or nil
             end,
         })
-        for name, tool in pairs(opts) do
-            if tool.init then
-                tool.init()
+        for name, config in pairs(configs) do
+            if config.init then
+                config.init()
             end
-            if tool.override then
-                conform.formatters[name] = tool.override
+            if config.override then
+                conform.formatters[name] = config.override
             end
         end
 

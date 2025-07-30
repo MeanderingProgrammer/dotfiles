@@ -1,5 +1,3 @@
----@alias mp.lsp.Config table<string, vim.lsp.Config>
-
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
     ---@param mode string
@@ -60,12 +58,11 @@ end
 return {
     'neovim/nvim-lspconfig',
     dependencies = { 'mason-org/mason.nvim' },
-    ---@type mp.lsp.Config
-    opts = {},
-    ---@param opts mp.lsp.Config
-    config = function(_, opts)
+    config = function()
+        local configs = require('mp.lang').lsp()
+
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
-        for name, config in pairs(opts) do
+        for name, config in pairs(configs) do
             vim.lsp.config(name, config)
             local cmd = vim.lsp.config[name].cmd[1]
             if vim.fn.executable(cmd) == 1 then

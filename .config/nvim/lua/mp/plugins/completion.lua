@@ -1,17 +1,17 @@
 return {
     'saghen/blink.cmp',
     version = '*',
-    opts = {
-        providers = {
+    config = function()
+        local fb = 'fallback'
+
+        local providers = {
             lsp = {},
             path = {},
             snippets = {},
             buffer = {},
             omni = {},
-        },
-    },
-    config = function(_, opts)
-        local fb = 'fallback'
+        }
+
         require('blink.cmp').setup({
             keymap = {
                 ['<CR>'] = { 'accept', fb },
@@ -53,8 +53,8 @@ return {
                 },
             },
             sources = {
-                default = vim.tbl_keys(opts.providers),
-                providers = opts.providers,
+                default = vim.tbl_keys(providers),
+                providers = providers,
             },
         })
     end,

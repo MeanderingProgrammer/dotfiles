@@ -84,94 +84,48 @@ local function dap_program()
     end)
 end
 
-return {
-    {
-        'nvim-treesitter/nvim-treesitter',
-        ---@type mp.ts.Config
-        opts = {
-            rust = { install = true },
-            toml = { install = true },
-        },
+require('mp.lang').add({
+    parser = {
+        rust = { install = true },
+        toml = { install = true },
     },
-    {
-        'mason-org/mason.nvim',
-        ---@type mp.mason.Config
-        opts = {
-            ['rust-analyzer'] = { install = vim.g.pc },
-            ['codelldb'] = { install = vim.g.pc },
-            ['taplo'] = { install = vim.g.pc },
-        },
+    tool = {
+        ['rust-analyzer'] = { install = vim.g.pc },
+        ['codelldb'] = { install = vim.g.pc },
+        ['taplo'] = { install = vim.g.pc },
     },
-    {
-        'neovim/nvim-lspconfig',
-        ---@type mp.lsp.Config
-        opts = {
-            rust_analyzer = {
-                settings = {
-                    ['rust-analyzer'] = {
-                        check = { command = 'clippy' },
-                        diagnostics = { disabled = { 'inactive-code' } },
-                    },
+    lsp = {
+        rust_analyzer = {
+            settings = {
+                ['rust-analyzer'] = {
+                    check = { command = 'clippy' },
+                    diagnostics = { disabled = { 'inactive-code' } },
                 },
             },
         },
     },
-    {
-        'mfussenegger/nvim-dap',
-        ---@type mp.dap.Config
-        opts = {
-            adapters = {
-                codelldb = {
-                    type = 'executable',
-                    command = 'codelldb',
-                    args = {},
-                },
+    dap = {
+        adapters = {
+            codelldb = {
+                type = 'executable',
+                command = 'codelldb',
+                args = {},
             },
-            configurations = {
-                rust = {
-                    {
-                        name = 'Launch file',
-                        type = 'codelldb',
-                        request = 'launch',
-                        program = dap_program,
-                        cwd = '${workspaceFolder}',
-                        stopOnEntry = false,
-                    },
+        },
+        configurations = {
+            rust = {
+                {
+                    name = 'Launch file',
+                    type = 'codelldb',
+                    request = 'launch',
+                    program = dap_program,
+                    cwd = '${workspaceFolder}',
+                    stopOnEntry = false,
                 },
             },
         },
     },
-    {
-        'stevearc/conform.nvim',
-        ---@type mp.conform.Config
-        opts = {
-            taplo = { filetypes = { 'toml' } },
-        },
+    format = {
+        taplo = { filetypes = { 'toml' } },
     },
-    {
-        'Saecki/crates.nvim',
-        config = function()
-            local crates = require('crates')
-            crates.setup({
-                lsp = {
-                    enabled = true,
-                    actions = true,
-                    completion = true,
-                    hover = true,
-                },
-            })
-
-            ---@param lhs string
-            ---@param rhs function
-            ---@param desc string
-            local function map(lhs, rhs, desc)
-                vim.keymap.set('n', lhs, rhs, { desc = desc })
-            end
-            map('<leader>ct', crates.toggle, 'toggle')
-            map('<leader>cv', crates.show_versions_popup, 'versions')
-            map('<leader>cd', crates.show_dependencies_popup, 'dependencies')
-            map('<leader>cu', crates.upgrade_crate, 'upgrade')
-            map('<leader>cU', crates.upgrade_all_crates, 'upgrade all')
-        end,
-    },
-}
+})

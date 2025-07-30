@@ -1,7 +1,5 @@
-return {
-    'nvim-treesitter/nvim-treesitter',
-    ---@type mp.ts.Config
-    opts = {
+require('mp.lang').add({
+    parser = {
         dockerfile = { install = true },
         just = { install = true },
         kotlin = { install = true },
@@ -11,4 +9,4 @@ return {
         ssh_config = { install = true },
         yaml = { install = true },
     },
-}
+})

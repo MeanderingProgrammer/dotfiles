@@ -1,0 +1,25 @@
+require('mp.lang').add({
+    parser = {
+        markdown = { install = true },
+        markdown_inline = { install = true },
+    },
+    tool = {
+        ['markdownlint'] = { install = vim.g.has.npm },
+        ['marksman'] = { install = vim.g.pc },
+    },
+    lsp = {
+        marksman = {},
+    },
+    lint = {
+        markdownlint = {
+            filetypes = { 'markdown' },
+            override = function(linter)
+                local args = {
+                    '--config',
+                    require('mp.util').path.lint('markdownlint.yaml'),
+                }
+                linter.args = vim.list_extend(linter.args or {}, args)
+            end,
+        },
+    },
+})

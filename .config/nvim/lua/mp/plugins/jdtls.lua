@@ -68,29 +68,13 @@ local function attach()
 end
 
 return {
-    {
-        'nvim-treesitter/nvim-treesitter',
-        ---@type mp.ts.Config
-        opts = {
-            java = { install = true },
-            javadoc = { install = true },
-        },
-    },
-    {
-        'mason-org/mason.nvim',
-        ---@type mp.mason.Config
-        opts = {
-            ['jdtls'] = { install = true },
-        },
-    },
-    {
-        'mfussenegger/nvim-jdtls',
-        config = function()
-            vim.api.nvim_create_autocmd('FileType', {
-                group = vim.api.nvim_create_augroup('my.jdtls', {}),
-                pattern = 'java',
-                callback = attach,
-            })
-        end,
-    },
+    'mfussenegger/nvim-jdtls',
+    dependencies = { 'mason-org/mason.nvim' },
+    config = function()
+        vim.api.nvim_create_autocmd('FileType', {
+            group = vim.api.nvim_create_augroup('my.jdtls', {}),
+            pattern = 'java',
+            callback = attach,
+        })
+    end,
 }

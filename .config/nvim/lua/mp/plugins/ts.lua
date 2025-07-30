@@ -1,7 +1,3 @@
----@alias mp.ts.Config table<string, mp.ts.Tool>
-
----@class mp.ts.Tool: mp.install.Tool
-
 return {
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
@@ -9,13 +5,10 @@ return {
     dependencies = {
         { 'MeanderingProgrammer/treesitter-modules.nvim', dev = true },
     },
-    ---@type mp.ts.Config
-    opts = {},
-    ---@param opts mp.ts.Config
-    config = function(_, opts)
+    config = function()
         require('nvim-treesitter').setup({})
 
-        local install = require('mp.util').tool.install(opts)
+        local install = require('mp.lang').parsers()
 
         require('treesitter-modules').setup({
             ensure_installed = install,
