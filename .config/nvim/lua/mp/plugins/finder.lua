@@ -21,6 +21,9 @@ return {
                 file_icons = 'mini',
                 formatter = 'path.filename_first',
             },
+            grep = {
+                hidden = true,
+            },
             lsp = {
                 jump1 = false,
                 includeDeclaration = false,
