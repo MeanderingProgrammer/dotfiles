@@ -13,7 +13,7 @@ return {
 
         ---@param buf integer
         ---@return boolean
-        local should_format = function(buf)
+        local function should_format(buf)
             if not enabled then
                 return false
             end

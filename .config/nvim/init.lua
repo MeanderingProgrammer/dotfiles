@@ -8,5 +8,5 @@ pcall(require, 'mp.local')
 if vim.g.vscode then
     require('mp.vscode')
 else
-    require('mp.manager')
+    require('mp.main')
 end

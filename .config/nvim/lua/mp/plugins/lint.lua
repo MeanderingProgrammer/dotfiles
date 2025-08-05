@@ -7,7 +7,7 @@ return {
         local configs = require('mp.lang').linters()
         local by_ft = require('mp.lang').by_ft(configs)
 
-        local run_lint = function()
+        local function run_lint()
             local result = {} ---@type string[]
             local linters = by_ft[vim.bo.filetype] or {}
             for _, linter in ipairs(linters) do
