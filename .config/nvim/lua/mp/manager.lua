@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 require('mp.lang.bash')
 require('mp.lang.c')
 require('mp.lang.git')
@@ -44,7 +46,7 @@ require('lazy').setup({
             local directories = { 'personal', 'open-source', 'neovim-plugins' }
             for _, directory in ipairs(directories) do
                 local path = vim.fs.joinpath('~/dev/repos', directory, name)
-                if require('mp.util').path.exists(path) then
+                if utils.exists(path) then
                     return path
                 end
             end

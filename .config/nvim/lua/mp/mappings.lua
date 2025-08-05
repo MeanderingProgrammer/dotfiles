@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 ---@param modes string|string[]
 ---@param lhs string
 ---@param rhs string|function
@@ -36,11 +38,11 @@ map('n', '<leader>bb', function()
 end)
 
 -- copy hex code of current character to clipboard
-map('n', '<leader>ff', function()
+map('n', '<leader>hc', function()
     local encodings = vim.api.nvim_exec2('ascii', { output = true }).output
-    local hex_code = vim.iter(vim.split(encodings, ',', { plain = true }))
+    local hex_code = vim.iter(utils.split(encodings, ','))
         :map(function(encoding)
-            return vim.split(encoding, ' ', { plain = true, trimempty = true })
+            return utils.split(encoding, ' ', true)
         end)
         :filter(function(encoding)
             return vim.tbl_contains(encoding, 'Hex')

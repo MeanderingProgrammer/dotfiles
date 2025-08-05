@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 require('mp.lang').add({
     parser = {
         lua = { install = true },
@@ -37,7 +39,7 @@ require('mp.lang').add({
         selene = {
             filetypes = { 'lua' },
             condition = function()
-                return require('mp.util').path.in_root({ 'selene.toml' })
+                return utils.in_root({ 'selene.toml' })
             end,
         },
     },

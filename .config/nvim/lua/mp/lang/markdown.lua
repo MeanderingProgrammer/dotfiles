@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 require('mp.lang').add({
     parser = {
         markdown = { install = true },
@@ -16,7 +18,7 @@ require('mp.lang').add({
             override = function(linter)
                 local args = {
                     '--config',
-                    require('mp.util').path.lint('markdownlint.yaml'),
+                    utils.lint_config('markdownlint.yaml'),
                 }
                 linter.args = vim.list_extend(linter.args or {}, args)
             end,

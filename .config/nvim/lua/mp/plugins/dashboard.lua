@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     'MeanderingProgrammer/dashboard.nvim',
     dev = true,
@@ -27,7 +29,7 @@ return {
                     local cmd = { 'find', root, '-type', 'd', '-name', '.git', '-maxdepth', '2' }
                     local result = vim.system(cmd, { text = true }):wait()
                     local out = vim.trim(assert(result.stdout))
-                    local paths = vim.split(out, '\n', { plain = true })
+                    local paths = utils.split(out, '\n')
                     local dirs = {} ---@type string[]
                     for _, path in ipairs(paths) do
                         dirs[#dirs + 1] = vim.fn.fnamemodify(path, ':~:h')

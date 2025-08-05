@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 ---@class mp.rust.Runnable
 ---@field kind 'cargo'|'shell'
 ---@field args { cwd: string, cargoArgs: string[] }
@@ -10,8 +12,7 @@
 ---@field executable? string
 
 local function dap_program()
-    local method = 'experimental/runnables'
-    local client, items = require('mp.util').lsp.request(method, {
+    local client, items = utils.lsp_request('experimental/runnables', {
         textDocument = vim.lsp.util.make_text_document_params(),
     })
     if not client or not items then
@@ -56,7 +57,7 @@ local function dap_program()
         end
 
         local executables = {} ---@type string[]
-        local values = vim.split(output, '\n', { plain = true })
+        local values = utils.split(output, '\n')
         for _, value in ipairs(values) do
             ---@type boolean, mp.rust.Artifact?
             local ok, artifact = pcall(vim.fn.json_decode, value)

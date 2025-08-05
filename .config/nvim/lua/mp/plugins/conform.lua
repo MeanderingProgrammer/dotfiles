@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 return {
     'stevearc/conform.nvim',
     dependencies = { 'mason-org/mason.nvim' },
@@ -15,7 +17,7 @@ return {
             if not enabled then
                 return false
             end
-            local clients = require('mp.util').lsp.names(buf)
+            local clients = utils.lsp_names(buf)
             if vim.tbl_contains(clients, 'jsonls') then
                 return false
             end
@@ -26,7 +28,7 @@ return {
                 return true
             else
                 -- inside of repos format in specific roots
-                local root = vim.split(repo, '/', { plain = true })[1]
+                local root = utils.split(repo, '/')[1]
                 return vim.tbl_contains({ 'personal' }, root)
             end
         end
