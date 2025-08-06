@@ -39,20 +39,15 @@ end)
 
 -- copy hex code of current character to clipboard
 map('n', '<leader>hc', function()
-    local encodings = vim.api.nvim_exec2('ascii', { output = true }).output
-    local hex_code = vim.iter(utils.split(encodings, ','))
-        :map(function(encoding)
-            return utils.split(encoding, ' ', true)
-        end)
-        :filter(function(encoding)
-            return vim.tbl_contains(encoding, 'Hex')
-        end)
-        :map(function(encoding)
-            return vim.fn.trim(encoding[#encoding], '0', 1)
-        end)
-        :next()
-    vim.print(hex_code)
-    vim.fn.setreg('+', hex_code)
+    local values = {} ---@type table<string, string>
+    local encodings = utils.split(utils.exec('ascii'), ',')
+    for _, encoding in ipairs(encodings) do
+        local parts = utils.split(encoding, ' ', true)
+        values[parts[1]] = parts[2]
+    end
+    local hex = vim.fn.trim(values['Hex'], '0', 1)
+    vim.print(hex)
+    vim.fn.setreg('+', hex)
 end)
 
 ---@see lsp-defaults

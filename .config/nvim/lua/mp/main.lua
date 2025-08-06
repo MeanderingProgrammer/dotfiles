@@ -35,9 +35,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-    spec = {
-        { import = 'mp.plugins' },
-    },
+    spec = { import = 'mp.plugins' },
     dev = {
         ---@param plugin LazyPlugin
         ---@return string

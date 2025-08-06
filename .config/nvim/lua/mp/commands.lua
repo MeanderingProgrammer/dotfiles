@@ -98,9 +98,8 @@ local function open_float(title, filetype, lines)
 end
 
 vim.api.nvim_create_user_command('Messages', function()
-    local text = vim.api.nvim_exec2('messages', { output = true }).output
-    local lines = utils.split(text, '\n')
-    open_float('Messages', 'msglog', lines)
+    local lines = utils.split(utils.exec('messages'), '\n')
+    open_float('Messages', 'log', lines)
 end, {})
 
 vim.api.nvim_create_user_command('LspConfig', function()

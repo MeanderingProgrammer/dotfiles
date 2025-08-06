@@ -26,6 +26,12 @@ function M.split(s, sep, trimempty)
     return vim.split(s, sep, { plain = true, trimempty = trimempty })
 end
 
+---@param cmd string
+---@return string
+function M.exec(cmd)
+    return vim.api.nvim_exec2(cmd, { output = true }).output
+end
+
 ---@param file string
 ---@return string
 function M.lint_config(file)
