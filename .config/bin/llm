@@ -3,6 +3,7 @@
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import click
 import requests
@@ -10,40 +11,29 @@ import requests
 
 @dataclass(frozen=True)
 class Ollama:
-    model: str
-    port: int
+    model: str = "gpt-oss"
+    port: int = 11434
 
     @property
     def endpoint(self) -> str:
         return f"http://127.0.0.1:{self.port}"
 
     def update(self) -> None:
-        response = requests.post(
-            f"{self.endpoint}/api/pull",
-            json=dict(
-                model=self.model,
-                stream=False,
-            ),
-        )
-        assert response.status_code == 200, "ollama failed: pull"
-        print(response.json().get("status"))
+        self.stream("pull", dict(), "status", "\n")
 
     def run(self, prompt: list[str]) -> None:
+        self.stream("generate", dict(prompt="\n\n".join(prompt)), "response", "")
+
+    def stream(self, cmd: str, data: dict[str, Any], key: str, end: str) -> None:
         response = requests.post(
-            f"{self.endpoint}/api/generate",
-            json=dict(
-                model=self.model,
-                prompt="\n\n".join(prompt),
-            ),
+            f"{self.endpoint}/api/{cmd}",
+            json=dict(model=self.model) | data,
             stream=True,
         )
-        assert response.status_code == 200, "ollama failed: generate"
+        assert response.status_code == 200, f"ollama failed: {cmd}"
         for line in response.iter_lines():
             chunk = json.loads(line.decode("utf-8"))
-            print(chunk["response"], end="", flush=True)
-
-
-MODEL: Ollama = Ollama(model="deepseek-r1", port=11434)
+            print(chunk[key], end=end, flush=True)
 
 
 @click.group()
@@ -59,7 +49,16 @@ def update() -> None:
     """
     Update / install the current model
     """
-    MODEL.update()
+    Ollama().update()
+
+
+@cli.command()
+@click.argument("input", type=str)
+def prompt(input: str) -> None:
+    """
+    Passes prompt directly to llm
+    """
+    Ollama().run([input])
 
 
 @cli.command()
@@ -69,7 +68,7 @@ def cr(file: Path) -> None:
     Provides a code review for an input file
     """
     assert file.is_file(), "Input must be a valid file"
-    MODEL.run(["Can you provide a code review for the following:", file.read_text()])
+    Ollama().run(["Can you provide a code review for the following:", file.read_text()])
 
 
 @cli.command()
@@ -80,16 +79,7 @@ def rewrite(language: str, file: Path) -> None:
     Rewrite the input file to specified language
     """
     assert file.is_file(), "Input must be a valid file"
-    MODEL.run([f"Can you rewrite the folowing to {language}:", file.read_text()])
-
-
-@cli.command()
-@click.argument("input", type=str)
-def prompt(input: str) -> None:
-    """
-    Passes prompt directly to llm
-    """
-    MODEL.run([input])
+    Ollama().run([f"Can you rewrite the folowing to {language}:", file.read_text()])
 
 
 if __name__ == "__main__":
