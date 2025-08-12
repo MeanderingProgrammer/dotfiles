@@ -41,13 +41,14 @@ end
 ---@param files string[]
 ---@return boolean
 function M.in_root(files)
-    local result = false
     local cwd = vim.fn.getcwd()
     for _, file in ipairs(files) do
         local path = vim.fs.joinpath(cwd, file)
-        result = result or M.exists(path)
+        if M.exists(path) then
+            return true
+        end
     end
-    return result
+    return false
 end
 
 ---@param path string
@@ -64,24 +65,6 @@ function M.lsp_names(buf)
         result[#result + 1] = client.name
     end
     return result
-end
-
----@param method string
----@param params table
----@return vim.lsp.Client?, any
-function M.lsp_request(method, params)
-    local clients = vim.lsp.get_clients({ bufnr = 0, method = method })
-    if #clients ~= 1 then
-        vim.print(('%s : %d clients'):format(method, #clients))
-        return nil, nil
-    end
-    local client = clients[1]
-    local response = client:request_sync(method, params)
-    if not response then
-        vim.print(('%s : failed'):format(method))
-        return client, nil
-    end
-    return client, response.result
 end
 
 return M

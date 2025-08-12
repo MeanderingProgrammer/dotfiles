@@ -12,15 +12,25 @@ local utils = require('mp.utils')
 ---@field executable? string
 
 local function dap_program()
-    local client, items = utils.lsp_request('experimental/runnables', {
-        textDocument = vim.lsp.util.make_text_document_params(),
-    })
-    if not client or not items then
+    local method = 'experimental/runnables'
+
+    local clients = vim.lsp.get_clients({ bufnr = 0, method = method })
+    if #clients ~= 1 then
+        vim.print(('%s : %d clients'):format(method, #clients))
         return nil
     end
 
-    local runnables = items ---@type mp.rust.Runnable[]
+    local client = clients[1]
+    local response = client:request_sync(method, {
+        textDocument = vim.lsp.util.make_text_document_params(),
+    })
+    if not response then
+        vim.print(('%s : failed'):format(method))
+        return nil
+    end
+
     local builds = {} ---@type mp.rust.Build[]
+    local runnables = response.result ---@type mp.rust.Runnable[]
     for _, runnable in ipairs(runnables) do
         if runnable.kind == 'cargo' then
             local args = runnable.args
@@ -57,10 +67,10 @@ local function dap_program()
         end
 
         local executables = {} ---@type string[]
-        local values = utils.split(output, '\n')
-        for _, value in ipairs(values) do
+        local lines = utils.split(output, '\n')
+        for _, line in ipairs(lines) do
             ---@type boolean, mp.rust.Artifact?
-            local ok, artifact = pcall(vim.fn.json_decode, value)
+            local ok, artifact = pcall(vim.fn.json_decode, line)
             if ok and artifact then
                 local executable = artifact.executable
                 if executable and executable ~= vim.NIL then

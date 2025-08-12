@@ -15,7 +15,7 @@ require('mp.lang.python')
 require('mp.lang.ruby')
 require('mp.lang.rust')
 require('mp.lang.terraform')
-require('mp.lang.ts')
+require('mp.lang.typescript')
 require('mp.lang.vim')
 require('mp.lang.zig')
 

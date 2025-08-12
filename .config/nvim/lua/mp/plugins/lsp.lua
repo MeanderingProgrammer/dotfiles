@@ -39,7 +39,7 @@ local function attach(args)
     end
     if supports('textDocument/inlayHint') then
         map('n', '<leader><C-h>', function()
-            local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf })
+            local enabled = vim.lsp.inlay_hint.is_enabled()
             vim.lsp.inlay_hint.enable(not enabled)
         end, 'toggle inlay hints')
     end
