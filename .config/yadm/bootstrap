@@ -58,6 +58,7 @@ do_deps() {
         brew bundle --file "${lib_dir}/Brewfile"
         brew update
         brew upgrade
+        brew cleanup
         notify $SUCCESS "  success: brew"
     fi
 
