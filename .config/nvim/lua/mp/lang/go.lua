@@ -7,14 +7,14 @@ require('mp.lang').add({
     },
     tool = {
         ['gopls'] = { install = vim.g.has.go },
-        ['goimports'] = { install = vim.g.has.go },
         ['gofumpt'] = { install = vim.g.has.go },
+        ['goimports'] = { install = vim.g.has.go },
     },
     lsp = {
         gopls = {},
     },
     format = {
-        goimports = { filetypes = { 'go' } },
         gofumpt = { filetypes = { 'go' } },
+        goimports = { filetypes = { 'go' } },
     },
 })

@@ -5,7 +5,7 @@ return {
         local lint = require('lint')
 
         local configs = require('mp.lang').linters()
-        local by_ft = require('mp.lang').by_ft(configs)
+        local names, by_ft = require('mp.lang').by_ft(configs)
 
         local function run_lint()
             local result = {} ---@type string[]
@@ -22,10 +22,11 @@ return {
         end
 
         lint.linters_by_ft = by_ft
-        for name, config in pairs(configs) do
+        for _, name in ipairs(names) do
+            local config = configs[name]
             if config.override then
                 local linter = lint.linters[name]
-                assert(type(linter) ~= 'function')
+                assert(type(linter) == 'table', 'invalid linter')
                 config.override(linter)
             end
         end

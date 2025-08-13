@@ -7,7 +7,7 @@ return {
         local conform = require('conform')
 
         local configs = require('mp.lang').formatters()
-        local by_ft = require('mp.lang').by_ft(configs)
+        local names, by_ft = require('mp.lang').by_ft(configs)
 
         local enabled = true
 
@@ -24,7 +24,7 @@ return {
             local path = vim.api.nvim_buf_get_name(buf)
             local repo = vim.fs.relpath('~/dev/repos', path)
             if not repo then
-                -- outside of repos format
+                -- outside of repos always format
                 return true
             else
                 -- inside of repos format in specific roots
@@ -42,7 +42,8 @@ return {
                 return should_format(buf) and format_opts or nil
             end,
         })
-        for name, config in pairs(configs) do
+        for _, name in ipairs(names) do
+            local config = configs[name]
             if config.init then
                 config.init()
             end
