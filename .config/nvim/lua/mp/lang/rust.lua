@@ -60,15 +60,10 @@ local function dap_program()
         end
 
         local cmd = vim.list_extend(build.cmd, { '--message-format=json' })
-        local result = vim.system(cmd, { cwd = build.cwd, text = true }):wait()
-        local output = result.stdout
-        if not output then
-            return nil
-        end
+        local out = utils.execute(cmd, { cwd = build.cwd })
 
         local executables = {} ---@type string[]
-        local lines = utils.split(output, '\n')
-        for _, line in ipairs(lines) do
+        for _, line in ipairs(utils.split(out, '\n')) do
             ---@type boolean, mp.rust.Artifact?
             local ok, artifact = pcall(vim.fn.json_decode, line)
             if ok and artifact then

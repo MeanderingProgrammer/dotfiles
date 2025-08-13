@@ -34,7 +34,10 @@ map('i', '<A-k>', '<Esc><Cmd>m .-2<CR>==gi')
 
 -- execute current line
 map('n', '<leader>bb', function()
-    vim.cmd(':! ' .. vim.fn.getline('.'))
+    local cmd = vim.fn.getline('.')
+    vim.print(('command: %s'):format(cmd))
+    local out = vim.fn.system(cmd)
+    vim.print(out)
 end)
 
 -- copy hex code of current character to clipboard

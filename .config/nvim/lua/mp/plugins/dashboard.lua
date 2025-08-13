@@ -27,15 +27,13 @@ return {
                     local root = vim.fs.normalize('~/dev/repos/personal')
                     -- stylua: ignore
                     local cmd = { 'find', root, '-type', 'd', '-name', '.git', '-maxdepth', '2' }
-                    local result = vim.system(cmd, { text = true }):wait()
-                    local out = vim.trim(assert(result.stdout))
-                    local paths = utils.split(out, '\n')
-                    local dirs = {} ---@type string[]
-                    for _, path in ipairs(paths) do
-                        dirs[#dirs + 1] = vim.fn.fnamemodify(path, ':~:h')
+                    local out = utils.execute(cmd)
+                    local result = {} ---@type string[]
+                    for _, path in ipairs(utils.split(out, '\n', true)) do
+                        result[#result + 1] = vim.fn.fnamemodify(path, ':~:h')
                     end
-                    table.sort(dirs)
-                    return dirs
+                    table.sort(result)
+                    return result
                 end,
             },
             footer = { 'version', 'startuptime' },

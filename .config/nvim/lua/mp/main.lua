@@ -48,7 +48,7 @@ require('lazy').setup({
                     return path
                 end
             end
-            error(('could not find: %s'):format(name))
+            error(('missing: %s'):format(name))
         end,
     },
     change_detection = { notify = false },

@@ -31,7 +31,7 @@ local function attach(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if not client then
             return false
-        elseif vim.tbl_contains({ 'jdtls' }, client.name) then
+        elseif vim.list_contains({ 'jdtls' }, client.name) then
             return true
         else
             return client:supports_method(method, args.buf)

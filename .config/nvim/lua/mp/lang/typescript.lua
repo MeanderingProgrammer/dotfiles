@@ -1,3 +1,5 @@
+local utils = require('mp.utils')
+
 require('mp.lang').add({
     parser = {
         css = { install = true },
@@ -52,7 +54,7 @@ require('mp.lang').add({
                     group = vim.api.nvim_create_augroup('my.prettierd', {}),
                     pattern = '*prettier*',
                     callback = function()
-                        vim.system({ 'prettierd', 'restart' }):wait()
+                        utils.execute({ 'prettierd', 'restart' })
                     end,
                 })
             end,

@@ -21,7 +21,7 @@ return {
             view_options = {
                 show_hidden = true,
                 is_always_hidden = function(name)
-                    return vim.tbl_contains(hidden, name)
+                    return vim.list_contains(hidden, name)
                 end,
             },
             float = {

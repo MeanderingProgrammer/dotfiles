@@ -18,7 +18,7 @@ return {
                 return false
             end
             local clients = utils.lsp_names(buf)
-            if vim.tbl_contains(clients, 'jsonls') then
+            if vim.list_contains(clients, 'jsonls') then
                 return false
             end
             local path = vim.api.nvim_buf_get_name(buf)
@@ -29,7 +29,7 @@ return {
             else
                 -- inside of repos format in specific roots
                 local root = utils.split(repo, '/')[1]
-                return vim.tbl_contains({ 'personal' }, root)
+                return vim.list_contains({ 'personal' }, root)
             end
         end
 

@@ -114,8 +114,8 @@ vim.api.nvim_create_user_command('LspConfig', function()
         local config = { name = client.name }
         local client_config = client.config ---@type table<string, any>
         for key, value in pairs(client_config) do
-            local skip = vim.tbl_contains({ 'capabilities', 'name' }, key)
-                or vim.tbl_contains({ 'function' }, type(value))
+            local skip = vim.list_contains({ 'capabilities', 'name' }, key)
+                or vim.list_contains({ 'function' }, type(value))
             if not skip then
                 config[key] = value
             end

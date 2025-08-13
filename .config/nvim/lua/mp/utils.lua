@@ -32,6 +32,16 @@ function M.exec(cmd)
     return vim.api.nvim_exec2(cmd, { output = true }).output
 end
 
+---@param cmd string[]
+---@param opts? vim.SystemOpts
+---@return string
+function M.execute(cmd, opts)
+    opts = vim.tbl_deep_extend('error', opts or {}, { text = true })
+    local result = vim.system(cmd, opts):wait()
+    assert(result.code == 0, result.stderr)
+    return assert(result.stdout, 'missing stdout')
+end
+
 ---@param file string
 ---@return string
 function M.lint_config(file)
