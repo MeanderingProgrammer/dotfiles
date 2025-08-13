@@ -39,7 +39,7 @@ require('mp.lang').add({
         selene = {
             filetypes = { 'lua' },
             condition = function()
-                return utils.in_root({ 'selene.toml' })
+                return utils.in_root('selene.toml')
             end,
         },
     },

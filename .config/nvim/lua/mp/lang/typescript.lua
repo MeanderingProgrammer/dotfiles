@@ -33,14 +33,17 @@ require('mp.lang').add({
     format = {
         prettierd = {
             filetypes = {
+                'css',
+                'html',
                 'javascript',
                 'javascriptreact',
+                'svelte',
                 'typescript',
                 'typescriptreact',
                 'vue',
             },
             init = function()
-                -- skip running when project does not use prettier
+                -- only run when project local prettier is available
                 vim.env.PRETTIERD_LOCAL_PRETTIER_ONLY = 1
 
                 -- prettierd not picking up certain changes
@@ -49,7 +52,7 @@ require('mp.lang').add({
                     group = vim.api.nvim_create_augroup('my.prettierd', {}),
                     pattern = '*prettier*',
                     callback = function()
-                        vim.fn.system('prettierd restart')
+                        vim.system({ 'prettierd', 'restart' }):wait()
                     end,
                 })
             end,

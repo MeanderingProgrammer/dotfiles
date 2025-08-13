@@ -57,6 +57,6 @@ return {
 
         vim.keymap.set('n', '<leader>F', function()
             enabled = not enabled
-        end, { desc = 'format toggle' })
+        end, { desc = 'toggle format' })
     end,
 }

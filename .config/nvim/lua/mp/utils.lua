@@ -38,12 +38,12 @@ function M.lint_config(file)
     return vim.fs.joinpath(vim.fn.stdpath('config'), 'lint_configs', file)
 end
 
----@param files string[]
+---@param ... string
 ---@return boolean
-function M.in_root(files)
-    local cwd = vim.fn.getcwd()
-    for _, file in ipairs(files) do
-        local path = vim.fs.joinpath(cwd, file)
+function M.in_root(...)
+    local root = vim.fn.getcwd()
+    for _, file in ipairs({ ... }) do
+        local path = vim.fs.joinpath(root, file)
         if M.exists(path) then
             return true
         end
