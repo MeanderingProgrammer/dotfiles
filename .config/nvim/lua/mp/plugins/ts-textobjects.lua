@@ -7,16 +7,18 @@ return {
             select = { lookahead = true },
         })
 
-        local keymap = vim.keymap.set
-
         ---@param mode string|string[]
         ---@param lhs string
-        ---@param rhs fun(name: string)
-        ---@param name string
-        local function map(mode, lhs, rhs, name)
-            keymap(mode, lhs, function()
-                rhs(name)
-            end)
+        ---@param rhs function
+        ---@param value string|boolean
+        local function map(mode, lhs, rhs, value)
+            if type(value) == 'string' then
+                vim.keymap.set(mode, lhs, function()
+                    rhs(value)
+                end)
+            else
+                vim.keymap.set(mode, lhs, rhs, { expr = value })
+            end
         end
 
         local select = require('nvim-treesitter-textobjects.select')
@@ -48,13 +50,13 @@ return {
         map(move_mode, '[F', move.goto_previous_end, '@function.outer')
         map(move_mode, '[C', move.goto_previous_end, '@class.outer')
 
-        -- repeat movement with ';' and ',' without breaking it for f / t
+        -- repeat movement with ';' and ',' without breaking f / t
         local ts_repeat = require('nvim-treesitter-textobjects.repeatable_move')
-        keymap(move_mode, ';', ts_repeat.repeat_last_move_next)
-        keymap(move_mode, ',', ts_repeat.repeat_last_move_previous)
-        keymap(move_mode, 'f', ts_repeat.builtin_f_expr, { expr = true })
-        keymap(move_mode, 'F', ts_repeat.builtin_F_expr, { expr = true })
-        keymap(move_mode, 't', ts_repeat.builtin_t_expr, { expr = true })
-        keymap(move_mode, 'T', ts_repeat.builtin_T_expr, { expr = true })
+        map(move_mode, ';', ts_repeat.repeat_last_move_next, true)
+        map(move_mode, ',', ts_repeat.repeat_last_move_previous, true)
+        map(move_mode, 'f', ts_repeat.builtin_f_expr, true)
+        map(move_mode, 'F', ts_repeat.builtin_F_expr, true)
+        map(move_mode, 't', ts_repeat.builtin_t_expr, true)
+        map(move_mode, 'T', ts_repeat.builtin_T_expr, true)
     end,
 }
