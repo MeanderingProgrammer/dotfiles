@@ -41,8 +41,8 @@ return {
         map('<leader>?', fzf.oldfiles, 'opened files')
         map('<leader>g', fzf.live_grep, 'grep')
         map('<leader>fb', fzf.buffers, 'existing buffers')
-        map('<leader>fd', fzf.diagnostics_workspace, 'workspace diagnostics')
-        map('<leader>fD', fzf.diagnostics_document, 'document diagnostics')
+        map('<leader>fd', fzf.diagnostics_workspace, 'diagnostics workspace')
+        map('<leader>fD', fzf.diagnostics_document, 'diagnostics document')
         map('<leader>ff', fzf.git_files, 'git files')
         map('<leader>fh', fzf.highlights, 'highlights')
         map('<leader>fk', fzf.keymaps, 'keymaps')
@@ -56,7 +56,7 @@ return {
         end, 'files')
         map('<leader>yg', function()
             local cmd = ('git --git-dir=%s grep -i'):format(yadm)
-            fzf.live_grep({ cwd = '~', cmd = cmd })
+            fzf.live_grep({ cwd = '~', cmd = cmd, hidden = false })
         end, 'grep')
     end,
 }

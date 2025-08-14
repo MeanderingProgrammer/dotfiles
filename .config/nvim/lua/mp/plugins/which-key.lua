@@ -26,7 +26,6 @@ return {
             { '<leader>n', group = 'neotest' },
             { '<leader>r', group = 'requirements' },
             { '<leader>s', group = 'stashpad' },
-            { '<leader>t', group = 'trouble' },
             { '<leader>w', group = 'workspace' },
             { '<leader>y', group = 'yadm' },
         })
