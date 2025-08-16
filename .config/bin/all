@@ -71,11 +71,15 @@ class Schema:
 
 def main(args: list[str]) -> None:
     cmd = ["git"] + args
-    results: list[Result] = []
+
+    directories: list[Path] = []
     for repo in Path().rglob(".git"):
-        if repo.stat().st_size <= 0:
-            continue
-        directory = repo.parent
+        if repo.stat().st_size > 0:
+            directories.append(repo.parent)
+    directories.sort()
+
+    results: list[Result] = []
+    for directory in directories:
         result: Result = dict(
             directory=[str(directory)],
             output=run(cmd, directory),
