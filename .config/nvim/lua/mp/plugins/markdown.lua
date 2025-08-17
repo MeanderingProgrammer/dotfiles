@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 return {
     'MeanderingProgrammer/render-markdown.nvim',
     dev = true,
@@ -13,13 +15,8 @@ return {
             completions = { lsp = { enabled = true } },
         })
 
-        ---@param lhs string
-        ---@param rhs function
-        ---@param desc string
-        local function map(lhs, rhs, desc)
-            vim.keymap.set('n', lhs, rhs, { desc = desc })
-        end
-        map('<leader>md', markdown.debug, 'debug')
-        map('<leader>mt', markdown.toggle, 'toggle')
+        Keymap.new({ prefix = '<leader>m' })
+            :n('d', markdown.debug, 'debug')
+            :n('t', markdown.toggle, 'toggle')
     end,
 }

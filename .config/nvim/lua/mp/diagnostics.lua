@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 vim.diagnostic.config({
     signs = {
         text = {
@@ -17,6 +19,5 @@ vim.diagnostic.config({
     },
 })
 
----@type vim.keymap.set.Opts
-local opts = { noremap = true, silent = true }
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+Keymap.new({ noremap = true, silent = true })
+    :n('<leader>d', vim.diagnostic.open_float)

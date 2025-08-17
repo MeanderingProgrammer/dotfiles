@@ -1,38 +1,37 @@
----@param lhs string
----@param rhs function
-local function map(lhs, rhs)
-    vim.keymap.set('n', lhs, rhs, { noremap = true, silent = true })
-end
+local Keymap = require('mp.keymap')
 
----@param command string
----@return function
-local function call(command)
+local map = Keymap.new({ noremap = true, silent = true })
+
+---@param name string
+---@return fun()
+local function action(name)
+    local cmd = ('workbench.action.%s'):format(name)
     return function()
-        require('vscode').call(command)
+        require('vscode').call(cmd)
     end
 end
 
-map('<C-h>', call('workbench.action.navigateLeft'))
-map('<C-j>', call('workbench.action.navigateDown'))
-map('<C-k>', call('workbench.action.navigateUp'))
-map('<C-l>', call('workbench.action.navigateRight'))
+map:n('<C-h>', action('navigateLeft'))
+map:n('<C-j>', action('navigateDown'))
+map:n('<C-k>', action('navigateUp'))
+map:n('<C-l>', action('navigateRight'))
 
-map('<C-v>', call('workbench.action.splitEditorRight'))
-map('<C-x>', call('workbench.action.splitEditorDown'))
+map:n('<C-v>', action('splitEditorRight'))
+map:n('<C-x>', action('splitEditorDown'))
 
-map('<leader><leader>', call('workbench.action.quickOpen'))
-map('<leader>fs', call('workbench.action.findInFiles'))
-map('<leader>fd', call('workbench.action.problems.focus'))
+map:n('<leader><leader>', action('quickOpen'))
+map:n('<leader>fs', action('findInFiles'))
+map:n('<leader>fd', action('problems.focus'))
 
-map('gd', vim.lsp.buf.definition)
-map('gr', vim.lsp.buf.references)
-map('gi', vim.lsp.buf.implementation)
-map('gs', vim.lsp.buf.document_symbol)
-map('gS', vim.lsp.buf.workspace_symbol)
-map('K', vim.lsp.buf.hover)
-map('<leader>k', vim.lsp.buf.signature_help)
-map('<leader><C-a>', vim.lsp.buf.code_action)
-map('<leader><C-r>', vim.lsp.buf.rename)
-map('<leader>ws', function()
+map:n('gd', vim.lsp.buf.definition)
+map:n('gr', vim.lsp.buf.references)
+map:n('gi', vim.lsp.buf.implementation)
+map:n('gs', vim.lsp.buf.document_symbol)
+map:n('gS', vim.lsp.buf.workspace_symbol)
+map:n('K', vim.lsp.buf.hover)
+map:n('<leader>k', vim.lsp.buf.signature_help)
+map:n('<leader><C-a>', vim.lsp.buf.code_action)
+map:n('<leader><C-r>', vim.lsp.buf.rename)
+map:n('<leader>ws', function()
     vim.print(vim.lsp.buf.list_workspace_folders())
 end)

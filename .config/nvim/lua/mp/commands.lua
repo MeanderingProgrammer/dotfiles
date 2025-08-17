@@ -1,3 +1,4 @@
+local Keymap = require('mp.keymap')
 local utils = require('mp.utils')
 
 vim.api.nvim_create_user_command('AdventData', function()
@@ -64,10 +65,9 @@ local function open_float(title, filetype, lines)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-    ---@type vim.keymap.set.Opts
-    local key_opts = { buffer = buf, noremap = true, silent = true }
-    vim.keymap.set('n', 'q', ':q<CR>', key_opts)
-    vim.keymap.set('n', '<Esc>', ':q<CR>', key_opts)
+    Keymap.new({ buffer = buf, noremap = true, silent = true })
+        :n('q', ':q<CR>')
+        :n('<Esc>', ':q<CR>')
 
     local cols = vim.o.columns
     local rows = vim.api.nvim_win_get_height(0)

@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
     dev = true,
@@ -8,21 +10,16 @@ return {
             default_action = 'vs',
         })
 
-        ---@param lhs string
-        ---@param rhs string|function
-        ---@param desc string
-        local function map(lhs, rhs, desc)
-            vim.keymap.set('n', lhs, rhs, { desc = desc })
-        end
+        local map = Keymap.new({ prefix = '<leader>' })
+            :n('ha', harpoon.add_file, 'add current file')
+            :n('hr', harpoon.rm_file, 'remove current file')
+            :n('hu', harpoon.toggle_quick_menu, 'toggle UI')
+            :n('hn', harpoon.nav_next, 'next file')
+            :n('hp', harpoon.nav_prev, 'previous file')
         for i = 1, 5 do
-            map(('<leader>%d'):format(i), function()
+            map:n(tostring(i), function()
                 harpoon.nav_file(i)
             end, ('harpoon open file %d'):format(i))
         end
-        map('<leader>ha', harpoon.add_file, 'add current file')
-        map('<leader>hr', harpoon.rm_file, 'remove current file')
-        map('<leader>hu', harpoon.toggle_quick_menu, 'toggle UI')
-        map('<leader>hn', harpoon.nav_next, 'next file')
-        map('<leader>hp', harpoon.nav_prev, 'previous file')
     end,
 }

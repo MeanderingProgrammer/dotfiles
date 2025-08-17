@@ -1,3 +1,4 @@
+local Keymap = require('mp.keymap')
 local utils = require('mp.utils')
 
 return {
@@ -29,8 +30,6 @@ return {
             },
         })
 
-        vim.keymap.set('n', '<leader>o', oil.toggle_float, {
-            desc = 'toggle oil',
-        })
+        Keymap.new({}):n('<leader>o', oil.toggle_float, 'toggle oil')
     end,
 }

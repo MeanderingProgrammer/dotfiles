@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 return {
     'ibhagwan/fzf-lua',
     dependencies = { 'echasnovski/mini.nvim' },
@@ -30,33 +32,28 @@ return {
             },
         })
 
-        ---@param lhs string
-        ---@param rhs function
-        ---@param desc string
-        local function map(lhs, rhs, desc)
-            vim.keymap.set('n', lhs, rhs, { desc = desc })
-        end
-
-        map('<leader><leader>', fzf.files, 'files')
-        map('<leader>?', fzf.oldfiles, 'opened files')
-        map('<leader>g', fzf.live_grep, 'grep')
-        map('<leader>fb', fzf.buffers, 'existing buffers')
-        map('<leader>fd', fzf.diagnostics_workspace, 'diagnostics workspace')
-        map('<leader>fD', fzf.diagnostics_document, 'diagnostics document')
-        map('<leader>ff', fzf.git_files, 'git files')
-        map('<leader>fh', fzf.highlights, 'highlights')
-        map('<leader>fk', fzf.keymaps, 'keymaps')
-        map('<leader>fr', fzf.resume, 'resume')
-        map('<leader>ft', fzf.helptags, 'help tags')
-        map('<leader>fw', fzf.grep_cword, 'current word')
+        Keymap.new({ prefix = '<leader>' })
+            :n('<leader>', fzf.files, 'files')
+            :n('?', fzf.oldfiles, 'opened files')
+            :n('g', fzf.live_grep, 'grep')
+            :n('fb', fzf.buffers, 'existing buffers')
+            :n('fd', fzf.diagnostics_workspace, 'diagnostics workspace')
+            :n('fD', fzf.diagnostics_document, 'diagnostics document')
+            :n('ff', fzf.git_files, 'git files')
+            :n('fh', fzf.highlights, 'highlights')
+            :n('fk', fzf.keymaps, 'keymaps')
+            :n('fr', fzf.resume, 'resume')
+            :n('ft', fzf.helptags, 'help tags')
+            :n('fw', fzf.grep_cword, 'current word')
 
         local yadm = vim.fs.joinpath(vim.env.XDG_DATA_HOME, 'yadm', 'repo.git')
-        map('<leader>yf', function()
-            fzf.git_files({ cwd = '~', git_dir = yadm })
-        end, 'files')
-        map('<leader>yg', function()
-            local cmd = ('git --git-dir=%s grep -i'):format(yadm)
-            fzf.live_grep({ cwd = '~', cmd = cmd, hidden = false })
-        end, 'grep')
+        Keymap.new({ prefix = '<leader>y' })
+            :n('f', function()
+                fzf.git_files({ cwd = '~', git_dir = yadm })
+            end, 'files')
+            :n('g', function()
+                local cmd = ('git --git-dir=%s grep -i'):format(yadm)
+                fzf.live_grep({ cwd = '~', cmd = cmd, hidden = false })
+            end, 'grep')
     end,
 }

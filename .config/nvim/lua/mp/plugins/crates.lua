@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 return {
     'Saecki/crates.nvim',
     config = function()
@@ -11,16 +13,11 @@ return {
             },
         })
 
-        ---@param lhs string
-        ---@param rhs function
-        ---@param desc string
-        local function map(lhs, rhs, desc)
-            vim.keymap.set('n', lhs, rhs, { desc = desc })
-        end
-        map('<leader>ct', crates.toggle, 'toggle')
-        map('<leader>cv', crates.show_versions_popup, 'versions')
-        map('<leader>cd', crates.show_dependencies_popup, 'dependencies')
-        map('<leader>cu', crates.upgrade_crate, 'upgrade')
-        map('<leader>cU', crates.upgrade_all_crates, 'upgrade all')
+        Keymap.new({ prefix = '<leader>c' })
+            :n('t', crates.toggle, 'toggle')
+            :n('v', crates.show_versions_popup, 'versions')
+            :n('d', crates.show_dependencies_popup, 'dependencies')
+            :n('u', crates.upgrade_crate, 'upgrade')
+            :n('U', crates.upgrade_all_crates, 'upgrade all')
     end,
 }

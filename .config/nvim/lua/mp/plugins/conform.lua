@@ -1,3 +1,4 @@
+local Keymap = require('mp.keymap')
 local utils = require('mp.utils')
 
 return {
@@ -56,8 +57,8 @@ return {
             conform.format(format_opts)
         end, {})
 
-        vim.keymap.set('n', '<leader>F', function()
+        Keymap.new({}):n('<leader>F', function()
             enabled = not enabled
-        end, { desc = 'toggle format' })
+        end, 'toggle format')
     end,
 }

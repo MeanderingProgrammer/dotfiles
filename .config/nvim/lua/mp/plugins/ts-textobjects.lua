@@ -1,3 +1,5 @@
+local Keymap = require('mp.keymap')
+
 return {
     'nvim-treesitter/nvim-treesitter-textobjects',
     branch = 'main',
@@ -7,56 +9,52 @@ return {
             select = { lookahead = true },
         })
 
-        ---@param mode string|string[]
-        ---@param lhs string
-        ---@param rhs function
-        ---@param value string|boolean
-        local function map(mode, lhs, rhs, value)
-            if type(value) == 'string' then
-                vim.keymap.set(mode, lhs, function()
-                    rhs(value)
-                end)
-            else
-                vim.keymap.set(mode, lhs, rhs, { expr = value })
+        ---@param f fun(name: string)
+        ---@param name string
+        ---@return fun()
+        local function wrap(f, name)
+            return function()
+                f(name)
             end
         end
 
         local select = require('nvim-treesitter-textobjects.select')
-        local select_mode = { 'x', 'o' }
-        map(select_mode, 'l=', select.select_textobject, '@assignment.lhs')
-        map(select_mode, 'r=', select.select_textobject, '@assignment.rhs')
-        map(select_mode, 'ap', select.select_textobject, '@parameter.outer')
-        map(select_mode, 'ip', select.select_textobject, '@parameter.inner')
-        map(select_mode, 'af', select.select_textobject, '@function.outer')
-        map(select_mode, 'if', select.select_textobject, '@function.inner')
-        map(select_mode, 'ac', select.select_textobject, '@class.outer')
-        map(select_mode, 'ic', select.select_textobject, '@class.inner')
+        Keymap.new({ mode = { 'x', 'o' } })
+            :set('l=', wrap(select.select_textobject, '@assignment.lhs'))
+            :set('r=', wrap(select.select_textobject, '@assignment.rhs'))
+            :set('ap', wrap(select.select_textobject, '@parameter.outer'))
+            :set('ip', wrap(select.select_textobject, '@parameter.inner'))
+            :set('af', wrap(select.select_textobject, '@function.outer'))
+            :set('if', wrap(select.select_textobject, '@function.inner'))
+            :set('ac', wrap(select.select_textobject, '@class.outer'))
+            :set('ic', wrap(select.select_textobject, '@class.inner'))
 
         local swap = require('nvim-treesitter-textobjects.swap')
-        local swap_mode = 'n'
-        map(swap_mode, '<leader>np', swap.swap_next, '@parameter.inner')
-        map(swap_mode, '<leader>nf', swap.swap_next, '@function.outer')
-        map(swap_mode, '<leader>pp', swap.swap_previous, '@parameter.inner')
-        map(swap_mode, '<leader>pf', swap.swap_previous, '@function.outer')
+        Keymap.new({ mode = 'n', prefix = '<leader>' })
+            :set('np', wrap(swap.swap_next, '@parameter.inner'))
+            :set('nf', wrap(swap.swap_next, '@function.outer'))
+            :set('pp', wrap(swap.swap_previous, '@parameter.inner'))
+            :set('pf', wrap(swap.swap_previous, '@function.outer'))
 
         local move = require('nvim-treesitter-textobjects.move')
-        local move_mode = { 'n', 'x', 'o' }
-        map(move_mode, ']f', move.goto_next_start, '@function.outer')
-        map(move_mode, ']c', move.goto_next_start, '@class.outer')
-        map(move_mode, ']F', move.goto_next_end, '@function.outer')
-        map(move_mode, ']C', move.goto_next_end, '@class.outer')
-        map(move_mode, '[f', move.goto_previous_start, '@function.outer')
-        map(move_mode, '[c', move.goto_previous_start, '@class.outer')
-        map(move_mode, '[F', move.goto_previous_end, '@function.outer')
-        map(move_mode, '[C', move.goto_previous_end, '@class.outer')
+        Keymap.new({ mode = { 'n', 'x', 'o' } })
+            :set(']f', wrap(move.goto_next_start, '@function.outer'))
+            :set(']c', wrap(move.goto_next_start, '@class.outer'))
+            :set(']F', wrap(move.goto_next_end, '@function.outer'))
+            :set(']C', wrap(move.goto_next_end, '@class.outer'))
+            :set('[f', wrap(move.goto_previous_start, '@function.outer'))
+            :set('[c', wrap(move.goto_previous_start, '@class.outer'))
+            :set('[F', wrap(move.goto_previous_end, '@function.outer'))
+            :set('[C', wrap(move.goto_previous_end, '@class.outer'))
 
         -- repeat movement with ';' and ',' without breaking f / t
         local ts_repeat = require('nvim-treesitter-textobjects.repeatable_move')
-        map(move_mode, ';', ts_repeat.repeat_last_move_next, true)
-        map(move_mode, ',', ts_repeat.repeat_last_move_previous, true)
-        map(move_mode, 'f', ts_repeat.builtin_f_expr, true)
-        map(move_mode, 'F', ts_repeat.builtin_F_expr, true)
-        map(move_mode, 't', ts_repeat.builtin_t_expr, true)
-        map(move_mode, 'T', ts_repeat.builtin_T_expr, true)
+        Keymap.new({ mode = { 'n', 'x', 'o' }, expr = true })
+            :set(';', ts_repeat.repeat_last_move_next)
+            :set(',', ts_repeat.repeat_last_move_previous)
+            :set('f', ts_repeat.builtin_f_expr)
+            :set('F', ts_repeat.builtin_F_expr)
+            :set('t', ts_repeat.builtin_t_expr)
+            :set('T', ts_repeat.builtin_T_expr)
     end,
 }
