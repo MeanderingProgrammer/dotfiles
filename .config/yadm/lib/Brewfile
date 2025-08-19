@@ -58,7 +58,6 @@ cask "font-symbols-only-nerd-font"
 brew "neovim"
 brew "vim"
 cask "intellij-idea-ce"
-cask "mactex"
 cask "sublime-text"
 cask "visual-studio-code"
 
