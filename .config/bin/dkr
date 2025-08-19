@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+
+import json
+import subprocess
+
+import click
+
+
+@click.group()
+def cli() -> None:
+    """
+    Docker helper scripts
+    """
+    pass
+
+
+@cli.command()
+def clean() -> None:
+    """
+    Remove any untagged images
+    """
+
+    ids: list[str] = []
+    lines = run(["docker", "image", "ls", "--format", "json"])
+    for line in lines:
+        image = json.loads(line)
+        if image["Tag"] == "<none>":
+            ids.append(image["ID"])
+
+    for id in ids:
+        run(["docker", "rmi", "-f", id])
+
+
+def run(cmd: list[str]) -> list[str]:
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise Exception(f"{' '.join(cmd)} failed: {result.stderr.strip()}")
+    return result.stdout.splitlines()
+
+
+if __name__ == "__main__":
+    cli()

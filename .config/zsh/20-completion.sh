@@ -38,6 +38,7 @@ click_completion() {
 }
 
 # add click scripts
+click_completion "dkr"
 click_completion "gd"
 click_completion "git-remote"
 click_completion "llm"
