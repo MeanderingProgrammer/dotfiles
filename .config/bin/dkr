@@ -20,15 +20,21 @@ def clean() -> None:
     Remove any untagged images
     """
 
-    ids: list[str] = []
-    lines = run(["docker", "image", "ls", "--format", "json"])
-    for line in lines:
-        image = json.loads(line)
-        if image["Tag"] == "<none>":
-            ids.append(image["ID"])
+    untagged = True
+    while untagged:
+        print("getting untagged images")
+        ids: list[str] = []
+        lines = run(["docker", "image", "ls", "--format", "json"])
+        for line in lines:
+            image = json.loads(line)
+            if image["Tag"] == "<none>":
+                ids.append(image["ID"])
 
-    for id in ids:
-        run(["docker", "rmi", "-f", id])
+        for id in ids:
+            output = run(["docker", "rmi", "-f", id])
+            print(f"untagged {id}: {output}")
+
+        untagged = len(ids) > 0
 
 
 def run(cmd: list[str]) -> list[str]:
