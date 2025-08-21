@@ -71,8 +71,8 @@ do_deps() {
         if [[ ! -d $system_32 ]]; then
             source "${lib_dir}/wezterm.sh"
         fi
-        sudo apt --yes update
-        sudo apt --yes upgrade
+        sudo apt update --yes
+        sudo apt upgrade --yes
         notify $SUCCESS "  success: linux apt"
     else
         notify $SKIP "  skipping: not linux"
@@ -82,6 +82,7 @@ do_deps() {
 do_mise() {
     notify $TITLE "updating mise"
     if has_command "mise"; then
+        export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
         mise install
         notify $SUCCESS "  success"
     fi

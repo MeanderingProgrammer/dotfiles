@@ -23,14 +23,14 @@ main() {
     case ${1} in
         "deps") do_deps ;;
         "shell") do_shell ;;
+        "limit") do_limit ;;
         "brew") do_homebrew ;;
         "git") do_git ;;
         "yadm") do_yadm ;;
-        "limit") do_limit ;;
         "clean") do_clean ;;
         *)
             notify $FAIL "Unknown command: ${1}"
-            notify $FAIL "Commands: deps, shell, brew, git, yadm, limit, clean"
+            notify $FAIL "Commands: deps, shell, limit, brew, git, yadm, clean"
             exit 1
             ;;
     esac
@@ -122,6 +122,20 @@ do_shell() {
     fi
 }
 
+do_limit() {
+    notify $TITLE "Increasing limits"
+    if [[ "${system_type}" == "Darwin" ]]; then
+        local limit_directory="/Library/LaunchDaemons"
+        local limit_file="limit.maxfiles.plist"
+        sudo cp "$HOME/docs/${limit_file}" "${limit_directory}"
+        sudo chown root:wheel "${limit_directory}/${limit_file}"
+        sudo launchctl load -w "${limit_directory}/${limit_file}"
+        notify $SUCCESS "  Success"
+    else
+        notify $SKIP "  Skipping: not Darwin"
+    fi
+}
+
 do_homebrew() {
     notify $TITLE "Installing homebrew"
     if [[ -x "$(command -v brew)" ]]; then
@@ -170,8 +184,7 @@ setup_file() {
     if [[ -f ${1} ]]; then
         notify $SKIP "  Skipping: already done"
     else
-        local directory
-        directory=$(dirname ${1})
+        local directory=$(dirname ${1})
         mkdir -p ${directory}
         touch ${1}
         notify $SUCCESS "  Success"
@@ -181,8 +194,7 @@ setup_file() {
 setup_ssh() {
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
     notify $TITLE "Adding hosts: ${2}"
-    local hosts
-    hosts=$(cat ${1} | grep ${2})
+    local hosts=$(cat ${1} | grep ${2})
     if [[ -z "${hosts}" ]]; then
         ssh-keyscan ${2} >> ${1}
         notify $SUCCESS "  Success"
@@ -239,20 +251,6 @@ do_yadm() {
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
         notify $SUCCESS "  Success"
-    fi
-}
-
-do_limit() {
-    notify $TITLE "Increasing limits"
-    if [[ "${system_type}" == "Darwin" ]]; then
-        local limit_directory="/Library/LaunchDaemons"
-        local limit_file="limit.maxfiles.plist"
-        sudo cp "$HOME/docs/${limit_file}" "${limit_directory}"
-        sudo chown root:wheel "${limit_directory}/${limit_file}"
-        sudo launchctl load -w "${limit_directory}/${limit_file}"
-        notify $SUCCESS "  Success"
-    else
-        notify $SKIP "  Skipping: not Darwin"
     fi
 }
 

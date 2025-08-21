@@ -31,11 +31,16 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 |--------------------|---------------------------------------|
 | `./setup.sh deps`  | Installs dependencies                 |
 | `./setup.sh shell` | Changes [shell](https://www.zsh.org/) |
+| `./setup.sh limit` | Increases system limits               |
 | `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
 | `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
-| `./setup.sh limit` | Increases system limits               |
 | `./setup.sh clean` | Deletes the setup script              |
+
+## Pain Points
+
+- Initial bootstrapping of languages will install them, but they won't actually be
+  available in the same execution, requires new terminal session and re-execution
 
 # Settings
 
