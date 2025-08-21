@@ -82,8 +82,8 @@ do_deps() {
 do_mise() {
     notify $TITLE "updating mise"
     if has_command "mise"; then
-        export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)"
-        mise install
+        RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)" \
+            mise install
         notify $SUCCESS "  success"
     fi
 }
