@@ -12,20 +12,17 @@ notify() {
 }
 
 has_command() {
-    if [[ -x "$(command -v ${1})" ]]; then
-        return 0
-    else
-        notify $SKIP "  skipping: missing ${1}"
+    [[ -x "$(command -v ${1})" ]] || {
+        notify $SKIP "  missing: ${1}"
         return 1
-    fi
+    }
 }
 
 lib_dir="$(dirname $0)/lib"
-system_type=$(uname -s)
 system_os=$(uname -o)
 
 main() {
-    notify $TITLE "system: ${system_type}-${system_os}"
+    notify $TITLE "system: ${system_os}"
     if [[ "${#}" == 0 ]]; then
         do_deps
         do_mise
@@ -52,35 +49,35 @@ main() {
 }
 
 do_deps() {
-    notify $TITLE "updating dependencies"
+    notify $TITLE "start: dependencies"
 
+    notify $TITLE "dependency: brew"
     if has_command "brew"; then
         brew bundle --file "${lib_dir}/Brewfile"
         brew update
         brew upgrade
         brew cleanup
-        notify $SUCCESS "  success: brew"
+        notify $SUCCESS "  success"
     fi
 
-    if [[ "$system_os" == "Android" ]]; then
+    notify $TITLE "dependency: linux"
+    if has_command "pkg"; then
         pkg update --yes
         pkg upgrade --yes
-        notify $SUCCESS "  success: android pkg"
-    elif [[ "$system_type" == "Linux" ]]; then
+        notify $SUCCESS "  success"
+    elif has_command "apt"; then
         local system_32="/mnt/c/Windows/System32"
         if [[ ! -d $system_32 ]]; then
             source "${lib_dir}/wezterm.sh"
         fi
         sudo apt update --yes
         sudo apt upgrade --yes
-        notify $SUCCESS "  success: linux apt"
-    else
-        notify $SKIP "  skipping: not linux"
+        notify $SUCCESS "  success"
     fi
 }
 
 do_mise() {
-    notify $TITLE "updating mise"
+    notify $TITLE "start: mise"
     if has_command "mise"; then
         RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)" \
             mise install
@@ -89,68 +86,54 @@ do_mise() {
 }
 
 do_libs() {
-    do_python() {
-        notify $TITLE "updating python"
-        if has_command "pip"; then
-            if [[ "$system_os" != "Android" ]]; then
-                pip install --upgrade pip
-                pip install -r "${lib_dir}/requirements.txt"
-            else
-                pip install click
-                pip install GitPython
-                pip install requests
-            fi
-            notify $SUCCESS "  success"
-        fi
-    }
+    notify $TITLE "start: libraries"
 
-    do_rust() {
-        notify $TITLE "updating rust"
-        if has_command "cargo"; then
-            if [[ "$system_os" != "Android" ]]; then
-                cargo install aoc-cli
-                notify $SUCCESS "  success"
-            else
-                notify $SKIP "  skipping: android"
-            fi
+    notify $TITLE "library: python"
+    if has_command "pip"; then
+        if [[ "$system_os" != "Android" ]]; then
+            pip install --upgrade pip
+            pip install -r "${lib_dir}/requirements.txt"
+        else
+            pip install click
+            pip install GitPython
+            pip install requests
         fi
-    }
+        notify $SUCCESS "  success"
+    fi
 
-    do_node() {
-        notify $TITLE "updating node"
-        if has_command "npm"; then
-            if [[ "$system_os" != "Android" ]]; then
-                npm install -g npm
-            fi
-            npm install -g aws-cdk
-            npm install -g neovim
-            npm install -g pnpm
-            npm install -g yarn
-            notify $SUCCESS "  success"
+    notify $TITLE "library: rust"
+    if has_command "cargo"; then
+        if [[ "$system_os" != "Android" ]]; then
+            cargo install aoc-cli
         fi
-    }
+        notify $SUCCESS "  success"
+    fi
 
-    do_ocaml() {
-        notify $TITLE "updating ocaml"
-        if has_command "opam"; then
-            # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
-            # https://github.com/ocaml/opam/issues/5968
-            opam init --no
-            opam update
-            opam upgrade --yes
-            notify $SUCCESS "  success"
+    notify $TITLE "library: node"
+    if has_command "npm"; then
+        if [[ "$system_os" != "Android" ]]; then
+            npm install -g npm
         fi
-    }
+        npm install -g aws-cdk
+        npm install -g neovim
+        npm install -g pnpm
+        npm install -g yarn
+        notify $SUCCESS "  success"
+    fi
 
-    notify $TITLE "updating libraries"
-    do_python
-    do_rust
-    do_node
-    do_ocaml
+    notify $TITLE "library: ocaml"
+    if has_command "opam"; then
+        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
+        # https://github.com/ocaml/opam/issues/5968
+        opam init --no
+        opam update
+        opam upgrade --yes
+        notify $SUCCESS "  success"
+    fi
 }
 
 do_repos() {
-    notify $TITLE "updating repos"
+    notify $TITLE "start: repos"
     if has_command "python"; then
         python "${lib_dir}/repos.py"
         notify $SUCCESS "  success"
@@ -158,7 +141,7 @@ do_repos() {
 }
 
 do_nvim() {
-    notify $TITLE "updating neovim"
+    notify $TITLE "start: neovim"
     if has_command "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
