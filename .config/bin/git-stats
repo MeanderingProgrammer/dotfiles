@@ -3,7 +3,7 @@
 import argparse
 import os
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date
 from pathlib import Path
 from typing import Self
 
@@ -17,9 +17,9 @@ class Stat(BaseModel):
     count: int
     uniques: int
 
-    def __le__(self, other: Self) -> bool:
+    def __lt__(self, other: Self) -> bool:
         assert self.timestamp == other.timestamp
-        return self.count <= other.count and self.uniques <= other.uniques
+        return self.count < other.count and self.uniques < other.uniques
 
     @field_serializer("timestamp")
     def serialize_timestamp(self, timestamp: date) -> str:
@@ -44,13 +44,39 @@ class GithubApi:
         url = f"{self.endpoint}/repos/{self.owner}/{name}/traffic/{kind}"
         headers = {
             "Accept": "application/vnd.github+json",
-            "Authorization": f"token {self.token}",
+            "Authorization": f"Bearer {self.token}",
             "X-GitHub-Api-Version": "2022-11-28",
         }
         response = requests.get(url, headers=headers)
         assert response.status_code == 200, "auth token is likely expired"
         traffic = Traffic.model_validate(response.json())
         return traffic.stats
+
+
+@dataclass(frozen=True)
+class Stats:
+    stats: list[Stat]
+
+    def get(self, timestamp: date) -> Stat:
+        for stat in self.stats:
+            if stat.timestamp == timestamp:
+                return stat
+        return Stat(timestamp=timestamp, count=0, uniques=0)
+
+    def timestamps(self, other: Self) -> list[date]:
+        result: set[date] = set()
+        result.update(map(lambda stat: stat.timestamp, self.stats))
+        result.update(map(lambda stat: stat.timestamp, other.stats))
+        return sorted(result)
+
+    def combine(self, other: Self) -> list[Stat]:
+        result: list[Stat] = []
+        for timestamp in self.timestamps(other):
+            stat1 = self.get(timestamp)
+            stat2 = other.get(timestamp)
+            stat = stat2 if stat1 < stat2 else stat1
+            result.append(stat)
+        return result
 
 
 @dataclass(frozen=True)
@@ -69,20 +95,23 @@ class Repo(BaseModel):
     clones: list[Stat]
     views: list[Stat]
 
-    def join(self, new: Self) -> None:
-        assert self.name == new.name
-        Repo.combine(self.clones, new.clones)
-        Repo.combine(self.views, new.views)
+    def combine(self, other: Self) -> Self:
+        assert self.name == other.name
+        return type(self)(
+            name=self.name,
+            clones=Stats(self.clones).combine(Stats(other.clones)),
+            views=Stats(self.views).combine(Stats(other.views)),
+        )
 
-    def unique(self) -> list[Entry]:
+    def uniques(self) -> list[Entry]:
         result: list[Entry] = []
-        assert len(self.clones) == len(self.views)
-        for clone, view in zip(self.clones, self.views):
-            assert clone.timestamp == view.timestamp
+        clones = Stats(self.clones)
+        views = Stats(self.views)
+        for timestamp in clones.timestamps(views):
             entry = Entry(
-                timestamp=clone.timestamp,
-                clones=clone.uniques,
-                views=view.uniques,
+                timestamp=timestamp,
+                clones=clones.get(timestamp).uniques,
+                views=views.get(timestamp).uniques,
             )
             result.append(entry)
         return result
@@ -91,7 +120,7 @@ class Repo(BaseModel):
         print(Repo.separator("┌", "┬", "┐"))
         print("│ Date       │ Clones │ Views │")
         print(Repo.separator("├", "┼", "┤"))
-        for entry in self.unique():
+        for entry in self.uniques():
             parts: list[str] = [
                 str(entry.timestamp),
                 f"{entry.clones:<6,}",
@@ -101,23 +130,11 @@ class Repo(BaseModel):
         print(Repo.separator("└", "┴", "┘"))
 
     def graph(self) -> None:
-        for entry in self.unique():
+        for entry in self.uniques():
             label = str(entry.timestamp)
             print(f"{label} {Repo.bar(entry.clones, 100, 94)}")
             filler = " " * len(label)
             print(f"{filler} {Repo.bar(entry.views, 10, 91)}")
-
-    @staticmethod
-    def combine(current: list[Stat], new: list[Stat]) -> None:
-        seen: dict[date, Stat] = dict()
-        for stat in current:
-            seen[stat.timestamp] = stat
-        for stat in new:
-            existing = seen.get(stat.timestamp)
-            if existing is None:
-                current.append(stat)
-            else:
-                assert stat <= existing, f"unexpected change: {existing} -> {stat}"
 
     @staticmethod
     def separator(left: str, center: str, right: str) -> str:
@@ -136,20 +153,32 @@ class Repo(BaseModel):
 class Repos(BaseModel):
     repos: list[Repo]
 
-    def get(self, name: str) -> Repo | None:
-        for repo in self.repos:
-            if repo.name == name:
-                return repo
-        return None
+    def get(self, name: str) -> Repo:
+        i = self.index(name)
+        if i is not None:
+            print(f"exists: {name}")
+            return self.repos[i]
+        else:
+            print(f"new   : {name}")
+            return Repo(name=name, clones=[], views=[])
 
-    def add(self, repo: Repo) -> None:
-        self.repos.append(repo)
+    def set(self, repo: Repo) -> None:
+        i = self.index(repo.name)
+        if i is not None:
+            self.repos[i] = repo
+        else:
+            self.repos.append(repo)
+
+    def index(self, name: str) -> int | None:
+        for i, repo in enumerate(self.repos):
+            if repo.name == name:
+                return i
+        return None
 
 
 @dataclass(frozen=True)
 class TrafficCache:
     file: Path
-    latest: date
 
     def read(self) -> Repos:
         if self.file.exists():
@@ -160,30 +189,19 @@ class TrafficCache:
     def write(self, repos: Repos) -> None:
         self.file.write_text(repos.model_dump_json())
 
-    def add(self, repo: Repo) -> None:
-        repo = Repo(
-            name=repo.name,
-            clones=self.filter(repo.clones),
-            views=self.filter(repo.views),
-        )
-
+    def add(self, update: Repo) -> None:
         repos = self.read()
-        current = repos.get(repo.name)
-        if current is None:
-            print(f"new   : {repo.name}")
-            clones, views = 0, 0
-            repos.add(repo)
-            current = repo
-        else:
-            print(f"exists: {repo.name}")
-            clones, views = len(current.clones), len(current.views)
-            current.join(repo)
-        print(f"clones: {clones} -> {len(current.clones)}")
-        print(f"views : {views} -> {len(current.views)}")
-        self.write(repos)
 
-    def filter(self, stats: list[Stat]) -> list[Stat]:
-        return [stat for stat in stats if stat.timestamp <= self.latest]
+        repo = repos.get(update.name)
+        clones = len(repo.clones)
+        views = len(repo.views)
+
+        repo = repo.combine(update)
+        print(f"clones: {clones} -> {len(repo.clones)}")
+        print(f"views : {views} -> {len(repo.views)}")
+
+        repos.set(repo)
+        self.write(repos)
 
 
 def main(table: bool, graph: bool) -> None:
@@ -194,20 +212,15 @@ def main(table: bool, graph: bool) -> None:
     )
     cache = TrafficCache(
         file=Path(env("XDG_DATA_HOME")).joinpath("git-traffic.json"),
-        latest=(datetime.now() - timedelta(days=2)).date(),
     )
     repos: list[str] = [
         "render-markdown.nvim",
     ]
     for name in repos:
         if table:
-            repo = cache.read().get(name)
-            assert repo is not None
-            repo.table()
+            cache.read().get(name).table()
         elif graph:
-            repo = cache.read().get(name)
-            assert repo is not None
-            repo.graph()
+            cache.read().get(name).graph()
         else:
             repo = Repo(
                 name=name,
