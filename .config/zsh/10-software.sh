@@ -1,19 +1,16 @@
 # ---- homebrew ---- #
 
 init_homebrew() {
-    local brew_init=""
+    local brew_mac="/opt/homebrew/bin/brew"
+    local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
     local brew_services=()
-    local system_type=$(uname -s)
-    if [[ "${system_type}" == "Darwin" ]]; then
-        brew_init="/opt/homebrew/bin/brew"
+    # init
+    if [[ -x ${brew_mac} ]]; then
+        eval "$($brew_mac shellenv)"
         brew_services+=("ollama" "postgresql@17")
-    elif [[ "${system_type}" == "Linux" ]]; then
-        brew_init="/home/linuxbrew/.linuxbrew/bin/brew"
-    else
-        echo "unhandled system type: ${system_type}"
+    elif [[ -x ${brew_linux} ]]; then
+        eval "$($brew_linux shellenv)"
     fi
-    # setup homebrew
-    [[ -x $brew_init ]] && eval "$($brew_init shellenv)"
     # start services
     [[ "${#brew_services[@]}" == 0 ]] && return
     local services=$(brew services list)

@@ -154,13 +154,13 @@ evaluate_homebrew() {
     elif [[ "${system_os}" == "Android" ]]; then
         notify $SKIP "  skip: android"
     else
-        local mac_init="/opt/homebrew/bin/brew"
-        local linux_init="/home/linuxbrew/.linuxbrew/bin/brew"
-        if [[ -x ${mac_init} ]]; then
-            eval "$($mac_init shellenv)"
+        local brew_mac="/opt/homebrew/bin/brew"
+        local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
+        if [[ -x ${brew_mac} ]]; then
+            eval "$($brew_mac shellenv)"
             notify $SUCCESS "  success"
-        elif [[ -x ${linux_init} ]]; then
-            eval "$($linux_init shellenv)"
+        elif [[ -x ${brew_linux} ]]; then
+            eval "$($brew_linux shellenv)"
             notify $SUCCESS "  success"
         else
             notify $FAIL "  error: missing init"

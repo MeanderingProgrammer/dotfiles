@@ -90,7 +90,7 @@ do_libs() {
 
     notify $TITLE "library: python"
     if has_command "pip"; then
-        if [[ "$system_os" != "Android" ]]; then
+        if [[ "${system_os}" != "Android" ]]; then
             pip install --upgrade pip
             pip install -r "${lib_dir}/requirements.txt"
         else
@@ -103,7 +103,7 @@ do_libs() {
 
     notify $TITLE "library: rust"
     if has_command "cargo"; then
-        if [[ "$system_os" != "Android" ]]; then
+        if [[ "${system_os}" != "Android" ]]; then
             cargo install aoc-cli
         fi
         notify $SUCCESS "  success"
@@ -111,7 +111,7 @@ do_libs() {
 
     notify $TITLE "library: node"
     if has_command "npm"; then
-        if [[ "$system_os" != "Android" ]]; then
+        if [[ "${system_os}" != "Android" ]]; then
             npm install -g npm
         fi
         npm install -g aws-cdk
