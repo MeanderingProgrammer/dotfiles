@@ -18,14 +18,14 @@ set smartcase
 " wait time for detecting changes
 set updatetime=250
 
-" split right / below by default
-set splitright
+" split below / right by default
 set splitbelow
+set splitright
 
 " indentation
-set tabstop=4
-set softtabstop=4
 set shiftwidth=4
+set softtabstop=4
+set tabstop=4
 set expandtab
 set smartindent
 
