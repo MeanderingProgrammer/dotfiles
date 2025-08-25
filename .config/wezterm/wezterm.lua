@@ -5,7 +5,7 @@ local config = wezterm.config_builder()
 config.color_scheme = 'tokyonight_night'
 
 config.font_size = 12.0
-config.font = wezterm.font('Monaspace Neon Frozen')
+config.font = wezterm.font('Monaspace Neon')
 
 config.audible_bell = 'Disabled'
 
