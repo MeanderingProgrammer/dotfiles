@@ -31,7 +31,7 @@ rust = "1.87.0"
 scala = "3.6.3"
 terraform = "1.12.2"
 uv = "0.8.11"
-zig = "0.14.1"
+zig = "0.15.1"
 
 [env]
 NVIM_ROOT = """
