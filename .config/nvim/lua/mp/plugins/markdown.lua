@@ -4,8 +4,8 @@ return {
     'MeanderingProgrammer/render-markdown.nvim',
     dev = true,
     dependencies = {
+        'nvim-mini/mini.nvim',
         'nvim-treesitter/nvim-treesitter',
-        'echasnovski/mini.nvim',
     },
     config = function()
         local markdown = require('render-markdown')

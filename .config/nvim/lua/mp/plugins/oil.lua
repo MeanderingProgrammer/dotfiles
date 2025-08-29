@@ -3,7 +3,7 @@ local utils = require('mp.utils')
 
 return {
     'stevearc/oil.nvim',
-    dependencies = { 'echasnovski/mini.nvim' },
+    dependencies = { 'nvim-mini/mini.nvim' },
     config = function()
         local hidden = { '.DS_Store', '.project', '.classpath', '.factorypath' }
         vim.list_extend(hidden, utils.hidden)

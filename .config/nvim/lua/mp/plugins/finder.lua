@@ -2,7 +2,7 @@ local Keymap = require('mp.keymap')
 
 return {
     'ibhagwan/fzf-lua',
-    dependencies = { 'echasnovski/mini.nvim' },
+    dependencies = { 'nvim-mini/mini.nvim' },
     config = function()
         local fzf = require('fzf-lua')
         local actions = require('fzf-lua.actions')

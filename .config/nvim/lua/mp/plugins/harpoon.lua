@@ -3,7 +3,7 @@ local Keymap = require('mp.keymap')
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
     dev = true,
-    dependencies = { 'echasnovski/mini.nvim' },
+    dependencies = { 'nvim-mini/mini.nvim' },
     config = function()
         local harpoon = require('harpoon-core')
         harpoon.setup({
