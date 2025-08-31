@@ -1,7 +1,7 @@
 local Keymap = require('mp.keymap')
 local utils = require('mp.utils')
 
-local map = Keymap.new({ noremap = true, silent = true })
+local map = Keymap.new({ silent = true })
 
 -- move between panes
 map:n('<C-h>', '<C-w>h')

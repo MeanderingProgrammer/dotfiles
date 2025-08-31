@@ -19,5 +19,4 @@ vim.diagnostic.config({
     },
 })
 
-Keymap.new({ noremap = true, silent = true })
-    :n('<leader>d', vim.diagnostic.open_float)
+Keymap.new({ silent = true }):n('<leader>d', vim.diagnostic.open_float)

@@ -3,8 +3,6 @@
 ---@field prefix? string
 ---@field group? string
 
----@alias mp.keymap.Mode fun(self: mp.Keymap, lhs: string, rhs: string|fun(), desc?: string): mp.Keymap
-
 ---@class mp.Keymap
 ---@field private opts mp.keymap.Opts
 local Keymap = {}
@@ -18,17 +16,26 @@ function Keymap.new(opts)
     return self
 end
 
----@type mp.keymap.Mode
+---@param lhs string
+---@param rhs string|fun()
+---@param desc? string
+---@return mp.Keymap
 function Keymap:n(lhs, rhs, desc)
     return self:set(lhs, rhs, { mode = 'n', desc = desc })
 end
 
----@type mp.keymap.Mode
+---@param lhs string
+---@param rhs string|fun()
+---@param desc? string
+---@return mp.Keymap
 function Keymap:i(lhs, rhs, desc)
     return self:set(lhs, rhs, { mode = 'i', desc = desc })
 end
 
----@type mp.keymap.Mode
+---@param lhs string
+---@param rhs string|fun()
+---@param desc? string
+---@return mp.Keymap
 function Keymap:t(lhs, rhs, desc)
     return self:set(lhs, rhs, { mode = 't', desc = desc })
 end

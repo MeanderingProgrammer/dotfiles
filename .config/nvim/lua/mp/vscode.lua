@@ -1,6 +1,6 @@
 local Keymap = require('mp.keymap')
 
-local map = Keymap.new({ noremap = true, silent = true })
+local map = Keymap.new({ silent = true })
 
 ---@param name string
 ---@return fun()

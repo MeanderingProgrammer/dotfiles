@@ -65,7 +65,7 @@ local function open_float(title, filetype, lines)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
 
-    Keymap.new({ buffer = buf, noremap = true, silent = true })
+    Keymap.new({ buffer = buf, silent = true })
         :n('q', ':q<CR>')
         :n('<Esc>', ':q<CR>')
 
