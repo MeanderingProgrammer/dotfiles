@@ -69,12 +69,16 @@ class Stats:
         result.update(map(lambda stat: stat.timestamp, other.stats))
         return sorted(result)
 
-    def combine(self, other: Self) -> list[Stat]:
+    def combine(self, name: str, other: Self) -> list[Stat]:
         result: list[Stat] = []
         for timestamp in self.timestamps(other):
             stat1 = self.get(timestamp)
             stat2 = other.get(timestamp)
-            stat = stat2 if stat1 < stat2 else stat1
+            if stat1 < stat2:
+                print(f"{timestamp} [{name}] {stat1.uniques} -> {stat2.uniques}")
+                stat = stat2
+            else:
+                stat = stat1
             result.append(stat)
         return result
 
@@ -99,8 +103,8 @@ class Repo(BaseModel):
         assert self.name == other.name
         return type(self)(
             name=self.name,
-            clones=Stats(self.clones).combine(Stats(other.clones)),
-            views=Stats(self.views).combine(Stats(other.views)),
+            clones=Stats(self.clones).combine("clones", Stats(other.clones)),
+            views=Stats(self.views).combine("views", Stats(other.views)),
         )
 
     def uniques(self) -> list[Entry]:
@@ -191,15 +195,8 @@ class TrafficCache:
 
     def add(self, update: Repo) -> None:
         repos = self.read()
-
         repo = repos.get(update.name)
-        clones = len(repo.clones)
-        views = len(repo.views)
-
         repo = repo.combine(update)
-        print(f"clones: {clones} -> {len(repo.clones)}")
-        print(f"views : {views} -> {len(repo.views)}")
-
         repos.set(repo)
         self.write(repos)
 
