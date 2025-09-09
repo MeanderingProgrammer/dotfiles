@@ -2,10 +2,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- TODO: remove once flickering issue is resolved
--- https://github.com/neovim/neovim/issues/32660
-vim.g._ts_force_sync_parsing = true
-
 -- device information
 vim.g.pc = vim.fn.has('android') == 0
 

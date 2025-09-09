@@ -1,4 +1,5 @@
 local Keymap = require('mp.keymap')
+local utils = require('mp.utils')
 
 return {
     'ibhagwan/fzf-lua',
@@ -6,14 +7,31 @@ return {
     config = function()
         local fzf = require('fzf-lua')
         local actions = require('fzf-lua.actions')
+
+        local rg = {} ---@type string[]
+        rg[#rg + 1] = '--column'
+        rg[#rg + 1] = '--line-number'
+        rg[#rg + 1] = '--no-heading'
+        rg[#rg + 1] = '--color=always'
+        rg[#rg + 1] = '--smart-case'
+        rg[#rg + 1] = '--max-columns=4096'
+        rg[#rg + 1] = '--hidden'
+        for _, folder in ipairs(utils.hidden) do
+            rg[#rg + 1] = ('--glob=!**/%s/*'):format(folder)
+        end
+        rg[#rg + 1] = '-e'
+
         fzf.setup({
-            -- most keymaps come from fzf: https://github.com/junegunn/fzf
             actions = {
                 files = {
                     ['enter'] = actions.file_switch_or_edit,
                     ['ctrl-v'] = actions.file_vsplit,
                     ['ctrl-x'] = actions.file_split,
                     ['ctrl-t'] = actions.file_tabedit,
+                    ['ctrl-q'] = {
+                        fn = actions.file_sel_to_qf,
+                        prefix = 'select-all',
+                    },
                 },
             },
             fzf_opts = {
@@ -24,7 +42,7 @@ return {
                 formatter = 'path.filename_first',
             },
             grep = {
-                hidden = true,
+                rg_opts = table.concat(rg, ' '),
             },
             lsp = {
                 jump1 = false,
@@ -36,15 +54,17 @@ return {
             :n('<leader>', fzf.files, 'files')
             :n('?', fzf.oldfiles, 'opened files')
             :n('g', fzf.live_grep, 'grep')
-            :n('fb', fzf.buffers, 'existing buffers')
-            :n('fd', fzf.diagnostics_workspace, 'diagnostics workspace')
-            :n('fD', fzf.diagnostics_document, 'diagnostics document')
-            :n('ff', fzf.git_files, 'git files')
-            :n('fh', fzf.highlights, 'highlights')
-            :n('fk', fzf.keymaps, 'keymaps')
-            :n('fr', fzf.resume, 'resume')
-            :n('ft', fzf.helptags, 'help tags')
-            :n('fw', fzf.grep_cword, 'current word')
+
+        Keymap.new({ prefix = '<leader>f' })
+            :n('b', fzf.buffers, 'existing buffers')
+            :n('d', fzf.diagnostics_workspace, 'diagnostics workspace')
+            :n('D', fzf.diagnostics_document, 'diagnostics document')
+            :n('f', fzf.git_files, 'git files')
+            :n('h', fzf.highlights, 'highlights')
+            :n('k', fzf.keymaps, 'keymaps')
+            :n('r', fzf.resume, 'resume')
+            :n('t', fzf.helptags, 'help tags')
+            :n('w', fzf.grep_cword, 'current word')
 
         local yadm = vim.fs.joinpath(vim.env.XDG_DATA_HOME, 'yadm', 'repo.git')
         Keymap.new({ prefix = '<leader>y' })
@@ -53,7 +73,7 @@ return {
             end, 'files')
             :n('g', function()
                 local cmd = ('git --git-dir=%s grep -i'):format(yadm)
-                fzf.live_grep({ cwd = '~', cmd = cmd, hidden = false })
+                fzf.live_grep({ cwd = '~', cmd = cmd })
             end, 'grep')
     end,
 }

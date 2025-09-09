@@ -10,14 +10,15 @@ return {
             default_action = 'vs',
         })
 
-        local map = Keymap.new({ prefix = '<leader>' })
-            :n('ha', harpoon.add_file, 'add current file')
-            :n('hr', harpoon.rm_file, 'remove current file')
-            :n('hu', harpoon.toggle_quick_menu, 'toggle UI')
-            :n('hn', harpoon.nav_next, 'next file')
-            :n('hp', harpoon.nav_prev, 'previous file')
+        Keymap.new({ prefix = '<leader>h' })
+            :n('a', harpoon.add_file, 'add current file')
+            :n('r', harpoon.rm_file, 'remove current file')
+            :n('u', harpoon.toggle_quick_menu, 'toggle UI')
+            :n('n', harpoon.nav_next, 'next file')
+            :n('p', harpoon.nav_prev, 'previous file')
+
         for i = 1, 5 do
-            map:n(tostring(i), function()
+            Keymap.new({ prefix = '<leader>' }):n(tostring(i), function()
                 harpoon.nav_file(i)
             end, ('harpoon open file %d'):format(i))
         end

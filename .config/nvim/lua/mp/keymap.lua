@@ -16,6 +16,12 @@ function Keymap.new(opts)
     return self
 end
 
+---@param opts mp.keymap.Opts
+---@return mp.Keymap
+function Keymap:extend(opts)
+    return Keymap.new(vim.tbl_deep_extend('force', self.opts, opts))
+end
+
 ---@param lhs string
 ---@param rhs string|fun()
 ---@param desc? string

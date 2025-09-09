@@ -19,4 +19,5 @@ vim.diagnostic.config({
     },
 })
 
-Keymap.new({ silent = true }):n('<leader>d', vim.diagnostic.open_float)
+Keymap.new({ prefix = '<leader>', silent = true })
+    :n('d', vim.diagnostic.open_float)

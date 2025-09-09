@@ -30,6 +30,7 @@ return {
             },
         })
 
-        Keymap.new({}):n('<leader>o', oil.toggle_float, 'toggle oil')
+        Keymap.new({ prefix = '<leader>' })
+            :n('o', oil.toggle_float, 'toggle oil')
     end,
 }

@@ -57,7 +57,7 @@ return {
             conform.format(format_opts)
         end, {})
 
-        Keymap.new({}):n('<leader>F', function()
+        Keymap.new({ prefix = '<leader>' }):n('F', function()
             enabled = not enabled
         end, 'toggle format')
     end,

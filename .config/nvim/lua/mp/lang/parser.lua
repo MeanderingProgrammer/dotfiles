@@ -1,5 +1,6 @@
 require('mp.lang').add({
     parser = {
+        comment = { install = true },
         dockerfile = { install = true },
         just = { install = true },
         kotlin = { install = true },
