@@ -21,3 +21,6 @@ vim.diagnostic.config({
 
 Keymap.new({ prefix = '<leader>', silent = true })
     :n('d', vim.diagnostic.open_float)
+    :n('D', function()
+        vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+    end, 'toggle diagnostics')
