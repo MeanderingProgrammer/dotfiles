@@ -1,4 +1,4 @@
-local Keymap = require('mp.keymap')
+local Float = require('mp.float')
 local utils = require('mp.utils')
 
 vim.api.nvim_create_user_command('AdventData', function()
@@ -32,14 +32,14 @@ vim.api.nvim_create_user_command('FormatLine', function()
     local current = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
     local words = utils.split(current, ' ')
 
-    local offset = 0
+    local offsets = {} ---@type integer[]
     for _, pattern in ipairs({ '%-', '%d+%.' }) do
         local match = current:match('^%s*' .. pattern .. '%s*')
-        local length = match and #match or 0
-        offset = math.max(offset, length)
+        offsets[#offsets + 1] = match and #match or 0
     end
 
     local lines = { '' }
+    local offset = vim.fn.max(offsets)
     for _, word in ipairs(words) do
         lines[#lines] = lines[#lines] .. word .. ' '
         if #lines[#lines] > 80 then
@@ -58,49 +58,10 @@ vim.api.nvim_create_user_command('FormatLine', function()
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
 end, { desc = 'split current line into multiple lines of width 80' })
 
----@param title string
----@param filetype string
----@param lines string[]
-local function open_float(title, filetype, lines)
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-
-    Keymap.new({ buffer = buf, silent = true })
-        :n('q', ':q<CR>')
-        :n('<Esc>', ':q<CR>')
-
-    local cols = vim.o.columns
-    local rows = vim.api.nvim_win_get_height(0)
-    local width = math.floor((cols * 0.75) + 0.5)
-    local height = math.floor((rows * 0.90) + 0.5)
-    local win = vim.api.nvim_open_win(buf, true, {
-        col = math.floor((cols - width) / 2),
-        row = math.floor((rows - height) / 2),
-        width = width,
-        height = height,
-        relative = 'editor',
-        title = (' %s '):format(title),
-        title_pos = 'center',
-    })
-
-    ---@type vim.api.keyset.option
-    local buf_opts = { buf = buf }
-    vim.api.nvim_set_option_value('bufhidden', 'delete', buf_opts)
-    vim.api.nvim_set_option_value('filetype', filetype, buf_opts)
-    vim.api.nvim_set_option_value('modifiable', false, buf_opts)
-
-    vim.api.nvim_create_autocmd('BufLeave', {
-        buffer = buf,
-        callback = function()
-            vim.api.nvim_win_close(win, true)
-        end,
-    })
-end
-
 vim.api.nvim_create_user_command('Messages', function()
     local lines = utils.split(utils.exec('messages'), '\n')
-    open_float('Messages', 'log', lines)
-end, {})
+    Float.new('Messages', 'log'):lines(lines)
+end, { desc = 'show message history' })
 
 vim.api.nvim_create_user_command('LspConfig', function()
     local buf = vim.api.nvim_get_current_buf()
@@ -109,19 +70,18 @@ vim.api.nvim_create_user_command('LspConfig', function()
         vim.print('no active LSP found')
         return
     end
-    local lines = {}
+    local lines = {} ---@type string[]
     for _, client in ipairs(clients) do
         local config = { name = client.name }
         local client_config = client.config ---@type table<string, any>
         for key, value in pairs(client_config) do
-            local skip = vim.list_contains({ 'capabilities', 'name' }, key)
-                or vim.list_contains({ 'function' }, type(value))
-            if not skip then
+            local skip_key = vim.list_contains({ 'capabilities', 'name' }, key)
+            local skip_value = vim.list_contains({ 'function' }, type(value))
+            if not skip_key and not skip_value then
                 config[key] = value
             end
         end
         vim.list_extend(lines, utils.split(vim.inspect(config), '\n'))
     end
-
-    open_float('LSP configuration', 'lua', lines)
-end, { desc = 'show LSP configuration in a floating window' })
+    Float.new('LSP Configuration', 'lua'):lines(lines)
+end, { desc = 'show LSP configuration' })
