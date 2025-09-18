@@ -6,7 +6,8 @@ local function git_directories()
     local cmd = { 'find', vim.fs.normalize('~/dev/repos/personal') }
     vim.list_extend(cmd, { '-type', 'd', '-name', '.git', '-maxdepth', '2' })
     local result = {} ---@type string[]
-    for _, path in ipairs(utils.system(cmd, true)) do
+    local paths = utils.split(utils.system(cmd), '\n')
+    for _, path in ipairs(paths) do
         result[#result + 1] = vim.fn.fnamemodify(path, ':~:h')
     end
     table.sort(result)

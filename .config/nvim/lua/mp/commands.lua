@@ -59,7 +59,8 @@ vim.api.nvim_create_user_command('FormatLine', function()
 end, { desc = 'split current line into multiple lines of width 80' })
 
 vim.api.nvim_create_user_command('Messages', function()
-    local lines = utils.exec('messages', '\n')
+    local messages = utils.exec('messages')
+    local lines = utils.split(messages, '\n')
     Float.new('Messages', 'log'):lines(lines)
 end, { desc = 'show message history' })
 

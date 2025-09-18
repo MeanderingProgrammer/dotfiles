@@ -33,8 +33,8 @@ end
 vim.api.nvim_create_user_command('Brew', function()
     utils.system({ 'brew', 'update' })
 
-    local out = utils.system({ 'brew', 'info', '--installed', '--json=v2' })
-    local formulas = vim.fn.json_decode(out).formulae ---@type mp.brew.Formula[]
+    local info = utils.system({ 'brew', 'info', '--installed', '--json=v2' })
+    local formulas = vim.fn.json_decode(info).formulae ---@type mp.brew.Formula[]
 
     local lines = {} ---@type string[]
     lines[#lines + 1] = '# Info'

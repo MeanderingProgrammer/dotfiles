@@ -26,25 +26,19 @@ function M.split(s, sep)
 end
 
 ---@param cmd string
----@param sep string
----@return string[]
-function M.exec(cmd, sep)
-    local result = vim.api.nvim_exec2(cmd, { output = true })
-    return M.split(result.output, sep)
+---@return string
+function M.exec(cmd)
+    return vim.api.nvim_exec2(cmd, { output = true }).output
 end
 
----@overload fun(cmd: string[], lines: false|nil, opts: vim.SystemOpts|nil): string
----@overload fun(cmd: string[], lines: true, opts: vim.SystemOpts|nil): string[]
-function M.system(cmd, lines, opts)
+---@param cmd string[]
+---@param opts? vim.SystemOpts
+---@return string
+function M.system(cmd, opts)
     opts = vim.tbl_deep_extend('error', opts or {}, { text = true })
     local result = vim.system(cmd, opts):wait()
     assert(result.code == 0, result.stderr)
-    local stdout = assert(result.stdout, 'missing stdout')
-    if not lines then
-        return stdout
-    else
-        return M.split(stdout, '\n')
-    end
+    return assert(result.stdout, 'missing stdout')
 end
 
 ---@param file string

@@ -60,7 +60,7 @@ local function dap_program()
         end
 
         local cmd = vim.list_extend(build.cmd, { '--message-format=json' })
-        local lines = utils.system(cmd, true, { cwd = build.cwd })
+        local lines = utils.split(utils.system(cmd, { cwd = build.cwd }), '\n')
 
         local executables = {} ---@type string[]
         for _, line in ipairs(lines) do

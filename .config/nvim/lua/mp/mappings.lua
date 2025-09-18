@@ -37,8 +37,8 @@ end, 'execute current line')
 
 map:n('<leader>hc', function()
     local values = {} ---@type table<string, string>
-    local encodings = utils.exec('ascii', ',')
-    for _, encoding in ipairs(encodings) do
+    local ascii = utils.exec('ascii')
+    for _, encoding in ipairs(utils.split(ascii, ',')) do
         local parts = utils.split(encoding, ' ')
         values[parts[1]] = parts[2]
     end
