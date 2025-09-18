@@ -1,4 +1,4 @@
-local utils = require('mp.utils')
+local utils = require('mp.lib.utils')
 
 ---@class mp.rust.Runnable
 ---@field kind 'cargo'|'shell'
@@ -60,10 +60,10 @@ local function dap_program()
         end
 
         local cmd = vim.list_extend(build.cmd, { '--message-format=json' })
-        local out = utils.execute(cmd, { cwd = build.cwd })
+        local lines = utils.system(cmd, true, { cwd = build.cwd })
 
         local executables = {} ---@type string[]
-        for _, line in ipairs(utils.split(out, '\n')) do
+        for _, line in ipairs(lines) do
             ---@type boolean, mp.rust.Artifact?
             local ok, artifact = pcall(vim.fn.json_decode, line)
             if ok and artifact then
@@ -90,7 +90,7 @@ local function dap_program()
     end)
 end
 
-require('mp.lang').add({
+require('mp.lib.lang').add({
     parser = {
         rust = { install = true },
         toml = { install = true },

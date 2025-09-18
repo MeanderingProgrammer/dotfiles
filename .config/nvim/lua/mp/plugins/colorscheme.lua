@@ -5,9 +5,7 @@ return {
         priority = 1000,
         config = function()
             ---@diagnostic disable-next-line: missing-fields
-            require('tokyonight').setup({
-                style = 'night',
-            })
+            require('tokyonight').setup({ style = 'night' })
             vim.cmd.colorscheme('tokyonight')
         end,
     },
@@ -16,9 +14,7 @@ return {
         enabled = not vim.g.opaque,
         priority = 1000,
         config = function()
-            require('cyberdream').setup({
-                transparent = true,
-            })
+            require('cyberdream').setup({ transparent = true })
             vim.cmd.colorscheme('cyberdream')
         end,
     },

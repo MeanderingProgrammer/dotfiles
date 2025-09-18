@@ -20,26 +20,31 @@ M.hidden = {
 
 ---@param s string
 ---@param sep string
----@param trimempty? boolean
 ---@return string[]
-function M.split(s, sep, trimempty)
-    return vim.split(s, sep, { plain = true, trimempty = trimempty })
+function M.split(s, sep)
+    return vim.split(s, sep, { plain = true, trimempty = true })
 end
 
 ---@param cmd string
----@return string
-function M.exec(cmd)
-    return vim.api.nvim_exec2(cmd, { output = true }).output
+---@param sep string
+---@return string[]
+function M.exec(cmd, sep)
+    local result = vim.api.nvim_exec2(cmd, { output = true })
+    return M.split(result.output, sep)
 end
 
----@param cmd string[]
----@param opts? vim.SystemOpts
----@return string
-function M.execute(cmd, opts)
+---@overload fun(cmd: string[], lines: false|nil, opts: vim.SystemOpts|nil): string
+---@overload fun(cmd: string[], lines: true, opts: vim.SystemOpts|nil): string[]
+function M.system(cmd, lines, opts)
     opts = vim.tbl_deep_extend('error', opts or {}, { text = true })
     local result = vim.system(cmd, opts):wait()
     assert(result.code == 0, result.stderr)
-    return assert(result.stdout, 'missing stdout')
+    local stdout = assert(result.stdout, 'missing stdout')
+    if not lines then
+        return stdout
+    else
+        return M.split(stdout, '\n')
+    end
 end
 
 ---@param file string

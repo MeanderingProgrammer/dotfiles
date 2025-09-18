@@ -1,4 +1,5 @@
-local Keymap = require('mp.keymap')
+local Keymap = require('mp.lib.keymap')
+local lang = require('mp.lib.lang')
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 local function attach(args)
@@ -57,7 +58,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local configs = require('mp.lang').lsp()
+        local configs = lang.lsp()
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(configs) do

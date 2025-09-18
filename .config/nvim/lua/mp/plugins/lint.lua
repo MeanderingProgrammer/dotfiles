@@ -1,11 +1,13 @@
+local lang = require('mp.lib.lang')
+
 return {
     'mfussenegger/nvim-lint',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local lint = require('lint')
+        local configs = lang.linters()
+        local names, by_ft = lang.by_ft(configs)
 
-        local configs = require('mp.lang').linters()
-        local names, by_ft = require('mp.lang').by_ft(configs)
+        local lint = require('lint')
 
         local function run_lint()
             local result = {} ---@type string[]

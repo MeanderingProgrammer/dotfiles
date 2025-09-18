@@ -1,5 +1,5 @@
-local Keymap = require('mp.keymap')
-local utils = require('mp.utils')
+local Keymap = require('mp.lib.keymap')
+local utils = require('mp.lib.utils')
 
 local map = Keymap.new({ silent = true })
 
@@ -37,14 +37,19 @@ end, 'execute current line')
 
 map:n('<leader>hc', function()
     local values = {} ---@type table<string, string>
-    local encodings = utils.split(utils.exec('ascii'), ',')
+    local encodings = utils.exec('ascii', ',')
     for _, encoding in ipairs(encodings) do
-        local parts = utils.split(encoding, ' ', true)
+        local parts = utils.split(encoding, ' ')
         values[parts[1]] = parts[2]
     end
-    local hex = vim.fn.trim(values['Hex'], '0', 1)
-    vim.print(hex)
-    vim.fn.setreg('+', hex)
+    local hex = values['Hex']
+    if hex then
+        local value = vim.fn.trim(hex, '0', 1)
+        vim.print(('hex value: %s'):format(value))
+        vim.fn.setreg('+', value)
+    else
+        vim.print('hex value: missing')
+    end
 end, 'copy hex code of current character')
 
 ---@see lsp-defaults

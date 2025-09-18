@@ -1,9 +1,11 @@
+local lang = require('mp.lib.lang')
+
 return {
     'MeanderingProgrammer/treesitter-modules.nvim',
     dev = true,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
-        local install = require('mp.lang').parsers()
+        local install = lang.parsers()
 
         require('treesitter-modules').setup({
             ensure_installed = install,

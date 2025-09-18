@@ -1,4 +1,4 @@
-require('mp.lang').add({
+require('mp.lib.lang').add({
     parser = {
         zig = { install = true },
     },

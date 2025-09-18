@@ -1,4 +1,4 @@
-local utils = require('mp.utils')
+local utils = require('mp.lib.utils')
 
 require('mp.lang.bash')
 require('mp.lang.c')
@@ -23,7 +23,7 @@ require('mp.lang.zig')
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.uv.fs_stat(lazypath) then
     local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-    vim.fn.system({
+    utils.system({
         'git',
         'clone',
         '--filter=blob:none',
@@ -31,11 +31,11 @@ if not vim.uv.fs_stat(lazypath) then
         lazyrepo,
         lazypath,
     })
-    assert(vim.v.shell_error == 0, 'failed to clone lazy.nvim')
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup({
+---@type LazyConfig
+local config = {
     spec = { import = 'mp.plugins' },
     dev = {
         ---@param plugin LazyPlugin
@@ -53,4 +53,6 @@ require('lazy').setup({
         end,
     },
     change_detection = { notify = false },
-})
+}
+
+require('lazy').setup(config)

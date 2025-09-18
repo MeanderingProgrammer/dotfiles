@@ -1,10 +1,10 @@
-local Float = require('mp.float')
-local utils = require('mp.utils')
+local Float = require('mp.lib.float')
+local utils = require('mp.lib.utils')
 
 vim.api.nvim_create_user_command('AdventData', function()
     local file = vim.api.nvim_buf_get_name(0)
     local name = vim.fn.fnamemodify(file, ':.')
-    local parts = utils.split(name, '/', true)
+    local parts = utils.split(name, '/')
     local path = vim.fs.joinpath('data', parts[1], parts[2], 'data.txt')
     vim.cmd.vsplit(path)
 end, { desc = 'open data.txt associated with problem' })
@@ -59,7 +59,7 @@ vim.api.nvim_create_user_command('FormatLine', function()
 end, { desc = 'split current line into multiple lines of width 80' })
 
 vim.api.nvim_create_user_command('Messages', function()
-    local lines = utils.split(utils.exec('messages'), '\n')
+    local lines = utils.exec('messages', '\n')
     Float.new('Messages', 'log'):lines(lines)
 end, { desc = 'show message history' })
 

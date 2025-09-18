@@ -1,5 +1,5 @@
-local Keymap = require('mp.keymap')
-local utils = require('mp.utils')
+local Keymap = require('mp.lib.keymap')
+local utils = require('mp.lib.utils')
 
 return {
     'stevearc/oil.nvim',

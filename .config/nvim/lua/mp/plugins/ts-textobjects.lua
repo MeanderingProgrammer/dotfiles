@@ -1,4 +1,4 @@
-local Keymap = require('mp.keymap')
+local Keymap = require('mp.lib.keymap')
 
 return {
     'nvim-treesitter/nvim-treesitter-textobjects',

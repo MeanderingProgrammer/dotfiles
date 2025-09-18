@@ -1,10 +1,12 @@
+local lang = require('mp.lib.lang')
+
 return {
     'mfussenegger/nvim-dap',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local dap = require('dap')
+        local config = lang.dap()
 
-        local config = require('mp.lang').dap()
+        local dap = require('dap')
 
         for name, adapter in pairs(config.adapters) do
             assert(adapter.type == 'executable')

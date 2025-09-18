@@ -1,4 +1,4 @@
-local utils = require('mp.utils')
+local utils = require('mp.lib.utils')
 
 return {
     'nvim-lualine/lualine.nvim',

@@ -1,6 +1,6 @@
-local utils = require('mp.utils')
+local utils = require('mp.lib.utils')
 
-require('mp.lang').add({
+require('mp.lib.lang').add({
     parser = {
         markdown = { install = true },
         markdown_inline = { install = true },

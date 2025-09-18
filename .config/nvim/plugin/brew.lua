@@ -1,10 +1,11 @@
-local Float = require('mp.float')
-local utils = require('mp.utils')
+local Float = require('mp.lib.float')
+local utils = require('mp.lib.utils')
 
 ---@class mp.brew.Formula
 ---@field name string
 ---@field dependencies string[]
 ---@field versions mp.brew.Versions
+---@field revision integer
 ---@field installed mp.brew.Installed[]
 ---@field outdated boolean
 
@@ -29,23 +30,10 @@ local function chunk(list, size)
     return result
 end
 
----@param installed mp.brew.Installed[]
----@return string?
-local function get_current(installed)
-    local versions = {} ---@type string[]
-    for _, value in ipairs(installed) do
-        local version = value.version
-        if not vim.list_contains(versions, version) then
-            versions[#versions + 1] = version
-        end
-    end
-    return #versions == 1 and versions[1] or nil
-end
-
 vim.api.nvim_create_user_command('Brew', function()
-    utils.execute({ 'brew', 'update' })
+    utils.system({ 'brew', 'update' })
 
-    local out = utils.execute({ 'brew', 'info', '--installed', '--json=v2' })
+    local out = utils.system({ 'brew', 'info', '--installed', '--json=v2' })
     local formulas = vim.fn.json_decode(out).formulae ---@type mp.brew.Formula[]
 
     local lines = {} ---@type string[]
@@ -55,19 +43,32 @@ vim.api.nvim_create_user_command('Brew', function()
     lines[#lines + 1] = '| ---- | ------- | ------- | ------------ |'
     for _, formula in ipairs(formulas) do
         local name = formula.name
-        local chunks = chunk(formula.dependencies, 5)
-        local latest = formula.versions.stable
+        local dependencies = formula.dependencies
+        local versions = formula.versions
+        local revision = formula.revision
+        local installed = formula.installed
+        local outdated = formula.outdated
 
-        local current = get_current(formula.installed)
+        local chunks = chunk(dependencies, 5)
+
+        local latest = versions.stable
+        if revision > 0 then
+            latest = ('%s_%d'):format(latest, revision)
+        end
+
+        local values = {} ---@type string[]
+        for _, value in ipairs(installed) do
+            local version = value.version
+            if not vim.list_contains(values, version) then
+                values[#values + 1] = version
+            end
+        end
+        local current = #values == 1 and values[1] or nil
         if not current then
             error(('%s: invalid installed'):format(name))
         end
 
-        -- current = 0.25.0_1, latest = 0.25.0 -> false
-        local upgrade = not vim.startswith(current, latest)
-        if upgrade ~= formula.outdated then
-            error(('%s: invalid outdated'):format(name))
-        end
+        local upgrade = (current ~= latest) or outdated
 
         ---@type string[]
         local parts = {
