@@ -10,4 +10,7 @@ require('mp.lib.lang').add({
         ssh_config = { install = true },
         yaml = { install = true },
     },
+    tool = {
+        ['tree-sitter-cli'] = { install = vim.g.pc },
+    },
 })
