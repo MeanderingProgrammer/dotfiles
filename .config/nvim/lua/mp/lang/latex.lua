@@ -1,6 +1,6 @@
 require('mp.lib.lang').add({
     parser = {
-        latex = { install = true },
+        latex = { install = vim.g.pc },
     },
     tool = {
         ['texlab'] = { install = vim.g.pc },
