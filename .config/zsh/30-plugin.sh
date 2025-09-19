@@ -1,9 +1,11 @@
 # ---- plugins ---- #
 
-load_zsh_plugin() {
+zsh_plugin_load() {
     local plugin_init="$HOMEBREW_PREFIX/share/${1}/${1}.zsh"
-    [[ -f $plugin_init ]] && source "${plugin_init}"
+    if [[ -f $plugin_init ]]; then
+        source "${plugin_init}"
+    fi
 }
 
-load_zsh_plugin "zsh-autosuggestions"
-load_zsh_plugin "zsh-syntax-highlighting"
+zsh_plugin_load "zsh-autosuggestions"
+zsh_plugin_load "zsh-syntax-highlighting"

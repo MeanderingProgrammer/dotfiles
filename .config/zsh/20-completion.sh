@@ -1,45 +1,56 @@
 # ---- completions ---- #
 
 zsh_cache_home="${XDG_CACHE_HOME}/zsh"
-[[ ! -d $zsh_cache_home ]] && mkdir -p $zsh_cache_home
+if [[ ! -d $zsh_cache_home ]]; then
+    mkdir -p $zsh_cache_home
+fi
+
+zsh_comp_home="${XDG_DATA_HOME}/completions"
+if [[ ! -d $zsh_comp_home ]]; then
+    mkdir -p $zsh_comp_home
+fi
 
 # add completion directories
-[[ -n $HOMEBREW_PREFIX ]] && FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
-[[ -x "$(command -v rustc)" ]] && FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
+if [[ -n $HOMEBREW_PREFIX ]]; then
+    FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:${FPATH}"
+fi
+if [[ -x "$(command -v rustc)" ]]; then
+    FPATH="$(rustc --print sysroot)/share/zsh/site-functions:${FPATH}"
+fi
 
 # man zshcompsys
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
-zsh_comp_home="${XDG_DATA_HOME}/completions"
-[[ ! -d $zsh_comp_home ]] && mkdir -p $zsh_comp_home
-
-check_python_env() {
-    # check if the result is already cached
-    if [[ -n $PYTHON_ENV ]]; then
-        return $PYTHON_ENV
-    fi
-    PYTHON_ENV=0
-    [[ -x "$(command -v python)" ]] || PYTHON_ENV=1
-    [[ -x "$(command -v pip)" ]] || PYTHON_ENV=1
-    [[ -n "$(pip show click 2> /dev/null)" ]] || PYTHON_ENV=1
-    return $PYTHON_ENV
+click_enabled() {
+    # skip if non-interactive
+    [[ -o interactive ]] || return 1
+    # skip if in tmux
+    [[ -z $TMUX ]] || return 1
+    # skip if python is not installed
+    [[ -x "$(command -v python)" ]] || return 1
+    # skip if pip is not installed
+    [[ -x "$(command -v pip)" ]] || return 1
+    # skip if click library is not installed
+    [[ -n "$(pip show click 2> /dev/null)" ]] || return 1
+    # passed all checks
+    return 0
 }
 
 click_completion() {
     local completion_file="${zsh_comp_home}/${1}-complete.zsh"
-    # generate completions if they don't exist or we're outside of tmux
-    if [[ ! -f $completion_file || -z $TMUX ]]; then
-        check_python_env || return
+    # generate completions if they don't exist
+    if [[ ! -f $completion_file ]]; then
         local click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
         eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
     fi
     source "${completion_file}"
 }
 
-# add click scripts
-click_completion "dkr"
-click_completion "gd"
-click_completion "git-remote"
-click_completion "llm"
-click_completion "pr"
+if click_enabled; then
+    click_completion "dkr"
+    click_completion "gd"
+    click_completion "git-remote"
+    click_completion "llm"
+    click_completion "pr"
+fi

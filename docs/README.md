@@ -37,11 +37,6 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
 | `./setup.sh clean` | Deletes the setup script              |
 
-## Pain Points
-
-- Initial bootstrapping of languages will install them, but they won't actually be
-  available in the same execution, requires new terminal session and re-execution
-
 # Settings
 
 ## MacOS - Developer Tools

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -13,10 +13,12 @@ notify() {
 }
 
 has_command() {
-    [[ -x "$(command -v ${1})" ]] || {
+    if command -v "${1}" > /dev/null; then
+        return 0
+    else
         notify $SKIP "  missing: ${1}"
         return 1
-    }
+    fi
 }
 
 system_os=$(uname -o)

@@ -11,7 +11,9 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # non-essential ru
 
 # ---- history configuration ---- #
 zsh_state_home="${XDG_STATE_HOME}/zsh"
-[[ ! -d $zsh_state_home ]] && mkdir -p $zsh_state_home
+if [[ ! -d $zsh_state_home ]]; then
+    mkdir -p $zsh_state_home
+fi
 
 # man zshoptions
 HISTSIZE=8000 # history kept in memory

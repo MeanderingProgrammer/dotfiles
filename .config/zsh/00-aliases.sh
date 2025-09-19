@@ -25,7 +25,7 @@ alias tmux-exit='tmux kill-server'
 alias tmux-switch='tmux switch-client -t "$(tmux ls -F "#S" | fzf)"'
 
 # yadm
-alias yb='bash ~/.config/yadm/bootstrap'
+alias yb='~/.config/yadm/bootstrap'
 alias ys='yadm status'
 alias yl='yadm log'
 alias yp='yadm push'

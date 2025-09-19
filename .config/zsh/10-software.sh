@@ -1,6 +1,6 @@
 # ---- homebrew ---- #
 
-init_homebrew() {
+homebrew_init() {
     local brew_mac="/opt/homebrew/bin/brew"
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
     local brew_services=()
@@ -12,15 +12,21 @@ init_homebrew() {
         eval "$($brew_linux shellenv)"
     fi
     # start services
-    [[ "${#brew_services[@]}" == 0 ]] && return
+    if [[ "${#brew_services[@]}" == 0 ]]; then
+        return
+    fi
     local services=$(brew services list)
     for service in "${brew_services[@]}"; do
         local running=$(echo ${services} | grep "$service.*started")
-        [[ -z $running ]] && brew services start $service
+        if [[ -z $running ]]; then
+            brew services start $service
+        fi
     done
 }
 
-[[ -z $HOMEBREW_PREFIX ]] && init_homebrew
+if [[ -z $HOMEBREW_PREFIX ]]; then
+    homebrew_init
+fi
 
 # ---- languages ---- #
 
@@ -44,7 +50,9 @@ export NODE_REPL_HISTORY="${XDG_STATE_HOME}/node_repl_history"
 # opam
 export OPAMROOT="${XDG_DATA_HOME}/opam"
 opam_init="${OPAMROOT}/opam-init/init.zsh"
-[[ -f $opam_init ]] && source "${opam_init}"
+if [[ -f $opam_init ]]; then
+    source "${opam_init}"
+fi
 
 # python
 export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
@@ -114,13 +122,21 @@ fi
 
 # ---- init ---- #
 
-[[ $(ulimit -n) -lt 8192 ]] && ulimit -n 8192
+if [[ $(ulimit -n) -lt 8192 ]]; then
+    ulimit -n 8192
+fi
 
 # fzf
-[[ -x "$(command -v fzf)" ]] && eval "$(fzf --zsh)"
+if [[ -x "$(command -v fzf)" ]]; then
+    eval "$(fzf --zsh)"
+fi
 
 # mise
-[[ -x "$(command -v mise)" ]] && eval "$(mise activate zsh)"
+if [[ -x "$(command -v mise)" ]]; then
+    eval "$(mise activate zsh)"
+fi
 
 # ssh
-[[ -z $SSH_AUTH_SOCK ]] && eval "$(ssh-agent -s)"
+if [[ -z $SSH_AUTH_SOCK ]]; then
+    eval "$(ssh-agent -s)"
+fi
