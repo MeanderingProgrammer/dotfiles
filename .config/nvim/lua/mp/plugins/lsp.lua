@@ -56,7 +56,10 @@ end
 
 return {
     'neovim/nvim-lspconfig',
-    dependencies = { 'mason-org/mason.nvim' },
+    dependencies = {
+        'mason-org/mason.nvim',
+        'mfussenegger/nvim-jdtls',
+    },
     config = function()
         local configs = lang.lsp()
 
@@ -70,7 +73,7 @@ return {
         end
 
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('my.lsp', {}),
+            group = vim.api.nvim_create_augroup('mp.lsp', {}),
             callback = attach,
         })
     end,

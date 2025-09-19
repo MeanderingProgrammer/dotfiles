@@ -51,7 +51,7 @@ require('mp.lib.lang').add({
                 -- prettierd not picking up certain changes
                 -- https://github.com/fsouza/prettierd/issues/719
                 vim.api.nvim_create_autocmd('BufWritePost', {
-                    group = vim.api.nvim_create_augroup('my.prettierd', {}),
+                    group = vim.api.nvim_create_augroup('mp.prettierd', {}),
                     pattern = '*prettier*',
                     callback = function()
                         utils.system({ 'prettierd', 'restart' })
