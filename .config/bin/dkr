@@ -8,17 +8,13 @@ import click
 
 @click.group()
 def cli() -> None:
-    """
-    Docker helper scripts
-    """
+    """Docker helper scripts"""
     pass
 
 
 @cli.command()
 def clean() -> None:
-    """
-    Remove any untagged images
-    """
+    """Remove any untagged images"""
 
     untagged = True
     while untagged:

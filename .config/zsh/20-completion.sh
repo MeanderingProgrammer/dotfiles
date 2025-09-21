@@ -51,6 +51,7 @@ if click_enabled; then
     click_completion "dkr"
     click_completion "gd"
     click_completion "git-remote"
+    click_completion "git-stats"
     click_completion "llm"
     click_completion "pr"
 fi

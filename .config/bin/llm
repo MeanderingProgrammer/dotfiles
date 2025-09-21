@@ -38,35 +38,27 @@ class Ollama:
 
 @click.group()
 def cli() -> None:
-    """
-    Interact with llm: ollama serve
-    """
+    """Interact with llm: ollama serve"""
     pass
 
 
 @cli.command()
 def update() -> None:
-    """
-    Update / install the current model
-    """
+    """Update / install the current model"""
     Ollama().update()
 
 
 @cli.command()
 @click.argument("input", type=str)
 def prompt(input: str) -> None:
-    """
-    Passes prompt directly to llm
-    """
+    """Passes prompt directly to llm"""
     Ollama().run([input])
 
 
 @cli.command()
 @click.argument("file", type=Path)
 def cr(file: Path) -> None:
-    """
-    Provides a code review for an input file
-    """
+    """Provides a code review for an input file"""
     assert file.is_file(), "Input must be a valid file"
     Ollama().run(["Can you provide a code review for the following:", file.read_text()])
 
@@ -75,9 +67,7 @@ def cr(file: Path) -> None:
 @click.argument("language", type=str)
 @click.argument("file", type=Path)
 def rewrite(language: str, file: Path) -> None:
-    """
-    Rewrite the input file to specified language
-    """
+    """Rewrite the input file to specified language"""
     assert file.is_file(), "Input must be a valid file"
     Ollama().run([f"Can you rewrite the folowing to {language}:", file.read_text()])
 

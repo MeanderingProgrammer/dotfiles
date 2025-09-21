@@ -9,13 +9,13 @@ import click
 @click.group()
 @click.help_option("-h", "--help")
 def cli() -> None:
-    "improves interacting with Git PRs"
+    "Improves interacting with Git PRs"
     pass
 
 
 @cli.command()
 def push() -> None:
-    """push current branch as PR"""
+    """Push current branch as PR"""
     branch = run(["git", "branch", "--show-current"])
     print(f"pushing {branch} to origin")
     os.system(f"git push -f origin {branch}")
@@ -24,7 +24,7 @@ def push() -> None:
 @cli.command()
 @click.argument("id", type=int)
 def pull(id: int) -> None:
-    """pull PR with ID"""
+    """Pull PR with ID"""
     branch = f"review-{id}"
     print(f"pulling {branch} from origin")
     os.system(f"git fetch origin 'pull/{id}/head:{branch}'")

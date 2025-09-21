@@ -1,14 +1,43 @@
 #!/usr/bin/env python
 
-import argparse
 import os
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
+from enum import StrEnum, auto
 from pathlib import Path
 from typing import Self
 
+import click
 import requests
 from pydantic import AliasChoices, BaseModel, Field, field_serializer
+
+REPOS: list[str] = [
+    "render-markdown.nvim",
+]
+
+
+class Group(StrEnum):
+    DAY = auto()
+    WEEK = auto()
+    MONTH = auto()
+    QUARTER = auto()
+    YEAR = auto()
+
+    def start(self, timestamp: date) -> date:
+        if self == Group.DAY:
+            return timestamp
+        elif self == Group.WEEK:
+            return timestamp - timedelta(days=timestamp.weekday())
+        elif self == Group.MONTH:
+            return timestamp - timedelta(days=timestamp.day - 1)
+        elif self == Group.QUARTER:
+            quarter = (timestamp.month - 1) // 3
+            month = (quarter * 3) + 1
+            return date(timestamp.year, month, 1)
+        elif self == Group.YEAR:
+            return date(timestamp.year, 1, 1)
+        else:
+            raise Exception(f"invalid group: {self}")
 
 
 @dataclass(frozen=True)
@@ -24,6 +53,10 @@ class Stat(BaseModel):
     @field_serializer("timestamp")
     def serialize_timestamp(self, timestamp: date) -> str:
         return timestamp.strftime("%Y-%m-%d")
+
+    @staticmethod
+    def new(timestamp: date) -> "Stat":
+        return Stat(timestamp=timestamp, count=0, uniques=0)
 
 
 @dataclass(frozen=True)
@@ -52,45 +85,67 @@ class GithubApi:
         traffic = Traffic.model_validate(response.json())
         return traffic.stats
 
+    @staticmethod
+    def new() -> "GithubApi":
+        return GithubApi(
+            endpoint="https://api.github.com",
+            owner="MeanderingProgrammer",
+            token=env("GITHUB_TOKEN"),
+        )
+
 
 @dataclass(frozen=True)
 class Stats:
+    name: str
     stats: list[Stat]
 
     def get(self, timestamp: date) -> Stat:
         for stat in self.stats:
             if stat.timestamp == timestamp:
                 return stat
-        return Stat(timestamp=timestamp, count=0, uniques=0)
+        return Stat.new(timestamp)
 
-    def timestamps(self, other: Self) -> list[date]:
-        result: set[date] = set()
-        result.update(map(lambda stat: stat.timestamp, self.stats))
-        result.update(map(lambda stat: stat.timestamp, other.stats))
-        return sorted(result)
+    def uniques(self, timestamps: list[date]) -> list[int]:
+        result: list[int] = []
+        for timestamp in timestamps:
+            stat = self.get(timestamp)
+            result.append(stat.uniques)
+        return result
 
-    def combine(self, name: str, other: Self) -> list[Stat]:
+    def group(self, group: Group) -> Self:
+        groups: dict[date, Stat] = dict()
+        for stat in self.stats:
+            start = group.start(stat.timestamp)
+            current = groups.get(start, Stat.new(start))
+            groups[start] = Stat(
+                timestamp=start,
+                count=current.count + stat.count,
+                uniques=current.uniques + stat.uniques,
+            )
+        starts = sorted(groups.keys())
+        stats = [groups[start] for start in starts]
+        return type(self)(name=self.name, stats=stats)
+
+    def union(self, other: Self) -> list[Stat]:
+        assert self.name == other.name
         result: list[Stat] = []
-        for timestamp in self.timestamps(other):
+        for timestamp in Stats.timestamps([self, other]):
             stat1 = self.get(timestamp)
             stat2 = other.get(timestamp)
             if stat1 < stat2:
-                print(f"{timestamp} [{name}] {stat1.uniques} -> {stat2.uniques}")
+                print(f"{timestamp} [{self.name}] {stat1.uniques} -> {stat2.uniques}")
                 stat = stat2
             else:
                 stat = stat1
             result.append(stat)
         return result
 
-
-@dataclass(frozen=True)
-class Entry:
-    timestamp: date
-    clones: int
-    views: int
-
-    def __post_init__(self) -> None:
-        assert self.clones < 100_000 and self.views < 10_000
+    @staticmethod
+    def timestamps(data: list["Stats"]) -> list[date]:
+        result: set[date] = set()
+        for stats in data:
+            result.update(map(lambda stat: stat.timestamp, stats.stats))
+        return sorted(result)
 
 
 @dataclass(frozen=True)
@@ -99,58 +154,19 @@ class Repo(BaseModel):
     clones: list[Stat]
     views: list[Stat]
 
-    def combine(self, other: Self) -> Self:
+    def get_clones(self) -> Stats:
+        return Stats("clones", self.clones)
+
+    def get_views(self) -> Stats:
+        return Stats("views", self.views)
+
+    def union(self, other: Self) -> Self:
         assert self.name == other.name
         return type(self)(
             name=self.name,
-            clones=Stats(self.clones).combine("clones", Stats(other.clones)),
-            views=Stats(self.views).combine("views", Stats(other.views)),
+            clones=self.get_clones().union(other.get_clones()),
+            views=self.get_views().union(other.get_views()),
         )
-
-    def uniques(self) -> list[Entry]:
-        result: list[Entry] = []
-        clones = Stats(self.clones)
-        views = Stats(self.views)
-        for timestamp in clones.timestamps(views):
-            entry = Entry(
-                timestamp=timestamp,
-                clones=clones.get(timestamp).uniques,
-                views=views.get(timestamp).uniques,
-            )
-            result.append(entry)
-        return result
-
-    def table(self) -> None:
-        print(Repo.separator("┌", "┬", "┐"))
-        print("│ Date       │ Clones │ Views │")
-        print(Repo.separator("├", "┼", "┤"))
-        for entry in self.uniques():
-            parts: list[str] = [
-                str(entry.timestamp),
-                f"{entry.clones:<6,}",
-                f"{entry.views:<5,}",
-            ]
-            print("│ " + " │ ".join(parts) + " │")
-        print(Repo.separator("└", "┴", "┘"))
-
-    def graph(self) -> None:
-        for entry in self.uniques():
-            label = str(entry.timestamp)
-            print(f"{label} {Repo.bar(entry.clones, 100, 94)}")
-            filler = " " * len(label)
-            print(f"{filler} {Repo.bar(entry.views, 10, 91)}")
-
-    @staticmethod
-    def separator(left: str, center: str, right: str) -> str:
-        widths: list[int] = [10, 6, 5]
-        sections: list[str] = ["─" * (width + 2) for width in widths]
-        return left + center.join(sections) + right
-
-    @staticmethod
-    def bar(amount: int, scale: int, color: int) -> str:
-        n = round(amount / scale)
-        assert n < 160
-        return f"\033[{color}m{'█' * n}\033[0m {amount}"
 
 
 @dataclass(frozen=True)
@@ -196,35 +212,80 @@ class TrafficCache:
     def add(self, update: Repo) -> None:
         repos = self.read()
         repo = repos.get(update.name)
-        repo = repo.combine(update)
+        repo = repo.union(update)
         repos.set(repo)
         self.write(repos)
 
+    @staticmethod
+    def new() -> "TrafficCache":
+        return TrafficCache(
+            file=Path(env("XDG_DATA_HOME")).joinpath("git-traffic.json"),
+        )
 
-def main(table: bool, graph: bool) -> None:
-    api = GithubApi(
-        endpoint="https://api.github.com",
-        owner="MeanderingProgrammer",
-        token=env("GITHUB_TOKEN"),
-    )
-    cache = TrafficCache(
-        file=Path(env("XDG_DATA_HOME")).joinpath("git-traffic.json"),
-    )
-    repos: list[str] = [
-        "render-markdown.nvim",
-    ]
-    for name in repos:
-        if table:
-            cache.read().get(name).table()
-        elif graph:
-            cache.read().get(name).graph()
-        else:
-            repo = Repo(
-                name=name,
-                clones=api.traffic(name, "clones"),
-                views=api.traffic(name, "views"),
-            )
-            cache.add(repo)
+
+@dataclass(frozen=True)
+class Output:
+    group: Group
+    repo: Repo
+
+    def table(self) -> None:
+        timestamps, clones, views = self.data()
+
+        cols: list[list[str]] = [
+            ["Date"] + [str(timestamp) for timestamp in timestamps],
+            ["Clones"] + [f"{n:,}" for n in clones],
+            ["Views"] + [f"{n:,}" for n in views],
+        ]
+
+        widths: list[int] = []
+        for col in cols:
+            widths.append(max([len(value) for value in col]))
+
+        lines: list[str] = []
+        for i in range(len(timestamps) + 1):
+            row: list[str] = []
+            for col, width in zip(cols, widths):
+                row.append(f"{col[i]:<{width}}")
+            lines.append("│ " + " │ ".join(row) + " │")
+
+        def separator(left: str, center: str, right: str) -> str:
+            sections: list[str] = ["─" * (width + 2) for width in widths]
+            return left + center.join(sections) + right
+
+        print(separator("┌", "┬", "┐"))
+        print(lines.pop(0))
+        print(separator("├", "┼", "┤"))
+        for line in lines:
+            print(line)
+        print(separator("└", "┴", "┘"))
+
+    def graph(self) -> None:
+        timestamps, clones, views = self.data()
+
+        def get_scale(values: list[int]) -> int:
+            return max(round(max(values) / 160), 1)
+
+        clone_scale, view_scale = get_scale(clones), get_scale(views)
+
+        def bar(prefix: str, color: int, value: int, scale: int) -> str:
+            n = round(value / scale)
+            return f"{prefix} \033[{color}m{'█' * n}\033[0m {value}"
+
+        for i, timestamp in enumerate(timestamps):
+            label = str(timestamp)
+            print(bar(label, 94, clones[i], clone_scale))
+            filler = " " * len(label)
+            print(bar(filler, 91, views[i], view_scale))
+
+    def data(self) -> tuple[list[date], list[int], list[int]]:
+        clones = self.repo.get_clones().group(self.group)
+        views = self.repo.get_views().group(self.group)
+        timestamps = Stats.timestamps([clones, views])
+        return (
+            timestamps,
+            clones.uniques(timestamps),
+            views.uniques(timestamps),
+        )
 
 
 def env(name: str) -> str:
@@ -233,13 +294,57 @@ def env(name: str) -> str:
     return value
 
 
+@click.group()
+def cli() -> None:
+    """GitHub repo statistics"""
+    pass
+
+
+@cli.command()
+@click.option(
+    "-g",
+    "--group",
+    type=click.Choice(Group, case_sensitive=False),
+    default=Group.WEEK,
+    help="how to group statistics",
+)
+def graph(group: Group) -> None:
+    """Output graph of statistics"""
+    repos = TrafficCache.new().read()
+    for name in REPOS:
+        repo = repos.get(name)
+        Output(group, repo).graph()
+
+
+@cli.command()
+@click.option(
+    "-g",
+    "--group",
+    type=click.Choice(Group, case_sensitive=False),
+    default=Group.WEEK,
+    help="how to group statistics",
+)
+def table(group: Group) -> None:
+    """Output table of statistics"""
+    repos = TrafficCache.new().read()
+    for name in REPOS:
+        repo = repos.get(name)
+        Output(group, repo).table()
+
+
+@cli.command()
+def update() -> None:
+    """Update statistics from API"""
+    api = GithubApi.new()
+    cache = TrafficCache.new()
+    for name in REPOS:
+        repo = Repo(
+            name=name,
+            clones=api.traffic(name, "clones"),
+            views=api.traffic(name, "views"),
+        )
+        cache.add(repo)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="GitHub repo statistics",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("-t", "--table", action="store_true", help="Output table")
-    group.add_argument("-g", "--graph", action="store_true", help="Output graph")
-    args = parser.parse_args()
-    main(args.table, args.graph)
+    cli()
