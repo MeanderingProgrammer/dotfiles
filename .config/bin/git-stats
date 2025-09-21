@@ -194,16 +194,15 @@ class TrafficCache:
 
 @dataclass(frozen=True)
 class Output:
-    group: Group
-    repo: Repo
+    dates: list[Date]
+    clones: list[int]
+    views: list[int]
 
     def table(self) -> None:
-        dates, clones, views = self.data()
-
         cols: list[list[str]] = [
-            ["Date"] + [str(date) for date in dates],
-            ["Clones"] + [f"{n:,}" for n in clones],
-            ["Views"] + [f"{n:,}" for n in views],
+            ["Date"] + [str(date) for date in self.dates],
+            ["Clones"] + [f"{n:,}" for n in self.clones],
+            ["Views"] + [f"{n:,}" for n in self.views],
         ]
 
         widths: list[int] = []
@@ -215,7 +214,7 @@ class Output:
             return left + center.join(sections) + right
 
         lines: list[str] = []
-        for i in range(len(dates) + 1):
+        for i in range(len(self.dates) + 1):
             row: list[str] = []
             for col, width in zip(cols, widths):
                 row.append(f"{col[i]:<{width}}")
@@ -229,41 +228,40 @@ class Output:
         print(separator("└", "┴", "┘"))
 
     def graph(self) -> None:
-        dates, clones, views = self.data()
-
         def bar(color: int, values: list[int], i: int) -> str:
             value = values[i]
             scale = max(round(max(values) / 160), 1)
             n = round(value / scale)
             return f"\033[{color}m{'█' * n}\033[0m {value}"
 
-        for i, date in enumerate(dates):
+        for i, date in enumerate(self.dates):
             label = str(date)
-            print(f"{label} {bar(94, clones, i)}")
+            print(f"{label} {bar(94, self.clones, i)}")
             space = " " * len(label)
-            print(f"{space} {bar(91, views, i)}")
+            print(f"{space} {bar(91, self.views, i)}")
 
-    def data(self) -> tuple[list[Date], list[int], list[int]]:
-        clones = self.group_by(self.repo.clones)
-        views = self.group_by(self.repo.views)
+    @staticmethod
+    def new(group: Group, repo: Repo) -> "Output":
+        def group_by(stats: list[Stat]) -> list[Stat]:
+            groups: dict[Date, Stat] = dict()
+            for stat in stats:
+                start = group.start(stat.timestamp)
+                current = groups.get(start, Stat.new(start))
+                groups[start] = Stat(
+                    timestamp=start,
+                    count=current.count + stat.count,
+                    uniques=current.uniques + stat.uniques,
+                )
+            return list(groups.values())
+
+        clones = group_by(repo.clones)
+        views = group_by(repo.views)
         dates = get_dates(clones, views)
-        return (
-            dates,
-            [get_stat(clones, date).uniques for date in dates],
-            [get_stat(views, date).uniques for date in dates],
+        return Output(
+            dates=dates,
+            clones=[get_stat(clones, date).uniques for date in dates],
+            views=[get_stat(views, date).uniques for date in dates],
         )
-
-    def group_by(self, stats: list[Stat]) -> list[Stat]:
-        groups: dict[Date, Stat] = dict()
-        for stat in stats:
-            start = self.group.start(stat.timestamp)
-            current = groups.get(start, Stat.new(start))
-            groups[start] = Stat(
-                timestamp=start,
-                count=current.count + stat.count,
-                uniques=current.uniques + stat.uniques,
-            )
-        return list(groups.values())
 
 
 def env(name: str) -> str:
@@ -291,7 +289,7 @@ def graph(group: Group) -> None:
     repos = TrafficCache.new().read()
     for name in REPOS:
         repo = repos.get(name)
-        Output(group, repo).graph()
+        Output.new(group, repo).graph()
 
 
 @cli.command()
@@ -307,7 +305,7 @@ def table(group: Group) -> None:
     repos = TrafficCache.new().read()
     for name in REPOS:
         repo = repos.get(name)
-        Output(group, repo).table()
+        Output.new(group, repo).table()
 
 
 @cli.command()
