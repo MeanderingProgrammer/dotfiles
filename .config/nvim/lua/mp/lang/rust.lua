@@ -15,12 +15,12 @@ local function dap_program()
     local method = 'experimental/runnables'
 
     local clients = vim.lsp.get_clients({ bufnr = 0, method = method })
-    if #clients ~= 1 then
+    local client = #clients == 1 and clients[1] or nil
+    if not client then
         vim.print(('%s : %d clients'):format(method, #clients))
         return nil
     end
 
-    local client = clients[1]
     local response = client:request_sync(method, {
         textDocument = vim.lsp.util.make_text_document_params(),
     })

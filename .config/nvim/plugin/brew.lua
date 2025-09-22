@@ -8,6 +8,7 @@ local utils = require('mp.lib.utils')
 ---@field revision integer
 ---@field installed mp.brew.Installed[]
 ---@field outdated boolean
+---@field keg_only boolean
 
 ---@class mp.brew.Versions
 ---@field stable string
@@ -17,15 +18,15 @@ local utils = require('mp.lib.utils')
 
 ---@param list string[]
 ---@param size integer
----@return string[][]
+---@return string[]
 local function chunk(list, size)
-    local result = {} ---@type string[][]
+    local result = {} ---@type string[]
     for i = 1, #list, size do
         local group = {} ---@type string[]
         for j = i, math.min(i + size - 1, #list) do
             group[#group + 1] = list[j]
         end
-        result[#result + 1] = group
+        result[#result + 1] = table.concat(group, ', ')
     end
     return result
 end
@@ -39,8 +40,8 @@ vim.api.nvim_create_user_command('Brew', function()
     local lines = {} ---@type string[]
     lines[#lines + 1] = '# Info'
     lines[#lines + 1] = ''
-    lines[#lines + 1] = '| name | version | upgrade | dependencies |'
-    lines[#lines + 1] = '| ---- | ------- | ------- | ------------ |'
+    lines[#lines + 1] = '| Name | Version | Upgrade | Keg Only | Dependencies |'
+    lines[#lines + 1] = '| ---- | ------- | ------- | -------- | ------------ |'
     for _, formula in ipairs(formulas) do
         local name = formula.name
         local dependencies = formula.dependencies
@@ -48,6 +49,7 @@ vim.api.nvim_create_user_command('Brew', function()
         local revision = formula.revision
         local installed = formula.installed
         local outdated = formula.outdated
+        local keg_only = formula.keg_only
 
         local chunks = chunk(dependencies, 5)
 
@@ -75,12 +77,12 @@ vim.api.nvim_create_user_command('Brew', function()
             name,
             current,
             upgrade and latest or 'none',
-            #chunks == 0 and 'none' or table.concat(chunks[1], ', '),
+            tostring(keg_only),
+            #chunks == 0 and 'none' or chunks[1],
         }
         lines[#lines + 1] = '| ' .. table.concat(parts, ' | ') .. ' |'
         for i = 2, #chunks do
-            local part = table.concat(chunks[i], ', ')
-            lines[#lines + 1] = ('| | | | %s |'):format(part)
+            lines[#lines + 1] = ('| | | | | %s |'):format(chunks[i])
         end
     end
 
