@@ -2,6 +2,9 @@
 ---@module 'dap'
 ---@module 'lint'
 
+---@class mp.lang.Opts: mp.lang.Config
+---@field disabled? true
+
 ---@class mp.lang.Config
 ---@field parser? table<string, mp.parser.Config>
 ---@field tool? table<string, mp.tool.Config>
@@ -53,9 +56,11 @@ M.config = {
     lint = {},
 }
 
----@param config mp.lang.Config
-function M.add(config)
-    M.config = vim.tbl_deep_extend('error', M.config, config)
+---@param opts mp.lang.Opts
+function M.add(opts)
+    if not opts.disabled then
+        M.config = vim.tbl_deep_extend('error', M.config, opts)
+    end
 end
 
 ---@return string[]
