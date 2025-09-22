@@ -20,15 +20,14 @@ require('mp.lang.typst')
 require('mp.lang.vim')
 require('mp.lang.zig')
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+local lazypath = utils.path('data', 'lazy', 'lazy.nvim')
 if not vim.uv.fs_stat(lazypath) then
-    local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
     utils.system({
         'git',
         'clone',
         '--filter=blob:none',
         '--branch=stable',
-        lazyrepo,
+        'https://github.com/folke/lazy.nvim.git',
         lazypath,
     })
 end

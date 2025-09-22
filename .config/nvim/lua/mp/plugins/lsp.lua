@@ -5,6 +5,7 @@ local lang = require('mp.lib.lang')
 local function attach(args)
     local fzf = require('fzf-lua')
     local map = Keymap.new({ buffer = args.buf, group = 'LSP' })
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
     map:n('K', vim.lsp.buf.hover, 'hover information')
     map:n('<leader>k', vim.lsp.buf.signature_help, 'signature help')
@@ -27,10 +28,7 @@ local function attach(args)
     ---@param method vim.lsp.protocol.Method
     ---@return boolean
     local function supports(method)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if not client then
-            return false
-        elseif vim.list_contains({ 'jdtls' }, client.name) then
+        if vim.list_contains({ 'jdtls' }, client.name) then
             return true
         else
             return client:supports_method(method, args.buf)
@@ -65,6 +63,9 @@ return {
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(configs) do
+            if config.override then
+                config.override(config)
+            end
             vim.lsp.config(name, config)
             local cmd = vim.lsp.config[name].cmd[1]
             if vim.fn.executable(cmd) == 1 then

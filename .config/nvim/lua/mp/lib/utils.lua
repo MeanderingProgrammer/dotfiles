@@ -41,10 +41,17 @@ function M.system(cmd, opts)
     return assert(result.stdout, 'missing stdout')
 end
 
+---@param kind 'cache'|'config'|'data'
+---@param ... string
+---@return string
+function M.path(kind, ...)
+    return vim.fs.joinpath(vim.fn.stdpath(kind), ...)
+end
+
 ---@param file string
 ---@return string
 function M.lint_config(file)
-    return vim.fs.joinpath(vim.fn.stdpath('config'), 'lint_configs', file)
+    return M.path('config', 'lint_configs', file)
 end
 
 ---@param ... string

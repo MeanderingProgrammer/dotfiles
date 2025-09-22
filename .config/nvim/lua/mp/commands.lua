@@ -10,7 +10,7 @@ vim.api.nvim_create_user_command('AdventData', function()
 end, { desc = 'open data.txt associated with problem' })
 
 vim.api.nvim_create_user_command('SortSpell', function()
-    local file = vim.fn.stdpath('config') .. '/spell/en.utf-8.add'
+    local file = utils.path('config', 'spell', 'en.utf-8.add')
     vim.cmd('edit ' .. file)
     local words = vim.api.nvim_buf_get_lines(0, 0, -1, false)
     table.sort(words, function(a, b)

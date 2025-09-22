@@ -18,6 +18,7 @@
 ---@field install boolean
 
 ---@class mp.lsp.Config: vim.lsp.Config
+---@field override? fun(config: vim.lsp.Config)
 
 ---@class mp.dap.Config
 ---@field adapters table<string, dap.ExecutableAdapter>
