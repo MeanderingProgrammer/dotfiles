@@ -22,22 +22,21 @@ fi
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
-# add completion executables
-if [[ -x "$(command -v uv)" ]]; then
-    eval "$(uv generate-shell-completion zsh)"
-fi
-
 # add completion files
 opam_comp="${OPAMROOT}/opam-init/complete.zsh"
 if [[ -f $opam_comp ]]; then
     source "${opam_comp}"
 fi
 
+# update generated completions weekly
+out_of_date() {
+    [[ ! -f $1 ]] && return 0
+    local current=$(date +%s)
+    local modified=$(date -r $1 +%s)
+    (( current - modified >= 604800 ))
+}
+
 click_enabled() {
-    # skip if non-interactive
-    [[ -o interactive ]] || return 1
-    # skip if in tmux
-    [[ -z $TMUX ]] || return 1
     # skip if python is not installed
     [[ -x "$(command -v python)" ]] || return 1
     # skip if pip is not installed
@@ -50,19 +49,34 @@ click_enabled() {
 
 click_completion() {
     local completion_file="${zsh_comp_home}/${1}-complete.zsh"
-    # generate completions if they don't exist
-    if [[ ! -f $completion_file ]]; then
-        local click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
-        eval "_${click_variable}_COMPLETE=zsh_source ${1} > ${completion_file}"
+    if out_of_date "${completion_file}"; then
+        if click_enabled; then
+            local click_variable=$(echo ${1} | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+            env "_${click_variable}_COMPLETE=zsh_source" "${1}" > "${completion_file}"
+        fi
     fi
-    source "${completion_file}"
+    if [[ -f $completion_file ]]; then
+        source "${completion_file}"
+    fi
 }
 
-if click_enabled; then
-    click_completion "dkr"
-    click_completion "gd"
-    click_completion "git-remote"
-    click_completion "git-stats"
-    click_completion "llm"
-    click_completion "pr"
-fi
+cmd_completion() {
+    local completion_file="${zsh_comp_home}/${1}-complete.zsh"
+    if out_of_date "${completion_file}"; then
+        if [[ -x "$(command -v $1)" ]]; then
+            "$@" > "${completion_file}"
+        fi
+    fi
+    if [[ -f $completion_file ]]; then
+        source "${completion_file}"
+    fi
+}
+
+click_completion "dkr"
+click_completion "gd"
+click_completion "git-remote"
+click_completion "git-stats"
+click_completion "llm"
+click_completion "pr"
+
+cmd_completion "uv" "generate-shell-completion" "zsh"
