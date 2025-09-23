@@ -30,11 +30,11 @@ init_shell() {
     done
 }
 
-if [[ -x "$(command -v gdate)" ]]; then
+if [[ -o interactive && -x "$(command -v gdate)" ]]; then
     shell_start=$(gdate +%s%3N)
     init_shell
     shell_end=$(gdate +%s%3N)
-    echo "start time: $((shell_end - shell_start))ms"
+    echo "init time: $((shell_end - shell_start))ms"
 else
     init_shell
 fi

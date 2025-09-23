@@ -7,7 +7,8 @@ return {
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
         local configs = lang.formatters()
-        local names, by_ft = lang.by_ft(configs)
+        local names = lang.executable(configs)
+        local by_ft = lang.by_ft(names, configs)
 
         local conform = require('conform')
 

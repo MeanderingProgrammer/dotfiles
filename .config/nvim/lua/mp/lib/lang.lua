@@ -14,6 +14,7 @@
 ---@field lint? table<string, mp.lint.Config>
 
 ---@class mp.parser.Config: mp.install.Config
+---@field filetypes? string[]
 
 ---@class mp.tool.Config: mp.install.Config
 
@@ -63,14 +64,14 @@ function M.add(opts)
     end
 end
 
----@return string[]
+---@return table<string, mp.parser.Config>
 function M.parsers()
-    return M.install(M.config.parser)
+    return M.config.parser
 end
 
----@return string[]
+---@return table<string, mp.tool.Config>
 function M.tools()
-    return M.install(M.config.tool)
+    return M.config.tool
 end
 
 ---@return table<string, mp.lsp.Config>
@@ -93,7 +94,6 @@ function M.linters()
     return M.config.lint
 end
 
----@private
 ---@param configs table<string, mp.install.Config>
 ---@return string[]
 function M.install(configs)
@@ -103,29 +103,40 @@ function M.install(configs)
             result[#result + 1] = name
         end
     end
+    table.sort(result)
     return result
 end
 
 ---@param configs table<string, mp.filetype.Config>
----@return string[], table<string, string[]>
-function M.by_ft(configs)
-    local names = {} ---@type string[]
-    local result = {} ---@type table<string, string[]>
+---@return string[]
+function M.executable(configs)
+    local result = {} ---@type string[]
     for name, config in pairs(configs) do
         local cmd = config.cmd or name
         if vim.fn.executable(cmd) == 1 then
-            names[#names + 1] = name
-            for _, filetype in ipairs(config.filetypes) do
-                if not result[filetype] then
-                    result[filetype] = {}
-                end
-                local active = result[filetype]
-                active[#active + 1] = name
-                table.sort(active)
-            end
+            result[#result + 1] = name
         end
     end
-    return names, result
+    table.sort(result)
+    return result
+end
+
+---@param names string[]
+---@param configs table<string, mp.filetype.Config>
+---@return table<string, string[]>
+function M.by_ft(names, configs)
+    local result = {} ---@type table<string, string[]>
+    for _, name in ipairs(names) do
+        local filetypes = configs[name].filetypes
+        for _, filetype in ipairs(filetypes) do
+            if not result[filetype] then
+                result[filetype] = {}
+            end
+            local active = result[filetype]
+            active[#active + 1] = name
+        end
+    end
+    return result
 end
 
 return M

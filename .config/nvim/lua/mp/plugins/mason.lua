@@ -4,12 +4,13 @@ return {
     'mason-org/mason.nvim',
     dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
     config = function()
-        local install = lang.tools()
+        local configs = lang.tools()
+        local names = lang.install(configs)
 
         require('mason').setup({})
 
         require('mason-tool-installer').setup({
-            ensure_installed = install,
+            ensure_installed = names,
         })
     end,
 }

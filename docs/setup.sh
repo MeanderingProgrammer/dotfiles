@@ -4,7 +4,6 @@ set -euo pipefail
 
 FAIL=31
 SUCCESS=32
-SKIP=33
 TITLE=35
 INFO=36
 
@@ -14,17 +13,19 @@ notify() {
 
 has_command() {
     if command -v "${1}" > /dev/null; then
+        notify $INFO "  present: ${1}"
         return 0
     else
-        notify $SKIP "  missing: ${1}"
+        notify $INFO "  missing: ${1}"
         return 1
     fi
 }
 
-system_os=$(uname -o)
+is_computer() {
+    [[ $(uname -o) != "Android" ]]
+}
 
 main() {
-    notify $TITLE "system: ${system_os}"
     if [[ "${#}" -ne 1 ]]; then
         notify $FAIL "usage: <command>"
         exit 1
@@ -83,7 +84,6 @@ do_deps() {
           build-essential \
           gcc \
           git \
-          latexmk \
           libbz2-dev \
           libffi-dev \
           liblzma-dev \
@@ -104,7 +104,7 @@ do_deps() {
           zsh
         notify $SUCCESS "  success"
     else
-        notify $SKIP "  skip"
+        notify $INFO "  skip: unknown package manager"
     fi
 }
 
@@ -115,9 +115,9 @@ do_shell() {
         chsh -s $(which zsh)
         notify $SUCCESS "  success: restart system"
     elif [[ "${shell_type}" == "zsh" ]]; then
-        notify $SKIP "  skip"
+        notify $INFO "  skip: already using zsh"
     else
-        notify $FAIL "  error: unhandled shell type ${shell_type}"
+        notify $FAIL "  error: unhandled shell ${shell_type}"
         exit 1
     fi
 }
@@ -132,51 +132,44 @@ do_limit() {
         sudo launchctl load -w "${limit_directory}/${limit_file}"
         notify $SUCCESS "  success"
     else
-        notify $SKIP "  skip: not Darwin"
+        notify $INFO "  skip: missing ${limit_directory}"
     fi
 }
 
 do_homebrew() {
     notify $TITLE "start: installing homebrew"
-    if has_command "brew"; then
-        notify $SKIP "  skip: already done"
-    elif [[ "${system_os}" == "Android" ]]; then
-        notify $SKIP "  skip: android"
+    if ! is_computer; then
+        notify $INFO "  skip: not computer"
+    elif has_command "brew"; then
+        notify $INFO "  skip: already done"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         notify $SUCCESS "  success"
+        evaluate_homebrew
     fi
-    evaluate_homebrew
 }
 
 evaluate_homebrew() {
     notify $TITLE "start: evaluating homebrew"
+    local brew_mac="/opt/homebrew/bin/brew"
+    local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
     if has_command "brew"; then
-        notify $SKIP "  skip: already done"
-    elif [[ "${system_os}" == "Android" ]]; then
-        notify $SKIP "  skip: android"
+        notify $INFO "  skip: already done"
+    elif [[ -x ${brew_mac} ]]; then
+        eval "$($brew_mac shellenv)"
+        notify $SUCCESS "  success"
+    elif [[ -x ${brew_linux} ]]; then
+        eval "$($brew_linux shellenv)"
+        notify $SUCCESS "  success"
     else
-        local brew_mac="/opt/homebrew/bin/brew"
-        local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
-        if [[ -x ${brew_mac} ]]; then
-            eval "$($brew_mac shellenv)"
-            notify $SUCCESS "  success"
-        elif [[ -x ${brew_linux} ]]; then
-            eval "$($brew_linux shellenv)"
-            notify $SUCCESS "  success"
-        else
-            notify $FAIL "  error: missing init"
-            exit 1
-        fi
+        notify $INFO "  skip: missing init"
+        return 1
     fi
 }
 
 brew_install() {
     notify $TITLE "start: installing ${1} with homebrew"
-    evaluate_homebrew
-    if [[ "${system_os}" == "Android" ]]; then
-        notify $SKIP "  skip: android"
-    else
+    if evaluate_homebrew; then
         brew install ${1}
         notify $SUCCESS "  success"
     fi
@@ -185,7 +178,7 @@ brew_install() {
 setup_file() {
     notify $TITLE "start: creating empty file ${1}"
     if [[ -f ${1} ]]; then
-        notify $SKIP "  skip: already done"
+        notify $INFO "  skip: already done"
     else
         local directory=$(dirname ${1})
         mkdir -p ${directory}
@@ -202,14 +195,14 @@ setup_ssh() {
         ssh-keyscan ${2} >> ${1}
         notify $SUCCESS "  success"
     else
-        notify $SKIP "  skip: already done"
+        notify $INFO "  skip: already done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
     notify $TITLE "start: generating SSH key ${2}"
     local ssh_file="$HOME/.ssh/${3}"
     if [[ -f ${ssh_file} ]]; then
-        notify $SKIP "  skip: already done"
+        notify $INFO "  skip: already done"
     else
         ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
@@ -249,7 +242,7 @@ do_yadm() {
     notify $TITLE "start: cloning dotfiles repo"
     local yadm_directory="$HOME/.config/yadm"
     if [[ -d ${yadm_directory} ]]; then
-        notify $SKIP "  skip: already done"
+        notify $INFO "  skip: already done"
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
         notify $SUCCESS "  success"
