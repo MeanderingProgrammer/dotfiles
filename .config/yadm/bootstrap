@@ -71,20 +71,27 @@ do_deps() {
         notify $SUCCESS "  success"
     fi
 
-    notify $TITLE "dependency: linux"
+    notify $TITLE "dependency: tools"
     if has_command "pkg"; then
         pkg update --yes
         pkg upgrade --yes
         pkg clean
         notify $SUCCESS "  success"
     elif has_command "apt"; then
-        if ! has_command "wslinfo"; then
-            source "${lib_dir}/wezterm.sh"
-        fi
         sudo apt update --yes
         sudo apt upgrade --yes
         sudo apt autoremove --yes && sudo apt clean
         notify $SUCCESS "  success"
+    fi
+
+    notify $TITLE "dependency: applications"
+    if is_computer && ! has_command "wslinfo"; then
+        if has_command "apt"; then
+            source "${lib_dir}/wezterm.sh"
+        fi
+        if has_command "snap"; then
+            sudo snap install ghostty --classic
+        fi
     fi
 }
 
