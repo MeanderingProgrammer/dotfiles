@@ -103,6 +103,14 @@ do_deps() {
           zlib1g-dev \
           zsh
         notify $SUCCESS "  success"
+    elif has_command "pacman"; then
+        sudo pacman -S --noconfirm \
+          git \
+          man-db \
+          man-pages \
+          wl-clipboard \
+          zsh
+        notify $SUCCESS "  success"
     else
         notify $INFO "  skip: unknown package manager"
     fi

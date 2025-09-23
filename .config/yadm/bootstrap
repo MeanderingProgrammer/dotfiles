@@ -92,6 +92,12 @@ do_deps() {
         if has_command "snap"; then
             sudo snap install ghostty --classic
         fi
+        if has_command "pacman"; then
+            sudo pacman -S --noconfirm \
+              firefox \
+              ghostty \
+              wezterm
+        fi
     fi
 }
 
