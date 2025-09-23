@@ -22,6 +22,17 @@ fi
 zstyle ':completion:*' cache-path "${zsh_cache_home}/compcache"
 autoload -Uz compinit && compinit -d "${zsh_cache_home}/compdump"
 
+# add completion executables
+if [[ -x "$(command -v uv)" ]]; then
+    eval "$(uv generate-shell-completion zsh)"
+fi
+
+# add completion files
+opam_comp="${OPAMROOT}/opam-init/complete.zsh"
+if [[ -f $opam_comp ]]; then
+    source "${opam_comp}"
+fi
+
 click_enabled() {
     # skip if non-interactive
     [[ -o interactive ]] || return 1
