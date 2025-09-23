@@ -75,6 +75,7 @@ do_deps() {
     if has_command "pkg"; then
         pkg update --yes
         pkg upgrade --yes
+        pkg clean
         notify $SUCCESS "  success"
     elif has_command "apt"; then
         if ! has_command "wslinfo"; then
@@ -82,6 +83,7 @@ do_deps() {
         fi
         sudo apt update --yes
         sudo apt upgrade --yes
+        sudo apt autoremove --yes && sudo apt clean
         notify $SUCCESS "  success"
     fi
 }
@@ -109,6 +111,7 @@ do_libs() {
         else
             pip install click
             pip install GitPython
+            pip install pydantic
             pip install requests
         fi
         notify $SUCCESS "  success"
