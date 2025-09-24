@@ -4,7 +4,11 @@ local config = wezterm.config_builder()
 
 config.color_scheme = 'tokyonight_night'
 
-config.font_size = 12.0
+if wezterm.target_triple:find('darwin') then
+    config.font_size = 14.0
+else
+    config.font_size = 12.0
+end
 config.font = wezterm.font('Monaspace Neon')
 
 config.audible_bell = 'Disabled'

@@ -13,7 +13,7 @@ Using [yadm](https://yadm.io/) to store all my dotfiles
 
 # Setup
 
-## Linux - Install `curl`
+## Dependencies
 
 ```bash
 sudo apt install curl
@@ -39,9 +39,13 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 
 # Settings
 
-## MacOS - Developer Tools
+## Mac - Developer Tools
 
-System Settings -> Privacy & Security -> Developer Tools
-
+- System Settings -> Privacy & Security -> Developer Tools
 - Add terminal emulators to the list
 - Removes overhead when running executables
+
+## Linux - Activate Thunderbolt
+
+- Copy `uuid` from output of `boltctl list`
+- Enroll device with `boltctl enroll <uuid>`
