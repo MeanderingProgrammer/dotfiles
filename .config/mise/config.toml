@@ -22,7 +22,6 @@ julia = "1.11.3"
 kotlin = "2.1.10"
 lua = "5.1"
 node = "24.2.0"
-opam = "2.3.0"
 perl = "5.40.1.0"
 poetry = "2.0.1"
 python = "3.13.0"
@@ -32,6 +31,13 @@ scala = "3.6.3"
 terraform = "1.12.2"
 uv = "0.8.11"
 zig = "0.15.1"
+
+[tools."github:ocaml/opam"]
+version = "2.3.0"
+
+[tools."github:ocaml/opam".platforms]
+linux-x64 = { asset_pattern = "opam-*-x86_64-linux" }
+macos-arm64 = { asset_pattern = "opam-*-arm64-macos" }
 
 [env]
 NVIM_ROOT = """
