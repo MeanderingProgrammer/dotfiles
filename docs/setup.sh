@@ -9,7 +9,7 @@ notify() {
     echo -e "\033[0;${1}m${2}\033[0m"
 }
 
-has() {
+has_cmd() {
     if command -v "${1}" > /dev/null; then
         notify $INFO "  present: ${1}"
         return 0
@@ -46,7 +46,7 @@ main() {
 
 do_deps() {
     notify $TITLE "start: installing dependencies"
-    if has "pkg"; then
+    if has_cmd "pkg"; then
         pkg install --yes \
           bat \
           clang \
@@ -76,7 +76,7 @@ do_deps() {
           yadm \
           zsh
         notify $SUCCESS "  success"
-    elif has "apt"; then
+    elif has_cmd "apt"; then
         sudo apt --yes install \
           bubblewrap \
           build-essential \
@@ -101,7 +101,7 @@ do_deps() {
           zlib1g-dev \
           zsh
         notify $SUCCESS "  success"
-    elif has "pacman"; then
+    elif has_cmd "pacman"; then
         sudo pacman -S --noconfirm \
           git \
           man-db \
@@ -146,7 +146,7 @@ do_homebrew() {
     notify $TITLE "start: installing homebrew"
     if is_phone; then
         notify $INFO "  skip: phone"
-    elif has "brew"; then
+    elif has_cmd "brew"; then
         notify $INFO "  skip: already done"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -159,13 +159,13 @@ evaluate_homebrew() {
     notify $TITLE "start: evaluating homebrew"
     local brew_mac="/opt/homebrew/bin/brew"
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
-    if has "brew"; then
+    if has_cmd "brew"; then
         notify $INFO "  skip: already done"
-    elif [[ -x ${brew_mac} ]]; then
-        eval "$($brew_mac shellenv)"
+    elif [[ -x "${brew_mac}" ]]; then
+        eval "$("${brew_mac}" shellenv)"
         notify $SUCCESS "  success"
-    elif [[ -x ${brew_linux} ]]; then
-        eval "$($brew_linux shellenv)"
+    elif [[ -x "${brew_linux}" ]]; then
+        eval "$("${brew_linux}" shellenv)"
         notify $SUCCESS "  success"
     else
         notify $INFO "  skip: missing init"
@@ -218,7 +218,7 @@ setup_ssh() {
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
     notify $TITLE "start: copy command ${2}"
     local copy_command
-    if has "pbcopy"; then
+    if has_cmd "pbcopy"; then
         copy_command="pbcopy"
     elif [[ "${XDG_SESSION_TYPE}" == "x11" ]]; then
         copy_command="xclip -selection clipboard"

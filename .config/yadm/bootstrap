@@ -14,7 +14,7 @@ reload() {
     source ~/.zshrc
 }
 
-has() {
+has_cmd() {
     if command -v "${1}" > /dev/null; then
         notify $INFO "  present: ${1}"
         return 0
@@ -61,7 +61,7 @@ do_deps() {
     reload
 
     notify $TITLE "dependency: brew"
-    if has "brew"; then
+    if has_cmd "brew"; then
         brew bundle --file "${lib_path}/Brewfile"
         brew update
         brew upgrade
@@ -70,12 +70,12 @@ do_deps() {
     fi
 
     notify $TITLE "dependency: tools"
-    if has "pkg"; then
+    if has_cmd "pkg"; then
         pkg update --yes
         pkg upgrade --yes
         pkg clean
         notify $SUCCESS "  success"
-    elif has "apt"; then
+    elif has_cmd "apt"; then
         sudo apt update --yes
         sudo apt upgrade --yes
         sudo apt autoremove --yes && sudo apt clean
@@ -83,14 +83,14 @@ do_deps() {
     fi
 
     notify $TITLE "dependency: applications"
-    if ! is_phone && ! has "wslinfo"; then
-        if has "apt"; then
+    if ! is_phone && ! has_cmd "wslinfo"; then
+        if has_cmd "apt"; then
             source "${lib_path}/wezterm.sh"
         fi
-        if has "snap"; then
+        if has_cmd "snap"; then
             sudo snap install ghostty --classic
         fi
-        if has "pacman"; then
+        if has_cmd "pacman"; then
             sudo pacman -S --needed --noconfirm - < "${lib_path}/pacman.txt"
         fi
     fi
@@ -100,7 +100,7 @@ do_mise() {
     notify $TITLE "start: mise"
     reload
 
-    if has "mise"; then
+    if has_cmd "mise"; then
         RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)" \
             mise install
         notify $SUCCESS "  success"
@@ -112,7 +112,7 @@ do_libs() {
     reload
 
     notify $TITLE "library: python"
-    if has "pip"; then
+    if has_cmd "pip"; then
         if ! is_phone; then
             pip install --upgrade pip
             pip install -r "${lib_path}/requirements.txt"
@@ -126,7 +126,7 @@ do_libs() {
     fi
 
     notify $TITLE "library: rust"
-    if has "cargo"; then
+    if has_cmd "cargo"; then
         if ! is_phone; then
             cargo install aoc-cli
         fi
@@ -134,7 +134,7 @@ do_libs() {
     fi
 
     notify $TITLE "library: node"
-    if has "npm"; then
+    if has_cmd "npm"; then
         if ! is_phone; then
             npm install -g npm
         fi
@@ -146,7 +146,7 @@ do_libs() {
     fi
 
     notify $TITLE "library: ocaml"
-    if has "opam"; then
+    if has_cmd "opam"; then
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         # https://github.com/ocaml/opam/issues/5968
         opam init --no
@@ -160,7 +160,7 @@ do_repos() {
     notify $TITLE "start: repos"
     reload
 
-    if has "python"; then
+    if has_cmd "python"; then
         python "${lib_path}/repos.py"
         notify $SUCCESS "  success"
     fi
@@ -170,7 +170,7 @@ do_nvim() {
     notify $TITLE "start: neovim"
     reload
 
-    if has "nvim"; then
+    if has_cmd "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
         nvim --headless "+MasonToolsUpdateSync" +qa

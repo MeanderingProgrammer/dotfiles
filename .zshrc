@@ -1,40 +1,66 @@
-# ---- gets displayed on line running command ---- #
+# ---- displayed on line running command ---- #
 PS1='%n@%m %~$ '
 
-# ---- xdg base directory ---- #
-# https://wiki.archlinux.org/title/XDG_Base_Directory
+# ----                 xdg base directory                  ---- #
+# ---- https://wiki.archlinux.org/title/XDG_Base_Directory ---- #
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # configuration data
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # data that should persist between restarts
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # data that is not important or portable enough
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"       # non-essential cached data
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # non-essential runtime and other data
 
-# ---- history configuration ---- #
-zsh_state_home="${XDG_STATE_HOME}/zsh"
-if [[ ! -d $zsh_state_home ]]; then
-    mkdir -p $zsh_state_home
-fi
+# ----      utility functions       ---- #
+# ---- written longer for debugging ---- #
+has() {
+    if command -v "${1}" > /dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
 
-# man zshoptions
+safe_directory() {
+    if [[ ! -d "${1}" ]]; then
+        mkdir -p "${1}"
+    fi
+}
+
+safe_source() {
+    if [[ -f "${1}" ]]; then
+        source "${1}"
+    fi
+}
+
+time_cmd() {
+    local name="${1}"
+    shift
+    if [[ -o interactive ]] && has "gdate"; then
+        local time_start=$(gdate +%s%3N)
+        "$@"
+        local time_end=$(gdate +%s%3N)
+        echo "${name} time: $((time_end - time_start))ms"
+    else
+        "$@"
+    fi
+}
+
+# ---- history configuration ---- #
+# ----    man zshoptions     ---- #
+zsh_state_home="${XDG_STATE_HOME}/zsh"
+safe_directory "${zsh_state_home}"
+
 HISTSIZE=8000 # history kept in memory
 SAVEHIST=5000 # history saved to file
-HISTFILE="$zsh_state_home/history"
+HISTFILE="${zsh_state_home}/history"
 setopt append_history
 setopt inc_append_history
 setopt share_history
 
 # ---- source all shell configurations ---- #
-init_shell() {
+shell_init() {
     for source_file in "${XDG_CONFIG_HOME}"/zsh/*.zsh; do
-        source "${source_file}"
+        safe_source "${source_file}"
     done
 }
 
-if [[ -o interactive && -x "$(command -v gdate)" ]]; then
-    shell_start=$(gdate +%s%3N)
-    init_shell
-    shell_end=$(gdate +%s%3N)
-    echo "init time: $((shell_end - shell_start))ms"
-else
-    init_shell
-fi
+time_cmd "init" shell_init

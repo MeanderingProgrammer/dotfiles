@@ -5,11 +5,11 @@ homebrew_init() {
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
     local brew_services=()
     # init
-    if [[ -x ${brew_mac} ]]; then
-        eval "$($brew_mac shellenv)"
+    if [[ -x "${brew_mac}" ]]; then
+        eval "$("${brew_mac}" shellenv)"
         brew_services+=("ollama" "postgresql@17")
-    elif [[ -x ${brew_linux} ]]; then
-        eval "$($brew_linux shellenv)"
+    elif [[ -x "${brew_linux}" ]]; then
+        eval "$("${brew_linux}" shellenv)"
     fi
     # start services
     if [[ "${#brew_services[@]}" == 0 ]]; then
@@ -17,14 +17,14 @@ homebrew_init() {
     fi
     local services=$(brew services list)
     for service in "${brew_services[@]}"; do
-        local running=$(echo ${services} | grep "$service.*started")
-        if [[ -z $running ]]; then
-            brew services start $service
+        local running=$(echo "${services}" | grep "${service}.*started")
+        if [[ -z "${running}" ]]; then
+            brew services start "${service}"
         fi
     done
 }
 
-if [[ -z $HOMEBREW_PREFIX ]]; then
+if [[ -z "${HOMEBREW_PREFIX}" ]]; then
     homebrew_init
 fi
 
@@ -49,10 +49,7 @@ export NODE_REPL_HISTORY="${XDG_STATE_HOME}/node_repl_history"
 
 # opam
 export OPAMROOT="${XDG_DATA_HOME}/opam"
-opam_init="${OPAMROOT}/opam-init/init.zsh"
-if [[ -f $opam_init ]]; then
-    source "${opam_init}"
-fi
+safe_source "${OPAMROOT}/opam-init/init.zsh"
 
 # python
 export PYTHON_HISTORY="${XDG_STATE_HOME}/python_history"
@@ -109,13 +106,13 @@ export PATH="${XDG_CONFIG_HOME}/bin:$PATH"
 export PATH="${HOME}/bin:$PATH"
 
 # prepend homebrew bins (highest priority)
-if [[ -n $HOMEBREW_PREFIX ]]; then
+if [[ -n "${HOMEBREW_PREFIX}" ]]; then
     export PATH="${HOMEBREW_PREFIX}/opt/sqlite/bin:$PATH"
     export PATH="${HOMEBREW_PREFIX}/bin:$PATH"
 fi
 
 # append system32 bins (lowest priority)
-if [[ -d $SYSTEM_32 ]]; then
+if [[ -d "${SYSTEM_32}" ]]; then
     export PATH="$PATH:${SYSTEM_32}"
     export PATH="$PATH:${SYSTEM_32}/WindowsPowerShell/v1.0"
 fi
@@ -127,16 +124,16 @@ if [[ $(ulimit -n) -lt 8192 ]]; then
 fi
 
 # fzf
-if [[ -x "$(command -v fzf)" ]]; then
+if has "fzf"; then
     eval "$(fzf --zsh)"
 fi
 
 # mise
-if [[ -x "$(command -v mise)" ]]; then
+if has "mise"; then
     eval "$(mise activate zsh)"
 fi
 
 # ssh
-if [[ -z $SSH_AUTH_SOCK ]]; then
+if [[ -z "${SSH_AUTH_SOCK}" ]]; then
     eval "$(ssh-agent -s)"
 fi
