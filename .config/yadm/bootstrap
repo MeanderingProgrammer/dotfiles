@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -euo pipefail
-
 FAIL=31
 SUCCESS=32
 TITLE=35
@@ -16,7 +14,7 @@ reload() {
     source ~/.zshrc
 }
 
-has_command() {
+has() {
     if command -v "${1}" > /dev/null; then
         notify $INFO "  present: ${1}"
         return 0
@@ -26,11 +24,11 @@ has_command() {
     fi
 }
 
-is_computer() {
-    [[ $(uname -o) != "Android" ]]
+is_phone() {
+    [[ $(uname -o) == "Android" ]]
 }
 
-lib_dir="$(dirname $0)/lib"
+lib_path="$(dirname $0)/lib"
 
 main() {
     if [[ "${#}" == 0 ]]; then
@@ -63,8 +61,8 @@ do_deps() {
     reload
 
     notify $TITLE "dependency: brew"
-    if has_command "brew"; then
-        brew bundle --file "${lib_dir}/Brewfile"
+    if has "brew"; then
+        brew bundle --file "${lib_path}/Brewfile"
         brew update
         brew upgrade
         brew cleanup
@@ -72,12 +70,12 @@ do_deps() {
     fi
 
     notify $TITLE "dependency: tools"
-    if has_command "pkg"; then
+    if has "pkg"; then
         pkg update --yes
         pkg upgrade --yes
         pkg clean
         notify $SUCCESS "  success"
-    elif has_command "apt"; then
+    elif has "apt"; then
         sudo apt update --yes
         sudo apt upgrade --yes
         sudo apt autoremove --yes && sudo apt clean
@@ -85,18 +83,15 @@ do_deps() {
     fi
 
     notify $TITLE "dependency: applications"
-    if is_computer && ! has_command "wslinfo"; then
-        if has_command "apt"; then
-            source "${lib_dir}/wezterm.sh"
+    if ! is_phone && ! has "wslinfo"; then
+        if has "apt"; then
+            source "${lib_path}/wezterm.sh"
         fi
-        if has_command "snap"; then
+        if has "snap"; then
             sudo snap install ghostty --classic
         fi
-        if has_command "pacman"; then
-            sudo pacman -S --noconfirm \
-              firefox \
-              ghostty \
-              wezterm
+        if has "pacman"; then
+            sudo pacman -S --needed --noconfirm - < "${lib_path}/pacman.txt"
         fi
     fi
 }
@@ -105,7 +100,7 @@ do_mise() {
     notify $TITLE "start: mise"
     reload
 
-    if has_command "mise"; then
+    if has "mise"; then
         RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)" \
             mise install
         notify $SUCCESS "  success"
@@ -117,10 +112,10 @@ do_libs() {
     reload
 
     notify $TITLE "library: python"
-    if has_command "pip"; then
-        if is_computer; then
+    if has "pip"; then
+        if ! is_phone; then
             pip install --upgrade pip
-            pip install -r "${lib_dir}/requirements.txt"
+            pip install -r "${lib_path}/requirements.txt"
         else
             pip install click
             pip install GitPython
@@ -131,16 +126,16 @@ do_libs() {
     fi
 
     notify $TITLE "library: rust"
-    if has_command "cargo"; then
-        if is_computer; then
+    if has "cargo"; then
+        if ! is_phone; then
             cargo install aoc-cli
         fi
         notify $SUCCESS "  success"
     fi
 
     notify $TITLE "library: node"
-    if has_command "npm"; then
-        if is_computer; then
+    if has "npm"; then
+        if ! is_phone; then
             npm install -g npm
         fi
         npm install -g aws-cdk
@@ -151,7 +146,7 @@ do_libs() {
     fi
 
     notify $TITLE "library: ocaml"
-    if has_command "opam"; then
+    if has "opam"; then
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         # https://github.com/ocaml/opam/issues/5968
         opam init --no
@@ -165,8 +160,8 @@ do_repos() {
     notify $TITLE "start: repos"
     reload
 
-    if has_command "python"; then
-        python "${lib_dir}/repos.py"
+    if has "python"; then
+        python "${lib_path}/repos.py"
         notify $SUCCESS "  success"
     fi
 }
@@ -175,7 +170,7 @@ do_nvim() {
     notify $TITLE "start: neovim"
     reload
 
-    if has_command "nvim"; then
+    if has "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
         nvim --headless "+MasonToolsUpdateSync" +qa

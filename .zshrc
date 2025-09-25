@@ -25,7 +25,7 @@ setopt share_history
 
 # ---- source all shell configurations ---- #
 init_shell() {
-    for source_file in "${XDG_CONFIG_HOME}"/zsh/*.sh; do
+    for source_file in "${XDG_CONFIG_HOME}"/zsh/*.zsh; do
         source "${source_file}"
     done
 }

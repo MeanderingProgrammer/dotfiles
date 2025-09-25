@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 FAIL=31
 SUCCESS=32
 TITLE=35
@@ -11,7 +9,7 @@ notify() {
     echo -e "\033[0;${1}m${2}\033[0m"
 }
 
-has_command() {
+has() {
     if command -v "${1}" > /dev/null; then
         notify $INFO "  present: ${1}"
         return 0
@@ -21,8 +19,8 @@ has_command() {
     fi
 }
 
-is_computer() {
-    [[ $(uname -o) != "Android" ]]
+is_phone() {
+    [[ $(uname -o) == "Android" ]]
 }
 
 main() {
@@ -48,7 +46,7 @@ main() {
 
 do_deps() {
     notify $TITLE "start: installing dependencies"
-    if has_command "pkg"; then
+    if has "pkg"; then
         pkg install --yes \
           bat \
           clang \
@@ -78,7 +76,7 @@ do_deps() {
           yadm \
           zsh
         notify $SUCCESS "  success"
-    elif has_command "apt"; then
+    elif has "apt"; then
         sudo apt --yes install \
           bubblewrap \
           build-essential \
@@ -103,7 +101,7 @@ do_deps() {
           zlib1g-dev \
           zsh
         notify $SUCCESS "  success"
-    elif has_command "pacman"; then
+    elif has "pacman"; then
         sudo pacman -S --noconfirm \
           git \
           man-db \
@@ -146,9 +144,9 @@ do_limit() {
 
 do_homebrew() {
     notify $TITLE "start: installing homebrew"
-    if ! is_computer; then
-        notify $INFO "  skip: not computer"
-    elif has_command "brew"; then
+    if is_phone; then
+        notify $INFO "  skip: phone"
+    elif has "brew"; then
         notify $INFO "  skip: already done"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -161,7 +159,7 @@ evaluate_homebrew() {
     notify $TITLE "start: evaluating homebrew"
     local brew_mac="/opt/homebrew/bin/brew"
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
-    if has_command "brew"; then
+    if has "brew"; then
         notify $INFO "  skip: already done"
     elif [[ -x ${brew_mac} ]]; then
         eval "$($brew_mac shellenv)"
@@ -220,7 +218,7 @@ setup_ssh() {
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
     notify $TITLE "start: copy command ${2}"
     local copy_command
-    if has_command "pbcopy"; then
+    if has "pbcopy"; then
         copy_command="pbcopy"
     elif [[ "${XDG_SESSION_TYPE}" == "x11" ]]; then
         copy_command="xclip -selection clipboard"

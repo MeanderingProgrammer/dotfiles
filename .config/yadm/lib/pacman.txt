@@ -1,0 +1,4 @@
+firefox
+ghostty
+kitty
+wezterm
