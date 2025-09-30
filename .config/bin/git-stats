@@ -270,10 +270,31 @@ def env(name: str) -> str:
     return value
 
 
-@click.group()
-def cli() -> None:
+@click.group(
+    context_settings=dict(
+        help_option_names=["-h", "--help"],
+    ),
+    invoke_without_command=True,
+)
+@click.pass_context
+def cli(ctx: click.Context) -> None:
     """GitHub repo statistics"""
-    pass
+    if ctx.invoked_subcommand is None:
+        update()
+
+
+@cli.command()
+def update() -> None:
+    """Update statistics from API"""
+    api = GithubApi.new()
+    cache = TrafficCache.new()
+    for name in REPOS:
+        repo = Repo(
+            name=name,
+            clones=api.traffic(name, "clones"),
+            views=api.traffic(name, "views"),
+        )
+        cache.add(repo)
 
 
 @cli.command()
@@ -306,20 +327,6 @@ def table(group: Group) -> None:
     for name in REPOS:
         repo = repos.get(name)
         Output.new(group, repo).table()
-
-
-@cli.command()
-def update() -> None:
-    """Update statistics from API"""
-    api = GithubApi.new()
-    cache = TrafficCache.new()
-    for name in REPOS:
-        repo = Repo(
-            name=name,
-            clones=api.traffic(name, "clones"),
-            views=api.traffic(name, "views"),
-        )
-        cache.add(repo)
 
 
 if __name__ == "__main__":
