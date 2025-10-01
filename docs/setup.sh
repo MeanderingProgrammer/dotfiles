@@ -11,10 +11,10 @@ notify() {
 
 has_cmd() {
     if command -v "${1}" > /dev/null; then
-        notify $INFO "  present: ${1}"
+        notify "${INFO}" "  present: ${1}"
         return 0
     else
-        notify $INFO "  missing: ${1}"
+        notify "${INFO}" "  missing: ${1}"
         return 1
     fi
 }
@@ -25,7 +25,7 @@ is_phone() {
 
 main() {
     if [[ "${#}" -ne 1 ]]; then
-        notify $FAIL "usage: <command>"
+        notify "${FAIL}" "usage: <command>"
         exit 1
     fi
     case ${1} in
@@ -37,15 +37,15 @@ main() {
         "yadm") do_yadm ;;
         "clean") do_clean ;;
         *)
-            notify $FAIL "unknown command: ${1}"
-            notify $FAIL "valid commands: deps, shell, limit, brew, git, yadm, clean"
+            notify "${FAIL}" "unknown command: ${1}"
+            notify "${FAIL}" "valid commands: deps, shell, limit, brew, git, yadm, clean"
             exit 1
             ;;
     esac
 }
 
 do_deps() {
-    notify $TITLE "start: installing dependencies"
+    notify "${TITLE}" "start: installing dependencies"
     if has_cmd "pkg"; then
         pkg install --yes \
           bat \
@@ -75,7 +75,7 @@ do_deps() {
           xz-utils \
           yadm \
           zsh
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     elif has_cmd "apt"; then
         sudo apt --yes install \
           bubblewrap \
@@ -100,7 +100,7 @@ do_deps() {
           xz-utils \
           zlib1g-dev \
           zsh
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     elif has_cmd "pacman"; then
         sudo pacman -S --noconfirm \
           git \
@@ -108,115 +108,115 @@ do_deps() {
           man-pages \
           wl-clipboard \
           zsh
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     else
-        notify $INFO "  skip: unknown package manager"
+        notify "${INFO}" "  skip: unknown package manager"
     fi
 }
 
 do_shell() {
-    notify $TITLE "start: changing shell to zsh"
-    local shell_type=$(basename "$SHELL")
+    notify "${TITLE}" "start: changing shell to zsh"
+    local shell_type=$(basename "${SHELL}")
     if [[ "${shell_type}" == "bash" ]]; then
         chsh -s $(which zsh)
-        notify $SUCCESS "  success: restart system"
+        notify "${SUCCESS}" "  success: restart system"
     elif [[ "${shell_type}" == "zsh" ]]; then
-        notify $INFO "  skip: already using zsh"
+        notify "${INFO}" "  skip: already using zsh"
     else
-        notify $FAIL "  error: unhandled shell ${shell_type}"
+        notify "${FAIL}" "  error: unhandled shell ${shell_type}"
         exit 1
     fi
 }
 
 do_limit() {
-    notify $TITLE "start: increasing limits"
+    notify "${TITLE}" "start: increasing limits"
     local limit_directory="/Library/LaunchDaemons"
     if [[ -d ${limit_directory} ]]; then
         local limit_file="limit.maxfiles.plist"
-        sudo cp "$HOME/docs/${limit_file}" "${limit_directory}"
+        sudo cp "${HOME}/docs/${limit_file}" "${limit_directory}"
         sudo chown root:wheel "${limit_directory}/${limit_file}"
         sudo launchctl load -w "${limit_directory}/${limit_file}"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     else
-        notify $INFO "  skip: missing ${limit_directory}"
+        notify "${INFO}" "  skip: missing ${limit_directory}"
     fi
 }
 
 do_homebrew() {
-    notify $TITLE "start: installing homebrew"
+    notify "${TITLE}" "start: installing homebrew"
     if is_phone; then
-        notify $INFO "  skip: phone"
+        notify "${INFO}" "  skip: phone"
     elif has_cmd "brew"; then
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
         evaluate_homebrew
     fi
 }
 
 evaluate_homebrew() {
-    notify $TITLE "start: evaluating homebrew"
+    notify "${TITLE}" "start: evaluating homebrew"
     local brew_mac="/opt/homebrew/bin/brew"
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
     if has_cmd "brew"; then
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     elif [[ -x "${brew_mac}" ]]; then
         eval "$("${brew_mac}" shellenv)"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     elif [[ -x "${brew_linux}" ]]; then
         eval "$("${brew_linux}" shellenv)"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     else
-        notify $INFO "  skip: missing init"
+        notify "${INFO}" "  skip: missing init"
         return 1
     fi
 }
 
 brew_install() {
-    notify $TITLE "start: installing ${1} with homebrew"
+    notify "${TITLE}" "start: installing ${1} with homebrew"
     if evaluate_homebrew; then
         brew install ${1}
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 setup_file() {
-    notify $TITLE "start: creating empty file ${1}"
+    notify "${TITLE}" "start: creating empty file ${1}"
     if [[ -f ${1} ]]; then
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     else
         local directory=$(dirname ${1})
         mkdir -p ${directory}
         touch ${1}
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 setup_ssh() {
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    notify $TITLE "start: adding hosts ${2}"
+    notify "${TITLE}" "start: adding hosts ${2}"
     local hosts=$(cat ${1} | grep ${2})
     if [[ -z "${hosts}" ]]; then
         ssh-keyscan ${2} >> ${1}
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     else
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-    notify $TITLE "start: generating SSH key ${2}"
-    local ssh_file="$HOME/.ssh/${3}"
+    notify "${TITLE}" "start: generating SSH key ${2}"
+    local ssh_file="${HOME}/.ssh/${3}"
     if [[ -f ${ssh_file} ]]; then
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     else
         ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    notify $TITLE "start: copy command ${2}"
+    notify "${TITLE}" "start: copy command ${2}"
     local copy_command
     if has_cmd "pbcopy"; then
         copy_command="pbcopy"
@@ -225,7 +225,7 @@ setup_ssh() {
     else
         copy_command="wl-copy"
     fi
-    notify $INFO "  cat ${ssh_file}.pub | ${copy_command}"
+    notify "${INFO}" "  cat ${ssh_file}.pub | ${copy_command}"
 }
 
 do_git() {
@@ -233,7 +233,7 @@ do_git() {
     brew_install "git"
 
     # Setup SSH keys for each git host
-    local known_hosts="$HOME/.ssh/known_hosts"
+    local known_hosts="${HOME}/.ssh/known_hosts"
     setup_file ${known_hosts}
     setup_ssh ${known_hosts} "github.com" "id_ed25519"
     setup_ssh ${known_hosts} "gitlab.com" "id_ed25519_lab"
@@ -245,20 +245,20 @@ do_yadm() {
     brew_install "yadm"
 
     # https://yadm.io/docs/bootstrap
-    notify $TITLE "start: cloning dotfiles repo"
-    local yadm_directory="$HOME/.config/yadm"
+    notify "${TITLE}" "start: cloning dotfiles repo"
+    local yadm_directory="${HOME}/.config/yadm"
     if [[ -d ${yadm_directory} ]]; then
-        notify $INFO "  skip: already done"
+        notify "${INFO}" "  skip: already done"
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 do_clean() {
-    notify $TITLE "start: deleting setup.sh"
+    notify "${TITLE}" "start: deleting setup.sh"
     rm -rf "setup.sh"
-    notify $SUCCESS "  success"
+    notify "${SUCCESS}" "  success"
 }
 
 main "$@"

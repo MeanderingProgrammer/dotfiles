@@ -3,10 +3,10 @@ PS1='%n@%m %~$ '
 
 # ----                 xdg base directory                  ---- #
 # ---- https://wiki.archlinux.org/title/XDG_Base_Directory ---- #
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"    # configuration data
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"   # data that should persist between restarts
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}" # data that is not important or portable enough
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"       # non-essential cached data
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"    # configuration data
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"   # data that should persist between restarts
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" # data that is not important or portable enough
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"       # non-essential cached data
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # non-essential runtime and other data
 
 # ----      utility functions       ---- #

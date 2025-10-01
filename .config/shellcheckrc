@@ -1,8 +1,17 @@
 shell=zsh
 external-sources=true
 
+# enable checks disabled by default
+enable=avoid-negated-conditions # suggest removing unnecessary comparison negations
+enable=quote-safe-variables     # suggest quoting variables without metacharacters
+enable=require-double-brackets  # require [[ and warn about [
+enable=require-variable-braces  # suggest putting braces around all variable references
+
+# exclude types of warnings
 disable=1090 # can't follow non-constant source
+disable=1091 # not following
+disable=2024 # sudo doesn't affect redirects
 disable=2034 # foo appears unused
 disable=2046 # quote this to prevent word splitting
 disable=2086 # double quote to prevent globbing and word splitting
-disable=2155 # declare and assign separately
+disable=2155 # declare and assign separately to avoid masking return values

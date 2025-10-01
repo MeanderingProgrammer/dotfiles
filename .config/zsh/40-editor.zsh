@@ -2,7 +2,7 @@
 
 # change default editor
 export VISUAL="$(which nvim)"
-export EDITOR="$VISUAL"
+export EDITOR="${VISUAL}"
 
 # aliases common editor commands
 alias n='$VISUAL .'

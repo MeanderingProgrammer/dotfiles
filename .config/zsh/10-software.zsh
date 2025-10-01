@@ -94,27 +94,27 @@ export SYSTEM_32="/mnt/c/Windows/System32"
 # ---- path ---- #
 
 # prepend go bin
-export PATH="${GOBIN}:$PATH"
+export PATH="${GOBIN}:${PATH}"
 
 # prepend mason bin
-export PATH="${MASON_HOME}/bin:$PATH"
+export PATH="${MASON_HOME}/bin:${PATH}"
 
 # prepend config bin
-export PATH="${XDG_CONFIG_HOME}/bin:$PATH"
+export PATH="${XDG_CONFIG_HOME}/bin:${PATH}"
 
 # prepend user bin
-export PATH="${HOME}/bin:$PATH"
+export PATH="${HOME}/bin:${PATH}"
 
 # prepend homebrew bins (highest priority)
 if [[ -n "${HOMEBREW_PREFIX}" ]]; then
-    export PATH="${HOMEBREW_PREFIX}/opt/sqlite/bin:$PATH"
-    export PATH="${HOMEBREW_PREFIX}/bin:$PATH"
+    export PATH="${HOMEBREW_PREFIX}/opt/sqlite/bin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/bin:${PATH}"
 fi
 
 # append system32 bins (lowest priority)
 if [[ -d "${SYSTEM_32}" ]]; then
-    export PATH="$PATH:${SYSTEM_32}"
-    export PATH="$PATH:${SYSTEM_32}/WindowsPowerShell/v1.0"
+    export PATH="${PATH}:${SYSTEM_32}"
+    export PATH="${PATH}:${SYSTEM_32}/WindowsPowerShell/v1.0"
 fi
 
 # ---- init ---- #
@@ -125,7 +125,7 @@ fi
 
 # fzf
 if has "fzf"; then
-    eval "$(fzf --zsh)"
+    source <(fzf --zsh)
 fi
 
 # mise

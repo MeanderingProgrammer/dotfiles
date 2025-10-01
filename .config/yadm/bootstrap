@@ -10,16 +10,16 @@ notify() {
 }
 
 reload() {
-    notify $INFO "  reloading: zsh"
+    notify "${INFO}" "  reloading: zsh"
     source ~/.zshrc
 }
 
 has_cmd() {
     if command -v "${1}" > /dev/null; then
-        notify $INFO "  present: ${1}"
+        notify "${INFO}" "  present: ${1}"
         return 0
     else
-        notify $INFO "  missing: ${1}"
+        notify "${INFO}" "  missing: ${1}"
         return 1
     fi
 }
@@ -45,47 +45,47 @@ main() {
             "repos") do_repos ;;
             "nvim") do_nvim ;;
             *)
-                notify $FAIL "unknown command: ${1}"
-                notify $FAIL "valid commands: deps, mise, libs, repos, nvim"
+                notify "${FAIL}" "unknown command: ${1}"
+                notify "${FAIL}" "valid commands: deps, mise, libs, repos, nvim"
                 exit 1
                 ;;
         esac
     else
-        notify $FAIL "usage: <command>?"
+        notify "${FAIL}" "usage: <command>?"
         exit 1
     fi
 }
 
 do_deps() {
-    notify $TITLE "start: dependencies"
+    notify "${TITLE}" "start: dependencies"
     reload
 
-    notify $TITLE "dependency: brew"
+    notify "${TITLE}" "dependency: brew"
     if has_cmd "brew"; then
         brew bundle --file "${lib_path}/Brewfile"
         brew update
         brew upgrade
         brew cleanup
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
-    notify $TITLE "dependency: tools"
+    notify "${TITLE}" "dependency: tools"
     if has_cmd "pkg"; then
         pkg update --yes
         pkg upgrade --yes
         pkg clean
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     elif has_cmd "apt"; then
         sudo apt update --yes
         sudo apt upgrade --yes
         sudo apt autoremove --yes && sudo apt clean
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
-    notify $TITLE "dependency: applications"
+    notify "${TITLE}" "dependency: applications"
     if ! is_phone && ! has_cmd "wslinfo"; then
         if has_cmd "apt"; then
-            source "${lib_path}/wezterm.sh"
+            source "${lib_path}/wezterm.zsh"
         fi
         if has_cmd "snap"; then
             sudo snap install ghostty --classic
@@ -97,21 +97,21 @@ do_deps() {
 }
 
 do_mise() {
-    notify $TITLE "start: mise"
+    notify "${TITLE}" "start: mise"
     reload
 
     if has_cmd "mise"; then
         RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl)" \
             mise install
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 do_libs() {
-    notify $TITLE "start: libraries"
+    notify "${TITLE}" "start: libraries"
     reload
 
-    notify $TITLE "library: python"
+    notify "${TITLE}" "library: python"
     if has_cmd "pip"; then
         if ! is_phone; then
             pip install --upgrade pip
@@ -122,18 +122,18 @@ do_libs() {
             pip install pydantic
             pip install requests
         fi
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
-    notify $TITLE "library: rust"
+    notify "${TITLE}" "library: rust"
     if has_cmd "cargo"; then
         if ! is_phone; then
             cargo install aoc-cli
         fi
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
-    notify $TITLE "library: node"
+    notify "${TITLE}" "library: node"
     if has_cmd "npm"; then
         if ! is_phone; then
             npm install -g npm
@@ -142,39 +142,39 @@ do_libs() {
         npm install -g neovim
         npm install -g pnpm
         npm install -g yarn
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 
-    notify $TITLE "library: ocaml"
+    notify "${TITLE}" "library: ocaml"
     if has_cmd "opam"; then
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         # https://github.com/ocaml/opam/issues/5968
         opam init --no
         opam update
         opam upgrade --yes
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 do_repos() {
-    notify $TITLE "start: repos"
+    notify "${TITLE}" "start: repos"
     reload
 
     if has_cmd "python"; then
         python "${lib_path}/repos.py"
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
 do_nvim() {
-    notify $TITLE "start: neovim"
+    notify "${TITLE}" "start: neovim"
     reload
 
     if has_cmd "nvim"; then
         nvim --headless "+Lazy! update" +qa
         nvim --headless "+TSUpdateSync" +qa
         nvim --headless "+MasonToolsUpdateSync" +qa
-        notify $SUCCESS "  success"
+        notify "${SUCCESS}" "  success"
     fi
 }
 
