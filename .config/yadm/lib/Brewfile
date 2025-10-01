@@ -65,8 +65,9 @@ cask "discord"
 cask "elgato-stream-deck"
 cask "google-chrome"
 cask "libreoffice"
-cask "private-internet-access"
+cask "protonvpn"
 cask "rectangle"
+cask "transmission"
 cask "vlc"
 
 # other
