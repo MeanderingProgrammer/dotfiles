@@ -91,7 +91,7 @@ do_deps() {
             sudo snap install ghostty --classic
         fi
         if has_cmd "pacman"; then
-            sudo pacman -S --needed --noconfirm - < "${lib_path}/pacman.txt"
+            sudo pacman -Syu --needed --noconfirm - < "${lib_path}/pacman.txt"
         fi
     fi
 }
