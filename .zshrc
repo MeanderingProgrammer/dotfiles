@@ -7,7 +7,7 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"    # configuration 
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"   # data that should persist between restarts
 export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" # data that is not important or portable enough
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"       # non-essential cached data
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"  # non-essential runtime and other data
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"    # non-essential runtime and other data
 
 # ----      utility functions       ---- #
 # ---- written longer for debugging ---- #
@@ -35,10 +35,10 @@ time_cmd() {
     local name="${1}"
     shift
     if [[ -o interactive ]] && has "gdate"; then
-        local time_start=$(gdate +%s%3N)
+        local t1=$(gdate +%s%3N)
         "$@"
-        local time_end=$(gdate +%s%3N)
-        echo "${name} time: $((time_end - time_start))ms"
+        local t2=$(gdate +%s%3N)
+        echo "${name} time: $((t2 - t1))ms"
     else
         "$@"
     fi
