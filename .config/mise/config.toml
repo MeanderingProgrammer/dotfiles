@@ -34,13 +34,8 @@ uv = "0.8.11"
 zig = "0.15.1"
 
 [env]
-NVIM_ROOT = """
-{% if cwd | basename == 'neovim' %}\
-  {{cwd}}\
-{% else %}\
-  ~/dev/repos/tools/neovim\
-{% endif %}\
-"""
+PROJECT = "{{ cwd | basename }}"
+NVIM_ROOT = "{% if env.PROJECT == 'neovim' %}{{ cwd }}{% else %}~/dev/repos/tools/neovim{% endif %}"
 
 [tasks.nvim-clean]
 dir = "{{env.NVIM_ROOT}}"
