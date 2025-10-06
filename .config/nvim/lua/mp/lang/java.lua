@@ -10,6 +10,15 @@ require('mp.lib.lang').add({
     },
     lsp = {
         jdtls = {
+            root_markers = {
+                'settings.gradle',
+                'settings.gradle.kts',
+                'build.gradle',
+                'build.gradle.kts',
+                'pom.xml',
+                'build.xml',
+                '.git',
+            },
             -- https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line
             settings = {
                 java = {
