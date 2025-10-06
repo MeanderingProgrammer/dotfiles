@@ -19,6 +19,10 @@ has_cmd() {
     fi
 }
 
+is_mac() {
+    [[ $(uname -o) == "Darwin" ]]
+}
+
 is_phone() {
     [[ $(uname -o) == "Android" ]]
 }
@@ -31,14 +35,14 @@ main() {
     case ${1} in
         "deps") do_deps ;;
         "shell") do_shell ;;
-        "limit") do_limit ;;
+        "prefs") do_prefs ;;
         "brew") do_homebrew ;;
         "git") do_git ;;
         "yadm") do_yadm ;;
         "clean") do_clean ;;
         *)
             notify "${FAIL}" "unknown command: ${1}"
-            notify "${FAIL}" "valid commands: deps, shell, limit, brew, git, yadm, clean"
+            notify "${FAIL}" "valid commands: deps, shell, prefs, brew, git, yadm, clean"
             exit 1
             ;;
     esac
@@ -128,14 +132,22 @@ do_shell() {
     fi
 }
 
-do_limit() {
+do_prefs() {
+    notify "${TITLE}" "start: modifying defaults"
+    if is_mac; then
+        defaults write com.apple.finder AppleShowAllFiles -boolean true
+    else
+        notify "${INFO}" "  skip: not mac"
+    fi
+
     notify "${TITLE}" "start: increasing limits"
     local limit_directory="/Library/LaunchDaemons"
     if [[ -d ${limit_directory} ]]; then
         local limit_file="limit.maxfiles.plist"
+        local limit_path="${limit_directory}/${limit_file}"
         sudo cp "${HOME}/docs/${limit_file}" "${limit_directory}"
-        sudo chown root:wheel "${limit_directory}/${limit_file}"
-        sudo launchctl load -w "${limit_directory}/${limit_file}"
+        sudo chown root:wheel "${limit_path}"
+        sudo launchctl load -w "${limit_path}"
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: missing ${limit_directory}"
