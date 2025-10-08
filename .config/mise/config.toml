@@ -45,5 +45,9 @@ run = ["make distclean", "make clean"]
 dir = "{{env.NVIM_ROOT}}"
 run = ["make CMAKE_BUILD_TYPE=Release"]
 
+[tasks.nvim-test]
+dir = "{{env.NVIM_ROOT}}"
+run = ["make test"]
+
 [tasks.nvim-run]
 run = ["VIMRUNTIME={{env.NVIM_ROOT}}/runtime {{env.NVIM_ROOT}}/build/bin/nvim"]

@@ -7,7 +7,13 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"    # configuration 
 export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"   # data that should persist between restarts
 export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}" # data that is not important or portable enough
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"       # non-essential cached data
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"    # non-essential runtime and other data
+if [[ -z "${XDG_RUNTIME_DIR}" ]]; then                          # non-essential runtime and other data
+    if [[ -w "/tmp" ]]; then
+        export XDG_RUNTIME_DIR="/tmp/user/$(id -u)"
+    else
+        export XDG_RUNTIME_DIR="${TMPDIR}"
+    fi
+fi
 
 # ----      utility functions       ---- #
 # ---- written longer for debugging ---- #
@@ -20,8 +26,11 @@ has() {
 }
 
 safe_directory() {
-    if [[ ! -d "${1}" ]]; then
+    if [[ -n "${1}" && ! -d "${1}" ]]; then
         mkdir -p "${1}"
+        if [[ -n "${2}" ]]; then
+            chmod "${2}" "${1}"
+        fi
     fi
 }
 
@@ -43,6 +52,9 @@ time_cmd() {
         "$@"
     fi
 }
+
+# ---- xdg resources ---- #
+safe_directory "${XDG_RUNTIME_DIR}" "700"
 
 # ---- history configuration ---- #
 # ----    man zshoptions     ---- #
