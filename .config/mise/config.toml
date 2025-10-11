@@ -47,6 +47,7 @@ run = ["make CMAKE_BUILD_TYPE=Release"]
 
 [tasks.nvim-test]
 dir = "{{env.NVIM_ROOT}}"
+env = { NODE_PATH = "{{ exec(command='npm root -g') }}" }
 run = ["make test"]
 
 [tasks.nvim-run]
