@@ -1,14 +1,5 @@
 [settings]
-disable_backends = [
-  "cargo",
-  "dotnet",
-  "gem",
-  "go",
-  "npm",
-  "pipx",
-  "spm",
-  "vfox",
-]
+disable_backends = ["dotnet", "gem", "go", "pipx", "spm", "vfox"]
 
 [tools]
 "asdf:aws" = "2.18.3"
@@ -37,18 +28,23 @@ zig = "0.15.1"
 PROJECT = "{{ cwd | basename }}"
 NVIM_ROOT = "{% if env.PROJECT == 'neovim' %}{{ cwd }}{% else %}~/dev/repos/tools/neovim{% endif %}"
 
-[tasks.nvim-clean]
-dir = "{{env.NVIM_ROOT}}"
+[tasks."nvim:clean"]
+description = 'Neovim clean'
+dir = "{{ env.NVIM_ROOT }}"
 run = ["make distclean", "make clean"]
 
-[tasks.nvim-build]
-dir = "{{env.NVIM_ROOT}}"
-run = ["make CMAKE_BUILD_TYPE=Release"]
+[tasks."nvim:build"]
+description = 'Neovim build'
+dir = "{{ env.NVIM_ROOT }}"
+depends = "nvim:clean"
+run = "make CMAKE_BUILD_TYPE=Release"
 
-[tasks.nvim-test]
-dir = "{{env.NVIM_ROOT}}"
+[tasks."nvim:test"]
+description = 'Neovim test'
+dir = "{{ env.NVIM_ROOT }}"
 env = { NODE_PATH = "{{ exec(command='npm root -g') }}" }
-run = ["make test"]
+run = "make test"
 
-[tasks.nvim-run]
-run = ["VIMRUNTIME={{env.NVIM_ROOT}}/runtime {{env.NVIM_ROOT}}/build/bin/nvim"]
+[tasks."nvim:run"]
+description = 'Neovim run'
+run = "VIMRUNTIME={{ env.NVIM_ROOT }}/runtime {{ env.NVIM_ROOT }}/build/bin/nvim"
