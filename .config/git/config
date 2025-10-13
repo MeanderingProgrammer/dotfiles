@@ -1,23 +1,27 @@
-[user]
-    name = MeanderingProgrammer
-    email = meanderingprogrammer@gmail.com
-    signingkey = ~/.ssh/id_ed25519.pub
-[init]
-    defaultBranch = main
+[color]
+    grep = always
+[commit]
+    gpgsign = true
 [core]
     autocrlf = input
     commentChar = ";"
     pager = delta
-[commit]
-    gpgsign = true
-[tag]
-    gpgsign = true
+[delta]
+    side-by-side = true
+[diff]
+    tool = nvimdiff
+[difftool]
+    prompt = false
 [gpg]
     format = ssh
 [grep]
-    lineNumber = true
     column = true
-[color]
-    grep = always
-[delta]
-    side-by-side = true
+    lineNumber = true
+[init]
+    defaultBranch = main
+[tag]
+    gpgsign = true
+[user]
+    email = meanderingprogrammer@gmail.com
+    name = MeanderingProgrammer
+    signingkey = ~/.ssh/id_ed25519.pub

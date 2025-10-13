@@ -1,9 +1,17 @@
 # ---- editor ---- #
 
-# change default editor
-export VISUAL="$(which nvim)"
-export EDITOR="${VISUAL}"
+if has "nvim"; then
+    # defaults
+    export EDITOR="$(which nvim)"
+    export MANPAGER="nvim +Man!"
+fi
 
-# aliases common editor commands
-alias n='$VISUAL .'
-alias v='$VISUAL .'
+if [[ -n "${EDITOR}" ]]; then
+    # related settings
+    export VISUAL="${EDITOR}"
+    export SUDO_EDITOR="${EDITOR}"
+
+    # common commands
+    alias n='$EDITOR .'
+    alias v='$EDITOR .'
+fi
