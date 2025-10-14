@@ -1,37 +1,23 @@
-" no bell
+" general
 set belloff=all
-
-" disable viminfo
+set clipboard=unnamedplus
 set viminfofile=NONE
-
-" enable syntax highlighting
 syntax on
 
-" line number
+" ui
 set number
 set relativenumber
-
-" search
-set ignorecase
-set smartcase
-
-" wait time for detecting changes
-set updatetime=250
-
-" split below / right by default
+set scrolloff=8
+set sidescrolloff=8
 set splitbelow
 set splitright
 
-" indentation
+" editing
+set expandtab
+set ignorecase
 set shiftwidth=4
+set smartcase
+set smartindent
 set softtabstop=4
 set tabstop=4
-set expandtab
-set smartindent
-
-" keep context in view
-set scrolloff=8
-set sidescrolloff=8
-
-" use system clipboard
-set clipboard=unnamedplus
+set updatetime=250

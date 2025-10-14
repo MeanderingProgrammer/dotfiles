@@ -1,60 +1,42 @@
--- color
-vim.opt.termguicolors = true
+-- general
+vim.o.backup = false
+vim.o.clipboard = 'unnamedplus'
+vim.o.swapfile = false
+vim.o.switchbuf = 'usetab'
+vim.o.undofile = true
 
--- line number
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.signcolumn = 'yes'
-vim.opt.statuscolumn = '%s%=%{v:relnum?v:relnum:v:lnum} '
+-- ui
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.scrolloff = 8
+vim.o.showmode = false
+vim.o.sidescrolloff = 8
+vim.o.signcolumn = 'yes'
+vim.o.splitbelow = true
+vim.o.splitright = true
+vim.o.statuscolumn = '%s%=%{v:relnum?v:relnum:v:lnum} '
+vim.o.termguicolors = true
+vim.o.winborder = 'rounded'
 
--- mode is in status line
-vim.opt.showmode = false
+-- editing
+vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.expandtab = true
+vim.o.formatoptions = 'tqnl1j'
+vim.o.ignorecase = true
+vim.o.shiftwidth = 4
+vim.o.smartcase = true
+vim.o.smartindent = true
+vim.o.softtabstop = 4
+vim.o.spell = true
+vim.o.spelloptions = 'camel'
+vim.o.tabstop = 4
+vim.o.timeoutlen = 500
+vim.o.updatetime = 250
 
--- search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- wait time to complete mapping
-vim.opt.timeoutlen = 500
-
--- wait time for detecting changes
-vim.opt.updatetime = 250
-
--- backup / swap / undo
-vim.opt.backup = false
-vim.opt.swapfile = false
-vim.opt.undofile = true
-
--- split below / right by default
-vim.opt.splitbelow = true
-vim.opt.splitright = true
-
--- better completion experience
-vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-
--- indentation
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
-vim.opt.tabstop = 4
-vim.opt.expandtab = true
-vim.opt.smartindent = true
-
--- keep context in view
-vim.opt.scrolloff = 8
-vim.opt.sidescrolloff = 8
-
--- use system clipboard
-vim.opt.clipboard = 'unnamedplus'
-
--- spell checking
-vim.opt.spell = true
-
--- border style of floating windows
-vim.opt.winborder = 'rounded'
-
-vim.api.nvim_create_autocmd('BufEnter', {
+-- ftplugin options
+vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('mp.options', {}),
     callback = function()
-        vim.opt.formatoptions:remove({ 'r', 'o' })
+        vim.opt_local.formatoptions:remove({ 'c', 'r', 'o' })
     end,
 })
