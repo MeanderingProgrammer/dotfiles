@@ -16,11 +16,10 @@ require('mp.lib.lang').add({
         markdownlint = {
             filetypes = { 'markdown' },
             override = function(linter)
-                local args = {
+                linter.args = vim.list_extend(linter.args, {
                     '--config',
                     utils.lint_config('markdownlint.yaml'),
-                }
-                linter.args = vim.list_extend(linter.args or {}, args)
+                })
             end,
         },
     },
