@@ -13,8 +13,8 @@ return {
             keymaps = {
                 -- use finder keymaps
                 ['<C-c>'] = 'actions.close',
-                ['<C-v>'] = 'actions.select_vsplit',
-                ['<C-x>'] = 'actions.select_split',
+                ['<C-v>'] = { 'actions.select', opts = { vertical = true } },
+                ['<C-x>'] = { 'actions.select', opts = { horizontal = true } },
                 -- disable navigation keymaps
                 ['<C-h>'] = false,
                 ['<C-l>'] = false,

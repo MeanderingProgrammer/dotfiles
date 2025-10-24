@@ -2,7 +2,6 @@
 vim.o.backup = false
 vim.o.clipboard = 'unnamedplus'
 vim.o.swapfile = false
-vim.o.switchbuf = 'usetab'
 vim.o.undofile = true
 
 -- ui
