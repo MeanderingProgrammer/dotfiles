@@ -12,6 +12,6 @@ require('mp.lib.lang').add({
     },
     lsp = {
         clangd = {},
-        csharp_ls = {},
+        csharp_ls = { exe = 'csharp-ls' },
     },
 })

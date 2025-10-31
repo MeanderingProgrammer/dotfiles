@@ -67,8 +67,13 @@ return {
                 config.override(config)
             end
             vim.lsp.config(name, config)
-            local cmd = vim.lsp.config[name].cmd[1]
-            if vim.fn.executable(cmd) == 1 then
+            local exe = config.exe
+            if not exe then
+                local cmd = vim.lsp.config[name].cmd
+                exe = type(cmd) == 'table' and cmd[1] or nil
+            end
+            assert(type(exe) == 'string', ('no executable for %s'):format(name))
+            if vim.fn.executable(exe) == 1 then
                 vim.lsp.enable(name)
             end
         end

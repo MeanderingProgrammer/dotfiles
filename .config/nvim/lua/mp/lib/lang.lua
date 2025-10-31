@@ -22,6 +22,7 @@
 ---@field install boolean
 
 ---@class mp.lsp.Config: vim.lsp.Config
+---@field exe? string
 ---@field override? fun(config: vim.lsp.Config)
 
 ---@class mp.dap.Config
