@@ -17,6 +17,7 @@
 ---@field filetypes? string[]
 
 ---@class mp.tool.Config: mp.install.Config
+---@field version? string
 
 ---@class mp.install.Config
 ---@field install boolean
