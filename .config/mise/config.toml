@@ -34,7 +34,6 @@ run = ["make distclean", "make clean"]
 
 [tasks."nvim:build"]
 dir = "{{ env.NVIM_ROOT }}"
-depends = "nvim:clean"
 run = "make CMAKE_BUILD_TYPE=Release"
 
 [tasks."nvim:test"]
