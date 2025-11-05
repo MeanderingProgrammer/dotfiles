@@ -41,7 +41,6 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # terminal
-cask "alacritty"
 cask "ghostty"
 cask "kitty"
 cask "wezterm"
