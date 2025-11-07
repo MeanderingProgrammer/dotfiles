@@ -1,5 +1,5 @@
-# OS related
+# os related
 .DS_Store
 
-# Python
+# python
 __pycache__

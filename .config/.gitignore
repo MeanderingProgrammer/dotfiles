@@ -1,0 +1,27 @@
+# ignore everything
+*
+# include all directories so adding files is enough
+# i.e. '!name/**' instead of '!name/' + '!name/**'
+!*/
+# files and directories to track
+!/.gitignore
+!/alacritty/**
+!/bin/**
+!/fish/**
+!/ghostty/**
+!/git/**
+!/helix/**
+!/kitty/**
+!/lazygit/**
+!/mise/**
+!/npm/**
+!/nvim/**
+!/shellcheckrc
+!/tmux/**
+!/vim/**
+!/wezterm/**
+!/yadm/**
+!/zsh/**
+# apply global ignores
+.DS_Store
+__pycache__
