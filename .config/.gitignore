@@ -1,7 +1,7 @@
 # ignore everything
 *
 # include all directories so adding files is enough
-# i.e. '!name/**' instead of '!name/' + '!name/**'
+# i.e. '!/name/**' instead of '!/name/' + '!/name/**'
 !*/
 # files and directories to track
 !/.gitignore
