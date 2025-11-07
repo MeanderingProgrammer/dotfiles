@@ -7,7 +7,6 @@ return {
     config = function()
         local py = require('py-requirements')
         py.setup({
-            file_patterns = { '.*requirements.*.txt' },
             filter = { final_release = true },
         })
 
