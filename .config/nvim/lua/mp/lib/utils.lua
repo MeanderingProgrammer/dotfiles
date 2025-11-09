@@ -11,6 +11,7 @@ M.hidden = {
     '.mypy_cache',
     '.obsidian',
     '.pytest_cache',
+    '.ruff_cache',
     '.settings',
     '.zig-cache',
     'node_modules',
