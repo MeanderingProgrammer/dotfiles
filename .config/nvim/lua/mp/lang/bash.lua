@@ -7,9 +7,7 @@ require('mp.lib.lang').add({
         ['shellcheck'] = { install = vim.g.pc },
     },
     lsp = {
-        bashls = {
-            filetypes = { 'bash', 'sh', 'zsh' },
-        },
+        bashls = {},
     },
     lint = {
         shellcheck = { filetypes = { 'bash', 'sh', 'zsh' } },

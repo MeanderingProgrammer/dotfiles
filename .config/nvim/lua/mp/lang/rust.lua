@@ -101,14 +101,7 @@ require('mp.lib.lang').add({
         ['taplo'] = { install = vim.g.pc },
     },
     lsp = {
-        rust_analyzer = {
-            settings = {
-                ['rust-analyzer'] = {
-                    check = { command = 'clippy' },
-                    diagnostics = { disabled = { 'inactive-code' } },
-                },
-            },
-        },
+        rust_analyzer = {},
     },
     dap = {
         adapters = {

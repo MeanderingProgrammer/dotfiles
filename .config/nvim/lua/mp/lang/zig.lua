@@ -6,11 +6,6 @@ require('mp.lib.lang').add({
         ['zls'] = { install = vim.g.pc },
     },
     lsp = {
-        zls = {
-            settings = {
-                warn_style = true,
-                skip_std_references = true,
-            },
-        },
+        zls = {},
     },
 })

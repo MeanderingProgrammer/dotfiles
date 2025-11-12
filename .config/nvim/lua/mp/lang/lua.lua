@@ -11,26 +11,7 @@ require('mp.lib.lang').add({
         ['stylua'] = { install = vim.g.pc },
     },
     lsp = {
-        lua_ls = {
-            settings = {
-                Lua = {
-                    hint = { enable = true },
-                    runtime = { version = 'LuaJIT' },
-                    diagnostics = {
-                        ignoredFiles = 'Enable',
-                        groupFileStatus = {
-                            ['await'] = 'Any',
-                            ['duplicate'] = 'Any',
-                            ['luadoc'] = 'Any',
-                            ['redefined'] = 'Any',
-                            ['strong'] = 'Any',
-                            ['type-check'] = 'Any',
-                            ['unused'] = 'Any',
-                        },
-                    },
-                },
-            },
-        },
+        lua_ls = {},
     },
     format = {
         stylua = { filetypes = { 'lua' } },

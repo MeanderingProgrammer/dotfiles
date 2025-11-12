@@ -13,30 +13,8 @@ require('mp.lib.lang').add({
         ['isort'] = { install = not vim.g.pc and vim.g.has.pip },
     },
     lsp = {
-        basedpyright = {
-            settings = {
-                basedpyright = {
-                    analysis = {
-                        diagnosticMode = 'workspace',
-                        diagnosticSeverityOverrides = {
-                            reportAny = false,
-                            reportExplicitAny = false,
-                            reportMissingTypeStubs = false,
-                            reportUnusedCallResult = false,
-                        },
-                    },
-                },
-            },
-        },
-        pyright = {
-            settings = {
-                python = {
-                    analysis = {
-                        diagnosticMode = 'workspace',
-                    },
-                },
-            },
-        },
+        basedpyright = {},
+        pyright = {},
     },
     format = {
         ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },

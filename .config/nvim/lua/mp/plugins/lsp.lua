@@ -63,14 +63,13 @@ return {
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(configs) do
-            vim.lsp.config(name, config)
-            local exe = config.exe
-            if not exe then
-                local cmd = vim.lsp.config[name].cmd
-                exe = type(cmd) == 'table' and cmd[1] or nil
+            local cmd = config.cmd
+            if not cmd then
+                local lsp = vim.lsp.config[name]
+                cmd = type(lsp.cmd) == 'table' and lsp.cmd[1] or nil
             end
-            assert(type(exe) == 'string', ('no executable for %s'):format(name))
-            if vim.fn.executable(exe) == 1 then
+            assert(type(cmd) == 'string', ('no command for %s'):format(name))
+            if vim.fn.executable(cmd) == 1 then
                 vim.lsp.enable(name)
             end
         end

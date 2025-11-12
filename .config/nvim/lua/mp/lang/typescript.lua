@@ -24,13 +24,7 @@ require('mp.lib.lang').add({
         eslint = {},
         svelte = {},
         tailwindcss = {},
-        ts_ls = {
-            settings = {
-                implicitProjectConfiguration = {
-                    checkJs = true,
-                },
-            },
-        },
+        ts_ls = {},
     },
     format = {
         prettierd = {
