@@ -6,17 +6,16 @@ return {
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
         local configs = lang.parsers()
-        local names = lang.install(configs)
 
-        for _, name in ipairs(names) do
-            local filetypes = configs[name].filetypes
+        for name, config in pairs(configs) do
+            local filetypes = config.filetypes
             if filetypes then
                 vim.treesitter.language.register(name, filetypes)
             end
         end
 
         require('treesitter-modules').setup({
-            ensure_installed = names,
+            ensure_installed = vim.tbl_keys(configs),
             highlight = { enable = true },
             indent = { enable = true },
             incremental_selection = {

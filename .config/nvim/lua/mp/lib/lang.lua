@@ -67,12 +67,27 @@ end
 
 ---@return table<string, mp.parser.Config>
 function M.parsers()
-    return M.config.parser
+    return M.install(M.config.parser)
 end
 
 ---@return table<string, mp.tool.Config>
 function M.tools()
-    return M.config.tool
+    return M.install(M.config.tool)
+end
+
+---@private
+---@generic T: mp.install.Config
+---@param configs table<string, T>
+---@return table<string, T>
+function M.install(configs)
+    local result = {} ---@type table<string, mp.install.Config>
+    ---@cast configs table<string, mp.install.Config>
+    for name, config in pairs(configs) do
+        if config.install then
+            result[name] = config
+        end
+    end
+    return result
 end
 
 ---@return table<string, mp.lsp.Config>
@@ -87,54 +102,42 @@ end
 
 ---@return table<string, mp.format.Config>
 function M.formatters()
-    return M.config.format
+    return M.executable(M.config.format)
 end
 
 ---@return table<string, mp.lint.Config>
 function M.linters()
-    return M.config.lint
+    return M.executable(M.config.lint)
 end
 
----@param configs table<string, mp.install.Config>
----@return string[]
-function M.install(configs)
-    local result = {} ---@type string[]
-    for name, config in pairs(configs) do
-        if config.install then
-            result[#result + 1] = name
-        end
-    end
-    table.sort(result)
-    return result
-end
-
----@param configs table<string, mp.filetype.Config>
----@return string[]
+---@private
+---@generic T: mp.filetype.Config
+---@param configs table<string, T>
+---@return table<string, T>
 function M.executable(configs)
-    local result = {} ---@type string[]
+    local result = {} ---@type table<string, mp.filetype.Config>
+    ---@cast configs table<string, mp.filetype.Config>
     for name, config in pairs(configs) do
         local cmd = config.cmd or name
         if vim.fn.executable(cmd) == 1 then
-            result[#result + 1] = name
+            result[name] = config
         end
     end
-    table.sort(result)
     return result
 end
 
----@param names string[]
 ---@param configs table<string, mp.filetype.Config>
 ---@return table<string, string[]>
-function M.by_ft(names, configs)
+function M.by_ft(configs)
     local result = {} ---@type table<string, string[]>
-    for _, name in ipairs(names) do
-        local filetypes = configs[name].filetypes
-        for _, filetype in ipairs(filetypes) do
+    for name, config in pairs(configs) do
+        for _, filetype in ipairs(config.filetypes) do
             if not result[filetype] then
                 result[filetype] = {}
             end
             local active = result[filetype]
             active[#active + 1] = name
+            table.sort(active)
         end
     end
     return result

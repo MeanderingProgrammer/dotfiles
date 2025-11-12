@@ -9,10 +9,9 @@ return {
     dependencies = { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
     config = function()
         local configs = lang.tools()
-        local names = lang.install(configs)
         local packages = {} ---@type mp.mason.Package[]
-        for _, name in ipairs(names) do
-            packages[#packages + 1] = { name, version = configs[name].version }
+        for name, config in pairs(configs) do
+            packages[#packages + 1] = { name, version = config.version }
         end
 
         require('mason').setup({})

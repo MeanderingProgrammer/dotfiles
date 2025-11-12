@@ -7,8 +7,7 @@ return {
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
         local configs = lang.formatters()
-        local names = lang.executable(configs)
-        local by_ft = lang.by_ft(names, configs)
+        local by_ft = lang.by_ft(configs)
 
         local conform = require('conform')
 
@@ -45,8 +44,7 @@ return {
                 return should_format(buf) and format_opts or nil
             end,
         })
-        for _, name in ipairs(names) do
-            local config = configs[name]
+        for name, config in pairs(configs) do
             if config.init then
                 config.init()
             end
