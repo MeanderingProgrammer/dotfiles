@@ -1,8 +1,6 @@
 quitOnTopLevelReturn: true
-
 gui:
   sidePanelWidth: 0.2
-
 git:
-  paging:
-    pager: delta --paging=never
+  pagers:
+    - pager: delta --paging=never

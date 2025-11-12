@@ -8,7 +8,7 @@
 ---@class mp.lang.Config
 ---@field parser? table<string, mp.parser.Config>
 ---@field tool? table<string, mp.tool.Config>
----@field lsp? table<string, mp.lsp.Config>
+---@field lsp? table<string, mp.lsp.Config|fun(): mp.lsp.Config>
 ---@field dap? mp.dap.Config
 ---@field format? table<string, mp.format.Config>
 ---@field lint? table<string, mp.lint.Config>
@@ -24,7 +24,6 @@
 
 ---@class mp.lsp.Config: vim.lsp.Config
 ---@field exe? string
----@field override? fun(config: vim.lsp.Config)
 
 ---@class mp.dap.Config
 ---@field adapters table<string, dap.ExecutableAdapter>
@@ -78,7 +77,14 @@ end
 
 ---@return table<string, mp.lsp.Config>
 function M.lsp()
-    return M.config.lsp
+    local result = {} ---@type table<string, mp.lsp.Config>
+    for name, config in pairs(M.config.lsp) do
+        if type(config) == 'function' then
+            config = config()
+        end
+        result[name] = config
+    end
+    return result
 end
 
 ---@return mp.dap.Config

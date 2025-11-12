@@ -56,7 +56,7 @@ class Repo:
 
 
 @dataclass(frozen=True)
-class RepoRoot:
+class Root:
     directory: Path
     repos: list[Repo]
 
@@ -92,14 +92,14 @@ class Stats:
 
 
 def main() -> None:
-    document = RepoRoot(
+    document = Root(
         directory=Path.home().joinpath("Documents"),
         repos=[
             Repo(name="notes"),
             Repo(name="pass"),
         ],
     )
-    personal = RepoRoot(
+    personal = Root(
         directory=Path.home().joinpath("dev/repos/personal"),
         repos=[
             Repo(name="advent-of-code"),
@@ -120,14 +120,14 @@ def main() -> None:
             Repo(name="yadm-rs"),
         ],
     )
-    tools = RepoRoot(
+    tools = Root(
         directory=Path.home().joinpath("dev/repos/tools"),
         repos=[
             Repo(owner="kdheepak", name="panvimdoc"),
         ],
     )
 
-    roots: list[RepoRoot] = [
+    roots: list[Root] = [
         document,
         personal,
         tools,
@@ -135,16 +135,16 @@ def main() -> None:
     print(setup(roots).summary())
 
 
-def setup(roots: list[RepoRoot]) -> Stats:
+def setup(roots: list[Root]) -> Stats:
     stats = Stats()
     for root in roots:
         for repo in root.repos:
             success = True
             try:
                 repo.setup(root.directory)
-            except:
-                success = False
+            except Exception:
                 traceback.print_exc()
+                success = False
             stats.add(repo.name, success)
     return stats
 

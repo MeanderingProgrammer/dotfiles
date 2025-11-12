@@ -63,9 +63,6 @@ return {
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(configs) do
-            if config.override then
-                config.override(config)
-            end
             vim.lsp.config(name, config)
             local exe = config.exe
             if not exe then
