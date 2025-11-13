@@ -42,6 +42,17 @@ function M.system(cmd, opts)
     return assert(result.stdout, 'missing stdout')
 end
 
+---@param mod string
+function M.import(mod)
+    local path = M.path('config', 'lua', unpack(M.split(mod, '.')))
+    for file, type in vim.fs.dir(path) do
+        if type == 'file' and vim.fn.fnamemodify(file, ':e') == 'lua' then
+            local name = vim.fn.fnamemodify(file, ':r')
+            require(('%s.%s'):format(mod, name))
+        end
+    end
+end
+
 ---@param kind 'cache'|'config'|'data'
 ---@param ... string
 ---@return string
