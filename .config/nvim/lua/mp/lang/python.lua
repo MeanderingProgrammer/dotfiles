@@ -29,15 +29,14 @@ require('mp.lib.lang').add({
     lint = {
         ruff = {
             filetypes = { 'python' },
-            override = function(linter)
+            args = function()
                 local output = utils.system({ 'python', '--version' })
                 local version = vim.version.parse(output)
                 assert(version, 'unable to parse python version')
                 assert(version.major == 3, 'must be using python3')
                 local edition = math.max(version.minor, 7)
-                linter.args = vim.list_extend(linter.args, {
-                    ('--target-version=py3%d'):format(edition),
-                })
+                ---@type string[]
+                return { ('--target-version=py3%d'):format(edition) }
             end,
         },
     },

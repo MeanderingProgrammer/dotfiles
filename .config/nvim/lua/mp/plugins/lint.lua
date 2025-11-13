@@ -17,10 +17,11 @@ return {
                 local config = configs[name]
                 if not vim.list_contains(seen, name) then
                     seen[#seen + 1] = name
-                    if config.override then
+                    local args = config.args
+                    if args then
                         local linter = lint.linters[name]
                         assert(type(linter) == 'table', 'invalid linter')
-                        config.override(linter)
+                        linter.args = vim.list_extend(linter.args, args())
                     end
                 end
                 local condition = config.condition

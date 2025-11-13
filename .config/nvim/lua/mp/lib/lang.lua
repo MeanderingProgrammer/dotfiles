@@ -1,6 +1,5 @@
 ---@module 'conform'
 ---@module 'dap'
----@module 'lint'
 
 ---@class mp.lang.Opts: mp.lang.Config
 ---@field disabled? true
@@ -35,7 +34,7 @@
 
 ---@class mp.lint.Config: mp.filetype.Config
 ---@field condition? fun(): boolean
----@field override? fun(linter: lint.Linter)
+---@field args? fun(): string[]
 
 ---@class mp.filetype.Config
 ---@field cmd? string
