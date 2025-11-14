@@ -1,5 +1,8 @@
-# os related
-.DS_Store
+# mise
+mise.toml
 
 # python
 __pycache__
+
+# system
+.DS_Store
