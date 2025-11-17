@@ -1,15 +1,28 @@
 local Keymap = require('mp.lib.keymap')
 local lang = require('mp.lib.lang')
 
----@param args vim.api.keyset.create_autocmd.callback_args
-local function attach(args)
-    local fzf = require('fzf-lua')
-    local map = Keymap.new({ buffer = args.buf, group = 'LSP' })
-    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+---@param buf integer
+---@param id integer
+local function attach(buf, id)
+    local client = assert(vim.lsp.get_client_by_id(id))
 
-    map:n('K', vim.lsp.buf.hover, 'hover information')
-    map:n('<leader>k', vim.lsp.buf.signature_help, 'signature help')
-    map:i('<C-k>', vim.lsp.buf.signature_help, 'signature help')
+    ---@param method vim.lsp.protocol.Method
+    ---@return boolean
+    local function supports(method)
+        if vim.list_contains({ 'jdtls' }, client.name) then
+            return true
+        else
+            return client:supports_method(method, buf)
+        end
+    end
+
+    local fzf = require('fzf-lua')
+
+    local map = Keymap.new({ buffer = buf, group = 'LSP' })
+        :n('K', vim.lsp.buf.hover, 'hover')
+        :n('<leader>k', vim.lsp.buf.signature_help, 'signature help')
+        :n('<C-a>', vim.lsp.buf.code_action, 'code actions')
+        :n('<C-r>', vim.lsp.buf.rename, 'rename')
 
     map:extend({ prefix = 'g' })
         :n('d', fzf.lsp_definitions, 'definitions')
@@ -18,37 +31,49 @@ local function attach(args)
         :n('s', fzf.lsp_document_symbols, 'document symbols')
 
     map:extend({ prefix = '<leader>' })
-        :n('<C-a>', vim.lsp.buf.code_action, 'code actions')
-        :n('<C-r>', vim.lsp.buf.rename, 'rename')
         :n('ws', fzf.lsp_workspace_symbols, 'workspace symbols')
         :n('wf', function()
             vim.print(vim.lsp.buf.list_workspace_folders())
         end, 'workspace folders')
 
-    ---@param method vim.lsp.protocol.Method
-    ---@return boolean
-    local function supports(method)
-        if vim.list_contains({ 'jdtls' }, client.name) then
-            return true
-        else
-            return client:supports_method(method, args.buf)
-        end
+    if supports('textDocument/codeLens') then
+        local enabled = true
+
+        map:extend({ prefix = '<leader>' })
+            :n('cr', vim.lsp.codelens.run, 'run codelense')
+            :n('ct', function()
+                enabled = not enabled
+                if not enabled then
+                    vim.lsp.codelens.clear(id, buf)
+                end
+            end, 'toggle codelense')
+
+        vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
+            buffer = buf,
+            callback = function()
+                if enabled then
+                    vim.lsp.codelens.refresh({ bufnr = buf })
+                end
+            end,
+        })
     end
-    if supports('textDocument/inlayHint') then
-        map:n('<leader><C-h>', function()
-            local enabled = vim.lsp.inlay_hint.is_enabled()
-            vim.lsp.inlay_hint.enable(not enabled)
-        end, 'toggle inlay hints')
-    end
+
     if supports('textDocument/documentHighlight') then
         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = args.buf,
+            buffer = buf,
             callback = vim.lsp.buf.document_highlight,
         })
         vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer = args.buf,
+            buffer = buf,
             callback = vim.lsp.buf.clear_references,
         })
+    end
+
+    if supports('textDocument/inlayHint') then
+        map:n('<leader><C-h>', function()
+            local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = buf })
+            vim.lsp.inlay_hint.enable(not enabled, { bufnr = buf })
+        end, 'toggle inlay hints')
     end
 end
 
@@ -76,7 +101,9 @@ return {
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('mp.lsp', {}),
-            callback = attach,
+            callback = function(args)
+                attach(args.buf, args.data.client_id)
+            end,
         })
     end,
 }

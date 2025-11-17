@@ -19,12 +19,10 @@ return {
         })
         wk.add({
             { '<leader>', group = 'leader' },
-            { '<leader>c', group = 'crates' },
             { '<leader>f', group = 'fzf' },
             { '<leader>h', group = 'harpoon' },
             { '<leader>m', group = 'markdown' },
             { '<leader>n', group = 'neotest' },
-            { '<leader>r', group = 'requirements' },
             { '<leader>s', group = 'stashpad' },
             { '<leader>w', group = 'workspace' },
             { '<leader>y', group = 'yadm' },

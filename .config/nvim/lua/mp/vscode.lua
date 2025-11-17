@@ -27,9 +27,11 @@ map:extend({ prefix = '<leader>' })
     :n('fs', action('findInFiles'))
     :n('fd', action('problems.focus'))
 
+-- lsp
 map:n('K', vim.lsp.buf.hover)
 map:n('<leader>k', vim.lsp.buf.signature_help)
-map:i('<C-k>', vim.lsp.buf.signature_help)
+map:n('<C-a>', vim.lsp.buf.code_action)
+map:n('<C-r>', vim.lsp.buf.rename)
 
 map:extend({ prefix = 'g' })
     :n('d', vim.lsp.buf.definition)
@@ -38,8 +40,6 @@ map:extend({ prefix = 'g' })
     :n('s', vim.lsp.buf.document_symbol)
 
 map:extend({ prefix = '<leader>' })
-    :n('<C-a>', vim.lsp.buf.code_action)
-    :n('<C-r>', vim.lsp.buf.rename)
     :n('ws', vim.lsp.buf.workspace_symbol)
     :n('wf', function()
         vim.print(vim.lsp.buf.list_workspace_folders())
