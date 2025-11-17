@@ -40,13 +40,13 @@ local function attach(buf, id)
         local enabled = true
 
         map:extend({ prefix = '<leader>' })
-            :n('cr', vim.lsp.codelens.run, 'run codelense')
+            :n('cr', vim.lsp.codelens.run, 'run codelens')
             :n('ct', function()
                 enabled = not enabled
                 if not enabled then
                     vim.lsp.codelens.clear(id, buf)
                 end
-            end, 'toggle codelense')
+            end, 'toggle codelens')
 
         vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost' }, {
             buffer = buf,
