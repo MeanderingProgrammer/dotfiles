@@ -16,8 +16,9 @@ require('mp.lib.lang').add({
         markdownlint = {
             filetypes = { 'markdown' },
             args = function()
+                local file = utils.path('config', 'lint', 'markdownlint.yaml')
                 ---@type string[]
-                return { '--config', utils.lint_config('markdownlint.yaml') }
+                return { '--config', file }
             end,
         },
     },

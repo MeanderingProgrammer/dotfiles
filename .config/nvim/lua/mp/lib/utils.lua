@@ -42,13 +42,16 @@ function M.system(cmd, opts)
     return assert(result.stdout, 'missing stdout')
 end
 
----@param mod string
-function M.import(mod)
-    local path = M.path('config', 'lua', unpack(M.split(mod, '.')))
-    for file, type in vim.fs.dir(path) do
-        if type == 'file' and vim.fn.fnamemodify(file, ':e') == 'lua' then
-            local name = vim.fn.fnamemodify(file, ':r')
-            require(('%s.%s'):format(mod, name))
+---@param module string
+---@param skip? string[]
+function M.import(module, skip)
+    local path = M.path('config', 'lua', unpack(M.split(module, '.')))
+    for name, type in vim.fs.dir(path) do
+        if type == 'file' and vim.fn.fnamemodify(name, ':e') == 'lua' then
+            local root = vim.fn.fnamemodify(name, ':r')
+            if not vim.list_contains(skip or {}, root) then
+                require(('%s.%s'):format(module, root))
+            end
         end
     end
 end
@@ -58,12 +61,6 @@ end
 ---@return string
 function M.path(kind, ...)
     return vim.fs.joinpath(vim.fn.stdpath(kind), ...)
-end
-
----@param file string
----@return string
-function M.lint_config(file)
-    return M.path('config', 'lint_configs', file)
 end
 
 ---@param ... string

@@ -33,6 +33,9 @@ fi
 # c sharp
 export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
 
+# elixir
+export MIX_XDG=1
+
 # go
 export GOPATH="${XDG_DATA_HOME}/go"
 export GOBIN="${GOPATH}/bin"
