@@ -1,4 +1,5 @@
 local lang = require('mp.lib.lang')
+local utils = require('mp.lib.utils')
 
 return {
     'mfussenegger/nvim-lint',
@@ -34,9 +35,9 @@ return {
             end
         end
 
-        local event = { 'BufRead', 'BufWritePost', 'InsertLeave' }
-        vim.api.nvim_create_autocmd(event, {
-            group = vim.api.nvim_create_augroup('mp.lint', {}),
+        local events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
+        vim.api.nvim_create_autocmd(events, {
+            group = utils.augroup('mp.lint'),
             callback = run_lint,
         })
 

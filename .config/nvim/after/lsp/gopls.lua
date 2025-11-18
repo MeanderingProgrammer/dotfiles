@@ -3,6 +3,9 @@ return {
     settings = {
         gopls = {
             gofumpt = true,
+            codelenses = {
+                test = true,
+            },
             staticcheck = true,
             hints = {
                 assignVariableTypes = true,

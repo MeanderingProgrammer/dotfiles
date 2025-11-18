@@ -59,6 +59,6 @@ return {
 
         Keymap.new({ prefix = '<leader>' }):n('F', function()
             enabled = not enabled
-        end, 'toggle format')
+        end, 'format toggle')
     end,
 }

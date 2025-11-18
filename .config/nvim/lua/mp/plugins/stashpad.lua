@@ -14,7 +14,7 @@ return {
             :n('g', stashpad.global, 'global')
             :n('o', function()
                 require('oil').toggle_float(stashpad.project())
-            end, 'toggle oil')
+            end, 'oil toggle')
             :n('p', function()
                 stashpad.global('personal')
             end, 'personal')

@@ -13,7 +13,7 @@ return {
         Keymap.new({ prefix = '<leader>h' })
             :n('a', harpoon.add_file, 'add current file')
             :n('r', harpoon.rm_file, 'remove current file')
-            :n('u', harpoon.toggle_quick_menu, 'toggle UI')
+            :n('u', harpoon.toggle_quick_menu, 'ui toggle')
             :n('n', harpoon.nav_next, 'next file')
             :n('p', harpoon.nav_prev, 'previous file')
 

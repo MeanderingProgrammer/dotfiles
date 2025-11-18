@@ -19,6 +19,13 @@ M.hidden = {
     'zig-out',
 }
 
+---@param name string
+---@param clear? boolean
+---@return integer
+function M.augroup(name, clear)
+    return vim.api.nvim_create_augroup(name, { clear = clear })
+end
+
 ---@param s string
 ---@param sep string
 ---@return string[]

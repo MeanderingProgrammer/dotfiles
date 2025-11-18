@@ -29,18 +29,18 @@ map:extend({ prefix = '<leader>' })
 
 -- lsp
 map:n('K', vim.lsp.buf.hover)
-map:n('<leader>k', vim.lsp.buf.signature_help)
 map:n('<C-a>', vim.lsp.buf.code_action)
 map:n('<C-r>', vim.lsp.buf.rename)
 
 map:extend({ prefix = 'g' })
+    :n('K', vim.lsp.buf.signature_help)
     :n('d', vim.lsp.buf.definition)
-    :n('r', vim.lsp.buf.references)
     :n('i', vim.lsp.buf.implementation)
+    :n('r', vim.lsp.buf.references)
     :n('s', vim.lsp.buf.document_symbol)
 
 map:extend({ prefix = '<leader>' })
-    :n('ws', vim.lsp.buf.workspace_symbol)
     :n('wf', function()
         vim.print(vim.lsp.buf.list_workspace_folders())
     end)
+    :n('ws', vim.lsp.buf.workspace_symbol)

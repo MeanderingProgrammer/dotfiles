@@ -20,7 +20,7 @@ return {
             function()
                 require('neotest').summary.toggle()
             end,
-            desc = 'toggle summary',
+            desc = 'summary toggle',
         },
     },
     config = function()
