@@ -8,14 +8,16 @@ return {
         local fzf = require('fzf-lua')
         local actions = require('fzf-lua.actions')
 
-        local rg = {} ---@type string[]
-        rg[#rg + 1] = '--column'
-        rg[#rg + 1] = '--line-number'
-        rg[#rg + 1] = '--no-heading'
-        rg[#rg + 1] = '--color=always'
-        rg[#rg + 1] = '--smart-case'
-        rg[#rg + 1] = '--max-columns=4096'
-        rg[#rg + 1] = '--hidden'
+        ---@type string[]
+        local rg = {
+            '--column',
+            '--line-number',
+            '--no-heading',
+            '--color=always',
+            '--smart-case',
+            '--max-columns=4096',
+            '--hidden',
+        }
         for _, folder in ipairs(utils.hidden) do
             rg[#rg + 1] = ('--glob=!**/%s/*'):format(folder)
         end
