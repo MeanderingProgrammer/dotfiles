@@ -3,6 +3,10 @@ local utils = require('mp.lib.utils')
 
 local map = Keymap.new({ silent = true })
 
+-- undo / redo
+map:n('u', '<Cmd>undo<CR>')
+map:n('U', '<Cmd>redo<CR>')
+
 -- move between panes
 map:n('<C-h>', '<C-w>h')
 map:n('<C-j>', '<C-w>j')
