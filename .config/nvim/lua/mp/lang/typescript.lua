@@ -7,6 +7,7 @@ require('mp.lib.lang').add({
         javascript = { install = true },
         jsdoc = { install = true },
         jsx = { install = true },
+        prisma = { install = true },
         scss = { install = true },
         svelte = { install = true },
         tsx = { install = true },
