@@ -5,6 +5,7 @@ local M = {}
 M.hidden = {
     '__pycache__',
     '_build',
+    '.elixir_ls',
     '.git',
     '.gradle',
     '.idea',
