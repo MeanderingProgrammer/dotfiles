@@ -1,5 +1,13 @@
 local utils = require('mp.lib.utils')
 
+---@param config vim.lsp.ClientConfig
+---@param kind 'config'|'workspace'
+---@return string
+local function path(config, kind)
+    local project = vim.fs.basename(assert(config.root_dir))
+    return utils.path('cache', 'jdtls', project, kind)
+end
+
 ---@type vim.lsp.Config
 return {
     -- https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
@@ -14,13 +22,11 @@ return {
             '--jvm-arg=-javaagent:' .. lombok,
         })
 
-        local project = vim.fs.basename(assert(config.root_dir))
-        local cache = utils.path('cache', 'jdtls', project)
         vim.list_extend(cmd, {
             '-configuration',
-            vim.fs.joinpath(cache, 'config'),
+            path(config, 'config'),
             '-data',
-            vim.fs.joinpath(cache, 'workspace'),
+            path(config, 'workspace'),
         })
 
         return vim.lsp.rpc.start(cmd, dispatchers, {
@@ -53,4 +59,25 @@ return {
             },
         },
     },
+    on_attach = function(client, bufnr)
+        -- nvim-jdtls does not work with function cmd
+        vim.api.nvim_buf_create_user_command(
+            bufnr,
+            'JdtWipeDataAndRestart',
+            function()
+                local data = path(client.config, 'workspace')
+                vim.ui.select(
+                    { 'Yes', 'No' },
+                    { prompt = ('Wipe "%s" and restart? '):format(data) },
+                    function(item)
+                        if item == 'Yes' then
+                            vim.fs.rm(data, { recursive = true, force = true })
+                            vim.cmd.JdtRestart()
+                        end
+                    end
+                )
+            end,
+            {}
+        )
+    end,
 }

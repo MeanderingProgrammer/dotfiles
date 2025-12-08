@@ -73,15 +73,9 @@ vim.api.nvim_create_user_command('LspConfig', function()
     end
     local lines = {} ---@type string[]
     for _, client in ipairs(clients) do
-        local config = { name = client.name }
-        local client_config = client.config ---@type table<string, any>
-        for key, value in pairs(client_config) do
-            local skip_key = vim.list_contains({ 'capabilities', 'name' }, key)
-            local skip_value = vim.list_contains({ 'function' }, type(value))
-            if not skip_key and not skip_value then
-                config[key] = value
-            end
-        end
+        local config = vim.deepcopy(client.config)
+        config.name = client.name
+        config.capabilities = nil
         vim.list_extend(lines, utils.split(vim.inspect(config), '\n'))
     end
     Float.new('LSP Configuration', 'lua'):lines(lines)
