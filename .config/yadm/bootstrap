@@ -125,14 +125,6 @@ do_libs() {
         notify "${SUCCESS}" "  success"
     fi
 
-    notify "${TITLE}" "library: rust"
-    if check_cmd "cargo"; then
-        if ! is_phone; then
-            cargo install aoc-cli
-        fi
-        notify "${SUCCESS}" "  success"
-    fi
-
     notify "${TITLE}" "library: node"
     if check_cmd "npm"; then
         if ! is_phone; then
