@@ -52,6 +52,8 @@ return {
             },
         })
 
+        fzf.register_ui_select()
+
         Keymap.new({ prefix = '<leader>' })
             :n('<leader>', fzf.files, 'files')
             :n('?', fzf.oldfiles, 'opened files')
