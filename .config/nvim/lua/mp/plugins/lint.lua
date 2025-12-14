@@ -11,7 +11,12 @@ return {
         local lint = require('lint')
 
         local seen = {} ---@type string[]
-        local function run_lint()
+
+        ---@param force boolean
+        local function run_lint(force)
+            if not force and not utils.personal() then
+                return
+            end
             local result = {} ---@type string[]
             local linters = by_ft[vim.bo.filetype] or {}
             for _, name in ipairs(linters) do
@@ -38,9 +43,13 @@ return {
         local events = { 'BufRead', 'BufWritePost', 'InsertLeave' }
         vim.api.nvim_create_autocmd(events, {
             group = utils.augroup('mp.lint'),
-            callback = run_lint,
+            callback = function()
+                run_lint(false)
+            end,
         })
 
-        vim.api.nvim_create_user_command('Lint', run_lint, {})
+        vim.api.nvim_create_user_command('Lint', function()
+            run_lint(true)
+        end, {})
     end,
 }

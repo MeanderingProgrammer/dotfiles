@@ -23,16 +23,7 @@ return {
             if vim.list_contains(clients, 'jsonls') then
                 return false
             end
-            local path = vim.api.nvim_buf_get_name(buf)
-            local repo = vim.fs.relpath('~/dev/repos', path)
-            if not repo then
-                -- outside of repos always format
-                return true
-            else
-                -- inside of repos format in specific roots
-                local root = utils.split(repo, '/')[1]
-                return vim.list_contains({ 'personal' }, root)
-            end
+            return utils.personal(buf)
         end
 
         ---@type conform.FormatOpts

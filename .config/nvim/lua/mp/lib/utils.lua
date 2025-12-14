@@ -20,6 +20,14 @@ M.hidden = {
     'zig-out',
 }
 
+---@type string[]
+M.roots = {
+    '~/.config',
+    '~/bin',
+    '~/dev/repos/personal',
+    '~/dev/repos/work',
+}
+
 ---@param name string
 ---@param clear? boolean
 ---@return integer
@@ -62,6 +70,18 @@ function M.import(module, skip)
             end
         end
     end
+end
+
+---@param buf? integer
+---@return boolean
+function M.personal(buf)
+    local path = vim.api.nvim_buf_get_name(buf or 0)
+    for _, root in ipairs(M.roots) do
+        if vim.fs.relpath(root, path) then
+            return true
+        end
+    end
+    return false
 end
 
 ---@param kind 'cache'|'config'|'data'
