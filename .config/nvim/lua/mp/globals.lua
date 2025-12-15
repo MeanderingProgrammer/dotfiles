@@ -24,11 +24,11 @@ vim.g.opaque = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- disable ftplugin keymaps
+vim.g.no_plugin_maps = 1
+
 -- disable default providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
-
--- disable python ftplugin keymaps
-vim.g.no_python_maps = true
