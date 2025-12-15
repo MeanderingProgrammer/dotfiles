@@ -55,7 +55,6 @@ cask "font-symbols-only-nerd-font"
 # editor
 brew "neovim"
 brew "vim"
-cask "intellij-idea-ce"
 cask "sublime-text"
 cask "visual-studio-code"
 
