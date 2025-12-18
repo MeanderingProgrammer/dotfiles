@@ -5,4 +5,5 @@ ntfs-3g
 proton-vpn-gtk-app
 transmission-gtk
 vlc
+vlc-plugins-all
 wezterm
