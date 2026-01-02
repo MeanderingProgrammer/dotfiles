@@ -37,15 +37,29 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 | `./setup.sh prefs` | Modify system preferences             |
 | `./setup.sh clean` | Deletes the setup script              |
 
-# Settings
+# Additional Setup
 
-## Mac - Developer Tools
+## Mac
+
+### Developer Tools
 
 - System Settings -> Privacy & Security -> Developer Tools
 - Add terminal emulators to the list
 - Removes overhead when running executables
 
-## Linux - Activate Thunderbolt
+## Arch Linux
+
+### Activate Thunderbolt
 
 - Copy `uuid` from output of `boltctl list`
 - Enroll device with `boltctl enroll <uuid>`
+
+### Install yay
+
+Repo: https://github.com/Jguer/yay
+
+```bash
+git clone https://aur.archlinux.org/yay.git
+cd yay && makepkg -si
+cd .. && rm -rf yay
+```
