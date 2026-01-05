@@ -22,7 +22,6 @@ return {
             { '<leader>f', group = 'fzf' },
             { '<leader>h', group = 'harpoon' },
             { '<leader>m', group = 'markdown' },
-            { '<leader>n', group = 'neotest' },
             { '<leader>s', group = 'stashpad' },
             { '<leader>w', group = 'workspace' },
             { '<leader>y', group = 'yadm' },
