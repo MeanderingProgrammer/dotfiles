@@ -17,7 +17,6 @@ end
 return {
     'MeanderingProgrammer/dashboard.nvim',
     dev = true,
-    event = 'VimEnter',
     config = function()
         require('dashboard').setup({
             header = {

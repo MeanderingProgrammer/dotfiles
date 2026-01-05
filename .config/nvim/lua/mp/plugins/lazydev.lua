@@ -2,7 +2,6 @@ local utils = require('mp.lib.utils')
 
 return {
     'folke/lazydev.nvim',
-    ft = 'lua',
     config = function()
         require('lazydev').setup({
             library = { '${3rd}/luv/library' },

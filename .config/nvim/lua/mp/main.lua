@@ -2,6 +2,17 @@ local utils = require('mp.lib.utils')
 
 utils.import('mp.lang')
 
+-- Plugin fields currently used:
+-- [1]: name needed for all plugins
+-- enabled: colorscheme, local plugins
+-- priority: colorscheme
+-- config: most plugins
+-- dependencies: many plugins
+-- dev: development
+-- version: blink.cmp='*'
+-- branch: nvim-treesitter-textobjects='main'
+-- build: nvim-treesitter=':TSUpdate'
+
 local lazypath = utils.path('data', 'lazy', 'lazy.nvim')
 if not vim.uv.fs_stat(lazypath) then
     utils.system({
