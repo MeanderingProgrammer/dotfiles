@@ -9,23 +9,6 @@ vim.api.nvim_create_user_command('AdventData', function()
     vim.cmd.vsplit(path)
 end, { desc = 'open data.txt associated with problem' })
 
-vim.api.nvim_create_user_command('SortSpell', function()
-    local file = utils.path('config', 'spell', 'en.utf-8.add')
-    vim.cmd('edit ' .. file)
-    local words = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    table.sort(words, function(a, b)
-        if a:lower() == b:lower() then
-            return a > b
-        else
-            return a:lower() < b:lower()
-        end
-    end)
-    vim.api.nvim_buf_set_lines(0, 0, -1, false, words)
-    vim.cmd('w')
-    vim.cmd('mkspell! %')
-    vim.cmd('bd')
-end, { desc = 'sort spell file after adding words' })
-
 vim.api.nvim_create_user_command('FormatLine', function()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
 
@@ -58,12 +41,6 @@ vim.api.nvim_create_user_command('FormatLine', function()
     vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
 end, { desc = 'split current line into multiple lines of width 80' })
 
-vim.api.nvim_create_user_command('Messages', function()
-    local messages = utils.exec('messages')
-    local lines = utils.split(messages, '\n')
-    Float.new('Messages', 'log'):lines(lines)
-end, { desc = 'show message history' })
-
 vim.api.nvim_create_user_command('LspConfig', function()
     local buf = vim.api.nvim_get_current_buf()
     local clients = vim.lsp.get_clients({ bufnr = buf })
@@ -80,3 +57,30 @@ vim.api.nvim_create_user_command('LspConfig', function()
     end
     Float.new('LSP Configuration', 'lua'):lines(lines)
 end, { desc = 'show LSP configuration' })
+
+vim.api.nvim_create_user_command('Messages', function()
+    local messages = utils.exec('messages')
+    local lines = utils.split(messages, '\n')
+    Float.new('Messages', 'log'):lines(lines)
+end, { desc = 'show message history' })
+
+vim.api.nvim_create_user_command('SpellSort', function()
+    local file = utils.path('config', 'spell', 'en.utf-8.add')
+    vim.cmd('edit ' .. file)
+    local words = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    table.sort(words, function(a, b)
+        if a:lower() == b:lower() then
+            return a > b
+        else
+            return a:lower() < b:lower()
+        end
+    end)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, words)
+    vim.cmd('w')
+    vim.cmd('mkspell! %')
+    vim.cmd('bd')
+end, { desc = 'sort spell file after adding words' })
+
+vim.api.nvim_create_user_command('SpellToggle', function()
+    vim.o.spell = not vim.o.spell
+end, { desc = 'toggle spell option' })
