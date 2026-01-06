@@ -5,6 +5,8 @@ from pathlib import Path
 
 import git
 
+type Root = tuple[Path, *tuple[Repo, ...]]
+
 
 @dataclass(frozen=True)
 class Repo:
@@ -16,55 +18,39 @@ class Repo:
     def ssh(self) -> str:
         return f"git@github.com:{self.owner}/{self.name}.git"
 
-    def setup(self, directory: Path) -> None:
-        path: Path = directory.joinpath(self.name)
+    def setup(self, root: Path) -> None:
+        if not root.is_dir():
+            assert not root.exists()
+            print(f"creating: {root}")
+            root.mkdir(parents=True)
+        path = root / self.name
         self.update(path)
-        for command in self.after:
-            print(f"runnning '{command}' in '{path}'")
-            result = subprocess.run(command.split(), cwd=path)
+        for cmd in self.after:
+            print(f"runnning '{cmd}' in '{path}'")
+            result = subprocess.run(cmd.split(), cwd=path)
             assert result.returncode == 0
 
     def update(self, path: Path) -> None:
         if path.is_dir():
-            Repo.update_existing(path)
+            repo = git.Repo(path)
+
+            changes = len(repo.index.diff(None)) + len(repo.untracked_files)
+            if changes > 0:
+                raise Exception(f"skipping {path}: {changes} unstaged changes")
+
+            local_commit = str(repo.head.commit)
+            revision = f"{repo.remote().name}/{repo.active_branch.name}"
+            merged_commit = str(repo.rev_parse(revision))
+            if local_commit != merged_commit:
+                raise Exception(f"skipping {path}: unmerged commits")
+
+            print(f"pulling: {path}")
+            repo.remote().pull()
         else:
-            print(f"cloning {self.ssh} to {path}")
-            repo: git.Repo = git.Repo.clone_from(self.ssh, path)
-            Repo.update_submodules(repo)
+            print(f"cloning: {self.ssh} -> {path}")
+            repo = git.Repo.clone_from(self.ssh, path)
 
-    @staticmethod
-    def update_existing(path: Path) -> None:
-        repo: git.Repo = git.Repo(path)
-
-        changes: int = len(repo.index.diff(None)) + len(repo.untracked_files)
-        if changes > 0:
-            raise Exception(f"found {changes} unstaged changes, skipping {path}")
-
-        local_commit: str = str(repo.head.commit)
-        revision: str = f"{repo.remote().name}/{repo.active_branch.name}"
-        merged_commit: str = str(repo.rev_parse(revision))
-        if local_commit != merged_commit:
-            raise Exception(f"found unmerged commits, skipping {path}")
-
-        print(f"pulling: {path}")
-        repo.remote().pull()
-        Repo.update_submodules(repo)
-
-    @staticmethod
-    def update_submodules(repo: git.Repo) -> None:
         repo.git.submodule("update", "--init", "--recursive", "--remote", "--rebase")
-
-
-@dataclass(frozen=True)
-class Root:
-    directory: Path
-    repos: list[Repo]
-
-    def __post_init__(self) -> None:
-        if not self.directory.is_dir():
-            assert not self.directory.exists()
-            print(f"creating: {self.directory}")
-            self.directory.mkdir(parents=True)
 
 
 @dataclass(frozen=True)
@@ -76,55 +62,49 @@ class Stats:
         info = self.success if success else self.failed
         info.append(name)
 
-    def summary(self) -> str:
-        lines: list[str] = []
-        lines.append(Stats.line(f"successes: {len(self.success)}", 32))
-        for name in self.success:
-            lines.append(Stats.line(f"  - {name}", 32))
-        lines.append(Stats.line(f"failures: {len(self.failed)}", 31))
-        for name in self.failed:
-            lines.append(Stats.line(f"  - {name}", 31))
-        return "\n".join(lines)
+    def summary(self) -> None:
+        print(Stats.color(32, Stats.group("successes", self.success)))
+        print(Stats.color(31, Stats.group("failures", self.failed)))
 
     @staticmethod
-    def line(text: str, color: int) -> str:
-        return f"\033[{color}m{text}\033[0m"
+    def group(label: str, values: list[str]) -> list[str]:
+        return [f"{label}: {len(values)}"] + [f"  - {value}" for value in values]
+
+    @staticmethod
+    def color(color: int, lines: list[str]) -> str:
+        lines[0] = f"\033[{color}m" + lines[0]
+        lines[-1] = lines[-1] + "\033[0m"
+        return "\n".join(lines)
 
 
 def main() -> None:
-    document = Root(
-        directory=Path.home().joinpath("Documents"),
-        repos=[
-            Repo(name="notes"),
-            Repo(name="pass"),
-        ],
+    document = (
+        Path.home() / "Documents",
+        Repo(name="notes"),
+        Repo(name="pass"),
     )
-    personal = Root(
-        directory=Path.home().joinpath("dev/repos/personal"),
-        repos=[
-            Repo(name="advent-of-code"),
-            Repo(name="chess"),
-            Repo(name="cli", after=["just install"]),
-            Repo(name="dashboard.nvim"),
-            Repo(name="debug-it"),
-            Repo(name="harpoon-core.nvim"),
-            Repo(name="learning"),
-            Repo(name="pass-yank", after=["just install"]),
-            Repo(name="py-requirements.nvim"),
-            Repo(name="render-markdown.nvim"),
-            Repo(name="resume"),
-            Repo(name="scripts"),
-            Repo(name="small-apps"),
-            Repo(name="stashpad.nvim"),
-            Repo(name="treesitter-modules.nvim"),
-            Repo(name="yadm-rs"),
-        ],
+    personal = (
+        Path.home() / "dev/repos/personal",
+        Repo(name="advent-of-code"),
+        Repo(name="chess"),
+        Repo(name="cli", after=["just install"]),
+        Repo(name="dashboard.nvim"),
+        Repo(name="debug-it"),
+        Repo(name="harpoon-core.nvim"),
+        Repo(name="learning"),
+        Repo(name="pass-yank", after=["just install"]),
+        Repo(name="py-requirements.nvim"),
+        Repo(name="render-markdown.nvim"),
+        Repo(name="resume"),
+        Repo(name="scripts"),
+        Repo(name="small-apps"),
+        Repo(name="stashpad.nvim"),
+        Repo(name="treesitter-modules.nvim"),
+        Repo(name="yadm-rs"),
     )
-    tools = Root(
-        directory=Path.home().joinpath("dev/repos/tools"),
-        repos=[
-            Repo(owner="kdheepak", name="panvimdoc"),
-        ],
+    tools = (
+        Path.home() / "dev/repos/tools",
+        Repo(owner="kdheepak", name="panvimdoc"),
     )
 
     roots: list[Root] = [
@@ -132,16 +112,16 @@ def main() -> None:
         personal,
         tools,
     ]
-    print(setup(roots).summary())
+    setup(roots).summary()
 
 
 def setup(roots: list[Root]) -> Stats:
     stats = Stats()
-    for root in roots:
-        for repo in root.repos:
-            success = True
+    for root, *repos in roots:
+        for repo in repos:
             try:
-                repo.setup(root.directory)
+                repo.setup(root)
+                success = True
             except Exception:
                 traceback.print_exc()
                 success = False
