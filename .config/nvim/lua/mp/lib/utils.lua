@@ -61,14 +61,19 @@ end
 ---@param module string
 ---@param skip? string[]
 function M.import(module, skip)
+    local roots = {} ---@type string[]
     local path = M.path('config', 'lua', unpack(M.split(module, '.')))
     for name, type in vim.fs.dir(path) do
         if type == 'file' and vim.fn.fnamemodify(name, ':e') == 'lua' then
             local root = vim.fn.fnamemodify(name, ':r')
             if not vim.list_contains(skip or {}, root) then
-                require(('%s.%s'):format(module, root))
+                roots[#roots + 1] = root
             end
         end
+    end
+    table.sort(roots)
+    for _, root in ipairs(roots) do
+        require(('%s.%s'):format(module, root))
     end
 end
 
