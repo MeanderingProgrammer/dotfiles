@@ -26,7 +26,7 @@ class Commit(StrEnum):
 
     @staticmethod
     def default() -> "Commit":
-        stats = run(["git", "status", "--short"])
+        stats = cmd("git", "status", "--short")
         modified = any([stat[1] != " " for stat in stats])
         if modified:
             return Commit.I
@@ -53,23 +53,23 @@ class Commit(StrEnum):
 def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
     """git diff (<options>)? (<commit>)? (-- <path>...)?"""
 
-    cmd: list[str] = ["git", "diff"]
+    args: list[str] = ["git", "diff"]
 
     if name:
-        cmd.append("--name-only")
+        args.append("--name-only")
 
     value = commit.resolve()
     if value is not None:
-        cmd.append(value)
+        args.append(value)
 
     if not all:
-        cmd.append("--")
-        cmd.append(".")
+        args.append("--")
+        args.append(".")
         lock_files: list[str] = ["Cargo.lock", "lock.json", "lock.yaml"]
         for file in lock_files:
-            cmd.append(f'":(exclude)*{file}"')
+            args.append(f'":(exclude)*{file}"')
 
-    command = " ".join(cmd)
+    command = " ".join(args)
     if debug:
         print(command)
     else:
@@ -77,7 +77,7 @@ def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
 
 
 def current() -> str:
-    results = run(["git", "branch", "--show-current"])
+    results = cmd("git", "branch", "--show-current")
     assert len(results) == 1, f"expected 1 current branch, found {len(results)}"
     return results[0]
 
@@ -85,7 +85,7 @@ def current() -> str:
 def mainline() -> str:
     branches: list[str] = []
     scores: dict[str, int] = dict(master=1, main=2)
-    for branch in run(["git", "branch"]):
+    for branch in cmd("git", "branch"):
         # * main    -> main
         #   main    -> main
         # * feature -> feature
@@ -99,10 +99,10 @@ def mainline() -> str:
     return branches.pop()
 
 
-def run(cmd: list[str]) -> list[str]:
-    result = subprocess.run(cmd, capture_output=True, text=True)
+def cmd(*args: str) -> list[str]:
+    result = subprocess.run(args, capture_output=True, text=True)
     if result.returncode != 0:
-        raise Exception(f"{' '.join(cmd)} failed: {result.stderr.strip()}")
+        raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.splitlines()
 
 

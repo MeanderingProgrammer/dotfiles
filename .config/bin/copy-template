@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-import argparse
-import shutil
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from pathlib import Path
+from typing import Self
 
 
 class Language(StrEnum):
@@ -26,52 +25,47 @@ class Root:
 class Template:
     data: Path
 
+    @classmethod
+    def new(cls) -> Self:
+        current = Path(__file__).resolve()
+        data = current.parent / "data"
+        assert data.is_dir()
+        return cls(data=data)
+
     def copy(self, root: Root) -> None:
-        print(f"Copying: {root.language} template to {root.path}")
+        print(f"copying {root.language} template to {root.path}")
         if not root.path.is_dir():
-            print("Skipping: not a directory")
+            print("  - skipping: not a directory")
         else:
             file = root.language.file()
-            src = self.data.joinpath(file)
+            src = self.data / file
             assert src.is_file()
-            dst = root.path.joinpath(file)
-            verb = "Replacing" if dst.exists() else "Creating"
-            print(f"{verb}: {file}")
-            shutil.copy(src, dst)
-        print()
+            dst = root.path / file
+            verb = "replacing" if dst.exists() else "creating"
+            print(f"  - {verb}: {file}")
+            src.copy(dst)
 
 
 def main() -> None:
-    template = get_template()
+    template = Template.new()
     for root in get_roots():
         template.copy(root)
 
 
-def get_template() -> Template:
-    current = Path(__file__).resolve()
-    data = current.parent.joinpath("data")
-    assert data.is_dir()
-    return Template(data=data)
-
-
 def get_roots() -> list[Root]:
-    config = Path.home().joinpath(".config")
-    repos = Path.home().joinpath("dev/repos/personal")
+    config = Path.home() / ".config"
+    repos = Path.home() / "dev/repos/personal"
     return [
-        Root(config.joinpath("nvim"), Language.LUA),
-        Root(config.joinpath("wezterm"), Language.LUA),
-        Root(repos.joinpath("dashboard.nvim"), Language.LUA),
-        Root(repos.joinpath("harpoon-core.nvim"), Language.LUA),
-        Root(repos.joinpath("py-requirements.nvim"), Language.LUA),
-        Root(repos.joinpath("render-markdown.nvim"), Language.LUA),
-        Root(repos.joinpath("stashpad.nvim"), Language.LUA),
-        Root(repos.joinpath("treesitter-modules.nvim"), Language.LUA),
+        Root(config / "nvim", Language.LUA),
+        Root(config / "wezterm", Language.LUA),
+        Root(repos / "dashboard.nvim", Language.LUA),
+        Root(repos / "harpoon-core.nvim", Language.LUA),
+        Root(repos / "py-requirements.nvim", Language.LUA),
+        Root(repos / "render-markdown.nvim", Language.LUA),
+        Root(repos / "stashpad.nvim", Language.LUA),
+        Root(repos / "treesitter-modules.nvim", Language.LUA),
     ]
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Copy common files to directories based on language"
-    )
-    parser.parse_args()
     main()

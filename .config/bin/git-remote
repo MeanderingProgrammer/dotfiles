@@ -2,7 +2,7 @@
 
 import os
 import subprocess
-from dataclasses import dataclass
+from enum import StrEnum, auto
 from pathlib import Path
 
 import click
@@ -10,17 +10,25 @@ import git
 import requests
 
 
-@dataclass(frozen=True)
-class GitRemote:
-    name: str
-    url: str
-    auto_creates: bool
+class Remote(StrEnum):
+    LAB = auto()
+    BIT = auto()
 
+    @property
+    def url(self) -> str:
+        match self:
+            case Remote.LAB:
+                return "git@gitlab.com"
+            case Remote.BIT:
+                return "git@bitbucket.org"
 
-REMOTES: list[GitRemote] = [
-    GitRemote(name="lab", url="git@gitlab.com", auto_creates=True),
-    GitRemote(name="bit", url="git@bitbucket.org", auto_creates=False),
-]
+    @property
+    def auto_creates(self) -> bool:
+        match self:
+            case Remote.LAB:
+                return True
+            case Remote.BIT:
+                return False
 
 
 @click.group()
@@ -33,90 +41,78 @@ def cli() -> None:
 @cli.command()
 def sync() -> None:
     """Sync all repos to remotes"""
-
-    user_name = get_user_name()
-    repo_paths: list[Path] = [
-        Path.home().joinpath(".local/share/yadm/repo.git"),
-    ]
-    repo_paths.extend(repos_in_directory("Documents"))
-    repo_paths.extend(repos_in_directory("dev/repos/personal"))
-
-    for repo_path in repo_paths:
-        repo: git.Repo = git.Repo(repo_path)
-        push_remotes(user_name, repo)
-
-
-def repos_in_directory(directory: str) -> list[Path]:
-    result: list[Path] = []
-    for git_folder in Path.home().joinpath(directory).rglob(".git"):
-        if git_folder.stat().st_size > 0:
-            git_repo: Path = git_folder.parent
-            result.append(git_repo)
-    return result
+    repos = [git.Repo(Path.home() / ".local/share/yadm/repo.git")]
+    repos.extend(get_repos(Path.home() / "Documents"))
+    repos.extend(get_repos(Path.home() / "dev/repos/personal"))
+    for repo in repos:
+        push_remotes(repo)
 
 
 @cli.command()
 def push() -> None:
     """Push current repo to remotes"""
-
-    user_name = get_user_name()
-    repo: git.Repo = git.Repo()
-    push_remotes(user_name, repo)
+    push_remotes(git.Repo())
 
 
-def get_user_name() -> str:
-    return str(git.GitConfigParser().get_value("user", "name"))
+def get_repos(directory: Path) -> list[git.Repo]:
+    result: list[git.Repo] = []
+    for path in directory.rglob(".git"):
+        if path.stat().st_size > 0:
+            result.append(git.Repo(path.parent))
+    return result
 
 
-def push_remotes(user_name: str, repo: git.Repo) -> None:
-    assert "origin" in repo.remotes
-    origin_url = repo.remotes["origin"].url
+def push_remotes(repo: git.Repo) -> None:
+    user_name = str(git.GitConfigParser().get_value("user", "name"))
+
+    assert "origin" in repo.remotes, f"missing origin: {list(repo.remotes)}"
+    origin = repo.remotes["origin"].url
 
     # "git@gh.com:user/aoc.nvim.git" -> "git@gh.com", "user/aoc.nvim.git"
-    repo_host, repo_path = origin_url.split(":")
-    assert repo_host == "git@github.com"
+    host, path = origin.split(":")
+    assert host == "git@github.com", f"invalid host: {host}"
 
     # "user/aoc.nvim.git" -> "user", "aoc.nvim"
-    owner, name = repo_path.rsplit(".", 1)[0].split("/")
+    owner, name = path.rsplit(".", 1)[0].split("/")
     if owner != user_name:
-        print(f"Skipping {name}: not owned by {user_name}")
+        print(f"skipping {name}: not owned by {user_name}")
         return
 
-    if is_fork(user_name, name):
-        print(f"Skipping {name}: fork")
+    if is_fork(owner, name):
+        print(f"skipping {name}: fork")
         return
 
-    for remote in REMOTES:
-        remote_url = ":".join([remote.url, repo_path])
-        if remote.name in repo.remotes:
-            print(f"{remote.name} is already a remote")
-            assert repo.remotes[remote.name].url == remote_url
+    for remote in Remote:
+        url = f"{remote.url}:{path}"
+        if str(remote) in repo.remotes:
+            print(f"{remote} is already a remote")
+            assert repo.remotes[str(remote)].url == url
         else:
-            assert run_command(repo, ["git", "remote", "add", remote.name, remote_url])
-            assert remote.name in repo.remotes
+            assert cmd(repo, "git", "remote", "add", str(remote), url)
+            assert str(remote) in repo.remotes
 
-    for remote in REMOTES:
-        assert run_command(repo, ["git", "push", remote.name])
+    for remote in Remote:
+        assert cmd(repo, "git", "push", str(remote))
 
 
-def is_fork(user_name: str, name: str) -> bool:
+def is_fork(owner: str, name: str) -> bool:
     token = os.getenv("GITHUB_TOKEN")
     assert token is not None, "GITHUB_TOKEN not set"
-    response = requests.get(
-        f"https://api.github.com/repos/{user_name}/{name}",
+    result = requests.get(
+        f"https://api.github.com/repos/{owner}/{name}",
         headers={"Authorization": f"token {token}"},
     )
-    # Assume 404s are caused by own private repos
-    if response.status_code == 404:
+    # assume 404 is caused by personal private repos
+    if result.status_code == 404:
         return False
-    assert response.status_code == 200, "GITHUB_TOKEN is likely expired"
-    return response.json()["fork"]
+    assert result.status_code == 200, "GITHUB_TOKEN is likely expired"
+    return result.json()["fork"]
 
 
-def run_command(repo: git.Repo, command: list[str]) -> bool:
+def cmd(repo: git.Repo, *args: str) -> bool:
     # GitPython struggles with yadm so need to run some things directly
-    print(f"Running '{' '.join(command)}' in: {repo.git_dir}")
-    result = subprocess.run(command, cwd=repo.git_dir)
+    print(f"running '{' '.join(args)}' in: {repo.git_dir}")
+    result = subprocess.run(args, cwd=repo.git_dir)
     return result.returncode == 0
 
 

@@ -16,7 +16,7 @@ def cli() -> None:
 @cli.command()
 def push() -> None:
     """Push current branch as PR"""
-    branch = run(["git", "branch", "--show-current"])
+    branch = cmd("git", "branch", "--show-current")
     print(f"pushing {branch} to origin")
     os.system(f"git push -f origin {branch}")
 
@@ -32,10 +32,10 @@ def pull(id: int) -> None:
     os.system(f"git checkout {branch}")
 
 
-def run(cmd: list[str]) -> str:
-    result = subprocess.run(cmd, capture_output=True, text=True)
+def cmd(*args: str) -> str:
+    result = subprocess.run(args, capture_output=True, text=True)
     if result.returncode != 0:
-        raise Exception(f"{' '.join(cmd)} failed with {result.stderr}")
+        raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.strip()
 
 

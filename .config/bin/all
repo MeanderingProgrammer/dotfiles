@@ -4,6 +4,7 @@ import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Self
 
 Result = dict[str, list[str]]
 
@@ -13,21 +14,21 @@ class Column:
     name: str
     width: int
 
-    def __init__(self, name: str) -> None:
-        self.name = name
-        self.width = len(name)
-
-    def title(self) -> str:
-        return self.name.ljust(self.width)
+    @classmethod
+    def new(cls, name: str) -> Self:
+        return cls(name, len(name))
 
     def update(self, result: Result) -> None:
-        widths = [len(line) for line in result[self.name]]
-        self.width = max(self.width, max(widths))
+        width = max([len(line) for line in result[self.name]])
+        self.width = max(self.width, width)
 
-    def get(self, result: Result, i: int) -> str:
+    def fill(self, s: str) -> str:
+        return s * (self.width + 2)
+
+    def format(self, result: Result, i: int) -> str:
         lines = result[self.name]
         s = lines[i] if i < len(lines) else ""
-        return s.ljust(self.width)
+        return f" {s.ljust(self.width)} "
 
 
 @dataclass(frozen=True)
@@ -39,64 +40,50 @@ class Schema:
             for column in self.columns:
                 column.update(result)
         print(self.delim("┌", "┬", "┐"))
-        print(self.title())
+        print(self.row({column.name: [column.name] for column in self.columns}))
         for result in results:
             print(self.delim("├", "┼", "┤"))
             print(self.row(result))
         print(self.delim("└", "┴", "┘"))
 
     def delim(self, left: str, center: str, right: str) -> str:
-        parts: list[str] = []
-        for column in self.columns:
-            parts.append("─" * (column.width + 2))
-        return left + center.join(parts) + right
-
-    def title(self) -> str:
-        result: Result = dict()
-        for column in self.columns:
-            result[column.name] = [column.title()]
-        return self.row(result)
+        parts = [column.fill("─") for column in self.columns]
+        return f"{left}{center.join(parts)}{right}"
 
     def row(self, result: Result) -> str:
-        n = max([len(lines) for lines in result.values()])
         lines: list[str] = []
-        for i in range(n):
-            parts: list[str] = []
-            for column in self.columns:
-                parts.append(column.get(result, i))
-            line = "│ " + " │ ".join(parts) + " │"
-            lines.append(line)
+        max_lines = max([len(lines) for lines in result.values()])
+        for i in range(max_lines):
+            parts = [column.format(result, i) for column in self.columns]
+            lines.append(f"│{'│'.join(parts)}│")
         return "\n".join(lines)
 
 
 def main(args: list[str]) -> None:
-    cmd = ["git"] + args
-
-    directories: list[Path] = []
-    for repo in Path().rglob(".git"):
-        if repo.stat().st_size > 0:
-            directories.append(repo.parent)
-    directories.sort()
+    args = ["git"] + args
 
     results: list[Result] = []
-    for directory in directories:
-        result: Result = dict(
-            directory=[str(directory)],
-            output=run(cmd, directory),
-        )
-        results.append(result)
+    for path in get_repos():
+        results.append(dict(repo=[str(path)], output=cmd(path, *args)))
 
-    print(f"outputs of command: '{' '.join(cmd)}'")
-    schema = Schema([Column("directory"), Column("output")])
+    print(f"command: {' '.join(args)}")
+    schema = Schema([Column.new("repo"), Column.new("output")])
     schema.pretty_print(results)
 
 
-def run(cmd: list[str], directory: Path) -> list[str]:
-    result = subprocess.run(cmd, cwd=directory, capture_output=True, text=True)
+def get_repos() -> list[Path]:
+    result: list[Path] = []
+    for path in Path().rglob(".git"):
+        if path.stat().st_size > 0:
+            result.append(path.parent)
+    return sorted(result)
+
+
+def cmd(path: Path, *args: str) -> list[str]:
+    result = subprocess.run(args, cwd=path, capture_output=True, text=True)
     if result.returncode != 0:
-        raise Exception(result.stderr)
-    lines = result.stdout.splitlines()
-    return [line.expandtabs() for line in lines]
+        raise Exception(f"{' '.join(args)} failed: {result.stderr}")
+    return [line.expandtabs() for line in result.stdout.splitlines()]
 
 
 if __name__ == "__main__":

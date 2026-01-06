@@ -9,16 +9,16 @@ import click
 @click.help_option("-h", "--help")
 def cli() -> None:
     """Change between 2 branches in a git repo"""
-    branches: list[str] = run(["git", "branch"])
+    branches = cmd("git", "branch")
     assert len(branches) == 2, f"Only possible with 2 branches found {len(branches)}"
     branch = branches[1] if branches[0].split()[0] == "*" else branches[0]
-    run(["git", "checkout", branch.strip()])
+    cmd("git", "checkout", branch.strip())
 
 
-def run(cmd: list[str]) -> list[str]:
-    result = subprocess.run(cmd, capture_output=True, text=True)
+def cmd(*args: str) -> list[str]:
+    result = subprocess.run(args, capture_output=True, text=True)
     if result.returncode != 0:
-        raise Exception(f"{' '.join(cmd)} failed due to: {result.stderr}")
+        raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.splitlines()
 
 

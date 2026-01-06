@@ -188,7 +188,7 @@ class TrafficCache:
     @staticmethod
     def new() -> "TrafficCache":
         return TrafficCache(
-            file=Path(env("XDG_DATA_HOME")).joinpath("git-traffic.json"),
+            file=Path(env("XDG_DATA_HOME")) / "git-traffic.json",
         )
 
 
