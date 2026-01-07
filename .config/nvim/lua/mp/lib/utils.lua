@@ -32,7 +32,7 @@ M.roots = {
 ---@param clear? boolean
 ---@return integer
 function M.augroup(name, clear)
-    return vim.api.nvim_create_augroup(name, { clear = clear })
+    return vim.api.nvim_create_augroup('mp.' .. name, { clear = clear })
 end
 
 ---@param s string

@@ -1,5 +1,3 @@
-local utils = require('mp.lib.utils')
-
 -- general
 vim.o.backup = false
 vim.o.clipboard = 'unnamedplus'
@@ -32,11 +30,3 @@ vim.o.spelloptions = 'camel'
 vim.o.tabstop = 4
 vim.o.timeoutlen = 500
 vim.o.updatetime = 250
-
--- ftplugin options
-vim.api.nvim_create_autocmd('FileType', {
-    group = utils.augroup('mp.options'),
-    callback = function()
-        vim.opt_local.formatoptions:remove({ 'c', 'r', 'o' })
-    end,
-})

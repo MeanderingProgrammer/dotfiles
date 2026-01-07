@@ -44,13 +44,13 @@ local function attach(buf, id)
         vim.lsp.codelens.refresh()
         vim.api.nvim_create_autocmd('BufWritePost', {
             buffer = buf,
-            group = utils.augroup('mp.lsp.codelens', false),
+            group = utils.augroup('lsp.codelens', false),
             callback = vim.lsp.codelens.refresh,
         })
     end
 
     if supports('textDocument/documentHighlight') then
-        local group = utils.augroup('mp.lsp.highlight', false)
+        local group = utils.augroup('lsp.highlight', false)
         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = buf,
             group = group,
@@ -94,7 +94,7 @@ return {
         end
 
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = utils.augroup('mp.lsp'),
+            group = utils.augroup('lsp'),
             callback = function(args)
                 attach(args.buf, args.data.client_id)
             end,
