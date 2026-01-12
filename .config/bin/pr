@@ -6,10 +6,13 @@ import subprocess
 import click
 
 
-@click.group()
-@click.help_option("-h", "--help")
+@click.group(
+    context_settings=dict(
+        help_option_names=["-h", "--help"],
+    ),
+)
 def cli() -> None:
-    "Improves interacting with Git PRs"
+    """Improves interacting with Git PRs"""
     pass
 
 

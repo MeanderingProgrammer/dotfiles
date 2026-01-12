@@ -63,6 +63,7 @@ click_completion "gd"
 click_completion "git-remote"
 click_completion "git-stats"
 click_completion "llm"
+click_completion "nvim-plugin"
 click_completion "pr"
 
 cmd_completion "uv" "generate-shell-completion" "zsh"

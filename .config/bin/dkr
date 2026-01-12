@@ -37,7 +37,6 @@ def setup() -> None:
 @cli.command()
 def clean() -> None:
     """Remove any untagged images"""
-
     untagged = True
     while untagged:
         print("getting untagged images")

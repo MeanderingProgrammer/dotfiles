@@ -52,7 +52,6 @@ class Commit(StrEnum):
 @click.help_option("-h", "--help")
 def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
     """git diff (<options>)? (<commit>)? (-- <path>...)?"""
-
     args: list[str] = ["git", "diff"]
 
     if name:
@@ -79,7 +78,7 @@ def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
 def current() -> str:
     results = cmd("git", "branch", "--show-current")
     assert len(results) == 1, f"expected 1 current branch, found {len(results)}"
-    return results[0]
+    return results.pop()
 
 
 def mainline() -> str:

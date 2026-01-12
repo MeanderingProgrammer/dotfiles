@@ -1,0 +1,347 @@
+#!/usr/bin/env python
+
+import re
+import subprocess
+from dataclasses import dataclass
+from datetime import date
+from pathlib import Path
+from typing import Literal, Self, override
+
+import click
+
+
+@dataclass(frozen=True)
+class Semver:
+    major: int
+    minor: int
+    patch: int
+
+    @classmethod
+    def new(cls, s: str) -> Self:
+        major, minor, patch = s.split(".")
+        return cls(int(major), int(minor), int(patch))
+
+    def __post_init__(self) -> None:
+        assert self.major >= 0 and self.minor >= 0 and self.patch >= 0
+
+    def bump(self, field: Literal["major", "minor", "patch"], n: int) -> Self:
+        match field:
+            case "major":
+                return type(self)(self.major + n, 0, 0)
+            case "minor":
+                return type(self)(self.major, self.minor + n, 0)
+            case "patch":
+                return type(self)(self.major, self.minor, self.patch + n)
+
+    @override
+    def __str__(self) -> str:
+        return f"{self.major}.{self.minor}.{self.patch}"
+
+
+@dataclass(frozen=True)
+class Health:
+    file: Path
+
+    @classmethod
+    def new(cls) -> Self:
+        files = list(Path(".").glob("lua/*/health.lua"))
+        assert len(files) == 1
+        return cls(files.pop())
+
+    def read(self) -> str:
+        return self.file.read_text()
+
+    def get_version(self) -> Semver:
+        lines: list[str] = []
+        for line in self.read().splitlines():
+            if line.startswith("M.version ="):
+                lines.append(line)
+        assert len(lines) == 1
+        # M.version = '7.7.9' -> 7.7.9
+        version = lines.pop().split()[-1][1:-1]
+        return Semver.new(version)
+
+    def set_version(self, new: Semver) -> None:
+        old = self.get_version()
+        text = self.read().replace(str(old), str(new))
+        self.file.write_text(text)
+
+
+@dataclass(frozen=True)
+class ChangeLog:
+    file: Path
+
+    @classmethod
+    def new(cls) -> Self:
+        return cls(Path("CHANGELOG.md"))
+
+    def read(self) -> str:
+        return self.file.read_text()
+
+    def find(self, pattern: str) -> list[re.Match[str]]:
+        return list(re.finditer(pattern, self.read(), re.MULTILINE))
+
+    def commits(self) -> list[str]:
+        # Find commit hash in links:
+        # [link](https://github.com/me/mine/commit/1234abcd) -> 1234abcd
+        commits = self.find(r"\[.*?\]\(.*?/commit/(.*?)\)")
+        return [commit.group(1) for commit in commits]
+
+    def release_notes(self, i: int) -> list[str]:
+        # Match release heading:
+        # ## Pre-release
+        # ## 6.1.0 (2024-08-11)
+        releases = self.find(r"^##\s\S+(?:\s\S{12})?$")
+        current, previous = releases[i], releases[i + 1]
+        release = self.read()[current.start() : previous.start()].strip()
+
+        # Match markdown link and surround in parenthesis:
+        # [link](test.com) -> ([link](test.com))
+        release = re.sub(r"\[.*?\]\(.*?\)", r"(\g<0>)", release)
+
+        lines: list[str] = []
+        for line in release.splitlines():
+            if len(line) == 0:
+                lines.append(line)
+            elif line[0] == "#":
+                lines.append(line[1:])
+            # Match markdown list:
+            # - Item
+            elif re.match(r"^\s*-", line) is not None:
+                lines.append(line)
+            else:
+                lines[-1] += f" {line.strip()}"
+        return lines
+
+    def append_version(self, version: Semver) -> None:
+        lines = self.read().splitlines()
+        lines.insert(3, f"## {version} ({date.today().isoformat()})")
+        lines.insert(3, "")
+        self.file.write_text("\n".join(lines) + "\n")
+
+
+@dataclass(frozen=True)
+class Commit:
+    remote: str
+    hash: str
+    author: str
+    date: str
+    message: str
+    body: str
+
+    @property
+    def short(self) -> str:
+        return self.hash[:7]
+
+    @property
+    def mine(self) -> bool:
+        return self.author == "MeanderingProgrammer"
+
+    @property
+    def url(self) -> str:
+        return f"{self.remote}/commit/{self.hash}"
+
+    @property
+    def kind(self) -> str:
+        # details               -> unknown
+        # feat: details         -> feat
+        # chore(tests): details -> chore
+        match = re.match(r"(.*?)(\(.*?\))?:", self.message)
+        return "unknown" if match is None else match.group(1)
+
+    @property
+    def title(self) -> str:
+        # details               -> details
+        # feat: details         -> details
+        # chore(tests): details -> details
+        return self.message.split(":", 1)[-1].strip()
+
+    @property
+    def co_authored(self) -> bool:
+        return "co-authored-by" in self.body.lower()
+
+    def interesting(self) -> bool:
+        return not self.mine or self.co_authored or self.kind != "chore"
+
+    def log(self) -> list[str]:
+        lines: list[str] = []
+        lines.append(self.title)
+
+        for id, link in self.links(["discussions", "issues"]):
+            lines.append(f"[#{id}]({link})")
+
+        for id, link in self.links(["pull"]):
+            lines.append(f"[#{id}]({link})")
+            lines.append(f"collaborator: [PR]({link})")
+
+        lines.append(f"[{self.short}]({self.url})")
+
+        if not self.mine:
+            lines.append("collaborator: author")
+
+        if self.co_authored:
+            lines.append("collaborator: co-author")
+
+        return lines
+
+    def links(self, types: list[str]) -> list[tuple[int, str]]:
+        # Request: <remote>/issues/123
+        # Request: <remote>/discussions/534
+        # Based on: <remote>/pull/123
+        result: list[tuple[int, str]] = []
+        pattern = f"{self.remote}/(?:{'|'.join(types)})/(\\d+)"
+        for match in re.finditer(pattern, self.body, re.MULTILINE):
+            result.append((int(match.group(1)), match.group(0)))
+        return result
+
+
+@dataclass(frozen=True)
+class Repo:
+    url: str
+
+    @classmethod
+    def new(cls) -> Self:
+        # git config get --local remote.origin.url
+        url = cmd("git", "config", "get", "--local", "remote.origin.url")
+        # git@github.com:<owner>/<name>.git -> git@github.com/<owner>/<name>.git
+        url = url.replace(":", "/")
+        # git@github.com/<owner>/<name>.git -> git@github.com/<owner>/<name>
+        url = url.replace(".git", "")
+        # git@github.com/<owner>/<name>     -> https://github.com/<owner>/<name>
+        url = url.replace("git@", "https://")
+        return cls(url)
+
+    def after(self, seen: list[str], limit: int) -> list[str]:
+        # git log -100 --format='%H'
+        commits = cmd("git", "log", f"-{limit}", "--format=%H").splitlines()
+        for i, commit in enumerate(commits):
+            if commit in seen:
+                return commits[:i]
+        raise Exception(f"no match in last {limit} commits")
+
+    def commit(self, hash: str) -> Commit:
+        return Commit(
+            remote=self.url,
+            hash=hash,
+            author=Repo.show(hash, "%cn"),
+            date=Repo.show(hash, "%cs"),
+            message=Repo.show(hash, "%s"),
+            body=Repo.show(hash, "%b"),
+        )
+
+    @staticmethod
+    def show(hash: str, format: str) -> str:
+        # git show --quiet --format='%s' 84d413b0c432adaeaf3dcaac646638bd99d06aa6
+        return cmd("git", "show", "--quiet", f"--format={format}", hash)
+
+
+@click.group(
+    context_settings=dict(
+        help_option_names=["-h", "--help"],
+    ),
+    invoke_without_command=True,
+)
+@click.pass_context
+def cli(ctx: click.Context) -> None:
+    """Neovim plugin related actions"""
+    if ctx.invoked_subcommand is None:
+        bump()
+
+
+@cli.command()
+@click.option("-p", "--previous", is_flag=True, help="previous patch version")
+def bump(previous: bool) -> None:
+    """Update health patch version"""
+    health = Health.new()
+    version = health.get_version()
+    version = version.bump("patch", -1 if previous else 1)
+    health.set_version(version)
+
+
+@cli.command()
+def current() -> None:
+    """Print current version in health"""
+    health = Health.new()
+    version = health.get_version()
+    print(version)
+
+
+@cli.command()
+def changes() -> None:
+    """Commits since most recent entry in CHANGELOG"""
+    log = ChangeLog.new()
+    seen = log.commits()
+
+    repo = Repo.new()
+    new = repo.after(seen, 100)
+    if len(new) == 0:
+        print("no new commits")
+        return
+
+    print(f"new commits: {len(new)}")
+    commits = [repo.commit(hash) for hash in new]
+    commits = [commit for commit in commits if commit.interesting()]
+    print(f"skipped commits: {len(new) - len(commits)}")
+
+    kinds: dict[str, list[Commit]] = dict()
+    for commit in commits:
+        if commit.kind not in kinds:
+            kinds[commit.kind] = []
+        kinds[commit.kind].append(commit)
+
+    for kind, commits in kinds.items():
+        print(kind)
+        for commit in commits:
+            for i, line in enumerate(commit.log()):
+                prefix = "- " if i == 0 else "  "
+                print(f"{prefix}{line}")
+
+
+@cli.command()
+def prepare() -> None:
+    """Update CHANGELOG and health with next minor version"""
+    health = Health.new()
+    version = health.get_version()
+    version = version.bump("minor", 1)
+
+    log = ChangeLog.new()
+    notes = log.release_notes(0)
+    if len(notes) < 2:
+        print("no release notes available")
+        return
+
+    health.set_version(version)
+    log.append_version(version)
+    run(f"git commit -m 'chore(release): {version}'")
+
+
+@cli.command()
+def release() -> None:
+    """Print information needed to run a release"""
+    health = Health.new()
+    version = health.get_version()
+
+    log = ChangeLog.new()
+    notes = log.release_notes(1)
+
+    print(f"release title: v{version}")
+    print("\n".join(notes) + "\n")
+    run(
+        f"git tag -a v{version} -m 'Release v{version}'",
+        f"git push origin tag v{version}",
+    )
+
+
+def cmd(*args: str) -> str:
+    result = subprocess.run(args, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise Exception(f"{' '.join(args)} failed: {result.stderr}")
+    return result.stdout.strip()
+
+
+def run(*cmds: str) -> None:
+    print(" && ".join(cmds))
+
+
+if __name__ == "__main__":
+    cli()
