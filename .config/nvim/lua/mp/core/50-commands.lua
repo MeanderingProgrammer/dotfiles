@@ -4,41 +4,38 @@ local utils = require('mp.lib.utils')
 vim.api.nvim_create_user_command('AdventData', function()
     local file = vim.api.nvim_buf_get_name(0)
     local name = vim.fn.fnamemodify(file, ':.')
-    local parts = utils.split(name, '/')
-    local path = vim.fs.joinpath('data', parts[1], parts[2], 'data.txt')
-    vim.cmd.vsplit(path)
+    local year, day = unpack(utils.split(name, '/'))
+    local path = vim.fs.joinpath('data', year, day, 'data.txt')
+    if utils.exists(path) then
+        vim.cmd.vsplit(path)
+    end
 end, { desc = 'open data.txt associated with problem' })
 
 vim.api.nvim_create_user_command('FormatLine', function()
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-
     local current = vim.api.nvim_buf_get_lines(0, row, row + 1, false)[1]
-    local words = utils.split(current, ' ')
 
-    local offsets = {} ---@type integer[]
+    local indent = 0
     for _, pattern in ipairs({ '%-', '%d+%.' }) do
         local match = current:match('^%s*' .. pattern .. '%s*')
-        offsets[#offsets + 1] = match and #match or 0
+        local length = match and #match or 0
+        indent = length > indent and length or indent
     end
 
-    local lines = { '' }
-    local offset = vim.fn.max(offsets)
-    for _, word in ipairs(words) do
+    local lines = { '' } ---@type string[]
+    for _, word in ipairs(utils.split(current, ' ')) do
+        if #lines[#lines] >= 80 then
+            lines[#lines + 1] = (' '):rep(indent)
+        end
         lines[#lines] = lines[#lines] .. word .. ' '
-        if #lines[#lines] > 80 then
-            lines[#lines + 1] = (' '):rep(offset)
-        end
     end
-
-    local result = {} ---@type string[]
-    for _, line in ipairs(lines) do
+    for i, line in ipairs(lines) do
         line = line:sub(1, #line - 1)
-        if #line > 0 then
-            result[#result + 1] = line
-        end
+        assert(#line > 0, ('blank line %d'):format(i))
+        lines[i] = line
     end
 
-    vim.api.nvim_buf_set_lines(0, row, row + 1, false, result)
+    vim.api.nvim_buf_set_lines(0, row, row + 1, false, lines)
 end, { desc = 'split current line into multiple lines of width 80' })
 
 vim.api.nvim_create_user_command('LspConfig', function()
