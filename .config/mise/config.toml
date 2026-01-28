@@ -2,7 +2,7 @@
 disable_backends = ["dotnet", "gem", "go", "pipx", "spm", "vfox"]
 
 [tools]
-"asdf:aws" = "2.32.30"
+aws-cli = "2.33.8"
 bun = "1.3.5"
 coursier = "2.1.24"
 dotnet = "10.0.101"
