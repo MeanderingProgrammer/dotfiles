@@ -35,8 +35,14 @@ dir = "{{ env.NVIM_ROOT }}"
 run = ["make distclean", "make clean"]
 
 [tasks."nvim:build"]
+usage = '''
+arg "<build>" help="Build type" {
+    choices "RelWithDebInfo" "Release"
+    default "RelWithDebInfo"
+}
+'''
 dir = "{{ env.NVIM_ROOT }}"
-run = "make CMAKE_BUILD_TYPE=Release"
+run = "make CMAKE_BUILD_TYPE={{ usage.build }}"
 
 [tasks."nvim:test"]
 dir = "{{ env.NVIM_ROOT }}"
