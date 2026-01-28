@@ -2,8 +2,6 @@
 return {
     settings = {
         Lua = {
-            hint = { enable = true },
-            runtime = { version = 'LuaJIT' },
             diagnostics = {
                 ignoredFiles = 'Enable',
                 groupFileStatus = {
@@ -16,6 +14,7 @@ return {
                     ['unused'] = 'Any',
                 },
             },
+            runtime = { version = 'LuaJIT' },
         },
     },
 }

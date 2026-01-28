@@ -6,7 +6,7 @@ require('mp.lib.lang').add({
         luadoc = { install = true },
     },
     tool = {
-        ['lua-language-server'] = { install = vim.g.pc },
+        ['lua-language-server'] = { install = vim.g.pc, version = '3.16.4' },
         ['selene'] = { install = vim.g.pc },
         ['stylua'] = { install = vim.g.pc },
     },
