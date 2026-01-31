@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import subprocess
 from enum import StrEnum
 
@@ -68,11 +67,10 @@ def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
         for file in lock_files:
             args.append(f'":(exclude)*{file}"')
 
-    command = " ".join(args)
     if debug:
-        print(command)
+        print(" ".join(args))
     else:
-        os.system(command)
+        subprocess.run(args)
 
 
 def current() -> str:
