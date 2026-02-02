@@ -34,6 +34,13 @@ def pull(id: int) -> None:
     run("git", "checkout", branch)
 
 
+@cli.command()
+def co_author() -> None:
+    """Print current commit as co-author"""
+    format = "Co-authored-by: %an <%ae>"
+    run("git", "log", "-1", f"--format={format}")
+
+
 def cmd(*args: str) -> str:
     result = subprocess.run(args, capture_output=True, text=True)
     if result.returncode != 0:
