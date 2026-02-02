@@ -83,7 +83,7 @@ def cmd(path: Path, *args: str) -> list[str]:
     result = subprocess.run(args, cwd=path, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
-    return [line.expandtabs() for line in result.stdout.splitlines()]
+    return result.stdout.expandtabs().splitlines()
 
 
 if __name__ == "__main__":

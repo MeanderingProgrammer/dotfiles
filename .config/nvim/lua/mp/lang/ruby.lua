@@ -6,6 +6,6 @@ require('mp.lib.lang').add({
         ['ruby-lsp'] = { install = vim.g.has.gem },
     },
     lsp = {
-        ruby_lsp = {},
+        ruby_lsp = { cmd = 'ruby-lsp' },
     },
 })
