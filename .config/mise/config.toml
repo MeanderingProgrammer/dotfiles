@@ -1,5 +1,5 @@
 [settings]
-disable_backends = ["dotnet", "gem", "go", "pipx", "spm", "vfox"]
+disable_backends = ["dotnet", "gem", "go", "pipx", "spm"]
 
 [tools]
 aws-cli = "2.34.0"
