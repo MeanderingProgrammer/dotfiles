@@ -7,7 +7,7 @@ require('mp.lib.lang').add({
         make = { install = true },
     },
     tool = {
-        ['clangd'] = { install = vim.g.pc },
+        ['clangd'] = { install = vim.g.pc and vim.g.personal },
         ['csharp-language-server'] = { install = vim.g.has.dotnet },
     },
     lsp = {

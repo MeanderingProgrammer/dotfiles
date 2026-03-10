@@ -3,7 +3,7 @@ require('mp.lib.lang').add({
         latex = { install = vim.g.pc },
     },
     tool = {
-        ['texlab'] = { install = vim.g.pc },
+        ['texlab'] = { install = vim.g.pc and vim.g.personal },
     },
     lsp = {
         texlab = {},

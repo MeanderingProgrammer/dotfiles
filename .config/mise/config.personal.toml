@@ -11,7 +11,6 @@ opam = "2.5.0"
 perl = "5.40.1.0"
 ruby = "3.4.4"
 scala = "3.7.4"
-terraform = "1.14.6"
 zig = "0.15.2"
 
 [env]
