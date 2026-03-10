@@ -4,6 +4,7 @@ vim.g.maplocalleader = ' '
 
 -- device information
 vim.g.pc = vim.fn.has('android') == 0
+vim.g.personal = vim.env.USER == 'vlad' or not vim.g.pc
 vim.g.wsl = vim.fn.has('wsl') == 1
 
 -- dependency information

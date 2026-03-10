@@ -17,8 +17,9 @@ homebrew_init() {
     fi
     local services=$(brew services list)
     for service in "${brew_services[@]}"; do
-        local running=$(echo "${services}" | grep "${service}.*started")
-        if [[ -z "${running}" ]]; then
+        local installed=$(echo "${services}" | grep "${service}")
+        local started=$(echo "${services}" | grep "${service}.*started")
+        if [[ -n "${installed}" && -z "${started}" ]]; then
             brew services start "${service}"
         fi
     done

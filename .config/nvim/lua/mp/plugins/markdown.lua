@@ -2,7 +2,7 @@ local Keymap = require('mp.lib.keymap')
 
 return {
     'MeanderingProgrammer/render-markdown.nvim',
-    dev = true,
+    dev = vim.g.personal,
     dependencies = {
         'nvim-mini/mini.nvim',
         'nvim-treesitter/nvim-treesitter',

@@ -2,7 +2,7 @@ local Keymap = require('mp.lib.keymap')
 
 return {
     'MeanderingProgrammer/stashpad.nvim',
-    dev = true,
+    dev = vim.g.personal,
     config = function()
         local stashpad = require('stashpad')
         stashpad.setup({})

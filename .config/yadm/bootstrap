@@ -29,7 +29,7 @@ is_phone() {
 }
 
 is_personal() {
-    [[ $(id -un) == "vlad" ]] || is_phone
+    [[ "${USER}" == "vlad" ]] || is_phone
 }
 
 lib_path="$(dirname $0)/lib"

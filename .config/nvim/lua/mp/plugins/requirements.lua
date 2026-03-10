@@ -1,6 +1,6 @@
 return {
     'MeanderingProgrammer/py-requirements.nvim',
-    dev = true,
+    dev = vim.g.personal,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
         require('py-requirements').setup({

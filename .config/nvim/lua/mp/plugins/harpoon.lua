@@ -2,7 +2,7 @@ local Keymap = require('mp.lib.keymap')
 
 return {
     'MeanderingProgrammer/harpoon-core.nvim',
-    dev = true,
+    dev = vim.g.personal,
     dependencies = { 'nvim-mini/mini.nvim' },
     config = function()
         local harpoon = require('harpoon-core')

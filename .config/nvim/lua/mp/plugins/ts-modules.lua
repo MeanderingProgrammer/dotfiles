@@ -2,7 +2,7 @@ local lang = require('mp.lib.lang')
 
 return {
     'MeanderingProgrammer/treesitter-modules.nvim',
-    dev = true,
+    dev = vim.g.personal,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
         local configs = lang.parsers()

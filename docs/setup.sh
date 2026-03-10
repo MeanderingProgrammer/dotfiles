@@ -224,10 +224,10 @@ do_git() {
 
     # Setup SSH keys for each git host
     local known_hosts="${HOME}/.ssh/known_hosts"
-    setup_file ${known_hosts}
-    setup_ssh ${known_hosts} "github.com" "id_ed25519"
-    setup_ssh ${known_hosts} "gitlab.com" "id_ed25519_lab"
-    setup_ssh ${known_hosts} "bitbucket.org" "id_ed25519_bit"
+    setup_file "${known_hosts}"
+    setup_ssh "${known_hosts}" "github.com" "id_ed25519"
+    setup_ssh "${known_hosts}" "gitlab.com" "id_ed25519_lab"
+    setup_ssh "${known_hosts}" "bitbucket.org" "id_ed25519_bit"
 }
 
 do_yadm() {
