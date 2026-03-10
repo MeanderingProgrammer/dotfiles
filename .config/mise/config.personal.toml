@@ -1,0 +1,41 @@
+[tools]
+coursier = "2.1.24"
+dotnet = "10.0.101"
+elixir = "1.19.3-otp-28"
+erlang = "28.1.1"
+gradle = "9.1.0"
+java = "25.0.0"
+julia = "1.12.3"
+kotlin = "2.2.0"
+opam = "2.5.0"
+perl = "5.40.1.0"
+ruby = "3.4.4"
+scala = "3.7.4"
+terraform = "1.14.6"
+zig = "0.15.2"
+
+[env]
+PROJECT = "{{ cwd | basename }}"
+NVIM_ROOT = "{% if env.PROJECT == 'neovim' %}{{ cwd }}{% else %}~/dev/repos/tools/neovim{% endif %}"
+
+[tasks."nvim:clean"]
+dir = "{{ env.NVIM_ROOT }}"
+run = ["make distclean", "make clean"]
+
+[tasks."nvim:build"]
+usage = '''
+arg "<build>" help="Build type" {
+    choices "RelWithDebInfo" "Release"
+    default "RelWithDebInfo"
+}
+'''
+dir = "{{ env.NVIM_ROOT }}"
+run = "make CMAKE_BUILD_TYPE={{ usage.build }}"
+
+[tasks."nvim:test"]
+dir = "{{ env.NVIM_ROOT }}"
+env = { NODE_PATH = "{{ exec(command='npm root -g') }}" }
+run = "make test"
+
+[tasks."nvim:run"]
+run = "VIMRUNTIME={{ env.NVIM_ROOT }}/runtime {{ env.NVIM_ROOT }}/build/bin/nvim"

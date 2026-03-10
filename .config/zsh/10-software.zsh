@@ -85,6 +85,11 @@ export MASON_HOME="${XDG_DATA_HOME}/nvim/mason"
 # matplotlib
 export MPLCONFIGDIR="${XDG_CACHE_HOME}/matplotlib"
 
+# mise
+if [[ "${USER}" == "vlad" || $(uname -o) == "Android" ]]; then
+    export MISE_ENV="personal"
+fi
+
 # password store
 export PASSWORD_STORE_DIR="${HOME}/Documents/pass"
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
