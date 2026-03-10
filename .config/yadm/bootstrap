@@ -28,6 +28,10 @@ is_phone() {
     [[ $(uname -o) == "Android" ]]
 }
 
+is_personal() {
+    [[ $(id -un) == "vlad" ]] || is_phone
+}
+
 lib_path="$(dirname $0)/lib"
 
 main() {
@@ -62,7 +66,11 @@ do_deps() {
 
     notify "${TITLE}" "dependency: brew"
     if check_cmd "brew"; then
-        brew bundle --file "${lib_path}/Brewfile"
+        local brew_file="Brewfile"
+        if ! is_personal; then
+            brew_file="Brewfile.work"
+        fi
+        brew bundle --file "${lib_path}/${brew_file}"
         brew update
         brew upgrade
         brew cleanup
@@ -156,7 +164,9 @@ do_repos() {
     reload
 
     if check_cmd "python"; then
-        python "${lib_path}/repos.py"
+        if is_personal; then
+            python "${lib_path}/repos.py"
+        fi
         notify "${SUCCESS}" "  success"
     fi
 }

@@ -1,0 +1,37 @@
+# cli
+brew "bat"
+brew "colima"
+brew "curl"
+brew "devcontainer"
+brew "docker"
+brew "docker-buildx"
+brew "docker-compose"
+brew "fd"
+brew "fzf"
+brew "git"
+brew "git-delta"
+brew "jq"
+brew "just"
+brew "lazygit"
+brew "mise"
+brew "protobuf"
+brew "ripgrep"
+brew "tmux"
+brew "wget"
+brew "yadm"
+
+# plugin
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+# terminal
+cask "ghostty"
+
+# font
+cask "font-monaspace"
+cask "font-symbols-only-nerd-font"
+
+# editor
+brew "neovim"
+brew "vim"
+cask "sublime-text"
