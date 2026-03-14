@@ -6,14 +6,14 @@ require('mp.lib.lang').add({
         requirements = { install = true },
     },
     tool = {
-        ['basedpyright'] = { install = vim.g.pc and vim.g.has.pip },
+        ['ty'] = { install = vim.g.pc and vim.g.has.pip },
         ['ruff'] = { install = vim.g.pc and vim.g.has.pip },
         ['pyright'] = { install = not vim.g.pc and vim.g.has.npm },
         ['black'] = { install = not vim.g.pc and vim.g.has.pip },
         ['isort'] = { install = not vim.g.pc and vim.g.has.pip },
     },
     lsp = {
-        basedpyright = {},
+        ty = {},
         pyright = {},
     },
     format = {
