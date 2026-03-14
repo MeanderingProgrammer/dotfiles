@@ -30,13 +30,10 @@ require('mp.lib.lang').add({
         ruff = {
             filetypes = { 'python' },
             args = function()
-                local output = utils.system({ 'python', '--version' })
-                local version = vim.version.parse(output)
-                assert(version, 'unable to parse python version')
-                assert(version.major == 3, 'must be using python3')
-                local edition = math.max(version.minor, 7)
+                local version = utils.python()
+                local target = ('py%d%d'):format(version.major, version.minor)
                 ---@type string[]
-                return { ('--target-version=py3%d'):format(edition) }
+                return { ('--target-version=%s'):format(target) }
             end,
         },
     },

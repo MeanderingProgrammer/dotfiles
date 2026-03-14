@@ -1,7 +1,12 @@
+---@module 'lspconfig'
+
 ---@type vim.lsp.Config
 return {
+    ---@type lspconfig.settings.zls
     settings = {
-        warn_style = true,
-        skip_std_references = true,
+        zls = {
+            warn_style = true,
+            skip_std_references = true,
+        },
     },
 }

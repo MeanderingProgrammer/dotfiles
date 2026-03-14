@@ -125,4 +125,13 @@ function M.lsp_names(buf)
     return result
 end
 
+---@return vim.Version
+function M.python()
+    local output = M.system({ 'python', '--version' })
+    local version = vim.version.parse(output)
+    assert(version, 'unable to parse python version')
+    assert(version.major == 3 and version.minor >= 7, 'python < 3.7')
+    return version
+end
+
 return M

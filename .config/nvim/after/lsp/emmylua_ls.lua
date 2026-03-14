@@ -2,7 +2,6 @@ local utils = require('mp.lib.utils')
 
 ---@type vim.lsp.Config
 return {
-    settings = {},
     before_init = function(_, config)
         local library = {} ---@type string[]
         local files = vim.api.nvim_get_runtime_file('', true)
@@ -16,4 +15,5 @@ return {
             workspace = { library = library },
         }
     end,
+    settings = {},
 }

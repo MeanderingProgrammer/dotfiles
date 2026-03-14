@@ -1,3 +1,5 @@
+---@module 'lspconfig'
+
 local utils = require('mp.lib.utils')
 
 ---@param config vim.lsp.ClientConfig
@@ -36,6 +38,7 @@ return {
         })
     end,
     -- https://github.com/eclipse-jdtls/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line
+    ---@type lspconfig.settings.jdtls
     settings = {
         java = {
             codeGeneration = {
