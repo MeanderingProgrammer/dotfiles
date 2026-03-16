@@ -1,4 +1,5 @@
 # cli
+brew "bash"
 brew "bat"
 brew "cmake"
 brew "colima"
