@@ -3,7 +3,7 @@ require('mp.lib.lang').add({
         zig = { install = true },
     },
     tool = {
-        ['zls'] = { install = vim.g.pc and vim.g.personal },
+        zls = { install = vim.g.pc and vim.g.personal },
     },
     lsp = {
         zls = {},

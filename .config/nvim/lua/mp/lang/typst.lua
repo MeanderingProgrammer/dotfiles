@@ -3,8 +3,8 @@ require('mp.lib.lang').add({
         typst = { install = true },
     },
     tool = {
-        ['tinymist'] = { install = vim.g.pc },
-        ['prettypst'] = { install = vim.g.has.cargo },
+        tinymist = { install = vim.g.pc },
+        prettypst = { install = vim.g.has.cargo },
     },
     lsp = {
         tinymist = {},

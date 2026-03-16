@@ -4,7 +4,6 @@ require('mp.lib.lang').add({
         just = { install = true },
         kotlin = { install = true },
         nix = { install = true },
-        proto = { install = true },
         regex = { install = true },
         scala = { install = true },
         sql = { install = true },

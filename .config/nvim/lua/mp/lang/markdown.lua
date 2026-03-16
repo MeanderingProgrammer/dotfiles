@@ -6,8 +6,8 @@ require('mp.lib.lang').add({
         markdown_inline = { install = true },
     },
     tool = {
-        ['markdownlint'] = { install = vim.g.has.npm },
-        ['marksman'] = { install = vim.g.pc },
+        markdownlint = { install = vim.g.has.npm },
+        marksman = { install = vim.g.pc },
     },
     lsp = {
         marksman = {},

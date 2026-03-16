@@ -3,7 +3,7 @@ require('mp.lib.lang').add({
         toml = { install = true },
     },
     tool = {
-        ['taplo'] = { install = vim.g.pc },
+        taplo = { install = vim.g.pc },
     },
     format = {
         taplo = { filetypes = { 'toml' } },

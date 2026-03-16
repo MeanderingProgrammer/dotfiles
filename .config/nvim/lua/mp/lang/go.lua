@@ -7,7 +7,7 @@ require('mp.lib.lang').add({
         gowork = { install = true },
     },
     tool = {
-        ['gopls'] = { install = vim.g.has.go },
+        gopls = { install = vim.g.has.go },
     },
     lsp = {
         gopls = {},

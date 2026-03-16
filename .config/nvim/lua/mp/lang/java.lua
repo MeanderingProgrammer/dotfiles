@@ -4,7 +4,7 @@ require('mp.lib.lang').add({
         javadoc = { install = true },
     },
     tool = {
-        ['jdtls'] = { install = vim.g.personal },
+        jdtls = { install = vim.g.personal },
     },
     lsp = {
         jdtls = { cmd = 'jdtls' },
