@@ -3,6 +3,7 @@ require('mp.lib.lang').add({
         go = { install = true },
         gomod = { install = true },
         gosum = { install = true },
+        gotmpl = { install = true },
         gowork = { install = true },
     },
     tool = {

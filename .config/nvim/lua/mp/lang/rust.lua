@@ -93,12 +93,10 @@ end
 require('mp.lib.lang').add({
     parser = {
         rust = { install = true },
-        toml = { install = true },
     },
     tool = {
         ['rust-analyzer'] = { install = vim.g.pc },
         ['codelldb'] = { install = vim.g.pc },
-        ['taplo'] = { install = vim.g.pc },
     },
     lsp = {
         rust_analyzer = {},
@@ -123,8 +121,5 @@ require('mp.lib.lang').add({
                 },
             },
         },
-    },
-    format = {
-        taplo = { filetypes = { 'toml' } },
     },
 })

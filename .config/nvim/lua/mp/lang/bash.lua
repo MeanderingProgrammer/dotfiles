@@ -1,6 +1,7 @@
 require('mp.lib.lang').add({
     parser = {
-        bash = { install = true, filetypes = { 'zsh' } },
+        bash = { install = true },
+        zsh = { install = true },
     },
     tool = {
         ['bash-language-server'] = { install = vim.g.has.npm },
