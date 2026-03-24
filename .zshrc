@@ -31,6 +31,10 @@ safe_source() {
     fi
 }
 
+is_personal() {
+    [[ "${USER}" == "vlad" || $(uname -o) == "Android" ]]
+}
+
 time_cmd() {
     local name="${1}"
     shift
@@ -55,6 +59,12 @@ HISTFILE="${zsh_state_home}/history"
 setopt append_history
 setopt inc_append_history
 setopt share_history
+
+# ---- workspace configuration ---- #
+export WORKSPACE="${HOME}/dev/repos/personal"
+if ! is_personal; then
+    export WORKSPACE="${HOME}/dev/repos/work"
+fi
 
 # ---- source all shell configurations ---- #
 shell_init() {
