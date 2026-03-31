@@ -81,3 +81,7 @@ end, { desc = 'sort spell file after adding words' })
 vim.api.nvim_create_user_command('SpellToggle', function()
     vim.o.spell = not vim.o.spell
 end, { desc = 'toggle spell option' })
+
+vim.api.nvim_create_user_command('TSUpdateSync', function()
+    require('nvim-treesitter').update():wait()
+end, { desc = 'Update installed treesitter parsers synchronously' })

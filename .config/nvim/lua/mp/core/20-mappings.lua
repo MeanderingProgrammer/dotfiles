@@ -56,6 +56,11 @@ map:n('<leader>hc', function()
     end
 end, 'copy hex code of current character')
 
+---@see treesitter-defaults
+local remap = Keymap.new({ remap = true })
+remap:x('v', 'an')
+remap:x('V', 'in')
+
 ---@see lsp-defaults
 for _, lhs in ipairs({ 'gra', 'gri', 'grn', 'grr', 'grt', 'grx' }) do
     vim.keymap.del('n', lhs)

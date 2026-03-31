@@ -42,8 +42,8 @@ end
 ---@param rhs string|fun()
 ---@param desc? string
 ---@return mp.Keymap
-function Keymap:t(lhs, rhs, desc)
-    return self:set(lhs, rhs, { mode = 't', desc = desc })
+function Keymap:x(lhs, rhs, desc)
+    return self:set(lhs, rhs, { mode = 'x', desc = desc })
 end
 
 ---@param lhs string
