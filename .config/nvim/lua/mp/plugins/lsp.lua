@@ -7,7 +7,7 @@ local utils = require('mp.lib.utils')
 local function attach(buf, id)
     local client = assert(vim.lsp.get_client_by_id(id))
 
-    ---@param method vim.lsp.protocol.Method
+    ---@param method vim.lsp.protocol.Method.ClientToServer
     ---@return boolean
     local function supports(method)
         if vim.list_contains({ 'jdtls' }, client.name) then
@@ -38,15 +38,12 @@ local function attach(buf, id)
         :n('ws', fzf.lsp_workspace_symbols, 'workspace symbols')
 
     if supports('textDocument/codeLens') then
-        map:extend({ prefix = '<leader>' })
-            :n('cr', vim.lsp.codelens.run, 'codelens run')
-
-        vim.lsp.codelens.refresh()
-        vim.api.nvim_create_autocmd('BufWritePost', {
-            buffer = buf,
-            group = utils.augroup('lsp.codelens', false),
-            callback = vim.lsp.codelens.refresh,
-        })
+        map:extend({ prefix = '<leader>c' })
+            :n('r', vim.lsp.codelens.run, 'codelens run')
+            :n('t', function()
+                local enabled = vim.lsp.codelens.is_enabled({ bufnr = buf })
+                vim.lsp.codelens.enable(not enabled, { bufnr = buf })
+            end, 'codelens toggle')
     end
 
     if supports('textDocument/documentHighlight') then
@@ -84,7 +81,7 @@ return {
         for name, config in pairs(configs) do
             local cmd = config.cmd
             if not cmd then
-                local lsp = vim.lsp.config[name]
+                local lsp = assert(vim.lsp.config[name])
                 cmd = type(lsp.cmd) == 'table' and lsp.cmd[1] or nil
             end
             assert(type(cmd) == 'string', ('no command for %s'):format(name))

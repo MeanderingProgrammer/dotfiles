@@ -57,7 +57,6 @@ map:n('<leader>hc', function()
 end, 'copy hex code of current character')
 
 ---@see lsp-defaults
-vim.keymap.del('n', 'gra')
-vim.keymap.del('n', 'gri')
-vim.keymap.del('n', 'grn')
-vim.keymap.del('n', 'grr')
+for _, lhs in ipairs({ 'gra', 'gri', 'grn', 'grr', 'grt', 'grx' }) do
+    vim.keymap.del('n', lhs)
+end
