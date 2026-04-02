@@ -10,7 +10,6 @@ utils.import('mp.lang')
 -- dependencies: many plugins
 -- dev: development
 -- version: blink.cmp='*'
--- branch: nvim-treesitter-textobjects='main'
 -- build: nvim-treesitter=':TSUpdate'
 
 local lazypath = utils.path('data', 'lazy', 'lazy.nvim')
@@ -34,9 +33,10 @@ local config = {
         ---@return string
         path = function(plugin)
             local name = plugin.name
-            local directories = { 'personal', 'open-source', 'neovim-plugins' }
+            local directories = { 'personal', 'forks', 'clones' }
             for _, directory in ipairs(directories) do
-                local path = vim.fs.joinpath('~/dev/repos', directory, name)
+                local path =
+                    vim.fs.joinpath('~/dev/repos', directory, 'plugins', name)
                 if utils.exists(path) then
                     return path
                 end

@@ -12,6 +12,7 @@ M.hidden = {
     '.mypy_cache',
     '.obsidian',
     '.pytest_cache',
+    '.ruby-lsp',
     '.ruff_cache',
     '.settings',
     '.zig-cache',

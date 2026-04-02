@@ -88,19 +88,22 @@ def main() -> None:
         Repo(name="advent-of-code"),
         Repo(name="chess"),
         Repo(name="cli", after=["just install"]),
-        Repo(name="dashboard.nvim"),
         Repo(name="debug-it"),
-        Repo(name="harpoon-core.nvim"),
         Repo(name="learning"),
         Repo(name="pass-yank", after=["just install"]),
-        Repo(name="py-requirements.nvim"),
-        Repo(name="render-markdown.nvim"),
         Repo(name="resume"),
         Repo(name="scripts"),
         Repo(name="small-apps"),
+        Repo(name="yadm-rs"),
+    )
+    plugins = (
+        Path.home() / "dev/repos/personal/plugins",
+        Repo(name="dashboard.nvim"),
+        Repo(name="harpoon-core.nvim"),
+        Repo(name="py-requirements.nvim"),
+        Repo(name="render-markdown.nvim"),
         Repo(name="stashpad.nvim"),
         Repo(name="treesitter-modules.nvim"),
-        Repo(name="yadm-rs"),
     )
     tools = (
         Path.home() / "dev/repos/tools",
@@ -110,6 +113,7 @@ def main() -> None:
     roots: list[Root] = [
         document,
         personal,
+        plugins,
         tools,
     ]
     setup(roots).summary()

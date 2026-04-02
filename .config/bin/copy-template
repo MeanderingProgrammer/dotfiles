@@ -54,16 +54,16 @@ def main() -> None:
 
 def get_roots() -> list[Root]:
     config = Path.home() / ".config"
-    repos = Path.home() / "dev/repos/personal"
+    plugins = Path.home() / "dev/repos/personal/plugins"
     return [
         Root(config / "nvim", Language.LUA),
         Root(config / "wezterm", Language.LUA),
-        Root(repos / "dashboard.nvim", Language.LUA),
-        Root(repos / "harpoon-core.nvim", Language.LUA),
-        Root(repos / "py-requirements.nvim", Language.LUA),
-        Root(repos / "render-markdown.nvim", Language.LUA),
-        Root(repos / "stashpad.nvim", Language.LUA),
-        Root(repos / "treesitter-modules.nvim", Language.LUA),
+        Root(plugins / "dashboard.nvim", Language.LUA),
+        Root(plugins / "harpoon-core.nvim", Language.LUA),
+        Root(plugins / "py-requirements.nvim", Language.LUA),
+        Root(plugins / "render-markdown.nvim", Language.LUA),
+        Root(plugins / "stashpad.nvim", Language.LUA),
+        Root(plugins / "treesitter-modules.nvim", Language.LUA),
     ]
 
 
