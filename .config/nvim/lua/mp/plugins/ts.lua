@@ -1,4 +1,4 @@
-local lang = require('mp.lib.lang')
+local langs = require('mp.lib.langs')
 local utils = require('mp.lib.utils')
 
 ---@param buf integer
@@ -17,7 +17,7 @@ return {
     build = ':TSUpdate',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local configs = lang.parsers()
+        local configs = langs.parsers()
 
         for name, config in pairs(configs) do
             local filetypes = config.filetypes

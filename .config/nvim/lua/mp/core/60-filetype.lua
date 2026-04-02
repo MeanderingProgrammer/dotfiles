@@ -1,5 +1,9 @@
 vim.filetype.add({
+    extension = {
+        json = 'jsonc',
+    },
     pattern = {
-        ['${XDG_CONFIG_HOME}/git/config.*'] = 'gitconfig',
+        ['.*/Brewfile.*'] = 'ruby',
+        ['.*/git/config.*'] = 'gitconfig',
     },
 })

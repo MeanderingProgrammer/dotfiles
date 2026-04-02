@@ -1,4 +1,4 @@
-require('mp.lib.lang').add({
+require('mp.lib.langs').add({
     parser = {
         java = { install = true },
         javadoc = { install = true },

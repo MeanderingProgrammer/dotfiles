@@ -1,13 +1,13 @@
 local Keymap = require('mp.lib.keymap')
-local lang = require('mp.lib.lang')
+local langs = require('mp.lib.langs')
 local utils = require('mp.lib.utils')
 
 return {
     'stevearc/conform.nvim',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local configs = lang.formatters()
-        local by_ft = lang.by_ft(configs)
+        local configs = langs.formatters()
+        local by_ft = langs.by_ft(configs)
 
         local conform = require('conform')
 

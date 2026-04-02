@@ -1,5 +1,5 @@
 local Keymap = require('mp.lib.keymap')
-local lang = require('mp.lib.lang')
+local langs = require('mp.lib.langs')
 local utils = require('mp.lib.utils')
 
 ---@param buf integer
@@ -75,7 +75,7 @@ return {
         'mfussenegger/nvim-jdtls',
     },
     config = function()
-        local configs = lang.lsp()
+        local configs = langs.lsp()
 
         -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
         for name, config in pairs(configs) do

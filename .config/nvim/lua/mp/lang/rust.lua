@@ -90,7 +90,7 @@ local function dap_program()
     end)
 end
 
-require('mp.lib.lang').add({
+require('mp.lib.langs').add({
     parser = {
         rust = { install = true },
     },

@@ -1,10 +1,10 @@
-local lang = require('mp.lib.lang')
+local langs = require('mp.lib.langs')
 
 return {
     'mfussenegger/nvim-dap',
     dependencies = { 'mason-org/mason.nvim' },
     config = function()
-        local config = lang.dap()
+        local config = langs.dap()
 
         local dap = require('dap')
 

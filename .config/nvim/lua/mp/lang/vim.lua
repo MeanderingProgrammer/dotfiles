@@ -1,4 +1,4 @@
-require('mp.lib.lang').add({
+require('mp.lib.langs').add({
     parser = {
         query = { install = true },
         vim = { install = true },

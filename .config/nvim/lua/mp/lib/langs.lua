@@ -1,10 +1,10 @@
 ---@module 'conform'
 ---@module 'dap'
 
----@class mp.lang.Opts: mp.lang.Config
+---@class mp.langs.Opts: mp.langs.Config
 ---@field disabled? true
 
----@class mp.lang.Config
+---@class mp.langs.Config
 ---@field parser? table<string, mp.parser.Config>
 ---@field tool? table<string, mp.tool.Config>
 ---@field lsp? table<string, mp.lsp.Config>
@@ -40,11 +40,11 @@
 ---@field cmd? string
 ---@field filetypes string[]
 
----@class mp.Lang
+---@class mp.Langs
 local M = {}
 
 ---@private
----@type mp.lang.Config
+---@type mp.langs.Config
 M.config = {
     parser = {},
     tool = {},
@@ -57,7 +57,7 @@ M.config = {
     lint = {},
 }
 
----@param opts mp.lang.Opts
+---@param opts mp.langs.Opts
 function M.add(opts)
     if not opts.disabled then
         M.config = vim.tbl_deep_extend('error', M.config, opts)

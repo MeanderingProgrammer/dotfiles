@@ -1,6 +1,6 @@
 local utils = require('mp.lib.utils')
 
-require('mp.lib.lang').add({
+require('mp.lib.langs').add({
     parser = {
         python = { install = true },
         requirements = { install = true },
