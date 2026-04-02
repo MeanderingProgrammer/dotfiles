@@ -1,6 +1,6 @@
 # general
 alias reload='source ~/.zshrc'
-alias update-sys='yadm pull && yadm bootstrap'
+alias update-sys='pushd ~; yadm pull && yadm bootstrap; popd'
 alias ll='ls -latrh --color=auto'
 alias workspace='cd ${WORKSPACE}'
 alias notes='cd ~/Documents/notes'
