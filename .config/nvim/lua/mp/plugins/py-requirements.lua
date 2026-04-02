@@ -3,8 +3,6 @@ return {
     dev = vim.g.personal,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
-        require('py-requirements').setup({
-            filter = { final_release = true },
-        })
+        require('mp.configs.py-requirements')
     end,
 }

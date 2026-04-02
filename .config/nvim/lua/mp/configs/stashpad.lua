@@ -1,0 +1,17 @@
+local Keymap = require('mp.lib.keymap')
+local stashpad = require('stashpad')
+
+stashpad.setup({})
+
+Keymap.new({ prefix = '<leader>s' })
+    :n('b', stashpad.branch, 'branch')
+    :n('d', stashpad.delete, 'delete')
+    :n('f', stashpad.file, 'file')
+    :n('g', stashpad.global, 'global')
+    :n('o', function()
+        require('oil').toggle_float(stashpad.project())
+    end, 'oil toggle')
+    :n('p', function()
+        stashpad.global('personal')
+    end, 'personal')
+    :n('t', stashpad.todo, 'todo')

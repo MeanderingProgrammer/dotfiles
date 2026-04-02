@@ -1,13 +1,6 @@
-local utils = require('mp.lib.utils')
-
 return {
     'folke/lazydev.nvim',
     config = function()
-        require('lazydev').setup({
-            library = { '${3rd}/luv/library' },
-            enabled = function()
-                return not utils.in_root('.luarc.json')
-            end,
-        })
+        require('mp.configs.lazydev')
     end,
 }

@@ -1,0 +1,48 @@
+local Keymap = require('mp.lib.keymap')
+local conform = require('conform')
+local langs = require('mp.lib.langs')
+local utils = require('mp.lib.utils')
+
+local configs = langs.formatters()
+local by_ft = langs.by_ft(configs)
+
+local enabled = true
+
+---@param buf integer
+---@return boolean
+local function should_format(buf)
+    if not enabled then
+        return false
+    end
+    local clients = utils.lsp_names(buf)
+    if vim.list_contains(clients, 'jsonls') then
+        return false
+    end
+    return utils.personal(buf)
+end
+
+---@type conform.FormatOpts
+local format_opts = { lsp_format = 'fallback' }
+
+conform.setup({
+    formatters_by_ft = by_ft,
+    format_after_save = function(buf)
+        return should_format(buf) and format_opts or nil
+    end,
+})
+for name, config in pairs(configs) do
+    if config.init then
+        config.init()
+    end
+    if config.override then
+        conform.formatters[name] = config.override
+    end
+end
+
+vim.api.nvim_create_user_command('Format', function()
+    conform.format(format_opts)
+end, {})
+
+Keymap.new({ prefix = '<leader>' }):n('F', function()
+    enabled = not enabled
+end, 'format toggle')

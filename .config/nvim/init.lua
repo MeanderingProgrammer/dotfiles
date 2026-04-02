@@ -1,6 +1,6 @@
-local utils = require('mp.lib.utils')
+vim.loader.enable()
 
-utils.import('mp.core')
+require('mp.lib.utils').import('mp.core')
 
 if vim.g.vscode then
     require('mp.vscode')
