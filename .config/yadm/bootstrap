@@ -176,9 +176,9 @@ do_nvim() {
     reload
 
     if check_cmd "nvim"; then
-        nvim --headless "+Lazy! update" +qa
-        nvim --headless "+TSUpdateSync" +qa
-        nvim --headless "+MasonToolsUpdateSync" +qa
+        nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qa"
+        nvim --headless -c "lua require('nvim-treesitter').update():wait()" -c "qa"
+        nvim --headless -c "MasonToolsUpdateSync" -c "qa"
         notify "${SUCCESS}" "  success"
     fi
 }

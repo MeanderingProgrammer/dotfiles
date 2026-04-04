@@ -74,10 +74,13 @@ local configs = langs.lsp()
 for name, config in pairs(configs) do
     local cmd = config.cmd
     if not cmd then
-        local lsp = assert(vim.lsp.config[name])
+        local lsp = assert(
+            vim.lsp.config[name],
+            ('%s: missing lsp config'):format(name)
+        )
         cmd = type(lsp.cmd) == 'table' and lsp.cmd[1] or nil
     end
-    assert(type(cmd) == 'string', ('no command for %s'):format(name))
+    assert(type(cmd) == 'string', ('%s: missing lsp command'):format(name))
     if vim.fn.executable(cmd) == 1 then
         vim.lsp.enable(name)
     end

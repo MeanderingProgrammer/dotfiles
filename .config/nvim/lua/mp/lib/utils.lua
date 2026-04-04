@@ -29,6 +29,12 @@ M.roots = {
     '~/dev/repos/work',
 }
 
+---@param repo string
+---@return string
+function M.gh(repo)
+    return 'https://github.com/' .. repo
+end
+
 ---@param name string
 ---@param clear? boolean
 ---@return integer
