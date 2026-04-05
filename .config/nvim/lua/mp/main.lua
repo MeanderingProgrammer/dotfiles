@@ -23,31 +23,46 @@ else
 end
 
 vim.pack.add({
+    -- common
     utils.gh('nvim-lua/plenary.nvim'),
     utils.gh('nvim-mini/mini.nvim'),
+
+    -- mason
     utils.gh('mason-org/mason.nvim'),
     utils.gh('WhoIsSethDaniel/mason-tool-installer.nvim'),
-    utils.gh('ibhagwan/fzf-lua'),
-    utils.gh('stevearc/oil.nvim'),
-    { src = utils.gh('saghen/blink.cmp'), version = vim.version.range('*') },
+
+    -- treesitter
     utils.gh('nvim-treesitter/nvim-treesitter'),
     utils.gh('nvim-treesitter/nvim-treesitter-context'),
     utils.gh('nvim-treesitter/nvim-treesitter-textobjects'),
-    utils.gh('tpope/vim-fugitive'),
-    utils.gh('tpope/vim-sleuth'),
-    utils.gh('nvim-lualine/lualine.nvim'),
-    utils.gh('lukas-reineke/indent-blankline.nvim'),
-    utils.gh('Saecki/crates.nvim'),
+
+    -- file navigation
+    utils.gh('ibhagwan/fzf-lua'),
+    utils.gh('stevearc/oil.nvim'),
+
+    -- completions
+    utils.gh('saghen/blink.cmp', vim.version.range('1.*')),
+
+    -- QoL
     utils.gh('folke/todo-comments.nvim'),
     utils.gh('folke/which-key.nvim'),
     utils.gh('j-hui/fidget.nvim'),
+    utils.gh('lukas-reineke/indent-blankline.nvim'),
+    utils.gh('nvim-lualine/lualine.nvim'),
+    utils.gh('Saecki/crates.nvim'),
     utils.gh('stevearc/quicker.nvim'),
+    utils.gh('tpope/vim-fugitive'),
+    utils.gh('tpope/vim-sleuth'),
+
+    -- lsp
     utils.gh('neovim/nvim-lspconfig'),
     utils.gh('mfussenegger/nvim-jdtls'),
     utils.gh('folke/lazydev.nvim'),
-    utils.gh('stevearc/conform.nvim'),
-    utils.gh('mfussenegger/nvim-lint'),
+
+    -- dap / lint / format
     utils.gh('mfussenegger/nvim-dap'),
+    utils.gh('mfussenegger/nvim-lint'),
+    utils.gh('stevearc/conform.nvim'),
 })
 
 ---@type string[]
@@ -70,32 +85,49 @@ if vim.g.personal then
         vim.cmd.packadd(plugin)
     end
 else
-    local specs = {} ---@type string[]
+    local specs = {} ---@type vim.pack.Spec[]
     for _, plugin in ipairs(plugins) do
         specs[#specs + 1] = utils.gh('MeanderingProgrammer/' .. plugin)
     end
     vim.pack.add(specs)
 end
 
+-- common
 require('mp.configs.mini')
+
+-- mason
 require('mp.configs.mason')
-require('mp.configs.fzf-lua')
-require('mp.configs.oil')
-require('mp.configs.blink')
+
+-- treesitter
 require('mp.configs.nvim-treesitter')
 require('mp.configs.nvim-treesitter-textobjects')
-require('mp.configs.lualine')
-require('mp.configs.indent-blankline')
-require('mp.configs.crates')
+
+-- file navigation
+require('mp.configs.fzf-lua')
+require('mp.configs.oil')
+
+-- completions
+require('mp.configs.blink')
+
+-- QoL
 require('mp.configs.todo-comments')
 require('mp.configs.which-key')
 require('mp.configs.fidget')
+require('mp.configs.indent-blankline')
+require('mp.configs.lualine')
+require('mp.configs.crates')
 require('mp.configs.quicker')
+
+-- lsp
 require('mp.configs.lsp')
 require('mp.configs.lazydev')
-require('mp.configs.conform')
-require('mp.configs.nvim-lint')
+
+-- dap / lint / format
 require('mp.configs.nvim-dap')
+require('mp.configs.nvim-lint')
+require('mp.configs.conform')
+
+-- personal
 require('mp.configs.dashboard')
 require('mp.configs.harpoon-core')
 require('mp.configs.py-requirements')

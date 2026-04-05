@@ -30,9 +30,11 @@ M.roots = {
 }
 
 ---@param repo string
----@return string
-function M.gh(repo)
-    return 'https://github.com/' .. repo
+---@param version? vim.VersionRange
+---@return vim.pack.Spec
+function M.gh(repo, version)
+    ---@type vim.pack.Spec
+    return { src = 'https://github.com/' .. repo, version = version }
 end
 
 ---@param name string
