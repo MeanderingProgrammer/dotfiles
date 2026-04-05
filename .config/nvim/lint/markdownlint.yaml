@@ -9,6 +9,7 @@ no-bare-urls: false
 no-duplicate-heading: false
 no-inline-html: false
 single-title: false
+table-column-style: false
 ul-indent: false
 ul-style: false
 
