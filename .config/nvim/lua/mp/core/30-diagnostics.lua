@@ -9,13 +9,16 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.HINT] = '',
         },
     },
-    virtual_text = {
-        source = 'if_many',
-        prefix = '●',
-    },
-    float = {
-        source = 'if_many',
-        header = '',
+    virtual_text = { source = 'if_many', prefix = '●' },
+    float = { source = 'if_many', header = '' },
+    jump = {
+        on_jump = function(_, bufnr)
+            vim.diagnostic.open_float({
+                bufnr = bufnr,
+                scope = 'cursor',
+                focus = false,
+            })
+        end,
     },
 })
 
