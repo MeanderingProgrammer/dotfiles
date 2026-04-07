@@ -86,6 +86,15 @@ function M.import(module, skip)
     end
 end
 
+---@param path string
+---@return any
+function M.json(path)
+    local file = assert(io.open(path, 'r'))
+    local text = file:read('*all')
+    file:close()
+    return vim.json.decode(text)
+end
+
 ---@param buf? integer
 ---@return boolean
 function M.personal(buf)

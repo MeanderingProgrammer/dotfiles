@@ -56,6 +56,18 @@ map:n('<leader>yc', function()
     end
 end, 'yank hex code of current character')
 
+map:n('<leader>yn', function()
+    local root = vim.fs.root(0, 'project.json')
+    if not root then
+        vim.print('missing: project.json')
+        return
+    end
+    local path = vim.fs.joinpath(root, 'project.json')
+    local project = utils.json(path).name ---@type string
+    vim.print(('nx project: %s'):format(project))
+    vim.fn.setreg('+', project)
+end, 'yank nx project name')
+
 map:n('<leader>yp', function()
     local file = vim.fn.expand('%')
     vim.print(('file: %s'):format(file))
