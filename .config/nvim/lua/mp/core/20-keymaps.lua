@@ -39,7 +39,7 @@ map:n('<leader>bb', function()
     vim.print(out)
 end, 'execute current line')
 
-map:n('<leader>hc', function()
+map:n('<leader>yc', function()
     local values = {} ---@type table<string, string>
     local ascii = utils.exec('ascii')
     for _, encoding in ipairs(utils.split(ascii, ',')) do
@@ -54,7 +54,13 @@ map:n('<leader>hc', function()
     else
         vim.print('hex value: missing')
     end
-end, 'copy hex code of current character')
+end, 'yank hex code of current character')
+
+map:n('<leader>yp', function()
+    local file = vim.fn.expand('%')
+    vim.print(('file: %s'):format(file))
+    vim.fn.setreg('+', file)
+end, 'yank path of current file')
 
 ---@see treesitter-defaults
 local remap = Keymap.new({ remap = true })
