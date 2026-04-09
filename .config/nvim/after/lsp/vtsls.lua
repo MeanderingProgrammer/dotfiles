@@ -2,10 +2,10 @@
 
 ---@type vim.lsp.Config
 return {
-    ---@type lspconfig.settings.ts_ls
+    ---@type lspconfig.settings.vtsls
     settings = {
-        implicitProjectConfiguration = { checkJs = true },
         typescript = {
+            updateImportsOnFileMove = { enabled = 'always' },
             inlayHints = {
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = true },

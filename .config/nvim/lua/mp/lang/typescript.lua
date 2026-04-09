@@ -18,14 +18,14 @@ require('mp.lib.langs').add({
         ['eslint-lsp'] = { install = vim.g.has.npm },
         ['svelte-language-server'] = { install = vim.g.has.npm },
         ['tailwindcss-language-server'] = { install = vim.g.has.npm },
-        ['typescript-language-server'] = { install = vim.g.has.npm },
+        ['vtsls'] = { install = vim.g.has.npm },
         ['prettierd'] = { install = vim.g.has.npm },
     },
     lsp = {
         eslint = {},
         svelte = {},
         tailwindcss = {},
-        ts_ls = {},
+        vtsls = {},
     },
     format = {
         prettierd = {
