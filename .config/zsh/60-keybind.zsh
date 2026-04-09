@@ -17,7 +17,11 @@ bindkey -M viins "\e/" vi-search-fix
 bindkey "^?" backward-delete-char
 
 # prefix based search
-bindkey "^[[A" history-search-backward
-bindkey "^[OA" history-search-backward
-bindkey "^[[B" history-search-forward
-bindkey "^[OB" history-search-forward
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[OA" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+bindkey "^[OB" down-line-or-beginning-search
