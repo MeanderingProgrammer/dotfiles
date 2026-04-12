@@ -142,6 +142,11 @@ if has "mise"; then
     eval "$(mise activate zsh)"
 fi
 
+# starship
+if has "starship"; then
+    eval "$(starship init zsh)"
+fi
+
 # ssh
 if [[ -z "${SSH_AUTH_SOCK}" ]]; then
     eval "$(ssh-agent -s)"

@@ -17,6 +17,7 @@
 !/npm/**
 !/nvim/**
 !/shellcheckrc
+!/starship.toml
 !/tmux/**
 !/vim/**
 !/wezterm/**
