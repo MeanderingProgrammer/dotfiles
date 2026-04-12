@@ -4,8 +4,11 @@
 return {
     ---@type lspconfig.settings.ts_ls
     settings = {
-        implicitProjectConfiguration = { checkJs = true },
+        ['js/ts'] = {
+            implicitProjectConfig = { checkJs = true },
+        },
         typescript = {
+            updateImportsOnFileMove = { enabled = 'always' },
             inlayHints = {
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = true },

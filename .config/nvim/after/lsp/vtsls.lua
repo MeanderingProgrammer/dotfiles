@@ -4,6 +4,9 @@
 return {
     ---@type lspconfig.settings.vtsls
     settings = {
+        ['js/ts'] = {
+            implicitProjectConfig = { checkJs = true },
+        },
         typescript = {
             updateImportsOnFileMove = { enabled = 'always' },
             inlayHints = {
