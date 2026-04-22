@@ -22,9 +22,9 @@ require('mp.lib.langs').add({
         ['prettierd'] = { install = vim.g.has.npm },
     },
     lsp = {
-        eslint = {},
+        eslint = { cmd = 'vscode-eslint-language-server' },
         svelte = {},
-        tailwindcss = {},
+        tailwindcss = { cmd = 'tailwindcss-language-server' },
         vtsls = {},
     },
     format = {

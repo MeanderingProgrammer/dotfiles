@@ -8,6 +8,6 @@ require('mp.lib.langs').add({
         ['json-lsp'] = { install = vim.g.has.npm },
     },
     lsp = {
-        jsonls = {},
+        jsonls = { cmd = 'vscode-json-language-server' },
     },
 })
