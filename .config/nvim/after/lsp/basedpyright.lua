@@ -6,8 +6,7 @@ return {
     settings = {
         basedpyright = {
             analysis = {
-                diagnosticMode = vim.g.personal and 'workspace'
-                    or 'openFilesOnly',
+                diagnosticMode = 'workspace',
                 diagnosticSeverityOverrides = {
                     reportAny = false,
                     reportExplicitAny = false,
