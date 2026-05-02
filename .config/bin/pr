@@ -19,6 +19,8 @@ def cli() -> None:
 def push() -> None:
     """Push current branch as PR"""
     branch = cmd("git", "branch", "--show-current")
+    if branch in ["main", "master"]:
+        raise Exception(f"never push {branch}")
     print(f"pushing {branch} to origin")
     run("git", "push", "-f", "origin", branch)
 
