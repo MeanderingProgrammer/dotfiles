@@ -1,0 +1,40 @@
+[advice]
+    skippedCherryPicks = false
+
+[color]
+    grep = always
+
+[commit]
+    gpgsign = true
+
+[core]
+    autocrlf = input
+    commentChar = ";"
+    pager = delta
+
+[delta]
+    side-by-side = true
+
+[diff]
+    tool = nvimdiff
+
+[difftool]
+    prompt = false
+
+[gpg]
+    format = ssh
+
+[grep]
+    column = true
+    lineNumber = true
+
+[init]
+    defaultBranch = main
+
+[tag]
+    gpgsign = true
+
+[user]
+    email = meanderingprogrammer@gmail.com
+    name = MeanderingProgrammer
+    signingkey = ~/.ssh/id_ed25519.pub
