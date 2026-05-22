@@ -76,6 +76,7 @@ do_deps() {
           rust \
           rust-analyzer \
           stylua \
+          termux-api \
           wget \
           xz-utils \
           yadm \
