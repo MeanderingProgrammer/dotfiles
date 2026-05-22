@@ -27,15 +27,15 @@ curl -fsSL https://raw.githubusercontent.com/MeanderingProgrammer/dotfiles/main/
 
 ## Execute Script Commands in Order
 
-| Command            | Description                           |
-|--------------------|---------------------------------------|
-| `./setup.sh deps`  | Installs dependencies                 |
-| `./setup.sh shell` | Changes [shell](https://www.zsh.org/) |
-| `./setup.sh brew`  | Installs [homebrew](https://brew.sh/) |
-| `./setup.sh git`   | Installs [git](https://git-scm.com/)  |
-| `./setup.sh yadm`  | Installs [yadm](https://yadm.io/)     |
-| `./setup.sh prefs` | Modify system preferences             |
-| `./setup.sh clean` | Deletes the setup script              |
+| Command             | Description                           |
+|---------------------|---------------------------------------|
+| `./setup.sh deps`   | Installs dependencies                 |
+| `./setup.sh shell`  | Changes [shell](https://www.zsh.org/) |
+| `./setup.sh brew`   | Installs [homebrew](https://brew.sh/) |
+| `./setup.sh git`    | Installs [git](https://git-scm.com/)  |
+| `./setup.sh yadm`   | Installs [yadm](https://yadm.io/)     |
+| `./setup.sh device` | Perform device specific modifications |
+| `./setup.sh clean`  | Deletes the setup script              |
 
 # Additional Setup
 

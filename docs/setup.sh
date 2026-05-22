@@ -38,11 +38,11 @@ main() {
         "brew") do_homebrew ;;
         "git") do_git ;;
         "yadm") do_yadm ;;
-        "prefs") do_prefs ;;
+        "device") do_device ;;
         "clean") do_clean ;;
         *)
             notify "${FAIL}" "unknown command: ${1}"
-            notify "${FAIL}" "valid commands: deps, shell, brew, git, yadm, prefs, clean"
+            notify "${FAIL}" "valid commands: deps, shell, brew, git, yadm, device, clean"
             exit 1
             ;;
     esac
@@ -69,7 +69,8 @@ do_deps() {
           make \
           neovim \
           nodejs \
-          openjdk \
+          openjdk-21 \
+          pass \
           python \
           ripgrep \
           rust \
@@ -245,7 +246,7 @@ do_yadm() {
     fi
 }
 
-do_prefs() {
+do_device() {
     notify "${TITLE}" "start: modifying defaults"
     if is_mac; then
         defaults write com.apple.finder AppleShowAllFiles -boolean true
@@ -264,6 +265,14 @@ do_prefs() {
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: missing ${limit_directory}"
+    fi
+
+    notify "${TITLE}" "start: setting up storage"
+    if is_phone; then
+        termux-setup-storage
+        notify "${SUCCESS}" "  success"
+    else
+        notify "${INFO}" "  skip: not phone"
     fi
 }
 
