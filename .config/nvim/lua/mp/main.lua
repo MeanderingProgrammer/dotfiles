@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
     callback = function(args)
         local data = args.data
         if data.spec.name == 'nvim-treesitter' and data.kind == 'update' then
-            assert(data.active, 'nvim-treesitter not active')
+            assert(data.active, 'nvim-treesitter must be active')
             vim.cmd('TSUpdate')
         end
     end,

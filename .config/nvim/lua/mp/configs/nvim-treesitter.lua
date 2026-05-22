@@ -22,7 +22,9 @@ for name, config in pairs(configs) do
 end
 
 require('nvim-treesitter').setup({})
-require('nvim-treesitter').install(vim.tbl_keys(configs))
+require('nvim-treesitter').install(vim.tbl_keys(configs), {
+    max_jobs = vim.g.pc and 16 or 4,
+})
 
 vim.api.nvim_create_autocmd('FileType', {
     group = utils.augroup('ts.highlight'),
