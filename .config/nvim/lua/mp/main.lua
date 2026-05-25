@@ -57,6 +57,7 @@ vim.pack.add({
     -- lsp
     utils.gh('neovim/nvim-lspconfig'),
     utils.gh('mfussenegger/nvim-jdtls'),
+    utils.gh('nemanjamalesija/ts-expand-hover.nvim'),
     utils.gh('folke/lazydev.nvim'),
 
     -- dap / lint / format

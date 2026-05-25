@@ -2,10 +2,16 @@ local Keymap = require('mp.lib.keymap')
 local langs = require('mp.lib.langs')
 local utils = require('mp.lib.utils')
 
+local ts_hover = require('ts_expand_hover')
+ts_hover.setup({
+    keymaps = { hover = false, expand = '=', collapse = '-' },
+})
+
 ---@param buf integer
 ---@param id integer
 local function attach(buf, id)
     local client = assert(vim.lsp.get_client_by_id(id))
+    local clients = utils.lsp_names(buf)
 
     ---@param method vim.lsp.protocol.Method.ClientToServer
     ---@return boolean
@@ -19,8 +25,11 @@ local function attach(buf, id)
 
     local fzf = require('fzf-lua')
 
+    local is_ts = vim.list_contains(clients, 'vtsls')
+    local hover_provider = is_ts and ts_hover or vim.lsp.buf
+
     local map = Keymap.new({ buffer = buf, group = 'LSP' })
-        :n('K', vim.lsp.buf.hover, 'hover')
+        :n('K', hover_provider.hover, 'hover')
         :n('<C-a>', vim.lsp.buf.code_action, 'code actions')
         :n('<C-r>', vim.lsp.buf.rename, 'rename')
 
