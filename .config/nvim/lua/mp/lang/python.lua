@@ -6,7 +6,12 @@ require('mp.lib.langs').add({
         requirements = { install = true },
     },
     tool = {
-        basedpyright = { install = vim.g.pc and vim.g.has.pip },
+        basedpyright = {
+            install = vim.g.pc and vim.g.personal and vim.g.has.pip,
+        },
+        ty = {
+            install = vim.g.pc and not vim.g.personal and vim.g.has.pip,
+        },
         ruff = { install = vim.g.pc and vim.g.has.pip },
         pyright = { install = not vim.g.pc and vim.g.has.npm },
         black = { install = not vim.g.pc and vim.g.has.pip },
@@ -15,6 +20,7 @@ require('mp.lib.langs').add({
     lsp = {
         basedpyright = {},
         pyright = {},
+        ty = {},
     },
     format = {
         ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },
