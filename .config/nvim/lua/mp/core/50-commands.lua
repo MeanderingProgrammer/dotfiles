@@ -55,6 +55,11 @@ vim.api.nvim_create_user_command('LspConfig', function()
     Float.new('LSP Configuration', 'lua'):lines(lines)
 end, { desc = 'show LSP configuration' })
 
+vim.api.nvim_create_user_command('LspLog', function()
+    local file = vim.lsp.log.get_filename()
+    vim.cmd.tabedit(file)
+end, { desc = 'open LSP log in new tab' })
+
 vim.api.nvim_create_user_command('Messages', function()
     local messages = utils.exec('messages')
     local lines = utils.split(messages, '\n')

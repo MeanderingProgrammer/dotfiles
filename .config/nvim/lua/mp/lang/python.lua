@@ -36,10 +36,9 @@ require('mp.lib.langs').add({
         ruff = {
             filetypes = { 'python' },
             args = function()
-                local version = utils.python()
-                local target = ('py%d%d'):format(version.major, version.minor)
+                local version = utils.python_version('')
                 ---@type string[]
-                return { ('--target-version=%s'):format(target) }
+                return { ('--target-version=py%s'):format(version) }
             end,
         },
     },

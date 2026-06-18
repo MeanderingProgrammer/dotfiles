@@ -3,12 +3,11 @@ local utils = require('mp.lib.utils')
 ---@type vim.lsp.Config
 return {
     before_init = function(_, config)
-        local version = utils.python()
-        local target = ('%d.%d'):format(version.major, version.minor)
+        local version = utils.python_version('.')
         config.settings.ty = {
             configuration = {
                 environment = {
-                    ['python-version'] = target,
+                    ['python-version'] = version,
                 },
             },
         }
