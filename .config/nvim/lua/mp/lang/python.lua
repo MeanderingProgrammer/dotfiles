@@ -26,9 +26,10 @@ require('mp.lib.langs').add({
         ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },
         ruff_format = { cmd = 'ruff', filetypes = { 'python' } },
         ruff_organize_imports = { cmd = 'ruff', filetypes = { 'python' } },
-        black = { filetypes = { 'python' } },
+        black = { filetypes = { 'python' }, fallback = true },
         isort = {
             filetypes = { 'python' },
+            fallback = true,
             override = { prepend_args = { '--profile', 'black' } },
         },
     },

@@ -39,6 +39,7 @@
 ---@class mp.filetype.Config
 ---@field cmd? string
 ---@field filetypes string[]
+---@field fallback? boolean
 
 ---@class mp.Langs
 local M = {}
@@ -128,15 +129,22 @@ end
 ---@param configs table<string, mp.filetype.Config>
 ---@return table<string, string[]>
 function M.by_ft(configs)
+    local primary = {} ---@type table<string, boolean>
+    for _, config in pairs(configs) do
+        for _, filetype in ipairs(config.filetypes) do
+            primary[filetype] = primary[filetype] or not config.fallback
+        end
+    end
+
     local result = {} ---@type table<string, string[]>
     for name, config in pairs(configs) do
         for _, filetype in ipairs(config.filetypes) do
-            if not result[filetype] then
-                result[filetype] = {}
+            if not primary[filetype] or not config.fallback then
+                local active = result[filetype] or {}
+                active[#active + 1] = name
+                table.sort(active)
+                result[filetype] = active
             end
-            local active = result[filetype]
-            active[#active + 1] = name
-            table.sort(active)
         end
     end
     return result
