@@ -25,6 +25,8 @@ homebrew_init() {
     done
 }
 
+export HOMEBREW_NO_ASK=1
+
 if [[ -z "${HOMEBREW_PREFIX}" ]]; then
     homebrew_init
 fi
