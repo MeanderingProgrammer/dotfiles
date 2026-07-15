@@ -11,7 +11,7 @@ require('mp.lib.langs').add({
         ['csharp-language-server'] = { install = vim.g.has.dotnet },
     },
     lsp = {
-        clangd = {},
+        clangd = { cmd = 'clangd' },
         csharp_ls = { cmd = 'csharp-ls' },
     },
 })

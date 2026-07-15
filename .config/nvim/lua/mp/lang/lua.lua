@@ -11,7 +11,7 @@ require('mp.lib.langs').add({
         ['stylua'] = { install = vim.g.pc and vim.g.personal },
     },
     lsp = {
-        lua_ls = {},
+        lua_ls = { cmd = 'lua-language-server' },
     },
     format = {
         stylua = { filetypes = { 'lua' } },

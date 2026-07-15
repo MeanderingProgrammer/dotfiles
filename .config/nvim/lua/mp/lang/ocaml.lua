@@ -7,7 +7,7 @@ require('mp.lib.langs').add({
         ['ocamlformat'] = { install = vim.g.has.opam },
     },
     lsp = {
-        ocamllsp = {},
+        ocamllsp = { cmd = 'ocamllsp' },
     },
     format = {
         ocamlformat = { filetypes = { 'ocaml' } },

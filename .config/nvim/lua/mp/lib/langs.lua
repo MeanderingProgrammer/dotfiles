@@ -22,7 +22,7 @@
 ---@field install boolean
 
 ---@class mp.lsp.Config
----@field cmd? string
+---@field cmd string
 
 ---@class mp.dap.Config
 ---@field adapters table<string, dap.ExecutableAdapter>

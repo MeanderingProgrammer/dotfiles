@@ -18,9 +18,9 @@ require('mp.lib.langs').add({
         isort = { install = not vim.g.pc and vim.g.has.pip },
     },
     lsp = {
-        basedpyright = {},
-        pyright = {},
-        ty = {},
+        basedpyright = { cmd = 'basedpyright-langserver' },
+        pyright = { cmd = 'pyright-langserver' },
+        ty = { cmd = 'ty' },
     },
     format = {
         ruff_fix = { cmd = 'ruff', filetypes = { 'python' } },

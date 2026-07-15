@@ -25,7 +25,7 @@ require('mp.lib.langs').add({
         eslint = { cmd = 'vscode-eslint-language-server' },
         svelte = { cmd = 'svelteserver' },
         tailwindcss = { cmd = 'tailwindcss-language-server' },
-        vtsls = {},
+        vtsls = { cmd = 'vtsls' },
     },
     format = {
         prettierd = {

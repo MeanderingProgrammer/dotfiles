@@ -6,6 +6,6 @@ require('mp.lib.langs').add({
         ['elixir-ls'] = { install = vim.g.has.elixir },
     },
     lsp = {
-        elixirls = {},
+        elixirls = { cmd = 'elixir-ls' },
     },
 })

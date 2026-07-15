@@ -7,7 +7,7 @@ require('mp.lib.langs').add({
         prettypst = { install = vim.g.has.cargo },
     },
     lsp = {
-        tinymist = {},
+        tinymist = { cmd = 'tinymist' },
     },
     format = {
         prettypst = { filetypes = { 'typst' } },

@@ -6,6 +6,6 @@ require('mp.lib.langs').add({
         zls = { install = vim.g.pc and vim.g.personal },
     },
     lsp = {
-        zls = {},
+        zls = { cmd = 'zls' },
     },
 })

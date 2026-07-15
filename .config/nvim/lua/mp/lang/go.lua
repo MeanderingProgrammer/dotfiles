@@ -10,6 +10,6 @@ require('mp.lib.langs').add({
         gopls = { install = vim.g.has.go },
     },
     lsp = {
-        gopls = {},
+        gopls = { cmd = 'gopls' },
     },
 })

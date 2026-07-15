@@ -6,6 +6,6 @@ require('mp.lib.langs').add({
         texlab = { install = vim.g.pc and vim.g.personal },
     },
     lsp = {
-        texlab = {},
+        texlab = { cmd = 'texlab' },
     },
 })

@@ -99,7 +99,7 @@ require('mp.lib.langs').add({
         ['codelldb'] = { install = vim.g.pc },
     },
     lsp = {
-        rust_analyzer = {},
+        rust_analyzer = { cmd = 'rust-analyzer' },
     },
     dap = {
         adapters = {

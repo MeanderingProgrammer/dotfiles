@@ -7,7 +7,7 @@ require('mp.lib.langs').add({
         ['tflint'] = { install = vim.g.pc },
     },
     lsp = {
-        terraformls = {},
+        terraformls = { cmd = 'terraform-ls' },
     },
     lint = {
         tflint = { filetypes = { 'terraform' } },

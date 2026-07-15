@@ -10,7 +10,7 @@ require('mp.lib.langs').add({
         marksman = { install = vim.g.pc },
     },
     lsp = {
-        marksman = {},
+        marksman = { cmd = 'marksman' },
     },
     lint = {
         markdownlint = {
