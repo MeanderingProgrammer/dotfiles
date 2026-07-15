@@ -11,7 +11,7 @@ opam = "2.5.0"
 perl = "5.40.1.0"
 ruby = "3.4.4"
 scala = "3.7.4"
-zig = "0.15.2"
+zig = "0.16.0"
 
 [env]
 PROJECT = "{{ cwd | basename }}"
