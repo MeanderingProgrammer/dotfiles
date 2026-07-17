@@ -5,7 +5,6 @@ local providers = {
     path = {},
     snippets = {},
     buffer = {},
-    omni = {},
 }
 
 require('blink.cmp').setup({
