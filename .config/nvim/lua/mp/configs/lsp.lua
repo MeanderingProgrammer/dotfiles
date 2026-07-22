@@ -79,6 +79,10 @@ end
 
 local configs = langs.lsp()
 
+vim.lsp.config('*', {
+    exit_timeout = 5000,
+})
+
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 for name, config in pairs(configs) do
     if vim.fn.executable(config.cmd) == 1 then
