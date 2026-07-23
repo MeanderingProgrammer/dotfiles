@@ -13,4 +13,5 @@ return {
         }
     end,
     settings = {},
+    exit_timeout = 5000,
 }
