@@ -57,7 +57,7 @@ function Keymap:set(lhs, rhs, opts)
     if opts.prefix then
         lhs = opts.prefix .. lhs
     end
-    if opts.desc and opts.group then
+    if opts.group and opts.desc then
         opts.desc = opts.group .. ' ' .. opts.desc
     end
 

@@ -47,13 +47,13 @@ map:n('<leader>yc', function()
         values[parts[1]] = parts[2]
     end
     local hex = values['Hex']
-    if hex then
-        local value = vim.fn.trim(hex, '0', 1)
-        vim.print(('hex value: %s'):format(value))
-        vim.fn.setreg('+', value)
-    else
+    if not hex then
         vim.print('hex value: missing')
+        return
     end
+    local value = vim.fn.trim(hex, '0', 1)
+    vim.print(('hex value: %s'):format(value))
+    vim.fn.setreg('+', value)
 end, 'yank hex code of current character')
 
 map:n('<leader>yn', function()
@@ -69,7 +69,7 @@ map:n('<leader>yn', function()
 end, 'yank nx project name')
 
 map:n('<leader>yp', function()
-    local file = vim.fn.expand('%')
+    local file = vim.fn.expand('%:.')
     vim.print(('file: %s'):format(file))
     vim.fn.setreg('+', file)
 end, 'yank path of current file')
