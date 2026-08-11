@@ -26,7 +26,7 @@ class Commit(str, Enum):
     @staticmethod
     def default() -> "Commit":
         stats = cmd("git", "status", "--short")
-        modified = any([stat[1] != " " for stat in stats])
+        modified = any(stat[1] != " " for stat in stats)
         if modified:
             return Commit.I
         elif len(stats) > 0:
@@ -76,7 +76,7 @@ def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
     if debug:
         print(" ".join(args))
     else:
-        subprocess.run(args)
+        subprocess.run(args, check=False)
 
 
 def current() -> str:
@@ -87,12 +87,12 @@ def current() -> str:
 
 def mainline() -> str:
     branches: list[str] = []
-    scores: dict[str, int] = dict(master=1, main=2)
+    scores: dict[str, int] = {"master": 1, "main": 2}
     for branch in cmd("git", "branch"):
-        # * main    -> main
-        #   main    -> main
-        # * feature -> feature
-        #   feature -> feature
+        # "* main"    -> "main"
+        # "  main"    -> "main"
+        # "* feature" -> "feature"
+        # "  feature" -> "feature"
         branch = branch.strip().split()[-1]
         if branch in scores:
             branches.append(branch)
@@ -103,7 +103,7 @@ def mainline() -> str:
 
 
 def cmd(*args: str) -> list[str]:
-    result = subprocess.run(args, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.splitlines()

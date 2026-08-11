@@ -6,13 +6,12 @@ import click
 
 
 @click.group(
-    context_settings=dict(
-        help_option_names=["-h", "--help"],
-    ),
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+    },
 )
 def cli() -> None:
     """Improves interacting with Git PRs"""
-    pass
 
 
 @cli.command()
@@ -44,14 +43,14 @@ def co_author() -> None:
 
 
 def cmd(*args: str) -> str:
-    result = subprocess.run(args, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.strip()
 
 
 def run(*args: str) -> None:
-    subprocess.run(args)
+    subprocess.run(args, check=False)
 
 
 if __name__ == "__main__":

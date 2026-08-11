@@ -64,7 +64,7 @@ def main(args: list[str]) -> None:
 
     results: list[Result] = []
     for path in get_repos():
-        results.append(dict(repo=[str(path)], output=cmd(path, *args)))
+        results.append({"repo": [str(path)], "output": cmd(path, *args)})
 
     print(f"command: {' '.join(args)}")
     schema = Schema([Column.new("repo"), Column.new("output")])
@@ -80,7 +80,7 @@ def get_repos() -> list[Path]:
 
 
 def cmd(path: Path, *args: str) -> list[str]:
-    result = subprocess.run(args, cwd=path, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, cwd=path, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.expandtabs().splitlines()

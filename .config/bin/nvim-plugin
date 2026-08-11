@@ -236,9 +236,9 @@ class Repo:
 
 
 @click.group(
-    context_settings=dict(
-        help_option_names=["-h", "--help"],
-    ),
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+    },
     invoke_without_command=True,
 )
 @click.pass_context
@@ -283,7 +283,7 @@ def changes() -> None:
     commits = [commit for commit in commits if commit.interesting()]
     print(f"skipped commits: {len(new) - len(commits)}")
 
-    kinds: dict[str, list[Commit]] = dict()
+    kinds: dict[str, list[Commit]] = {}
     for commit in commits:
         if commit.kind not in kinds:
             kinds[commit.kind] = []
@@ -333,7 +333,7 @@ def release() -> None:
 
 
 def cmd(*args: str) -> str:
-    result = subprocess.run(args, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.strip()

@@ -19,15 +19,15 @@ class Ollama:
         return f"http://127.0.0.1:{self.port}"
 
     def update(self) -> None:
-        self.stream("pull", dict(), "status", "\n")
+        self.stream("pull", {}, "status", "\n")
 
     def run(self, prompt: list[str]) -> None:
-        self.stream("generate", dict(prompt="\n\n".join(prompt)), "response", "")
+        self.stream("generate", {"prompt": "\n\n".join(prompt)}, "response", "")
 
     def stream(self, cmd: str, data: dict[str, Any], key: str, end: str) -> None:
         response = requests.post(
             f"{self.endpoint}/api/{cmd}",
-            json=dict(model=self.model) | data,
+            json={"model": self.model} | data,
             stream=True,
         )
         assert response.status_code == 200, f"ollama failed: {cmd}"
@@ -39,7 +39,6 @@ class Ollama:
 @click.group()
 def cli() -> None:
     """Interact with llm: ollama serve"""
-    pass
 
 
 @cli.command()

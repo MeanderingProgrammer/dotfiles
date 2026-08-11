@@ -63,7 +63,7 @@ class Stat(BaseModel):
 def get_dates(*data: list[Stat]) -> list[Date]:
     result: set[Date] = set()
     for stats in data:
-        result.update(map(lambda stat: stat.timestamp, stats))
+        result.update([stat.timestamp for stat in stats])
     return sorted(result)
 
 
@@ -271,9 +271,9 @@ def env(name: str) -> str:
 
 
 @click.group(
-    context_settings=dict(
-        help_option_names=["-h", "--help"],
-    ),
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+    },
     invoke_without_command=True,
 )
 @click.pass_context

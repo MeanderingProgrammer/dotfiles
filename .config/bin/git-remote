@@ -32,13 +32,12 @@ class Remote(StrEnum):
 
 
 @click.group(
-    context_settings=dict(
-        help_option_names=["-h", "--help"],
-    ),
+    context_settings={
+        "help_option_names": ["-h", "--help"],
+    },
 )
 def cli() -> None:
     """Scripts to automate interacting with multiple remotes"""
-    pass
 
 
 @cli.command()
@@ -115,7 +114,7 @@ def is_fork(owner: str, name: str) -> bool:
 def cmd(repo: git.Repo, *args: str) -> bool:
     # GitPython struggles with yadm so need to run some things directly
     print(f"running '{' '.join(args)}' in: {repo.git_dir}")
-    result = subprocess.run(args, cwd=repo.git_dir)
+    result = subprocess.run(args, check=False, cwd=repo.git_dir)
     return result.returncode == 0
 
 

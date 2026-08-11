@@ -12,7 +12,6 @@ import click
 @click.group()
 def cli() -> None:
     """Docker helper scripts"""
-    pass
 
 
 @cli.command()
@@ -66,7 +65,7 @@ def get_or_set(data: dict[str, Any], key: str, default: Any) -> Any:
 
 
 def cmd(*args: str) -> list[str]:
-    result = subprocess.run(args, capture_output=True, text=True)
+    result = subprocess.run(args, check=False, capture_output=True, text=True)
     if result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.splitlines()
