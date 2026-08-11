@@ -1,5 +1,5 @@
 click==8.3.3
-GitPython==3.1.50
+GitPython==3.1.59
 mypy==2.1.0
 numpy==2.4.4
 pandas==3.0.3
@@ -13,6 +13,6 @@ pynvim==0.6.0
 pyperclip==1.11.0
 pytest==9.0.3
 PyYAML==6.0.3
-requests==2.34.0
-sqlmodel==0.0.38
+requests==2.34.2
+sqlmodel==0.0.39
 tabulate==0.10.0

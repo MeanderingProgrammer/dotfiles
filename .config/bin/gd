@@ -19,9 +19,9 @@ class Commit(str, Enum):
             case Commit.P:
                 return "HEAD^"
             case Commit.C:
-                return current()
+                return "HEAD"
             case Commit.M:
-                return mainline()
+                return f"{mainline()}...HEAD"
 
     @staticmethod
     def default() -> "Commit":
@@ -38,7 +38,9 @@ class Commit(str, Enum):
 
 
 @click.command()
-@click.option("-n", "--name", is_flag=True, default=False, help="show file names only")
+@click.option(
+    "-n", "--name-only", is_flag=True, default=False, help="show file names only"
+)
 @click.option(
     "-c",
     "--commit",
@@ -46,21 +48,27 @@ class Commit(str, Enum):
     default=Commit.default,
     help="source commit",
 )
-@click.option("-a", "--all", is_flag=True, default=False, help="include lock files")
+@click.option(
+    "-a", "--all-files", is_flag=True, default=False, help="include lock files"
+)
 @click.option("-d", "--debug", is_flag=True, default=False, help="debug command")
 @click.help_option("-h", "--help")
-def cli(name: bool, commit: Commit, all: bool, debug: bool) -> None:
-    """git diff (<options>)? (<commit>)? (-- <path>...)?"""
+def cli(name_only: bool, commit: Commit, all_files: bool, debug: bool) -> None:
+    """
+    git diff (<options>)? (<commit>)? (-- <path>...)?
+
+    git diff (<options>)? <commit>...<commit> (-- <path>...)?
+    """
     args: list[str] = ["git", "diff"]
 
-    if name:
+    if name_only:
         args.append("--name-only")
 
     value = commit.resolve()
     if value is not None:
         args.append(value)
 
-    if not all:
+    if not all_files:
         args.append("--")
         args.append(".")
         lock_files: list[str] = [
