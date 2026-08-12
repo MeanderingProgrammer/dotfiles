@@ -3,20 +3,28 @@ local actions = require('fzf-lua.actions')
 local fzf = require('fzf-lua')
 local utils = require('mp.lib.utils')
 
----@type string[]
-local rg = {
-    '--column',
-    '--line-number',
-    '--no-heading',
-    '--color=always',
-    '--smart-case',
-    '--max-columns=4096',
-    '--hidden',
-}
-for _, folder in ipairs(utils.hidden) do
-    rg[#rg + 1] = ('--glob=!**/%s/*'):format(folder)
+---@param globs string[]
+---@return string
+local function rg(globs)
+    ---@type string[]
+    local cmd = {
+        '--column',
+        '--line-number',
+        '--no-heading',
+        '--color=always',
+        '--smart-case',
+        '--max-columns=4096',
+        '--hidden',
+    }
+    for _, folder in ipairs(utils.hidden) do
+        cmd[#cmd + 1] = ('--glob=!**/%s/*'):format(folder)
+    end
+    for _, glob in ipairs(globs) do
+        cmd[#cmd + 1] = ('--glob=%s'):format(glob)
+    end
+    cmd[#cmd + 1] = '-e'
+    return table.concat(cmd, ' ')
 end
-rg[#rg + 1] = '-e'
 
 fzf.setup({
     actions = {
@@ -39,7 +47,7 @@ fzf.setup({
         formatter = 'path.filename_first',
     },
     grep = {
-        rg_opts = table.concat(rg, ' '),
+        rg_opts = rg({}),
     },
     lsp = {
         jump1 = false,
@@ -59,6 +67,13 @@ Keymap.new({ prefix = '<leader>f' })
     :n('d', fzf.diagnostics_workspace, 'diagnostics workspace')
     :n('D', fzf.diagnostics_document, 'diagnostics document')
     :n('f', fzf.git_files, 'git files')
+    :n('g', function()
+        local rg_opts = rg({
+            '!**/experimental/*',
+            '!**/tests/*',
+        })
+        fzf.live_grep({ rg_opts = rg_opts })
+    end, 'grep narrow')
     :n('h', fzf.highlights, 'highlights')
     :n('k', fzf.keymaps, 'keymaps')
     :n('r', fzf.resume, 'resume')
