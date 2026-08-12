@@ -68,11 +68,16 @@ Keymap.new({ prefix = '<leader>f' })
     :n('D', fzf.diagnostics_document, 'diagnostics document')
     :n('f', fzf.git_files, 'git files')
     :n('g', function()
-        local rg_opts = rg({
+        ---@type string[]
+        local globs = {
+            '!**/docs/*',
             '!**/experimental/*',
+            '!**/migrations/*',
+            '!**/protobuf/python/*',
+            '!**/protobuf/typescript/*',
             '!**/tests/*',
-        })
-        fzf.live_grep({ rg_opts = rg_opts })
+        }
+        fzf.live_grep({ rg_opts = rg(globs) })
     end, 'grep narrow')
     :n('h', fzf.highlights, 'highlights')
     :n('k', fzf.keymaps, 'keymaps')
