@@ -37,4 +37,5 @@ env = { NODE_PATH = "{{ exec(command='npm root -g') }}" }
 run = "make test"
 
 [tasks."nvim:run"]
+dir = "{{ cwd }}"
 run = "VIMRUNTIME={{ env.NVIM_ROOT }}/runtime {{ env.NVIM_ROOT }}/build/bin/nvim"
