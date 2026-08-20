@@ -263,13 +263,6 @@ do_device() {
         sudo cp "${HOME}/docs/${limit_file}" "${limit_directory}"
         sudo chown root:wheel "${limit_path}"
         sudo launchctl load -w "${limit_path}"
-
-        local kern_file="kern.maxvnodes.plist"
-        local kern_path="${limit_directory}/${kern_file}"
-        sudo cp "${HOME}/docs/${kern_file}" "${limit_directory}"
-        sudo chown root:wheel "${kern_path}"
-        sudo launchctl load -w "${kern_path}"
-
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: missing ${limit_directory}"
