@@ -22,6 +22,16 @@ M.hidden = {
 }
 
 ---@type string[]
+M.python_root_markers = {
+    'pyproject.toml',
+    'setup.py',
+    'setup.cfg',
+    'requirements.txt',
+    'Pipfile',
+    '.git',
+}
+
+---@type string[]
 M.roots = {
     '~/.config',
     '~/bin',
