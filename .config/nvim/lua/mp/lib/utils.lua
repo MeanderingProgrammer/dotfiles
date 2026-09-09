@@ -163,4 +163,11 @@ function M.python_version(sep)
     return ('%d%s%d'):format(version.major, sep, version.minor)
 end
 
+---@param filetype string
+---@return boolean
+function M.fold_comments(filetype)
+    local fold = { 'python', 'typescript', 'typescriptreact' } ---@type string[]
+    return not vim.g.personal and vim.list_contains(fold, filetype)
+end
+
 return M

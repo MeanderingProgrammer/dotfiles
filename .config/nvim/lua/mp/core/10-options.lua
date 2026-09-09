@@ -5,6 +5,8 @@ vim.o.swapfile = false
 vim.o.undofile = true
 
 -- ui
+vim.o.fillchars = 'fold: '
+vim.o.foldtext = ''
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.scrolloff = 8

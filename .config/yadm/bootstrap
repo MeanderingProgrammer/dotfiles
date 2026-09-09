@@ -144,7 +144,6 @@ do_libs() {
         npm install -g aws-cdk
         npm install -g neovim
         npm install -g pnpm
-        npm install -g yarn
         notify "${SUCCESS}" "  success"
     fi
 
