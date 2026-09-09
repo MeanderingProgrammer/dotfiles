@@ -165,9 +165,31 @@ end
 
 ---@param filetype string
 ---@return boolean
-function M.fold_comments(filetype)
-    local fold = { 'python', 'typescript', 'typescriptreact' } ---@type string[]
-    return not vim.g.personal and vim.list_contains(fold, filetype)
+function M.fold_enabled(filetype)
+    local filetypes = M.get_fold_filetypes()
+    return not vim.g.personal and vim.list_contains(filetypes, filetype)
+end
+
+local fold_filetypes = nil ---@type string[]|nil
+
+---@private
+---@return string[]
+function M.get_fold_filetypes()
+    if fold_filetypes then
+        return fold_filetypes
+    end
+    fold_filetypes = {}
+    local path = M.path('config', 'queries')
+    for name, type in vim.fs.dir(path) do
+        if type == 'directory' then
+            local folds = vim.fs.joinpath(path, name, 'folds.scm')
+            if M.exists(folds) then
+                local filetypes = vim.treesitter.language.get_filetypes(name)
+                vim.list_extend(fold_filetypes, filetypes)
+            end
+        end
+    end
+    return fold_filetypes
 end
 
 return M
