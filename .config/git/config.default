@@ -1,6 +1,9 @@
 [advice]
     skippedCherryPicks = false
 
+[branch]
+    sort = -committerdate
+
 [color]
     grep = always
 
