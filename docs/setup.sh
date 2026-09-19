@@ -268,9 +268,11 @@ do_device() {
         notify "${INFO}" "  skip: missing ${limit_directory}"
     fi
 
-    notify "${TITLE}" "start: setting up storage"
+    notify "${TITLE}" "start: setting up termux"
     if is_phone; then
         termux-setup-storage
+        cp "${HOME}/docs/JetBrainsMonoNerdFont-Regular.ttf" "${HOME}/.termux/font.ttf"
+        termux-reload-settings
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: not phone"
