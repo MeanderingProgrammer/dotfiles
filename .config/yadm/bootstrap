@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+installs_path="$(dirname $0)/installs"
+packages_path="$(dirname $0)/packages"
+scripts_path="$(dirname $0)/scripts"
+
 FAIL=31
 SUCCESS=32
 TITLE=35
@@ -32,8 +36,6 @@ is_personal() {
     [[ "${USER}" == "vlad" ]] || is_phone
 }
 
-lib_path="$(dirname $0)/lib"
-
 main() {
     if [[ "${#}" == 0 ]]; then
         do_deps
@@ -65,12 +67,13 @@ do_deps() {
     reload
 
     notify "${TITLE}" "dependency: brew"
+
     if check_cmd "brew"; then
         local brew_file="Brewfile"
         if ! is_personal; then
             brew_file="Brewfile.work"
         fi
-        brew bundle --file "${lib_path}/${brew_file}"
+        brew bundle --file "${packages_path}/${brew_file}"
         brew update
         brew upgrade
         brew cleanup
@@ -78,6 +81,7 @@ do_deps() {
     fi
 
     notify "${TITLE}" "dependency: tools"
+
     if check_cmd "pkg"; then
         pkg update --yes
         pkg upgrade --yes
@@ -86,20 +90,22 @@ do_deps() {
     elif check_cmd "apt"; then
         sudo apt update --yes
         sudo apt upgrade --yes
-        sudo apt autoremove --yes && sudo apt clean
+        sudo apt autoremove --yes
+        sudo apt clean
         notify "${SUCCESS}" "  success"
     fi
 
     notify "${TITLE}" "dependency: applications"
+
     if ! is_phone && ! check_cmd "wslinfo"; then
         if check_cmd "apt"; then
-            source "${lib_path}/wezterm.zsh"
+            source "${installs_path}/wezterm.zsh"
         fi
         if check_cmd "snap"; then
             sudo snap install ghostty --classic
         fi
         if check_cmd "pacman"; then
-            sudo pacman -Syu --noconfirm --needed - < "${lib_path}/pacman.txt"
+            sudo pacman -Syu --noconfirm --needed - < "${packages_path}/pacman.txt"
         fi
         if check_cmd "yay"; then
             yay -Sua --noconfirm
@@ -123,10 +129,11 @@ do_libs() {
     reload
 
     notify "${TITLE}" "library: python"
+
     if check_cmd "pip"; then
         if ! is_phone; then
             pip install --upgrade pip
-            pip install -r "${lib_path}/requirements.txt"
+            pip install -r "${packages_path}/requirements.txt"
         else
             pip install click
             pip install GitPython
@@ -137,6 +144,7 @@ do_libs() {
     fi
 
     notify "${TITLE}" "library: node"
+
     if check_cmd "npm"; then
         if ! is_phone; then
             npm install -g npm
@@ -148,6 +156,7 @@ do_libs() {
     fi
 
     notify "${TITLE}" "library: ocaml"
+
     if check_cmd "opam"; then
         # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         # https://github.com/ocaml/opam/issues/5968
@@ -164,7 +173,7 @@ do_repos() {
 
     if check_cmd "python"; then
         if is_personal; then
-            python "${lib_path}/repos.py"
+            python "${scripts_path}/repos.py"
         fi
         notify "${SUCCESS}" "  success"
     fi

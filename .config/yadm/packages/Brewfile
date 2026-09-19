@@ -1,6 +1,7 @@
 # cli
 brew "bash"
 brew "bat"
+brew "cmake"
 brew "colima"
 brew "curl"
 brew "devcontainer"
@@ -15,14 +16,32 @@ brew "jq"
 brew "just"
 brew "lazygit"
 brew "mise"
-brew "postgresql@18"
+brew "ninja"
+brew "pandoc"
+brew "pass"
+brew "postgresql@17"
+brew "pre-commit"
 brew "protobuf"
 brew "ripgrep"
 brew "socat"
+brew "sqlite"
 brew "starship"
+brew "tlrc"
 brew "tmux"
+brew "tree"
+brew "websocat"
 brew "wget"
 brew "yadm"
+
+# util
+brew "bison"
+brew "cairo"
+brew "coreutils"
+brew "gpatch"
+brew "libsodium"
+brew "oath-toolkit"
+brew "pkg-config"
+brew "xz"
 
 # plugin
 brew "zsh-autosuggestions"
@@ -30,15 +49,31 @@ brew "zsh-syntax-highlighting"
 
 # terminal
 cask "ghostty"
+cask "kitty"
+cask "wezterm"
 
 # font
+cask "font-arial"
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspace"
 cask "font-symbols-only-nerd-font"
 
 # editor
 brew "neovim"
 brew "vim"
+cask "sublime-text"
 cask "visual-studio-code"
 
 # productivity
+cask "discord"
+cask "elgato-stream-deck"
+cask "google-chrome"
+cask "libreoffice"
+cask "protonvpn"
 cask "rectangle"
+cask "transmission"
+cask "vlc"
+
+# other
+brew "stockfish"

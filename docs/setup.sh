@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+yadm_path="${HOME}/.config/yadm"
+
 FAIL=31
 SUCCESS=32
 TITLE=35
@@ -50,70 +52,71 @@ main() {
 
 do_deps() {
     notify "${TITLE}" "start: installing dependencies"
+
     if check_cmd "pkg"; then
         pkg install --yes \
-          bat \
-          clang \
-          cmake \
-          curl \
-          fd \
-          fzf \
-          git \
-          git-delta \
-          golang \
-          gradle \
-          jq \
-          just \
-          lazygit \
-          lua-language-server \
-          make \
-          neovim \
-          nodejs \
-          openjdk-21 \
-          pass \
-          python \
-          ripgrep \
-          rust \
-          rust-analyzer \
-          stylua \
-          termux-api \
-          wget \
-          xz-utils \
-          yadm \
-          zsh
+            bat \
+            clang \
+            cmake \
+            curl \
+            fd \
+            fzf \
+            git \
+            git-delta \
+            golang \
+            gradle \
+            jq \
+            just \
+            lazygit \
+            lua-language-server \
+            make \
+            neovim \
+            nodejs \
+            openjdk-21 \
+            pass \
+            python \
+            ripgrep \
+            rust \
+            rust-analyzer \
+            stylua \
+            termux-api \
+            wget \
+            xz-utils \
+            yadm \
+            zsh
         notify "${SUCCESS}" "  success"
     elif check_cmd "apt"; then
         sudo apt --yes install \
-          bubblewrap \
-          build-essential \
-          gcc \
-          git \
-          libbz2-dev \
-          libffi-dev \
-          liblzma-dev \
-          libncursesw5-dev \
-          libreadline-dev \
-          libsqlite3-dev \
-          libssl-dev \
-          libxml2-dev \
-          libxmlsec1-dev \
-          llvm \
-          make \
-          tk-dev \
-          wget \
-          wl-clipboard \
-          xclip \
-          xz-utils \
-          zlib1g-dev \
-          zsh
+            bubblewrap \
+            build-essential \
+            gcc \
+            git \
+            libbz2-dev \
+            libffi-dev \
+            liblzma-dev \
+            libncursesw5-dev \
+            libreadline-dev \
+            libsqlite3-dev \
+            libssl-dev \
+            libxml2-dev \
+            libxmlsec1-dev \
+            llvm \
+            make \
+            tk-dev \
+            wget \
+            wl-clipboard \
+            xclip \
+            xz-utils \
+            zlib1g-dev \
+            zsh
         notify "${SUCCESS}" "  success"
     elif check_cmd "pacman"; then
         sudo pacman -S --noconfirm \
-          git \
-          man-db \
-          man-pages \
-          wl-clipboard \
-          zsh
+            git \
+            man-db \
+            man-pages \
+            wl-clipboard \
+            zsh
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: unknown package manager"
@@ -122,7 +125,9 @@ do_deps() {
 
 do_shell() {
     notify "${TITLE}" "start: changing shell to zsh"
+
     local shell_type=$(basename "${SHELL}")
+
     if [[ "${shell_type}" == "bash" ]]; then
         chsh -s $(which zsh)
         notify "${SUCCESS}" "  success: restart system"
@@ -136,12 +141,14 @@ do_shell() {
 
 do_homebrew() {
     notify "${TITLE}" "start: installing homebrew"
+
     if is_phone; then
         notify "${INFO}" "  skip: phone"
     elif check_cmd "brew"; then
         notify "${INFO}" "  skip: already done"
     else
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        /bin/bash -c \
+            "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         notify "${SUCCESS}" "  success"
         evaluate_homebrew
     fi
@@ -149,8 +156,10 @@ do_homebrew() {
 
 evaluate_homebrew() {
     notify "${TITLE}" "start: evaluating homebrew"
+
     local brew_mac="/opt/homebrew/bin/brew"
     local brew_linux="/home/linuxbrew/.linuxbrew/bin/brew"
+
     if check_cmd "brew"; then
         notify "${INFO}" "  skip: already done"
     elif [[ -x "${brew_mac}" ]]; then
@@ -167,6 +176,7 @@ evaluate_homebrew() {
 
 brew_install() {
     notify "${TITLE}" "start: installing ${1} with homebrew"
+
     if evaluate_homebrew; then
         brew install ${1}
         notify "${SUCCESS}" "  success"
@@ -175,6 +185,7 @@ brew_install() {
 
 setup_file() {
     notify "${TITLE}" "start: creating empty file ${1}"
+
     if [[ -f ${1} ]]; then
         notify "${INFO}" "  skip: already done"
     else
@@ -186,29 +197,39 @@ setup_file() {
 }
 
 setup_ssh() {
+    local known_hosts="${1}"
+    local host="${2}"
+    local key_name="${3}"
+    local ssh_file="${HOME}/.ssh/${key_name}"
+
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-    notify "${TITLE}" "start: adding hosts ${2}"
-    local hosts=$(cat ${1} | grep ${2})
+    notify "${TITLE}" "start: adding hosts ${host}"
+
+    local hosts=$(cat ${known_hosts} | grep ${host})
     if [[ -z "${hosts}" ]]; then
-        ssh-keyscan ${2} >> ${1}
+        ssh-keyscan "${host}" >> "${known_hosts}"
         notify "${SUCCESS}" "  success"
     else
         notify "${INFO}" "  skip: already done"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-    notify "${TITLE}" "start: generating SSH key ${2}"
-    local ssh_file="${HOME}/.ssh/${3}"
-    if [[ -f ${ssh_file} ]]; then
+    notify "${TITLE}" "start: generating SSH key ${host}"
+
+    if [[ -f "${ssh_file}" ]]; then
         notify "${INFO}" "  skip: already done"
     else
-        ssh-keygen -f ${ssh_file} -t ed25519 -C "meanderingprogrammer@gmail.com"
+        ssh-keygen \
+            -f "${ssh_file}" \
+            -t ed25519 \
+            -C "meanderingprogrammer@gmail.com"
         eval "$(ssh-agent -s)"
         notify "${SUCCESS}" "  success"
     fi
 
     # https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
-    notify "${TITLE}" "start: copy command ${2}"
+    notify "${TITLE}" "start: copy command ${host}"
+
     local copy_command
     if check_cmd "pbcopy"; then
         copy_command="pbcopy"
@@ -217,6 +238,7 @@ setup_ssh() {
     else
         copy_command="wl-copy"
     fi
+
     notify "${INFO}" "  cat ${ssh_file}.pub | ${copy_command}"
 }
 
@@ -224,8 +246,8 @@ do_git() {
     # https://formulae.brew.sh/formula/git
     brew_install "git"
 
-    # Setup SSH keys for each git host
     local known_hosts="${HOME}/.ssh/known_hosts"
+
     setup_file "${known_hosts}"
     setup_ssh "${known_hosts}" "github.com" "id_ed25519"
     setup_ssh "${known_hosts}" "gitlab.com" "id_ed25519_lab"
@@ -238,8 +260,8 @@ do_yadm() {
 
     # https://yadm.io/docs/bootstrap
     notify "${TITLE}" "start: cloning dotfiles repo"
-    local yadm_directory="${HOME}/.config/yadm"
-    if [[ -d ${yadm_directory} ]]; then
+
+    if [[ -d ${yadm_path} ]]; then
         notify "${INFO}" "  skip: already done"
     else
         yadm clone --bootstrap git@github.com:MeanderingProgrammer/dotfiles.git
@@ -249,6 +271,7 @@ do_yadm() {
 
 do_device() {
     notify "${TITLE}" "start: modifying defaults"
+
     if is_mac; then
         defaults write com.apple.finder AppleShowAllFiles -boolean true
     else
@@ -256,11 +279,14 @@ do_device() {
     fi
 
     notify "${TITLE}" "start: increasing limits"
+
     local limit_directory="/Library/LaunchDaemons"
+    local limit_file="limit.maxfiles.plist"
+    local limit_path="${limit_directory}/${limit_file}"
+    local limit_source="${yadm_path}/macos/${limit_file}"
+
     if [[ -d ${limit_directory} ]]; then
-        local limit_file="limit.maxfiles.plist"
-        local limit_path="${limit_directory}/${limit_file}"
-        sudo cp "${HOME}/docs/${limit_file}" "${limit_directory}"
+        sudo cp "${limit_source}" "${limit_directory}"
         sudo chown root:wheel "${limit_path}"
         sudo launchctl load -w "${limit_path}"
         notify "${SUCCESS}" "  success"
@@ -269,9 +295,13 @@ do_device() {
     fi
 
     notify "${TITLE}" "start: setting up termux"
+
+    local font_path="${HOME}/.termux/font.ttf"
+    local font_source="${yadm_path}/assets/JetBrainsMonoNerdFont-Regular.ttf"
+
     if is_phone; then
         termux-setup-storage
-        cp "${HOME}/docs/JetBrainsMonoNerdFont-Regular.ttf" "${HOME}/.termux/font.ttf"
+        cp "${font_source}" "${font_path}"
         termux-reload-settings
         notify "${SUCCESS}" "  success"
     else
@@ -281,6 +311,7 @@ do_device() {
 
 do_clean() {
     notify "${TITLE}" "start: deleting setup.sh"
+
     rm -rf "setup.sh"
     notify "${SUCCESS}" "  success"
 }
