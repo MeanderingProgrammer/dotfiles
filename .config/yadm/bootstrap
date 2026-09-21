@@ -10,7 +10,7 @@ TITLE=35
 INFO=36
 
 notify() {
-    echo -e "\033[0;${1}m${2}\033[0m"
+    printf '\033[0;%sm%s\033[0m\n' "${1}" "${2}"
 }
 
 reload() {
@@ -97,7 +97,7 @@ do_deps() {
 
     notify "${TITLE}" "dependency: applications"
 
-    if ! is_phone && ! check_cmd "wslinfo"; then
+    if ! check_cmd "wslinfo" && ! is_phone; then
         if check_cmd "apt"; then
             source "${installs_path}/wezterm.zsh"
         fi
@@ -135,10 +135,11 @@ do_libs() {
             pip install --upgrade pip
             pip install -r "${packages_path}/requirements.txt"
         else
-            pip install click
-            pip install GitPython
-            pip install pydantic
-            pip install requests
+            pip install \
+                click \
+                GitPython \
+                pydantic \
+                requests
         fi
         notify "${SUCCESS}" "  success"
     fi
@@ -149,16 +150,16 @@ do_libs() {
         if ! is_phone; then
             npm install -g npm
         fi
-        npm install -g aws-cdk
-        npm install -g neovim
-        npm install -g pnpm
+        npm install -g \
+            aws-cdk \
+            neovim \
+            pnpm
         notify "${SUCCESS}" "  success"
     fi
 
     notify "${TITLE}" "library: ocaml"
 
     if check_cmd "opam"; then
-        # https://discuss.ocaml.org/t/unable-to-install-some-packages-with-opam-on-macos/14434/6
         # https://github.com/ocaml/opam/issues/5968
         opam init --no
         opam update
@@ -171,10 +172,8 @@ do_repos() {
     notify "${TITLE}" "start: repos"
     reload
 
-    if check_cmd "python"; then
-        if is_personal; then
-            python "${scripts_path}/repos.py"
-        fi
+    if check_cmd "python" && is_personal; then
+        python "${scripts_path}/repos.py"
         notify "${SUCCESS}" "  success"
     fi
 }
@@ -184,9 +183,11 @@ do_nvim() {
     reload
 
     if check_cmd "nvim"; then
-        nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qa"
-        nvim --headless -c "lua require('nvim-treesitter').update():wait()" -c "qa"
-        nvim --headless -c "MasonToolsUpdateSync" -c "qa"
+        nvim --headless \
+            -c "lua vim.pack.update(nil, { force = true })" \
+            -c "lua require('nvim-treesitter').update():wait()" \
+            -c "MasonToolsUpdateSync" \
+            -c "qa"
         notify "${SUCCESS}" "  success"
     fi
 }

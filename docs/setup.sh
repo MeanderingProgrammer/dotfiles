@@ -8,7 +8,7 @@ TITLE=35
 INFO=36
 
 notify() {
-    echo -e "\033[0;${1}m${2}\033[0m"
+    printf '\033[0;%sm%s\033[0m\n' "${1}" "${2}"
 }
 
 check_cmd() {
