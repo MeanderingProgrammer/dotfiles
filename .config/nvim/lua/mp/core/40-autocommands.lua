@@ -17,3 +17,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
         vim.hl.on_yank()
     end,
 })
+
+vim.api.nvim_create_autocmd('VimResized', {
+    group = utils.augroup('resize'),
+    command = 'tabdo wincmd =',
+})
