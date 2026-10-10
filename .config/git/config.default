@@ -19,6 +19,8 @@
     side-by-side = true
 
 [diff]
+    algorithm = histogram
+    colorMoved = zebra
     tool = nvimdiff
 
 [difftool]
@@ -33,6 +35,9 @@
 
 [init]
     defaultBranch = main
+
+[rerere]
+    enabled = true
 
 [tag]
     gpgsign = true

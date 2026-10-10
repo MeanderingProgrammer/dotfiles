@@ -63,6 +63,8 @@ def cli(name_only: bool, commit: Commit, all_files: bool, debug: bool) -> None:
 
     if name_only:
         args.append("--name-only")
+    else:
+        args.append("--patch-with-stat")
 
     value = commit.resolve()
     if value is not None:
