@@ -1,7 +1,6 @@
 require('mp.lib.langs').add({
     parser = {
         comment = { install = true },
-        just = { install = true },
         kotlin = { install = true },
         nix = { install = true },
         regex = { install = true },
