@@ -26,6 +26,7 @@ homebrew_init() {
 }
 
 export HOMEBREW_NO_ASK=1
+export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS=1
 
 if [[ -z "${HOMEBREW_PREFIX}" ]]; then
     homebrew_init
