@@ -4,17 +4,12 @@ local config = wezterm.config_builder()
 
 config.color_scheme = 'tokyonight_night'
 
-if wezterm.target_triple:find('darwin') then
-    config.font_size = 14.0
-else
-    config.font_size = 12.0
-end
+config.font_size = wezterm.target_triple:find('darwin') and 14.0 or 12.0
 config.font = wezterm.font('Monaspace Neon')
 
 config.audible_bell = 'Disabled'
 
 config.max_fps = 120
-config.front_end = 'WebGpu'
 
 config.enable_tab_bar = false
 wezterm.on('format-window-title', function()
