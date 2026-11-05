@@ -67,7 +67,6 @@ cask "visual-studio-code"
 
 # productivity
 cask "discord"
-cask "elgato-stream-deck"
 cask "google-chrome"
 cask "libreoffice"
 cask "protonvpn"
