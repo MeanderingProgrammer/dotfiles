@@ -13,7 +13,7 @@
 [core]
     autocrlf = input
     commentChar = ";"
-    pager = delta
+    pager = hunk pager
 
 [delta]
     side-by-side = true
