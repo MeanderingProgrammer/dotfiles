@@ -8,18 +8,21 @@ import click
 
 class Commit(str, Enum):
     I = "index"
-    P = "previous"
     C = "current"
+    P = "previous"
+    U = "upstream"
     M = "mainline"
 
     def resolve(self) -> str | None:
         match self:
             case Commit.I:
                 return None
-            case Commit.P:
-                return "HEAD^"
             case Commit.C:
                 return "HEAD"
+            case Commit.P:
+                return "HEAD^"
+            case Commit.U:
+                return f"{upstream()}...HEAD"
             case Commit.M:
                 return f"{mainline()}...HEAD"
 
@@ -33,6 +36,8 @@ class Commit(str, Enum):
             return Commit.C
         elif current() == mainline():
             return Commit.P
+        elif upstream() is not None:
+            return Commit.U
         else:
             return Commit.M
 
@@ -112,9 +117,14 @@ def mainline() -> str:
     return branches.pop()
 
 
-def cmd(*args: str) -> list[str]:
+def upstream() -> str | None:
+    result = cmd("git", "rev-parse", "--abbrev-ref", "@{upstream}", check=False)
+    return result[0] if len(result) == 1 else None
+
+
+def cmd(*args: str, check: bool = True) -> list[str]:
     result = subprocess.run(args, check=False, capture_output=True, text=True)
-    if result.returncode != 0:
+    if check and result.returncode != 0:
         raise Exception(f"{' '.join(args)} failed: {result.stderr}")
     return result.stdout.splitlines()
 
